@@ -1,0 +1,11 @@
+% Creating convergence plot for homework problem TraceErrorEstimates
+
+energies = csvread('energies.csv');
+t = linespace(0.0,1.0);
+
+figure('name','energy plot');
+plot(energies(:),t(),'r+-')
+xlabel('{\bf Time');
+ylabel('{\bf Output energy}');
+
+print -depsc2 'energy_plot.eps';

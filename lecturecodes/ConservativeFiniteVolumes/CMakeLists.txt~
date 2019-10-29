@@ -1,0 +1,11 @@
+# define executable
+set(sources
+  consformevl.h
+  consformevldriver.cc
+)
+
+add_executable(lecturecodes.consformevl ${sources})
+
+target_link_libraries(lecturecodes.consformevl
+  PUBLIC Eigen3::Eigen
+)

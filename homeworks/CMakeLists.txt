@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.10)
+
+## Hunter package manager ###
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.23.104.tar.gz"
+    SHA1 "92f60c3474c6d8749320f1b9ce4218a648493de3"
+)
+
+project(Homeworks)
+
+add_subdirectory(AvgValBoundary)
+add_subdirectory(hello)
+add_subdirectory(world)
+add_subdirectory(DebuggingFEM)
+add_subdirectory(ElementMatrixComputation)
+add_subdirectory(TestProblem)
+add_subdirectory(IncidenceMatrices)
+add_subdirectory(LengthOfBoundary)
+add_subdirectory(LinearFE1D)
+add_subdirectory(LinFeReactDiff)
+add_subdirectory(HandlingDOFs)
+add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
+add_subdirectory(ParametricElementMatrices)
+add_subdirectory(ProjectionOntoGradients)
+add_subdirectory(RegularizedNeumann)
+add_subdirectory(SimpleLinearFiniteElements)
+add_subdirectory(TestQuadratureRules)
+add_subdirectory(PointEvaluationRhs)
+add_subdirectory(TransformationOfGalerkinMatrices)
+add_subdirectory(UnstableBVP)
+add_subdirectory(MaximumPrinciple)
+add_subdirectory(ErrorEstimatesForTraces)
+add_subdirectory(BurgersEquation)
+add_subdirectory(1DWaveAbsorbingBC)
+add_subdirectory(RadauThreeTimestepping)
+add_subdirectory(SDIRKMethodOfLines)
+add_subdirectory(LaxWendroffScheme)
+add_subdirectory(FiniteVolumeSineConsLaw)
+add_subdirectory(EngquistOsherNumericalFlux)
+add_subdirectory(SymplecticTimesteppingWaves)
+add_subdirectory(DiscontinuousGalerkin1D)
+add_subdirectory(CLEmpiricFlux)
+add_subdirectory(BoundaryWave)
+add_subdirectory(OutputImpedanceBVP)
+
