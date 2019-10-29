@@ -1,0 +1,59 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# special
+*.TMP
+
+# Specific folders:
+.vs/
+bin/
+bin_32/
+bin_clang/
+bin_clang5/
+bin_clang_release/
+bin_gcc/
+bin_gcc_release/
+clang_release/
+gcc_release/
+doc/doxygen/html
+Build/
+build/
+.idea/
+.vscode/
+venv/
+cmake-build-debug
+cmake-build-release
+.vscode
+
+#OSX
+.DS_Store
