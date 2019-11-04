@@ -77,7 +77,7 @@ target_link_libraries(HandlingDOFs_mysolution
   )
 
 target_link_libraries(HandlingDOFs_test_mysolution
-  GTest::main
+  GTest::gtest_main
   Eigen3::Eigen
   Boost::filesystem 
   Boost::system 
@@ -92,7 +92,7 @@ target_link_libraries(HandlingDOFs_test_mysolution
   )
 
 target_link_libraries(HandlingDOFs_test_mastersolution
-  GTest::main
+  GTest::gtest_main
   Eigen3::Eigen
   Boost::filesystem 
   Boost::system 

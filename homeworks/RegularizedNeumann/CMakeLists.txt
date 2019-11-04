@@ -83,12 +83,12 @@ target_link_libraries(RegularizedNeumann_master.solution
   )
 
 # target_link_libraries(RegularizedNeumann_test_mysolution
-# GTest::main 
+# GTest::gtest_main 
 # RegularizedNeumann_my.solution
 # )
 
 target_link_libraries(RegularizedNeumann_test_mastersolution
-GTest::main 
+GTest::gtest_main 
 RegularizedNeumann_master.solution
 )
 

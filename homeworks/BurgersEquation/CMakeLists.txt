@@ -67,13 +67,13 @@ target_link_libraries(BurgersEquation_mysolution.solution
 
 target_link_libraries(BurgersEquation_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	BurgersEquation_mastersolution.solution
 )
 
 target_link_libraries(BurgersEquation_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	BurgersEquation_mysolution.solution
 )
 

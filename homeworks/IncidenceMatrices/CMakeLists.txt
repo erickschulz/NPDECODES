@@ -55,14 +55,14 @@ target_link_libraries(IncidenceMatrices_mastersolution
 )
 
 target_link_libraries(IncidenceMatrices_test_mysolution
-  GTest::main
+  GTest::gtest_main
   Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.hybrid2d
 )
 
 target_link_libraries(IncidenceMatrices_test_mastersolution
-  GTest::main
+  GTest::gtest_main
   Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.hybrid2d

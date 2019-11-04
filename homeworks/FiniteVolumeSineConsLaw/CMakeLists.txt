@@ -65,13 +65,13 @@ target_link_libraries(FiniteVolumeSineConsLaw_mysolution.solution
 
 target_link_libraries(FiniteVolumeSineConsLaw_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	FiniteVolumeSineConsLaw_mastersolution.solution
 )
 
 target_link_libraries(FiniteVolumeSineConsLaw_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	FiniteVolumeSineConsLaw_mysolution.solution
 )
 

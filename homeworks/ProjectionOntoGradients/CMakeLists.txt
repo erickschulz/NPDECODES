@@ -97,15 +97,15 @@ target_link_libraries(ProjectionOntoGradients_template.solution
   )
 
 target_link_libraries(ProjectionOntoGradients_test_mysolution
-GTest::main 
+GTest::gtest_main 
 ProjectionOntoGradients_my.solution
 )
 target_link_libraries(ProjectionOntoGradients_test_mastersolution
-GTest::main 
+GTest::gtest_main 
 ProjectionOntoGradients_master.solution
 )
 target_link_libraries(ProjectionOntoGradients_test_template
-GTest::main 
+GTest::gtest_main 
 ProjectionOntoGradients_template.solution
 )
 

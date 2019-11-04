@@ -63,8 +63,8 @@ target_link_libraries(SimpleLinearFiniteElements.mastersolution
   PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options MathGL
 )
 
-target_link_libraries(SimpleLinearFiniteElements_test_mysolution GTest::main SimpleLinearFiniteElements.solution)
-target_link_libraries(SimpleLinearFiniteElements_test_mastersolution GTest::main SimpleLinearFiniteElements.mastersolution)
+target_link_libraries(SimpleLinearFiniteElements_test_mysolution GTest::gtest_main SimpleLinearFiniteElements.solution)
+target_link_libraries(SimpleLinearFiniteElements_test_mastersolution GTest::gtest_main SimpleLinearFiniteElements.mastersolution)
 
 
 gtest_discover_tests(SimpleLinearFiniteElements_test_mysolution)

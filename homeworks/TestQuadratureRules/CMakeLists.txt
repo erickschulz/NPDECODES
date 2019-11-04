@@ -80,7 +80,7 @@ target_link_libraries(TestQuadratureRules_mysolution.solution
 
 target_link_libraries(TestQuadratureRules_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	TestQuadratureRules_mastersolution.solution
 	Boost::system
 	LF::lf.base
@@ -89,7 +89,7 @@ target_link_libraries(TestQuadratureRules_test_mastersolution
 
 target_link_libraries(TestQuadratureRules_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	TestQuadratureRules_mysolution.solution
 	Boost::system
 	LF::lf.base

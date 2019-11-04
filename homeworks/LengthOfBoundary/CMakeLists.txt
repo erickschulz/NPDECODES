@@ -104,11 +104,11 @@ target_link_libraries(LengthOfBoundary_template
     )
     
 target_link_libraries(LengthOfBoundary_test_mysolution 
-    GTest::main
+    GTest::gtest_main
     LengthOfBoundary.solution
     )
 target_link_libraries(LengthOfBoundary_test_mastersolution 
-    GTest::main
+    GTest::gtest_main
     LengthOfBoundary_master.solution
     )
 

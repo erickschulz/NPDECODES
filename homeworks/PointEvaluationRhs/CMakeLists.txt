@@ -107,15 +107,15 @@ target_link_libraries(PointEvaluationRhs_template.solution
   )
 
 target_link_libraries(PointEvaluationRhs_test_mysolution
-GTest::main
+GTest::gtest_main
 PointEvaluationRhs_my.solution
 )
 target_link_libraries(PointEvaluationRhs_test_mastersolution
-GTest::main 
+GTest::gtest_main 
 PointEvaluationRhs_master.solution
 )
 target_link_libraries(PointEvaluationRhs_test_template
-GTest::main
+GTest::gtest_main
 PointEvaluationRhs_template.solution
 )
 

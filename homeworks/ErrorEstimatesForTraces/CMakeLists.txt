@@ -94,7 +94,7 @@ target_link_libraries(ErrorEstimatesForTraces_mastersolution.solution
 	Boost::system
         Boost::filesystem
         Boost::program_options
-        GTest::main
+        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
         LF::lf.uscalfe
@@ -112,7 +112,7 @@ target_link_libraries(ErrorEstimatesForTraces_mysolution.solution
 	Boost::system
         Boost::filesystem
         Boost::program_options
-        GTest::main
+        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
         LF::lf.uscalfe
@@ -130,7 +130,7 @@ target_link_libraries(ErrorEstimatesForTraces_test_mastersolution
 	Boost::system
         Boost::filesystem
         Boost::program_options
-        GTest::main
+        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
         LF::lf.uscalfe
@@ -149,7 +149,7 @@ target_link_libraries(ErrorEstimatesForTraces_test_mysolution
 	Boost::system
         Boost::filesystem
         Boost::program_options
-        GTest::main
+        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
         LF::lf.uscalfe

@@ -103,8 +103,8 @@ LF::lf.io
 LF::lf.uscalfe
 )
 
-target_link_libraries(LinearFE1D_test_mysolution GTest::main LinearFE1Dmy.solution)
-target_link_libraries(LinearFE1D_test_mastersolution GTest::main LinearFE1Dmaster.solution)
+target_link_libraries(LinearFE1D_test_mysolution GTest::gtest_main LinearFE1Dmy.solution)
+target_link_libraries(LinearFE1D_test_mastersolution GTest::gtest_main LinearFE1Dmaster.solution)
 
 add_custom_target(LinearFE1D_maketemplate
 COMMAND ${CMAKE_SOURCE_DIR}/strip-comments.sh

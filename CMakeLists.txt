@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.10)
 include("cmake/HunterGate.cmake")
 include("cmake/sanitizers.cmake")
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.207.tar.gz"
-    SHA1 "6e1b05a1f65c2aa492f7f43a43578e83ac62bbdd"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.225.tar.gz"
+    SHA1 "4b018ec7b673817475c1fb9f0bd4dfb7c5e7f343"
     LOCAL # use cmake/Hunter/config.cmake
 )
 

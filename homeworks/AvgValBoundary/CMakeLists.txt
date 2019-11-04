@@ -102,8 +102,8 @@ target_link_libraries(AvgValBoundary.mastersolution
   LF::lf.uscalfe
   )
 
-target_link_libraries(AvgValBoundary_test_mysolution GTest::main AvgValBoundary.solution)
-target_link_libraries(AvgValBoundary_test_mastersolution GTest::main AvgValBoundary.mastersolution)
+target_link_libraries(AvgValBoundary_test_mysolution GTest::gtest_main AvgValBoundary.solution)
+target_link_libraries(AvgValBoundary_test_mastersolution GTest::gtest_main AvgValBoundary.mastersolution)
 
 
 gtest_discover_tests(AvgValBoundary_test_mysolution)
