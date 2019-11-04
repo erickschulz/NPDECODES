@@ -134,12 +134,12 @@ target_link_libraries(NonConformingCrouzeixRaviart_mysolution_lib
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_test_mastersolution
-  GTest::main
+  GTest::gtest_main
   NonConformingCrouzeixRaviart_mastersolution_lib
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_test_mysolution
-  GTest::main
+  GTest::gtest_main
   NonConformingCrouzeixRaviart_mysolution_lib
 )
 

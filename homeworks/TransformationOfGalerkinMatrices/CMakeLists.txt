@@ -71,14 +71,14 @@ target_link_libraries(TransformationOfGalerkinMatrices_mysolution.solution
 
 target_link_libraries(TransformationOfGalerkinMatrices_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	TransformationOfGalerkinMatrices_mastersolution.solution
 	Boost::system
 )
 
 target_link_libraries(TransformationOfGalerkinMatrices_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	TransformationOfGalerkinMatrices_mysolution.solution 
 	Boost::system
 

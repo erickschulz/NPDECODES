@@ -116,7 +116,7 @@ target_link_libraries(DebuggingFEM_test_mysolution
   PUBLIC Eigen3::Eigen
   LF::lf.mesh.test_utils
   LF::lf.assemble
-  GTest::main
+  GTest::gtest_main
   DebuggingFEM_mysolution.solution
 )
 
@@ -150,7 +150,7 @@ target_link_libraries(DebuggingFEM_test_mastersolution
   PUBLIC Eigen3::Eigen
   LF::lf.mesh.test_utils
   LF::lf.assemble
-  GTest::main
+  GTest::gtest_main
   DebuggingFEM_mastersolution.solution
 )
 

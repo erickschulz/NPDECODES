@@ -67,13 +67,13 @@ target_link_libraries(MaximumPrinciple_mysolution.solution
 
 target_link_libraries(MaximumPrinciple_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	MaximumPrinciple_mastersolution.solution
 )
 
 target_link_libraries(MaximumPrinciple_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	MaximumPrinciple_mysolution.solution
 )
 

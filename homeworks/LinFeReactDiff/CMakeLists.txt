@@ -98,8 +98,8 @@ target_link_libraries(LinFeReactDiff.mastersolution
   LF::lf.uscalfe
   )
 
-target_link_libraries(LinFeReactDiff_test_mysolution GTest::main LinFeReactDiff.solution)
-target_link_libraries(LinFeReactDiff_test_mastersolution GTest::main LinFeReactDiff.mastersolution)
+target_link_libraries(LinFeReactDiff_test_mysolution GTest::gtest_main LinFeReactDiff.solution)
+target_link_libraries(LinFeReactDiff_test_mastersolution GTest::gtest_main LinFeReactDiff.mastersolution)
 
 
 gtest_discover_tests(LinFeReactDiff_test_mysolution)

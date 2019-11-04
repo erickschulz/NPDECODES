@@ -77,13 +77,13 @@ target_link_libraries(CLEmpiricFlux_mysolution.solution
 
 target_link_libraries(CLEmpiricFlux_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	CLEmpiricFlux_mastersolution.solution
 )
 
 target_link_libraries(CLEmpiricFlux_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	CLEmpiricFlux_mysolution.solution
 )
 

@@ -16,5 +16,5 @@ set(sources
 add_executable(SimpleLinearFEM2D.test ${sources})
 target_link_libraries(SimpleLinearFEM2D.test PUBLIC Eigen3::Eigen
 Boost::filesystem Boost::system Boost::program_options 
-GTest::main)
+GTest::gtest_main)
 gtest_discover_tests(SimpleLinearFEM2D.test)

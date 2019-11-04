@@ -65,13 +65,13 @@ target_link_libraries(LaxWendroffScheme_mysolution.solution
 
 target_link_libraries(LaxWendroffScheme_test_mastersolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	LaxWendroffScheme_mastersolution.solution
 )
 
 target_link_libraries(LaxWendroffScheme_test_mysolution 
 	PUBLIC Eigen3::Eigen	
-	GTest::main
+	GTest::gtest_main
 	LaxWendroffScheme_mysolution.solution
 )
 

@@ -108,8 +108,8 @@ target_link_libraries(TestProblem.mastersolution
   )
 
 
-target_link_libraries(TestProblem_test_mysolution GTest::main TestProblem.solution)
-target_link_libraries(TestProblem_test_mastersolution GTest::main TestProblem.mastersolution)
+target_link_libraries(TestProblem_test_mysolution GTest::gtest_main TestProblem.solution)
+target_link_libraries(TestProblem_test_mastersolution GTest::gtest_main TestProblem.mastersolution)
 
 gtest_discover_tests(TestProblem_test_mysolution)
 gtest_discover_tests(TestProblem_test_mastersolution)

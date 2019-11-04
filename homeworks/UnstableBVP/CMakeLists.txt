@@ -34,7 +34,7 @@ target_compile_features(UnstableBVP PUBLIC cxx_std_17)
 
 add_executable(test_UnstableBVP ${test_sources})
 
-target_link_libraries(test_UnstableBVP PUBLIC ${libraries} GTest::main)
+target_link_libraries(test_UnstableBVP PUBLIC ${libraries} GTest::gtest_main)
 target_compile_features(test_UnstableBVP PUBLIC cxx_std_17)
 
 gtest_discover_tests(test_UnstableBVP)
