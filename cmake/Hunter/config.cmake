@@ -11,4 +11,4 @@ hunter_config(lehrfempp
   SHA1 "0b1ab3e0ba01ef71817808b2c008dbc404f67a21"
 )
 
-hunter_config(GTest VERSION 1.8.0-hunter-p11)
+hunter_config(GTest VERSION 1.10.0)
