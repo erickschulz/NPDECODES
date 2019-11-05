@@ -20,12 +20,12 @@ double shapeRegularityMeasure(const lf::mesh::Mesh &mesh) {
   // shape regularity measure
   double rho_mesh = 0.0;
   // Run through all the cells of the mesh
-  for (const lf::mesh::Entity &cell : mesh.Entities(0)) {
+  for (const lf::mesh::Entity *cell : mesh.Entities(0)) {
     // Topological type of cell
-    const lf::base::RefEl ref_el{cell.RefEl()};
+    const lf::base::RefEl ref_el{cell->RefEl()};
     // Obtain geometry of the current cell
-    const lf::geometry::Geometry *geo_p{cell.Geometry()};
-    LF_ASSERT_MSG(geo_p != nullptr, "Invalid geometry for " << cell);
+    const lf::geometry::Geometry *geo_p{cell->Geometry()};
+    LF_ASSERT_MSG(geo_p != nullptr, "Invalid geometry for " << *cell);
     // Area of current cell
     const double area = lf::geometry::Volume(*geo_p);
     // Obtain corner coordinates
