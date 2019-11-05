@@ -11,8 +11,8 @@ project(Lecturecodes)
 # find_package(Boost CONFIG REQUIRED math_tr1l)
 
 ## Subdirectories ##
-add_subdirectory(SimpleLinearFEM2D)
+# add_subdirectory(SimpleLinearFEM2D)  # needs MathGL
 add_subdirectory(EigenSparseMatrix)
-add_subdirectory(RatesOfConvergence)
+# add_subdirectory(RatesOfConvergence) # needs MathGL
 # Does not work until Boost math libraries are available
 # add_subdirectory(ConservativeFiniteVolumes)
