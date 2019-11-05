@@ -56,13 +56,13 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
     return bd_flags(vertex);
   };
   // Assigning zero to the boundary values of phi
-  for (const lf::mesh::Entity &vertex : mesh_p->Entities(2))
+  for (const lf::mesh::Entity *vertex : mesh_p->Entities(2))
   {
-    if (bd_flags(vertex))
+    if (bd_flags(*vertex))
     {
-      auto dof_idx = dofh.GlobalDofIndices(vertex);
+      auto dof_idx = dofh.GlobalDofIndices(*vertex);
       LF_ASSERT_MSG(
-          dofh.NoLocalDofs(vertex) == 1,
+          dofh.NumLocalDofs(*vertex) == 1,
           "Too many global indices were returned for a vertex entity!");
       phi(dof_idx[0]) = 0.0;
     }

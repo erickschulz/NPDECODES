@@ -276,13 +276,13 @@ double thermalEnergy(const lf::assemble::DofHandler &dofh,
   // finite elements using the trapezoidal rule by summing up the contribution
   // of that quadrature rule over each triangle
   double thermal_energy_loc;
-  for (const lf::mesh::Entity &tria : mesh_p->Entities(0))
+  for (const lf::mesh::Entity *tria : mesh_p->Entities(0))
   {
     thermal_energy_loc = 0.0;
     // Compute the area of the triangle
-    const double area = lf::geometry::Volume(*(tria.Geometry()));
+    const double area = lf::geometry::Volume(*(tria->Geometry()));
     // Obtain the global indices of the nodal degrees of freedom
-    for (const lf::assemble::gdof_idx_t &g_idx : dofh.GlobalDofIndices(tria))
+    for (const lf::assemble::gdof_idx_t &g_idx : dofh.GlobalDofIndices(*tria))
     {
       thermal_energy_loc += temperature_vec[g_idx];
     }

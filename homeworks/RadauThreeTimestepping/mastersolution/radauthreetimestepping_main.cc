@@ -20,18 +20,15 @@ int main(int /*argc*/, char ** /*argv*/)
 
     /* Solving the parabolic heat equation */
     // Create a Lehrfem++ square tensor product mesh
-    // Obtain mesh factory
-    std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
-        std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
-    // Triangular tensor product mesh
-    lf::mesh::hybrid2d::TPTriagMeshBuilder builder(mesh_factory_ptr);
+    lf::mesh::hybrid2d::TPTriagMeshBuilder builder(
+      std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
     // Set mesh parameters following the Builder pattern
     // Domain is the unit square
     builder.setBottomLeftCorner(Eigen::Vector2d{-1.0, -1.0})
         .setTopRightCorner(Eigen::Vector2d{1, 1})
-        .setNoXCells(50)
-        .setNoYCells(50);
-    std::shared_ptr<lf::mesh::Mesh> mesh_p{builder.Build()};
+        .setNumXCells(50)
+        .setNumYCells(50);
+    auto mesh_p = builder.Build();
 
     /* SAM_LISTING_BEGIN_1 */
     // Generate the linear lagrange FE data
