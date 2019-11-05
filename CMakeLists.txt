@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-#include("cmake/functions.cmake")
 include("cmake/HunterGate.cmake")
-include("cmake/sanitizers.cmake")
 HunterGate(
     URL "https://github.com/cpp-pm/hunter/archive/v0.23.225.tar.gz"
     SHA1 "4b018ec7b673817475c1fb9f0bd4dfb7c5e7f343"
@@ -60,45 +58,6 @@ find_package(Boost CONFIG REQUIRED chrono timer system filesystem program_option
 
 # Problem: Actually boost::math is also needed, but there is a problem
 # setting it up through hunter. 
-
-# Get MathGL 
-# Needs to be added to hunter first.
-# hunter_add_package(MathGL)
-# find_package(MathGL)
-
-# Temporary MathGL fix
-include(ExternalProject)
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
-message("-- Downloading MathGl")
-set(MATHGL2_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/mathgl_install")
-ExternalProject_Add(
-    MathGL_external
-    URL http://downloads.sourceforge.net/mathgl/mathgl-2.3.3.tar.gz
-    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mathgl_binary
-    DOWNLOAD_NO_PROGRESS 1
-    CMAKE_ARGS "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
-               "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-               -DOpenGL_GL_PREFERENCE=GLVND
-               -DCMAKE_CXX_STANDARD=11
-               -Denable-openmp=OFF
-               -DMGL_HAVE_TYPEOF=0
-               -DMGL_HAVE_C99_COMPLEX=0
-               "-DMGL_LIB_INSTALL_DIR=${MATHGL2_INSTALL_DIR}/lib"
-               "-DMGL_CGI_PATH=${MATHGL2_INSTALL_DIR}/share/mathgl"
-               "-DCMAKE_INSTALL_PREFIX=${MATHGL2_INSTALL_DIR}"
-		-DCMAKE_INSTALL_NAME_DIR=${MATHGL2_INSTALL_DIR}/lib
-    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/mathgl_install
-)
-
-set(MATHGL2_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/mathgl_install/include)
-set(MATHGL2_LIBRARY_NAME ${CMAKE_SHARED_LIBRARY_PREFIX}mgl${CMAKE_SHARED_LIBRARY_SUFFIX})
-set(MATHGL2_LIBRARIES "${CMAKE_CURRENT_BINARY_DIR}/mathgl_install/lib/${MATHGL2_LIBRARY_NAME}")
-set(RPATH ${RPATH} "{CMAKE_CURRENT_BINARY_DIR}/mathgl_install/lib")
-
-add_library(MathGL INTERFACE)
-add_dependencies(MathGL MathGL_external)
-target_include_directories(MathGL INTERFACE ${MATHGL2_INCLUDE_DIRS})
-target_link_libraries(MathGL INTERFACE ${MATHGL2_LIBRARIES})
 
 # Include Subdirectories
 ###############################################################################
