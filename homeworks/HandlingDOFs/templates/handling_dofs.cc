@@ -8,10 +8,12 @@
 
 #include "handling_dofs.h"
 
-namespace HandlingDOFs {
+namespace HandlingDOFs
+{
 
 std::array<std::size_t, 3> countEntityDofs(
-    const lf::assemble::DofHandler& dofhandler) {
+    const lf::assemble::DofHandler &dofhandler)
+{
   std::array<std::size_t, 3> entityDofs;
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -19,7 +21,8 @@ std::array<std::size_t, 3> countEntityDofs(
   return entityDofs;
 }
 
-std::size_t countBoundaryDofs(const lf::assemble::DofHandler& dofhandler) {
+std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler)
+{
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
   // given an entity, bd_flags(entity) = true, if the entity is on the boundary
   lf::mesh::utils::AllCodimMeshDataSet<bool> bd_flags(
@@ -31,8 +34,9 @@ std::size_t countBoundaryDofs(const lf::assemble::DofHandler& dofhandler) {
   return no_dofs_on_bd;
 }
 
-double integrateLinearFEFunction(const lf::assemble::DofHandler& dofhandler,
-                                 const Eigen::VectorXd& mu) {
+double integrateLinearFEFunction(const lf::assemble::DofHandler &dofhandler,
+                                 const Eigen::VectorXd &mu)
+{
   double I = 0;
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -40,8 +44,9 @@ double integrateLinearFEFunction(const lf::assemble::DofHandler& dofhandler,
   return I;
 }
 
-double integrateQuadraticFEFunction(const lf::assemble::DofHandler& dofhandler,
-                                    const Eigen::VectorXd& mu) {
+double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
+                                    const Eigen::VectorXd &mu)
+{
   double I = 0;
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -50,20 +55,23 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler& dofhandler,
 }
 
 Eigen::VectorXd convertDOFsLinearQuadratic(
-    const lf::assemble::DofHandler& dofh_Linear_FE,
-    const lf::assemble::DofHandler& dofh_Quadratic_FE,
-    const Eigen::VectorXd& mu) {
-  if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh()) {
+    const lf::assemble::DofHandler &dofh_Linear_FE,
+    const lf::assemble::DofHandler &dofh_Quadratic_FE,
+    const Eigen::VectorXd &mu)
+{
+  if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh())
+  {
     throw "Underlying meshes must be the same for both DOF handlers!";
   }
   std::shared_ptr<const lf::mesh::Mesh> mesh =
       dofh_Linear_FE.Mesh();                         // get the mesh
-  Eigen::VectorXd zeta(dofh_Quadratic_FE.NoDofs());  // initialise empty zeta
+  Eigen::VectorXd zeta(dofh_Quadratic_FE.NumDofs()); // initialise empty zeta
   // safety guard: always set zero if you're not sure to set every entry later
   // on for us this shouldn't be a problem, but just to be sure
   zeta.setZero();
 
-  for (const auto& cell : mesh->Entities(0)) {
+  for (const auto &cell : mesh->Entities(0))
+  {
     // check if the spaces are actually linear and quadratic
     /* BEGIN_SOLUTION */
     /* TODO Your implementation goes here! */
@@ -87,4 +95,4 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
   return zeta;
 }
 
-}  // namespace HandlingDOFs
+} // namespace HandlingDOFs

@@ -12,19 +12,22 @@
 #include <lf/uscalfe/uscalfe.h>
 #include "lf/mesh/test_utils/test_meshes.h"
 
-namespace ProjectionOntoGradients {
+namespace ProjectionOntoGradients
+{
 
 // Start of sub-problem e)
-class ElementMatrixProvider {
- private:
+class ElementMatrixProvider
+{
+private:
   using coord_t = Eigen::Vector2d;
 
- public:
+public:
   Eigen::Matrix3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
 };
 
-Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
+Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity)
+{
   const lf::geometry::Geometry *geo_ptr = entity.Geometry();
   Eigen::Matrix3d loc_mat;
 
@@ -38,12 +41,13 @@ Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 
 // Start of sub-problem g)
 template <typename FUNCTOR>
-class GradProjRhsProvider {
- private:
+class GradProjRhsProvider
+{
+private:
   FUNCTOR f_;
   using coord_t = Eigen::Vector2d;
 
- public:
+public:
   explicit GradProjRhsProvider(FUNCTOR f) : f_(f) {}
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
@@ -51,7 +55,8 @@ class GradProjRhsProvider {
 
 template <typename FUNCTOR>
 Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
-    const lf::mesh::Entity &entity) {
+    const lf::mesh::Entity &entity)
+{
   Eigen::Vector3d loc_vec;
 
   const lf::geometry::Geometry *geo_ptr = entity.Geometry();
@@ -67,8 +72,9 @@ Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
 // Start of sub-problem h)
 template <typename FUNCTOR>
 Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
-                                     FUNCTOR f) {
-  const std::size_t N_dofs = dofh.NoDofs();
+                                     FUNCTOR f)
+{
+  const std::size_t N_dofs = dofh.NumDofs();
   Eigen::VectorXd sol_vec;
 
   // ASSEMBLE GLOBAL MATRIX
@@ -91,6 +97,6 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
 }
 // End of sub-problem h)
 
-}  // namespace ProjectionOntoGradients 
+} // namespace ProjectionOntoGradients
 
-#endif  // define __GRADPROJECTION_H
+#endif // define __GRADPROJECTION_H

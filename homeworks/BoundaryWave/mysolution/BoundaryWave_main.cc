@@ -9,7 +9,8 @@
 
 using namespace BoundaryWave;
 
-int main(int /*argc*/, const char ** /*argv*/) {
+int main(int /*argc*/, const char ** /*argv*/)
+{
   std::cout << "*** BoundaryWave ***" << std::endl;
   std::cout << "A mixed elliptic-hyperbolic linear evolution problem "
             << std::endl;
@@ -32,11 +33,11 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   /* GENERATE INITIAL CONDITIONS */
-  auto u0 = [](const Eigen::Vector2d &x) -> double { return x[0] + x[1]*x[1]; };
-  auto v0 = [](const Eigen::Vector2d &x) -> double { return 3.0*x[0] + x[1]; };
+  auto u0 = [](const Eigen::Vector2d &x) -> double { return x[0] + x[1] * x[1]; };
+  auto v0 = [](const Eigen::Vector2d &x) -> double { return 3.0 * x[0] + x[1]; };
 
   /* SOLVE BOUNDARY VALUE PROBLEM */
   Eigen::VectorXd discrete_solution =
@@ -48,7 +49,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
                                          Eigen::DontAlignCols, ", ", "\n");
   std::string errors_file_name = "BoundaryWave_solution.csv";
   std::ofstream file(errors_file_name.c_str());
-  if (file.is_open()) {
+  if (file.is_open())
+  {
     file << discrete_solution.format(CSVFormat);
   }
 
@@ -56,12 +58,14 @@ int main(int /*argc*/, const char ** /*argv*/) {
   lf::io::VtkWriter vtk_writer(mesh_p, "BoundaryWave_solution.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++)
+  {
     nodal_data->operator()(dofh.Entity(global_idx)) =
         discrete_solution[global_idx];
   };
   vtk_writer.WritePointData("BoundaryWave_solution", *nodal_data);
 
   std::cout << "\n The BoundaryWave_solution was written to:" << std::endl;
-  std::cout << ">> BoundaryWave_solution.vtk.vtk\n" << std::endl;
+  std::cout << ">> BoundaryWave_solution.vtk.vtk\n"
+            << std::endl;
 }

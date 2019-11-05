@@ -27,7 +27,8 @@ mgl::Figure fig1;
 mgl::Figure fig2;
 mgl::Figure fig3;
 
-int main() {
+int main()
+{
   // read mesh
   boost::filesystem::path here = __FILE__;
   auto square_path = here.parent_path().parent_path() / "meshes/square_64.msh";
@@ -40,7 +41,7 @@ int main() {
   const int reflevels = 4;
   std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, reflevels);
-  lf::refinement::MeshHierarchy& multi_mesh{*multi_mesh_p};
+  lf::refinement::MeshHierarchy &multi_mesh{*multi_mesh_p};
   size_type L = multi_mesh.NumLevels();
 
   // function to interpolateOntoQuadFE
@@ -54,7 +55,8 @@ int main() {
   std::vector<double> H1SMerr_3(L);
   std::vector<double> ndofs;
 
-  for (int level = 0; level < L; ++level) {
+  for (int level = 0; level < L; ++level)
+  {
     // set up fespace and dof handler for the mesh at the current level
     auto mesh_p = multi_mesh.getMesh(level);
     lf::assemble::UniformFEDofHandler dofh(mesh_p,
@@ -63,7 +65,7 @@ int main() {
                                             {lf::base::RefEl::kTria(), 0},
                                             {lf::base::RefEl::kQuad(), 1}});
     // Dimension of finite element space`
-    const size_type N_dofs(dofh.NoDofs());
+    const size_type N_dofs(dofh.NumDofs());
     // Matrix in triplet format holding Galerkin for LocalLaplaceQFE1 matrix,
     // zero initially.
     lf::assemble::COOMatrix<double> A_1(N_dofs, N_dofs);
@@ -99,7 +101,8 @@ int main() {
   std::cout << std::left << std::setw(10) << "N" << std::setw(20)
             << "Assember 1" << std::setw(20) << "Assembler 2" << std::setw(20)
             << "Assembler 3" << std::endl;
-  for (int l = 0; l < L; ++l) {
+  for (int l = 0; l < L; ++l)
+  {
     std::cout << std::left << std::setw(10) << ndofs[l] << std::setw(20)
               << H1SMerr_1[l] << std::setw(20) << H1SMerr_2[l] << std::setw(20)
               << H1SMerr_3[l] << std::endl;

@@ -8,12 +8,14 @@
 
 #include "symplectictimesteppingwaves.h"
 
-namespace SymplecticTimesteppingWaves {
+namespace SymplecticTimesteppingWaves
+{
 
 /* SAM_LISTING_BEGIN_7 */
-void wavePropSimulation(unsigned int m) {
+void wavePropSimulation(unsigned int m)
+{
   /* SOLUTION_BEGIN */
-  double T = 10.0;  // final time
+  double T = 10.0; // final time
 
   // Load mesh into a Lehrfem++ object
   boost::filesystem::path here = __FILE__;
@@ -27,9 +29,9 @@ void wavePropSimulation(unsigned int m) {
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   // Obtain local->global index mapping for current finite element space
-  const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // Building initial condition vector
   Eigen::VectorXd u0_vec(N_dofs);
@@ -55,7 +57,8 @@ void wavePropSimulation(unsigned int m) {
                                          Eigen::DontAlignCols, ", ", "\n");
   std::string errors_file_name = "waves_energies.csv";
   std::ofstream file(errors_file_name.c_str());
-  if (file.is_open()) {
+  if (file.is_open())
+  {
     file << energies.format(CSVFormat);
   }
 
@@ -66,7 +69,8 @@ void wavePropSimulation(unsigned int m) {
   lf::io::VtkWriter vtk_writer(mesh_p, "discrete_wave_sol.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++)
+  {
     nodal_data->operator()(dofh.Entity(global_idx)) =
         discrete_wave_sol[global_idx];
   };
@@ -79,7 +83,8 @@ void wavePropSimulation(unsigned int m) {
 
 /* SAM_LISTING_END_7 */
 
-void progress_bar::write(double fraction) {
+void progress_bar::write(double fraction)
+{
   // clamp fraction to valid range [0,1]
   if (fraction < 0)
     fraction = 0;
@@ -96,7 +101,8 @@ void progress_bar::write(double fraction) {
 }
 
 /* SAM_LISTING_BEGIN_5 */
-double testStab() {
+double testStab()
+{
   double maxUniformTimestep;
   /* SOLUTION_BEGIN */
   std::cout << "\n*********************** STABILITY EXPERIMENT "
@@ -105,12 +111,16 @@ double testStab() {
   unsigned int m_upper = 1100;
   unsigned int m_lower = 1000;
   unsigned int m = m_lower + (m_upper - m_lower) / 2;
-  while (m_upper - m_lower > 1) {
+  while (m_upper - m_lower > 1)
+  {
     std::cout << "\nTesting symplectic method with m = " << m << std::endl;
     // Catch exception thrown in case of blow-up
-    try {
+    try
+    {
       wavePropSimulation(m);
-    } catch (const char* msg) {
+    }
+    catch (const char *msg)
+    {
       // Blow-up detected!
       std::cout << "Energy blows up!" << std::endl;
       m_lower = m;
@@ -128,4 +138,4 @@ double testStab() {
 }
 /* SAM_LISTING_END_5 */
 
-}  // namespace SymplecticTimesteppingWaves
+} // namespace SymplecticTimesteppingWaves

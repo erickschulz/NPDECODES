@@ -13,7 +13,8 @@
 #include <lf/mesh/mesh.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace DebuggingFEM {
+namespace DebuggingFEM
+{
 
 using size_type = lf::base::size_type;
 
@@ -33,19 +34,22 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell);
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
 Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
-                                      FUNCTOR &&f) {
+                                      FUNCTOR &&f)
+{
   // get mesh and set up finite element space
   auto mesh = dofh.Mesh();
 
   // initialize result vector
-  const size_type N_dofs(dofh.NoDofs());
+  const size_type N_dofs(dofh.NumDofs());
   Eigen::VectorXd result = Eigen::VectorXd::Zero(N_dofs);
 
   /* SOLUTION_BEGIN */
-  for (const lf::mesh::Entity &cell : mesh->Entities(0)) {
+  for (const lf::mesh::Entity &cell : mesh->Entities(0))
+  {
     // get local to global map for the cell
     auto glob_ind = dofh.GlobalDofIndices(cell);
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
+    {
       // update the result vector
       auto coords = globalCoordinate(i, cell);
       result(glob_ind[i]) = f(coords);
@@ -56,6 +60,6 @@ Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingFEM
+} // namespace DebuggingFEM
 
 #endif

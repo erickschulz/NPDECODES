@@ -10,7 +10,8 @@
 
 using namespace OutputImpedanceBVP;
 
-int main(int /*argc*/, const char ** /*argv*/) {
+int main(int /*argc*/, const char ** /*argv*/)
+{
   std::cout << "*** OutputImpedanceBVP ****" << std::endl;
 
   // Load mesh into a Lehrfem++ object
@@ -27,7 +28,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // Dirichlet boundary conditions
   Eigen::Vector2d g;
@@ -65,7 +66,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
                                          Eigen::DontAlignCols, ", ", "\n");
   std::string errors_file_name = "discrete_solution.csv";
   std::ofstream file(errors_file_name.c_str());
-  if (file.is_open()) {
+  if (file.is_open())
+  {
     file << discrete_solution.format(CSVFormat);
   }
 
@@ -73,7 +75,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   lf::io::VtkWriter vtk_writer(mesh_p, "OutputImpedanceBVP_solution.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++)
+  {
     nodal_data->operator()(dofh.Entity(global_idx)) =
         discrete_solution[global_idx];
   };
@@ -81,5 +84,6 @@ int main(int /*argc*/, const char ** /*argv*/) {
   /* SAM_LISTING_END_1 */
   std::cout << "\n The OutputImpedanceBVP_solution was written to:"
             << std::endl;
-  std::cout << ">> OutputImpedanceBVP_solution.vtk.vtk\n" << std::endl;
+  std::cout << ">> OutputImpedanceBVP_solution.vtk.vtk\n"
+            << std::endl;
 }

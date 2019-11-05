@@ -8,10 +8,12 @@
 
 #include "tee_lapl_robin_assembly.h"
 
-namespace ErrorEstimatesForTraces {
+namespace ErrorEstimatesForTraces
+{
 
 Eigen::VectorXd solveBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space) {
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space)
+{
   // I : Creating coefficients as Lehrfem++ mesh functions
   // Coefficients used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
@@ -30,16 +32,16 @@ Eigen::VectorXd solveBVP(
   // pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space->Mesh();
   // Obtain local->global index mapping for current finite element space
-  const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // II: Instantiating finite element matrix for the Robin bilinear form
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Right hand side vector
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
-  phi.setZero();  // has to be zero initially
+  phi.setZero(); // has to be zero initially
 
   // III : Computing element and mass (volume integrals) matrix
   // Initialize object taking care of local mass (volume) computations.
@@ -59,7 +61,7 @@ Eigen::VectorXd solveBVP(
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Creating a predicate that will guarantee that the computations are carried
   // only on the edges of the mesh using the boundary flags
-  auto edges_predicate = [&bd_flags](const lf::mesh::Entity& edge) -> bool {
+  auto edges_predicate = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
     return bd_flags(edge);
   };
   lf::uscalfe::MassEdgeMatrixProvider<double, decltype(eta),
@@ -93,15 +95,16 @@ Eigen::VectorXd solveBVP(
 
 /* SAM_LISTING_BEGIN_9 */
 double bdFunctionalEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
-    Eigen::VectorXd& coeff_vec) {
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
+    Eigen::VectorXd &coeff_vec)
+{
   double bd_functional_val = 0;
 
   /* SOLUTION_BEGIN */
   // Reference to mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p{fe_space->Mesh()};
   // Obtain local->global index mapping for current finite element space
-  const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // Obtain an array of boolean flags for the edges of the mesh: 'true'
   // indicates that the edge lies on the boundary. This predicate will guarantee
@@ -110,14 +113,16 @@ double bdFunctionalEval(
 
   // Creating predicate that will guarantee that the computations are carried
   // only on the edges of the mesh using the boundary flags
-  auto edges_predicate = [&bd_flags](const lf::mesh::Entity& edge) -> bool {
+  auto edges_predicate = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
     return bd_flags(edge);
   };
 
   // Computing the integral of function_vec on the flagged edges
   double edge_length;
-  for (const lf::mesh::Entity& edge : mesh_p->Entities(1)) {
-    if (bd_flags(edge)) {
+  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  {
+    if (bd_flags(edge))
+    {
       // Obtain endpoints of the edge
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << edge);
@@ -136,4 +141,4 @@ double bdFunctionalEval(
 }
 /* SAM_LISTING_END_9 */
 
-}  // namespace ErrorEstimatesForTraces
+} // namespace ErrorEstimatesForTraces

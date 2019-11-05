@@ -14,7 +14,8 @@
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 
-int main() {
+int main()
+{
   // Obtain paths to mesh files
   boost::filesystem::path file_path = __FILE__;
   auto mesh_dir_path = file_path.parent_path().parent_path() / "meshes";
@@ -25,7 +26,8 @@ int main() {
             << "L2 error" << std::endl;
 
   // Loop over meshes and output number of dofs and L2 norm of error
-  for (int i = 1; i <= 4; ++i) {
+  for (int i = 1; i <= 4; ++i)
+  {
     std::string mesh_path =
         (mesh_dir_path / ("refined_square" + std::to_string(i) + ".msh"))
             .string();
@@ -47,7 +49,7 @@ int main() {
 
     // TODO: 2-14.y)
     /* BEGIN_SOLUTION */
-    std::cout << std::left << sep << dof_handler.NoDofs() << " | "
+    std::cout << std::left << sep << dof_handler.NumDofs() << " | "
               << L2errorCRDiscretizationDirichletBVP(mesh_path) << std::endl;
     /* END_SOLUTION */
   }

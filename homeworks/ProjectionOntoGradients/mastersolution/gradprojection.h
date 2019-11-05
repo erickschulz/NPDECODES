@@ -12,22 +12,25 @@
 #include <lf/uscalfe/uscalfe.h>
 #include "lf/mesh/test_utils/test_meshes.h"
 
-namespace ProjectionOntoGradients {
+namespace ProjectionOntoGradients
+{
 
 // Start of sub-problem e)
 /* SAM_LISTING_BEGIN_1 */
-class ElementMatrixProvider {
- private:
+class ElementMatrixProvider
+{
+private:
   using coord_t = Eigen::Vector2d;
 
- public:
+public:
   Eigen::Matrix3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
 };
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
+Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity)
+{
   const lf::geometry::Geometry *geo_ptr = entity.Geometry();
   Eigen::Matrix3d loc_mat;
 
@@ -57,12 +60,13 @@ Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 // Start of sub-problem g)
 /* SAM_LISTING_BEGIN_3 */
 template <typename FUNCTOR>
-class GradProjRhsProvider {
- private:
+class GradProjRhsProvider
+{
+private:
   FUNCTOR f_;
   using coord_t = Eigen::Vector2d;
 
- public:
+public:
   explicit GradProjRhsProvider(FUNCTOR f) : f_(f) {}
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
@@ -73,7 +77,8 @@ class GradProjRhsProvider {
 /* SAM_LISTING_BEGIN_4 */
 template <typename FUNCTOR>
 Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
-    const lf::mesh::Entity &entity) {
+    const lf::mesh::Entity &entity)
+{
   Eigen::Vector3d loc_vec;
 
   const lf::geometry::Geometry *geo_ptr = entity.Geometry();
@@ -110,8 +115,9 @@ Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
 // Start of sub-problem h)
 template <typename FUNCTOR>
 Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
-                                     FUNCTOR f) {
-  const std::size_t N_dofs = dofh.NoDofs();
+                                     FUNCTOR f)
+{
+  const std::size_t N_dofs = dofh.NumDofs();
   Eigen::VectorXd sol_vec;
 
   /* SAM_LISTING_BEGIN_5 */
@@ -142,9 +148,12 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
   const double boundary_val = 0;
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 2)};
   auto my_selector = [&dofh, &bd_flags, &boundary_val](unsigned int dof_idx) {
-    if (bd_flags(dofh.Entity(dof_idx))) {
+    if (bd_flags(dofh.Entity(dof_idx)))
+    {
       return (std::pair<bool, double>(true, boundary_val));
-    } else {
+    }
+    else
+    {
       // interior node: the value we return here does not matter
       return (std::pair<bool, double>(false, 42.0));
     }
@@ -170,6 +179,6 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
 }
 // End of sub-problem h)
 
-}  // namespace ProjectionOntoGradients
+} // namespace ProjectionOntoGradients
 
-#endif  // define __GRADPROJECTION_H
+#endif // define __GRADPROJECTION_H

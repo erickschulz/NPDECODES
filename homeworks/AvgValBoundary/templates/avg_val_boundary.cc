@@ -8,15 +8,17 @@
 
 #include "comp_gal_mat.h"
 
-namespace AvgValBoundary {
+namespace AvgValBoundary
+{
 
 /**
  * @brief computes H1 seminorm over the computational domain
  * @param dofh DofHandler of FEspace.
  *        u coefficient vector
  */
-double compH1seminorm(const lf::assemble::DofHandler& dofh,
-                      const Eigen::VectorXd& u) {
+double compH1seminorm(const lf::assemble::DofHandler &dofh,
+                      const Eigen::VectorXd &u)
+{
   double result = 0.;
   /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
@@ -29,7 +31,8 @@ double compH1seminorm(const lf::assemble::DofHandler& dofh,
  *        alpha = beta = gamma := 1. and load f := 1.
  * @param dofh DofHandler of FEspace.
  */
-Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler& dofh) {
+Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
+{
   // constant identity mesh function
   lf::uscalfe::MeshFunctionConstant mf_identity{1.};
 
@@ -41,7 +44,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler& dofh) {
   auto mesh = dofh.Mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
   phi.setZero();
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_identity)>
@@ -58,7 +61,8 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler& dofh) {
 
 /** @brief generate sequence of nested triangular meshes with L levels */
 std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
-    unsigned int L) {
+    unsigned int L)
+{
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3.);
   std::shared_ptr<lf::refinement::MeshHierarchy> meshes =
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, L);
@@ -66,7 +70,8 @@ std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
 }
 
 std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
-    unsigned int L) {
+    unsigned int L)
+{
   std::vector<std::pair<unsigned int, double>> result{};
   /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
@@ -74,4 +79,4 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
   return result;
 }
 
-}  // namespace AvgValBoundary
+} // namespace AvgValBoundary

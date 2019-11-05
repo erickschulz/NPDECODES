@@ -12,14 +12,17 @@
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
-namespace DebuggingFEM::test {
+namespace DebuggingFEM::test
+{
 
 double Square(double x) { return x * x; }
 
-struct TestPair {
+struct TestPair
+{
   typedef Eigen::Matrix<double, 6, 1> Vector6d;
 
-  TestPair(const Vector6d &a) {
+  TestPair(const Vector6d &a)
+  {
     function = [a](Eigen::Vector2d x) {
       return a(0) * Square(x(0)) + a(1) * Square(x(1)) + a(2) * x(0) * x(1) +
              a(3) * x(0) + a(4) * x(1) + a(5);
@@ -40,7 +43,8 @@ struct TestPair {
   double energy;
 };
 
-TEST(DebuggingFEM, interpolateOntoQuadFE) {
+TEST(DebuggingFEM, interpolateOntoQuadFE)
+{
   // reference
   Eigen::VectorXd a(6);
   a << 1.0, 4.0, 2.0, 3.0, 2.0, 1.0;
@@ -56,7 +60,7 @@ TEST(DebuggingFEM, interpolateOntoQuadFE) {
                                           {lf::base::RefEl::kTria(), 0},
                                           {lf::base::RefEl::kQuad(), 1}});
 
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   lf::assemble::COOMatrix<double> mat(N_dofs, N_dofs);
   auto element_matrix_provider = DebuggingFEM::LocalLaplaceQFE2();
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, element_matrix_provider,
@@ -69,7 +73,8 @@ TEST(DebuggingFEM, interpolateOntoQuadFE) {
   EXPECT_NEAR(energy, energy_ref, 1.0e-8);
 }
 
-TEST(DebuggingFEM, QFEProviderTester) {
+TEST(DebuggingFEM, QFEProviderTester)
+{
   // reference
   Eigen::VectorXd a(6);
   a << 1.0, 4.0, 2.0, 3.0, 2.0, 1.0;
@@ -92,4 +97,4 @@ TEST(DebuggingFEM, QFEProviderTester) {
   EXPECT_NEAR(energy, energy_ref, 1.0e-8);
 }
 
-}  // namespace DebuggingFEM::test
+} // namespace DebuggingFEM::test

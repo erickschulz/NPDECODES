@@ -2,9 +2,11 @@
 #include <boost/filesystem.hpp>
 #include "../mysolution/lin_fe_react_diff.h"
 
-namespace LinFeReactDiff::test {
+namespace LinFeReactDiff::test
+{
 
-TEST(LinFeReactDiff, TestSolveFe) {
+TEST(LinFeReactDiff, TestSolveFe)
+{
   boost::filesystem::path here = __FILE__;
   auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -15,7 +17,8 @@ TEST(LinFeReactDiff, TestSolveFe) {
   ASSERT_NEAR(mu(mu.size() - 2), 0.00145535, 0.00001);
 }
 
-TEST(LinFeReactDiff, TestEnergy) {
+TEST(LinFeReactDiff, TestEnergy)
+{
   boost::filesystem::path here = __FILE__;
   auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -35,7 +38,7 @@ TEST(LinFeReactDiff, TestEnergy) {
   const lf::mesh::Mesh &mesh_p{*(fe_space->Mesh())};
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
       double, decltype(mf_identity), decltype(mf_zero)>
@@ -78,4 +81,4 @@ TEST(LinFeReactDiff, TestEnergy) {
   ASSERT_NEAR(energy, 0.0105153, 0.00001);
 }
 
-}  // namespace LinFeReactDiff::test
+} // namespace LinFeReactDiff::test

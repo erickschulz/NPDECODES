@@ -17,12 +17,14 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace OutputImpedanceBVP {
+namespace OutputImpedanceBVP
+{
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd solveImpedanceBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d g) {
+    Eigen::Vector2d g)
+{
   // Related implementations:
   // Homework problem ErrorEstimatesForTraces:
   // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
@@ -32,7 +34,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Obtain specification for shape functions on edges
   std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
       rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
@@ -66,10 +68,12 @@ Eigen::VectorXd solveImpedanceBVP(
   // only on the interior boundary edges of the mesh using the boundary flags
   auto edges_predicate_RobinBC =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge)) {
+    if (bd_flags(edge))
+    {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
+      {
         return false;
       }
       return true;
@@ -110,10 +114,12 @@ Eigen::VectorXd solveImpedanceBVP(
   // only on the exterior boundary edges of the mesh using the boundary flags
   auto edges_predicate_Dirichlet =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge)) {
+    if (bd_flags(edge))
+    {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
+      {
         return true;
       }
     }
@@ -154,7 +160,8 @@ Eigen::VectorXd solveImpedanceBVP(
 double computeBoundaryOutputFunctional(
     const Eigen::VectorXd eta,
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d d) {
+    Eigen::Vector2d d)
+{
   double func_val = 0.0;
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -170,10 +177,12 @@ double computeBoundaryOutputFunctional(
   // only on the interior boundary edges of the mesh using the boundary flags
   auto edges_predicate_RobinBC =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge)) {
+    if (bd_flags(edge))
+    {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
+      {
         return false;
       }
       return true;
@@ -183,9 +192,11 @@ double computeBoundaryOutputFunctional(
   /* SOLUTION_END */
 
   // Computing value of the functional
-  for (const lf::mesh::Entity &edge : mesh_p->Entities(1)) {
+  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  {
     /* SOLUTION_BEGIN */
-    if (edges_predicate_RobinBC(edge)) {
+    if (edges_predicate_RobinBC(edge))
+    {
       // Find the endpoints global indices
       auto dof_idx = dofh.GlobalDofIndices(edge);
       assert(dofh.NoLocalDofs(edge) == 2);

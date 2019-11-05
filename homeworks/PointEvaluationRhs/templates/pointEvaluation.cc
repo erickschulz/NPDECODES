@@ -11,11 +11,13 @@
 #include <iostream>
 #include "norms.h"
 
-namespace PointEvaluationRhs {
+namespace PointEvaluationRhs
+{
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
-                                  Eigen::Vector2d x) {
+                                  Eigen::Vector2d x)
+{
   Eigen::Vector2d x_hat;
 
   /* BEGIN_SOLUTION */
@@ -30,7 +32,8 @@ Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
  * @return both zeros, NaN if complex
  */
 /* SAM_LISTING_BEGIN_4 */
-std::pair<double, double> solveQuadraticEquation(double a, double b, double c) {
+std::pair<double, double> solveQuadraticEquation(double a, double b, double c)
+{
   // Implement the cases which are solvable and return their solutions
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -45,7 +48,8 @@ std::pair<double, double> solveQuadraticEquation(double a, double b, double c) {
  * @param a,b,c vertex coordinate vectors
  */
 inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
-                       const Eigen::Vector2d c) {
+                       const Eigen::Vector2d c)
+{
   double result = 0;
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -54,7 +58,8 @@ inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
 }
 
 Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
-                                  Eigen::Vector2d x) {
+                                  Eigen::Vector2d x)
+{
   constexpr double kEPS = 1.0E-8;
   Eigen::Vector2d x_hat;
 
@@ -66,10 +71,11 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
 }
 
 std::pair<double, double> normsSolutionPointLoadDirichletBVP(
-      const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
-      Eigen::VectorXd &sol_vec) {
+    const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
+    Eigen::VectorXd &sol_vec)
+{
   std::pair<double, double> result(0, 0);
-  const unsigned int N_dofs = dofh.NoDofs();
+  const unsigned int N_dofs = dofh.NumDofs();
   sol_vec.resize(N_dofs);
   sol_vec.setZero();
   /* BEGIN_SOLUTION */
@@ -79,7 +85,8 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
 }
 
 /* SAM_LISTING_BEGIN_6 */
-Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
+Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell)
+{
   Eigen::VectorXd result;
   // get the coordinates of the corners of this cell
   lf::geometry::Geometry *geo_ptr = cell.Geometry();
@@ -91,4 +98,4 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
 }
 /* SAM_LISTING_END_6 */
 
-}  // namespace PointEvaluationRhs
+} // namespace PointEvaluationRhs

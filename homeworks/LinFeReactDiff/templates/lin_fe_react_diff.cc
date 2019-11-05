@@ -5,7 +5,8 @@
 
 #include "lin_fe_react_diff.h"
 
-namespace LinFeReactDiff {
+namespace LinFeReactDiff
+{
 
 /**
  * @brief generate hierarchy of meshes
@@ -13,7 +14,8 @@ namespace LinFeReactDiff {
  */
 
 std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
-    const lf::base::size_type levels) {
+    const lf::base::size_type levels)
+{
   // set path
   boost::filesystem::path here = __FILE__;
   auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
@@ -34,7 +36,8 @@ std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
  *        with 0 Dirichlet boundary condition.
  * @param mesh: mesh discretization of computational Domain \Omega
  */
-Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh) {
+Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh)
+{
   // Initialize mesh functions for solving the BVP:
   // \int_{\Omega} grad(u)grad(v) + uv dx = \_int(\Omega}cv dx
   // with Dirichlet boundary conditions fixed to 0.
@@ -57,7 +60,7 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   // Initialize dof handler
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
 
   // Set up Galerkin Matrix
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
@@ -108,13 +111,14 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 }
 
 double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
-                     Eigen::VectorXd mu) {
+                     Eigen::VectorXd mu)
+{
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
 
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
 
   auto identity = [](Eigen::Vector2d x) -> double { return 1.; };
   lf::uscalfe::MeshFunctionGlobal mf_identity{identity};
@@ -146,4 +150,4 @@ double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
   return std::sqrt(energy_stiffness_sq + energy_mass_sq);
 }
 
-}  // namespace LinFeReactDiff
+} // namespace LinFeReactDiff

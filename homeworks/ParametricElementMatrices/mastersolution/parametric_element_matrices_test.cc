@@ -3,17 +3,19 @@
 #include "ansiotropic_diffusion_element_matrix_provider.h"
 #include "fe_source_elem_vec_provider.h"
 
-namespace ParametricElementMatrices::test {
+namespace ParametricElementMatrices::test
+{
 
 /* SAM_LISTING_BEGIN_1 */
-TEST(ParametricElementMatrices, TestGalerkin) {
+TEST(ParametricElementMatrices, TestGalerkin)
+{
   /* SOLUTION_BEGIN */
   // use test mesh (with only affine equivalent cells!) to set up fe space
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(5, 1);
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
 
   // compute galerkin matrix for d(x) = sin(|x|)x using the implemented class
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
@@ -45,8 +47,10 @@ TEST(ParametricElementMatrices, TestGalerkin) {
   auto A_crs = A.makeSparse();
   auto B_crs = B.makeSparse();
   // compare results (floating point comparison!)
-  for (int i = 0; i < N_dofs; i++) {
-    for (int j = 0; j < N_dofs; j++) {
+  for (int i = 0; i < N_dofs; i++)
+  {
+    for (int j = 0; j < N_dofs; j++)
+    {
       ASSERT_NEAR(A_crs.coeff(i, j), B_crs.coeff(i, j), 1E-9);
     }
   }
@@ -55,14 +59,15 @@ TEST(ParametricElementMatrices, TestGalerkin) {
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-TEST(ParametricElementMatrices, TestLoad) {
+TEST(ParametricElementMatrices, TestLoad)
+{
   /* SOLUTION_BEGIN */
   // use test mesh (with only affine equivalent cells!) to set up fe space
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(5, 1);
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
-  const lf::base::size_type N_dofs(dofh.NoDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   // An affine linear function that can be represented exactly
   // in the space of p.w. linear Lagrangian finite element functions
   auto w_func = [](Eigen::Vector2d x) -> double { return (3.0 * x[0] - x[1]); };
@@ -95,11 +100,12 @@ TEST(ParametricElementMatrices, TestLoad) {
   AssembleVectorLocally(0, dofh, elvec_builder_, phi_lib);
 
   // compare the results
-  for (int i = 0; i < N_dofs; i++) {
+  for (int i = 0; i < N_dofs; i++)
+  {
     ASSERT_NEAR(phi(i), phi_lib(i), 1E-9);
   }
   /* SOLUTION_END */
 }
 /* SAM_LISTING_END_2 */
 
-}  // namespace ParametricElementMatrices::test
+} // namespace ParametricElementMatrices::test

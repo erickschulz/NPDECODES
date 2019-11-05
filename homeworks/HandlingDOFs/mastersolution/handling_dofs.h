@@ -19,7 +19,8 @@
 #include "lf/mesh/test_utils/test_meshes.h"
 #include "lf/uscalfe/uscalfe.h"
 
-namespace HandlingDOFs {
+namespace HandlingDOFs
+{
 
 /**
  * @brief Compute the internal number of dofs per entity
@@ -31,14 +32,14 @@ namespace HandlingDOFs {
  * FE space have 0 dofs.
  */
 std::array<std::size_t, 3> countEntityDofs(
-    const lf::assemble::DofHandler& dofhandler);
+    const lf::assemble::DofHandler &dofhandler);
 
 /**
  * @brief Count number of dofs on the boundary
  * @param dofhandler Dofhandler for the FE space
  * @return Number of dofs on the boundary
  */
-std::size_t countBoundaryDofs(const lf::assemble::DofHandler& dofhandler);
+std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler);
 
 /**
  * @brief Integrate a function over a linear FE space
@@ -47,8 +48,8 @@ std::size_t countBoundaryDofs(const lf::assemble::DofHandler& dofhandler);
  *           indices of the dofs
  * @return Approximated integral
  */
-double integrateLinearFEFunction(const lf::assemble::DofHandler& dofhandler,
-                                 const Eigen::VectorXd& mu);
+double integrateLinearFEFunction(const lf::assemble::DofHandler &dofhandler,
+                                 const Eigen::VectorXd &mu);
 
 /**
  * @brief Integrate a function over a quadratic FE space
@@ -57,8 +58,8 @@ double integrateLinearFEFunction(const lf::assemble::DofHandler& dofhandler,
  *           indices of the dofs
  * @return Approximated integral
  */
-double integrateQuadraticFEFunction(const lf::assemble::DofHandler& dofhandler,
-                                    const Eigen::VectorXd& mu);
+double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
+                                    const Eigen::VectorXd &mu);
 
 /**
  * @brief Convert coefficient vector of linear FE space to quadratic FE space
@@ -68,9 +69,9 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler& dofhandler,
  * @return Coefficient vector of the quadratic FE space
  */
 Eigen::VectorXd convertDOFsLinearQuadratic(
-    const lf::assemble::DofHandler& dofh_Linear_FE,
-    const lf::assemble::DofHandler& dofh_Quadratic_FE,
-    const Eigen::VectorXd& mu);
+    const lf::assemble::DofHandler &dofh_Linear_FE,
+    const lf::assemble::DofHandler &dofh_Quadratic_FE,
+    const Eigen::VectorXd &mu);
 
 /**
  * @brief Evaluate the function f in the dofs and put them at the index given by
@@ -78,25 +79,28 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
  * @param f Operator allowing ()-evaluation, taking an Eigen::Vector2d to a
  * double
  * @param dofh Dofhandler of indicated type
- * @return Coefficent vector of size dofh.NoDofs()
+ * @return Coefficent vector of size dofh.NumDofs()
  * @note Only dofs on **nodes** and **edges** are taken into account!
  *       Not suitable for spaces S_p^0 with p > 2!
  */
 template <typename F>
-Eigen::VectorXd buildCoefVector(const F& f,
-                                const lf::assemble::UniformFEDofHandler& dofh) {
-  Eigen::VectorXd mu(dofh.NoDofs());
+Eigen::VectorXd buildCoefVector(const F &f,
+                                const lf::assemble::UniformFEDofHandler &dofh)
+{
+  Eigen::VectorXd mu(dofh.NumDofs());
 #define computing_mu_version 2
 #if computing_mu_version == 1
   // Version 1: Iterate over nodes and edges, get corresponding dof then
-  for (const auto& node : mesh->Entities(2)) {
+  for (const auto &node : mesh->Entities(2))
+  {
     // coordinates of nodes
     const Eigen::Vector2d coords = lf::geometry::Corners(*node.Geometry());
     // global index
     const unsigned node_idx = dofh.InteriorGlobalDofIndices(node)[0];
     mu(node_idx) = f(coords);
   }
-  for (const auto& edge : mesh->Entities(1)) {
+  for (const auto &edge : mesh->Entities(1))
+  {
     // coordinates of nodes
     const Eigen::Matrix2d endpoints = lf::geometry::Corners(*edge.Geometry());
     const Eigen::Vector2d midpoint =
@@ -107,14 +111,18 @@ Eigen::VectorXd buildCoefVector(const F& f,
   }
 #else
   // Version 2: Iterate over dofs and get corresponding entity
-  for (std::size_t dofnum = 0; dofnum < dofh.NoDofs(); ++dofnum) {
+  for (std::size_t dofnum = 0; dofnum < dofh.NumDofs(); ++dofnum)
+  {
     // get associated entity
-    if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kPoint()) {
+    if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kPoint())
+    {
       // we're dealing with a point
       const Eigen::Vector2d coords =
           lf::geometry::Corners(*dofh.Entity(dofnum).Geometry());
       mu(dofnum) = f(coords);
-    } else if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kSegment()) {
+    }
+    else if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kSegment())
+    {
       // we're dealing with an edge, the dof is located in its middle
       const Eigen::Matrix2d endpoints =
           lf::geometry::Corners(*dofh.Entity(dofnum).Geometry());
@@ -128,4 +136,4 @@ Eigen::VectorXd buildCoefVector(const F& f,
   return mu;
 }
 
-}  // namespace HandlingDOFs
+} // namespace HandlingDOFs

@@ -7,27 +7,27 @@
 
 #include "BoundaryWave.h"
 
-namespace BoundaryWave {
+namespace BoundaryWave
+{
 
 /* SAM_LISTING_BEGIN_1 */
 lf::assemble::COOMatrix<double>
-buildM(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
+buildM(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p)
+{
   // I. TOOLS AND DATA
   // Pointer to current fe_space and mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p(fe_space_p->Mesh());
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // II : ASSEMBLY
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);
   /* SOLUTION_BEGIN */
 
-   
-                   // WRITE YOUR SOLUTION HERE ...
-
+  // WRITE YOUR SOLUTION HERE ...
 
   /* SOLUTION_END */
   return M;
@@ -36,23 +36,22 @@ buildM(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p
 
 /* SAM_LISTING_BEGIN_2 */
 lf::assemble::COOMatrix<double>
-buildA(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
+buildA(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p)
+{
   // I. TOOLS AND DATA
   // Pointer to current fe_space and mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p(fe_space_p->Mesh());
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // II : ASSEMBLY
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   /* SOLUTION_BEGIN */
 
-   
-                   // WRITE YOUR SOLUTION HERE ...
-
+  // WRITE YOUR SOLUTION HERE ...
 
   /* SOLUTION_END */
   return A;

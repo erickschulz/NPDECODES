@@ -7,14 +7,16 @@
 
 #include "sdirkmethodoflines.h"
 
-namespace SDIRKMethodOfLines {
+namespace SDIRKMethodOfLines
+{
 
 /** @brief This class implements a Lehrfem++ matrix provider defining a
 LinFEMassMatrixProvider::Eval function returning the local MASS matrix for
 linear first-order lagrange FE bases over triangular mesh (only!). Integration
 over the triangular cells is performed using the trapezoidal rule.*/
-class LinFEMassMatrixProvider {
- public:
+class LinFEMassMatrixProvider
+{
+public:
   /** @brief default constructor */
   explicit LinFEMassMatrixProvider() = default;
   /** @brief Default implement: all cells are active */
@@ -23,10 +25,11 @@ class LinFEMassMatrixProvider {
    * @param cell refers to current cell for which the element vector is desired
    * The implementation uses an analytic formula defined over triangular cells*/
   Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
-};  // class LinFEMassMatrixProvider
+}; // class LinFEMassMatrixProvider
 /** Implementing member function Eval of class LinFEMassMatrixProvider*/
 Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
-    const lf::mesh::Entity &tria) {
+    const lf::mesh::Entity &tria)
+{
   Eigen::Matrix<double, 3, 3> elMat;
   /* SOLUTION_BEGIN */
   // Throw error in case no triangular cell
@@ -41,16 +44,17 @@ Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
            1.0, 1.0, 2.0;
   // clang-format on
   elMat *= area / 12.0;
-  return elMat;  // return the local mass element matrix
-}  // LinFEMassMatrixProvider::Eval
+  return elMat; // return the local mass element matrix
+} // LinFEMassMatrixProvider::Eval
 
 /** @brief This class implements a Lehrfem++ matrix provider defining a
 LinearMassEdgeMatrixProvider<FUNCTOR>::Eval function returning the local EDGE
 MASS matrix for linear first-order lagrange FE over triangular mesh (only!).
 Integration over the triangular cells is performed using the trapezoidal rule.*/
 template <typename FUNCTOR>
-class LinearMassEdgeMatrixProvider {
- public:
+class LinearMassEdgeMatrixProvider
+{
+public:
   /** @brief Constructor storing the right hand side function
    *  @param predicate is lambda function returning booleans on edge entities
    *         cool_coeff is the convective cooling coefficient */
@@ -63,21 +67,23 @@ class LinearMassEdgeMatrixProvider {
    * The implementation uses simple vertex based quadrature */
   Eigen::Matrix<double, 2, 2> Eval(const lf::mesh::Entity &edge);
 
- private:
+private:
   /** predicate_ provides booleans for boundary edges */
   FUNCTOR predicate_;
   double cool_coeff_;
-};  // class LinearMassEdgeMatrixProvider
+}; // class LinearMassEdgeMatrixProvider
 /* Implementing member function Eval of class LinearMassEdgeMatrixProvider */
 template <typename FUNCTOR>
 Eigen::Matrix<double, 2, 2> LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(
-    const lf::mesh::Entity &edge) {
+    const lf::mesh::Entity &edge)
+{
   Eigen::Matrix<double, 2, 2> elBdyEdgeMat;
   /* SOLUTION_BEGIN */
   // Throw error in case not edge entity
   LF_VERIFY_MSG(edge.RefEl() == lf::base::RefEl::kSegment(),
                 "Unsupported entity type " << edge.RefEl());
-  if (predicate_(edge)) {
+  if (predicate_(edge))
+  {
     // Obtain endpoints of the edge
     auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
     LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << edge);
@@ -90,23 +96,24 @@ Eigen::Matrix<double, 2, 2> LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(
     // clang-format on
     elBdyEdgeMat *= edge_length * cool_coeff_;
 
-    return elBdyEdgeMat;  // return the local edge mass element matrix
+    return elBdyEdgeMat; // return the local edge mass element matrix
   }
   return (Eigen::Matrix<double, 2, 2>::Zero());
-}  // LinearMassEdgeMatrixProvider<FUNCTOR>::Eval
+} // LinearMassEdgeMatrixProvider<FUNCTOR>::Eval
 
 /* SAM_LISTING_BEGIN_1 */
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh,
-                         double cool_coeff) {
+                         double cool_coeff)
+{
   std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
       sparse_pair;
   /* SOLUTION_BEGIN */
   std::cout << ">> Constructing SDIRK2Timestepper " << std::endl;
-  auto mesh_p = dofh.Mesh();  // pointer to current mesh
+  auto mesh_p = dofh.Mesh(); // pointer to current mesh
   // Instantiating Galerkin matrices to be pre-computed
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // Obtain an array of boolean flags for the edges of the mesh: 'true'
   // indicates that the edge lies on the boundary. This predicate will
@@ -159,7 +166,8 @@ assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh,
 SDIRK2Timestepper::SDIRK2Timestepper(const lf::assemble::DofHandler &dofh,
                                      double tau /*nb. steps*/,
                                      double cool_coeff /*cooling coeff*/)
-    : tau_(tau) {
+    : tau_(tau)
+{
   /* SOLUTION_BEGIN */
   std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
       sparse_pair = assembleGalerkinMatrices(dofh, cool_coeff);
@@ -177,14 +185,15 @@ SDIRK2Timestepper::SDIRK2Timestepper(const lf::assemble::DofHandler &dofh,
   LF_VERIFY_MSG(solver.info() == Eigen::Success,
                 "LU decomposition failed");
   /* SOLUTION_END */
-}  // SDIRK2Timestepper constructor
+} // SDIRK2Timestepper constructor
 
 /* Implementation of SDIRK2Timestepper member function */
 Eigen::VectorXd SDIRK2Timestepper::discreteEvolutionOperator(
-    const Eigen::VectorXd &mu) const {
+    const Eigen::VectorXd &mu) const
+{
   Eigen::VectorXd discrete_evolution_operator;
   /* SOLUTION_BEGIN */
-  Eigen::VectorXd rhs_vec = -A_ * mu;  // precomputation
+  Eigen::VectorXd rhs_vec = -A_ * mu; // precomputation
   // Stage 1 of SDIRK-2
   Eigen::VectorXd k1_vec = solver.solve(rhs_vec);
   LF_VERIFY_MSG(solver.info() == Eigen::Success,
@@ -199,7 +208,7 @@ Eigen::VectorXd SDIRK2Timestepper::discreteEvolutionOperator(
       mu + tau_ * (1 - lambda_) * k1_vec + tau_ * lambda_ * k2_vec;
   /* SOLUTION_END */
   return discrete_evolution_operator;
-}  // SDIRK2Timestepper::discreteEvolutionOperator
+} // SDIRK2Timestepper::discreteEvolutionOperator
 
 /** @Brief Implementing the temperature evolution solver. The solver obtains the
 discrete evolution operator from the SDIRK2Timestepper class and repeatedly
@@ -208,11 +217,12 @@ iterates its applicaiton starting from the initial condition argument
 /* SAM_LISTING_BEGIN_6 */
 std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
     const lf::assemble::DofHandler &dofh, unsigned int m, double cool_coeff,
-    Eigen::VectorXd initial_temperature_vec) {
+    Eigen::VectorXd initial_temperature_vec)
+{
   std::pair<Eigen::VectorXd, Eigen::VectorXd> solution_pair;
   /* SOLUTION_BEGIN */
   double tau = 1.0 / m;                                // step size
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());  // dim. of FE space
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs()); // dim. of FE space
   std::cout << "\n>>> SolveTemperatureEvolution: m = " << m
             << ", N = " << N_dofs << ", cool_coeff= " << cool_coeff << "\n"
             << std::endl;
@@ -236,7 +246,8 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
   // the iteration to stay away from potential harming aliasing effects of
   // putting an Eigen::Vector on both sides of an assignment statement.
   Eigen::VectorXd discrete_solution_next;
-  for (int i = 1; i < m; i++) {
+  for (int i = 1; i < m; i++)
+  {
     discrete_solution_next =
         SDIRK2_stepper.discreteEvolutionOperator(discrete_solution_cur);
     discrete_solution_cur = discrete_solution_next;
@@ -245,7 +256,7 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
   solution_pair = std::make_pair(discrete_solution_cur, energies);
   /* SOLUTION_END */
   return solution_pair;
-}  // solveTemperatureEvolution
+} // solveTemperatureEvolution
 
 /* SAM_LISTING_END_6 */
 
@@ -254,22 +265,25 @@ passed as a vector of coefficients whose index is the global index of the
 degree of freedom (linear lagrange basis function) that they multiply */
 /* SAM_LISTING_BEGIN_7 */
 double thermalEnergy(const lf::assemble::DofHandler &dofh,
-                     const Eigen::VectorXd &temperature_vec) {
+                     const Eigen::VectorXd &temperature_vec)
+{
   double thermal_energy = 0.0;
   /* SOLUTION_BEGIN */
-  auto mesh_p = dofh.Mesh();  // pointer to mesh
+  auto mesh_p = dofh.Mesh(); // pointer to mesh
 
   // The thermal energy of the system is defined as the integral of the
   // temperature solution over the domain. It is computed for linear lagrangian
   // finite elements using the trapezoidal rule by summing up the contribution
   // of that quadrature rule over each triangle
   double thermal_energy_loc;
-  for (const lf::mesh::Entity &tria : mesh_p->Entities(0)) {
+  for (const lf::mesh::Entity &tria : mesh_p->Entities(0))
+  {
     thermal_energy_loc = 0.0;
     // Compute the area of the triangle
     const double area = lf::geometry::Volume(*(tria.Geometry()));
     // Obtain the global indices of the nodal degrees of freedom
-    for (const lf::assemble::gdof_idx_t &g_idx : dofh.GlobalDofIndices(tria)) {
+    for (const lf::assemble::gdof_idx_t &g_idx : dofh.GlobalDofIndices(tria))
+    {
       thermal_energy_loc += temperature_vec[g_idx];
     }
     // Sum local contribution of quadrature rule
@@ -277,8 +291,8 @@ double thermalEnergy(const lf::assemble::DofHandler &dofh,
   }
   /* SOLUTION_END */
   return thermal_energy;
-}  // thermalEnergy
+} // thermalEnergy
 
 /* SAM_LISTING_END_7 */
 
-}  // namespace SDIRKMethodOfLines
+} // namespace SDIRKMethodOfLines

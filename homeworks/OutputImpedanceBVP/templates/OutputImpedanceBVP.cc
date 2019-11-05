@@ -17,11 +17,13 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace OutputImpedanceBVP {
+namespace OutputImpedanceBVP
+{
 
 Eigen::VectorXd solveImpedanceBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d g) {
+    Eigen::Vector2d g)
+{
   // Related implementations:
   // Homework problem ErrorEstimatesForTraces:
   // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
@@ -31,7 +33,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NoDofs());
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Obtain specification for shape functions on edges
   std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
       rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
@@ -45,10 +47,8 @@ Eigen::VectorXd solveImpedanceBVP(
 
   // I.i : Computing volume matrix for negative Laplace operator
   /* SOLUTION_BEGIN */
- 
 
-                   // WRITE YOUR CODE HERE ...
-
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
 
@@ -57,10 +57,8 @@ Eigen::VectorXd solveImpedanceBVP(
   // indicates that the edge lies on the boundary
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   /* SOLUTION_BEGIN */
-  
 
-                   // WRITE YOUR CODE HERE ...    
-
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
 
@@ -78,10 +76,8 @@ Eigen::VectorXd solveImpedanceBVP(
   auto mf_g = lf::uscalfe::MeshFunctionGlobal(
       [&g](coord_t x) -> double { return g.dot(x); });
   /* SOLUTION_BEGIN */
-  
 
-                  // WRITE YOUR CODE HERE ...
-
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
 
@@ -104,7 +100,8 @@ Eigen::VectorXd solveImpedanceBVP(
 double computeBoundaryOutputFunctional(
     const Eigen::VectorXd eta,
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d d) {
+    Eigen::Vector2d d)
+{
   double func_val = 0.0;
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -117,19 +114,16 @@ double computeBoundaryOutputFunctional(
 
   /* SOLUTION_BEGIN */
 
-
-                     // WRITE YOUR CODE HERE ...
- 
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
 
   // Computing value of the functional
-  for (const lf::mesh::Entity &edge : mesh_p->Entities(1)) {
+  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  {
     /* SOLUTION_BEGIN */
-    
 
-                      // WRITE YOUR CODE HERE ...
-
+    // WRITE YOUR CODE HERE ...
 
     /* SOLUTION_END */
   }

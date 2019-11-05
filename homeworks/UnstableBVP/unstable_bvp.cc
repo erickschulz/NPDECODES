@@ -9,10 +9,12 @@
 
 #include "unstable_bvp.h"
 
-namespace UnstableBVP {
+namespace UnstableBVP
+{
 
 std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
-    const int reflevels, const std::string& mesh_type) {
+    const int reflevels, const std::string &mesh_type)
+{
   // Helper object: mesh factory
   std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -20,11 +22,16 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   // Decide where the triangular domain should be locted in x_2 direction
   // by adding an offset to the x_2 coordinate of the nodes
   double offset = 0;
-  if (mesh_type == "top") {
+  if (mesh_type == "top")
+  {
     offset = 1.5;
-  } else if (mesh_type == "bottom") {
+  }
+  else if (mesh_type == "bottom")
+  {
     offset = -1.5;
-  } else {
+  }
+  else
+  {
     // already at 0
   }
 
@@ -35,7 +42,8 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   std::array<double, 2>({0  ,  0.5 + offset }),
   std::array<double, 2>({1  ,  0.5 + offset })};
   // clang-format on
-  for (const auto& node : node_coord) {
+  for (const auto &node : node_coord)
+  {
     mesh_factory_ptr->AddPoint(coord_t({node[0], node[1]}));
   }
 
@@ -60,7 +68,8 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
 }
 
 double solveTemperatureDistribution(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p)
+{
   // **********************************************************************
   // Stage 0: provide all coefficient functions mainly through lambda
   //          functions and derived MeshFunctions
@@ -79,16 +88,16 @@ double solveTemperatureDistribution(
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   // Reference to current mesh
-  const lf::mesh::Mesh& mesh{*(fe_space->Mesh())};
+  const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
   // Obtain local->global index mapping for current finite element space
-  const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // **********************************************************************
   // Stage 1: Assemble finite element Galerkin matrix
   // **********************************************************************
 
   // Dimension of finite element space`
-  const size_type N_dofs(dofh.NoDofs());
+  const size_type N_dofs(dofh.NumDofs());
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
 
@@ -128,7 +137,7 @@ double solveTemperatureDistribution(
   // edges.
   auto ess_bdc_flags_values{lf::uscalfe::InitEssentialConditionFromFunction(
       dofh, *rsf_edge_p,
-      [&bd_flags](const lf::mesh::Entity& edge) -> bool {
+      [&bd_flags](const lf::mesh::Entity &edge) -> bool {
         return (bd_flags(edge));
       },
       mf_bc)};
@@ -174,4 +183,4 @@ double solveTemperatureDistribution(
   return norm;
 }
 
-}  // namespace UnstableBVP
+} // namespace UnstableBVP
