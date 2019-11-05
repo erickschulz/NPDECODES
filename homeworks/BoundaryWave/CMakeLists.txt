@@ -103,7 +103,7 @@ target_link_libraries(BoundaryWave_mastersolution.solution
 #	Boost::system
 #        Boost::filesystem
 #        Boost::program_options
-#        GTest::gtest_main
+#        GTest::main
 #	LF::lf.base
 #	LF::lf.quad
 #        LF::lf.uscalfe
@@ -122,7 +122,7 @@ target_link_libraries(BoundaryWave_mastersolution.solution
 #	Boost::system
 #        Boost::filesystem
 #        Boost::program_options
-#        GTest::gtest_main
+#        GTest::main
 #	LF::lf.base
 #	LF::lf.quad
 #        LF::lf.uscalfe
