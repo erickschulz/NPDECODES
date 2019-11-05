@@ -113,24 +113,24 @@ double bdFunctionalEval(
 
   // Creating predicate that will guarantee that the computations are carried
   // only on the edges of the mesh using the boundary flags
-  auto edges_predicate = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    return bd_flags(edge);
+  auto edges_predicate = [&bd_flags](const lf::mesh::Entity *edge) -> bool {
+    return bd_flags(*edge);
   };
 
   // Computing the integral of function_vec on the flagged edges
   double edge_length;
-  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
   {
-    if (bd_flags(edge))
+    if (bd_flags(*edge))
     {
       // Obtain endpoints of the edge
-      auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
+      auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
       LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << edge);
       // Compute length of the edge
       edge_length = (endpoints.col(1) - endpoints.col(0)).norm();
       // Find the endpoints global indices
-      auto dof_idx = dofh.GlobalDofIndices(edge);
-      BOOST_ASSERT(dofh.NoLocalDofs(edge) == 2);
+      auto dof_idx = dofh.GlobalDofIndices(*edge);
+      BOOST_ASSERT(dofh.NumLocalDofs(*edge) == 2);
       bd_functional_val +=
           (coeff_vec.coeff(dof_idx[0]) + coeff_vec.coeff(dof_idx[1])) *
           edge_length / 2.0;
