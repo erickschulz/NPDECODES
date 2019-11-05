@@ -77,7 +77,7 @@ double integrateLinearFEFunction(
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
   for (const auto& cell : mesh->Entities(0)) {
     // check if we the FE space is really $\Cs_1^0$
-    if (dofhandler.NoLocalDofs(cell) != 3) {
+    if (dofhandler.NumLocalDofs(cell) != 3) {
       throw "Not a S_1^0 FE space!";
     }
     // iterate over dofs
@@ -108,7 +108,7 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
   for (const auto &cell : mesh->Entities(0))
   {
     // check if we the FE space is really $\Cs_2^0$
-    if (dofhandler.NoLocalDofs(cell) != 6)
+    if (dofhandler.NumLocalDofs(cell) != 6)
     {
       throw "Not a S_2^0 FE space!";
     }
@@ -151,8 +151,8 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
   {
     // check if the spaces are actually linear and quadratic
     /* BEGIN_SOLUTION */
-    if (dofh_Linear_FE.NoLocalDofs(cell) != 3 ||
-        dofh_Quadratic_FE.NoLocalDofs(cell) != 6)
+    if (dofh_Linear_FE.NumLocalDofs(cell) != 3 ||
+        dofh_Quadratic_FE.NumLocalDofs(cell) != 6)
     {
       throw "dofh_Linear_FE must have 3 dofs per cell and dofh_Quadratic_FE 6!";
     }

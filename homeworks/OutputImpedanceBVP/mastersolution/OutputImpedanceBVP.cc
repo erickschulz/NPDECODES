@@ -132,7 +132,7 @@ Eigen::VectorXd solveImpedanceBVP(
       lf::uscalfe::InitEssentialConditionFromFunction(
           dofh, *rsf_edge_p, edges_predicate_Dirichlet, mf_g)};
   // Eliminate Dirichlet dofs from the linear system
-  lf::assemble::fix_flagged_solution_comp_alt<double>(
+  lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {
         return edges_flag_values_Dirichlet[gdof_idx];
       },
@@ -192,22 +192,22 @@ double computeBoundaryOutputFunctional(
   /* SOLUTION_END */
 
   // Computing value of the functional
-  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
   {
     /* SOLUTION_BEGIN */
-    if (edges_predicate_RobinBC(edge))
+    if (edges_predicate_RobinBC(*edge))
     {
       // Find the endpoints global indices
-      auto dof_idx = dofh.GlobalDofIndices(edge);
-      assert(dofh.NoLocalDofs(edge) == 2);
+      auto dof_idx = dofh.GlobalDofIndices(*edge);
+      assert(dofh.NumLocalDofs(*edge) == 2);
       // Value of linear function in he endpoints
       const double nu0 = eta(dof_idx[0]);
       const double nu1 = eta(dof_idx[1]);
       // Find coordinates of endpoints
-      auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
+      auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
       // Length of edge
       const double elen = (endpoints.col(1) - endpoints.col(0)).norm();
-      LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << edge);
+      LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << *edge);
       func_val += elen / 6.0 *
                   d.dot(2 * endpoints.col(0) * nu0 + endpoints.col(0) * nu1 +
                         endpoints.col(1) * nu0 + 2 * endpoints.col(1) * nu1);

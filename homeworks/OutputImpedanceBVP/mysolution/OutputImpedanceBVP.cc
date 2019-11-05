@@ -119,7 +119,7 @@ double computeBoundaryOutputFunctional(
   /* SOLUTION_END */
 
   // Computing value of the functional
-  for (const lf::mesh::Entity &edge : mesh_p->Entities(1))
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
   {
     /* SOLUTION_BEGIN */
 
