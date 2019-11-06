@@ -84,7 +84,7 @@ public:
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity)
   {
 
-    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
                   "Function only defined for triangular cells");
     Eigen::Vector3d result;
     /* BEGIN_SOLUTION */

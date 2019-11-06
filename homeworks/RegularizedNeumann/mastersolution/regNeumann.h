@@ -68,7 +68,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 
   // Now fix the solution to be 0 at the node p
   /* BEGIN_SOLUTION */
-  // Tell the function fix_flagged_solution_components that is should
+  // Tell the function FixFlaggedSolutionComponents that is should
   // modify the matrix and the right-hand-side vector in a way that amounts to
   // dropping the first tent function from the basis.
   /* SAM_LISTING_BEGIN_1 */
@@ -82,7 +82,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
       return {false, 42.0}; // keep all others
     }
   };
-  lf::assemble::fix_flagged_solution_components(selector, A_aux, rhs_vec);
+  lf::assemble::FixFlaggedSolutionComponents(selector, A_aux, rhs_vec);
   /* SAM_LISTING_END_1 */
   /* END_SOLUTION */
   A = A_aux.makeSparse();
@@ -101,12 +101,12 @@ public:
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity)
   {
-    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
                   "Function only defined for triangular cells");
     Eigen::Vector3d result;
     /* BEGIN_SOLUTION */
     // Obtain shape information for the cell
-    const lf::geometry::Geometry *geo_ptr = entity.Geometry();
+    const lf::geometry::Geometry *geo_ptr = entity->Geometry();
     // Fetch area
     const double area = lf::geometry::Volume(*geo_ptr);
     // Initialize element vector |K|/3*[1,1,1]^T

@@ -249,7 +249,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
       return (std::pair<bool, double>(false, 42.0));
     }
   };
-  lf::assemble::fix_flagged_solution_components<double>(my_selector, A, rhs);
+  lf::assemble::FixFlaggedSolutionComponents<double>(my_selector, A, rhs);
 
   // Solve linear system of equations A*x = rhs
   const Eigen::SparseMatrix<double> A_crs(A.makeSparse());

@@ -52,7 +52,7 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 /* SAM_LISTING_END_2 */
 
 Eigen::MatrixXd MassLocalMatrixAssembler::Eval(
-    const lf::mesh::Entity &entity) const
+    const lf::mesh::Entity &entity)
 {
   Eigen::MatrixXd result;
   /* BEGIN_SOLUTION */

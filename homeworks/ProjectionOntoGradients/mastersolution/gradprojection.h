@@ -31,14 +31,14 @@ public:
 /* SAM_LISTING_BEGIN_2 */
 Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity)
 {
-  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
+  const lf::geometry::Geometry *geo_ptr = entity->Geometry();
   Eigen::Matrix3d loc_mat;
 
   /* BEGIN_SOLUTION */
   // get area of the entity
   const double area = lf::geometry::Volume(*geo_ptr);
 
-  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
+  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
                 "Function only defined for triangular cells");
 
   const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
@@ -81,13 +81,13 @@ Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
 {
   Eigen::Vector3d loc_vec;
 
-  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
+  const lf::geometry::Geometry *geo_ptr = entity->Geometry();
 
   /* BEGIN_SOLUTION */
   // get area of the entity
   const double area = lf::geometry::Volume(*geo_ptr);
 
-  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
+  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
                 "Function only defined for triangular cells");
 
   // calculate center of mass
@@ -164,7 +164,7 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
   // function fix\_flagged\_solution\_components(). We use the selector we have
   // defined above.
   // See \lref{sec:essbdc} for explanations.
-  lf::assemble::fix_flagged_solution_components<double>(my_selector, A, phi);
+  lf::assemble::FixFlaggedSolutionComponents<double>(my_selector, A, phi);
   /* END_SOLUTION */
   /* SAM_LISTING_END_5 */
   // CALCULATE THE SOLUTION

@@ -64,7 +64,7 @@ TEST(LinFeReactDiff, TestEnergy)
           },
           mf_zero)};
 
-  lf::assemble::fix_flagged_solution_components<double>(
+  lf::assemble::FixFlaggedSolutionComponents<double>(
       [&ess_bdc_flags_values_findest](glb_idx_t gdof_idx) {
         return ess_bdc_flags_values_findest[gdof_idx];
       },

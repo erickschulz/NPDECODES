@@ -53,7 +53,7 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
     lf::mesh::utils::CodimMeshDataSet<bool> boundary_edges{
         lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
     // Enforce homogeneous boundary
-    lf::assemble::fix_flagged_solution_components<scalar_type>(
+    lf::assemble::FixFlaggedSolutionComponents<scalar_type>(
         [&boundary_edges,
          &dof_handler](glb_idx_t gdof_idx) -> std::pair<bool, scalar_type> {
             const lf::mesh::Entity &edge{dof_handler.Entity(gdof_idx)};

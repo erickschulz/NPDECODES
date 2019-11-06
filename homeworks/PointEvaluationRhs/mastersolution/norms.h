@@ -19,9 +19,9 @@
 #include <lf/refinement/mesh_hierarchy.h>
 #include <lf/refinement/refutils.h>
 #include <lf/uscalfe/uscalfe.h>
-#include <mgl2/mgl.h>
 
-namespace PointEvaluationRhs {
+namespace PointEvaluationRhs
+{
 
 double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
                                  const Eigen::VectorXd &mu);
@@ -29,13 +29,14 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
                              const Eigen::VectorXd &mu);
 
-class MassLocalMatrixAssembler {
- private:
- public:
-  explicit MassLocalMatrixAssembler() {}
-  bool isActive(const lf::mesh::Entity &entity) const { return true; }
-  Eigen::MatrixXd Eval(const lf::mesh::Entity &entity) const;
+class MassLocalMatrixAssembler
+{
+private:
+public:
+  explicit MassLocalMatrixAssembler() = default;
+  bool isActive(const lf::mesh::Entity &entity) { return true; }
+  Eigen::MatrixXd Eval(const lf::mesh::Entity &entity);
 };
 
-}  // namespace PointEvaluationRhs
-#endif  // define __NORMS_H
+} // namespace PointEvaluationRhs
+#endif // define __NORMS_H
