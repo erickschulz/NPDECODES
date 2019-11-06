@@ -14,10 +14,11 @@ const double pi = 3.1415926535897;
  * @param mesh: discretisation of the computational domain
  */
 /* SAM_LISTING_BEGIN_1 */
-std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D& mesh) {
+std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh)
+{
 
   // define the source function f
-  SimpleLinearFiniteElements::FHandle_t f = [](const Eigen::Vector2d& x) {
+  SimpleLinearFiniteElements::FHandle_t f = [](const Eigen::Vector2d &x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };
@@ -47,7 +48,7 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
       mesh, SimpleLinearFiniteElements::localLoadLFE, f);
 
   // solve the LSE using the sparse LU solver of Eigen
-  Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >
+  Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
       solver;
   solver.analyzePattern(A);
   solver.factorize(A);
@@ -63,7 +64,8 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-int main() {
+int main()
+{
   SimpleLinearFiniteElements::TriaMesh2D square_mesh("Square4.txt");
   std::cout << "Mesh loaded " << std::endl;
   std::cout << "Mesh info: " << square_mesh.Coordinates.rows() << " vertices, "
@@ -75,10 +77,6 @@ int main() {
   std::cout << "L2-error:  " << std::get<1>(solution) << std::endl;
   std::cout << "H1s-error: " << std::get<2>(solution) << std::endl;
 
-  // plot the mesh and the computed surface
-  /* SOLUTION_BEGIN */
-  square_mesh.plotMesh("mesh.eps");
-  square_mesh.plotSurf("surf.eps", std::get<0>(solution));
   /* SOLUTION_END */
 }
 /* SAM_LISTING_END_2 */
