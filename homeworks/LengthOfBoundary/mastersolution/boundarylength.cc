@@ -8,15 +8,18 @@
 
 #include "boundarylength.h"
 
-namespace LengthOfBoundary {
+namespace LengthOfBoundary
+{
 
 /* SAM_LISTING_BEGIN_1 */
-double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh) {
+double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh)
+{
   double volume = 0.0;
   /* BEGIN_SOLUTION */
   // iterate over all cells (co-dimension = 0)
-  for (const lf::mesh::Entity &ent : mesh->Entities(0)) {
-    lf::geometry::Geometry *geo_ptr = ent.Geometry();
+  for (const lf::mesh::Entity *ent : mesh->Entities(0))
+  {
+    lf::geometry::Geometry *geo_ptr = ent->Geometry();
     volume += lf::geometry::Volume(*geo_ptr);
   }
   /* END_SOLUTION */
@@ -25,7 +28,8 @@ double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh) {
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh) {
+double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh)
+{
   double length = 0.0;
   /* BEGIN_SOLUTION */
   // This function returns an array of flags
@@ -33,10 +37,12 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh) {
   auto edge_marker = lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1);
 
   // iterate over all edges (co-dimension = 1)
-  for (const lf::mesh::Entity &ent : mesh->Entities(1)) {
+  for (const lf::mesh::Entity *ent : mesh->Entities(1))
+  {
     // check if edge is part of the boundary
-    if (edge_marker(ent)) {
-      lf::geometry::Geometry *geo_ptr = ent.Geometry();
+    if (edge_marker(*ent))
+    {
+      lf::geometry::Geometry *geo_ptr = ent->Geometry();
       length += lf::geometry::Volume(*geo_ptr);
     }
   }
@@ -46,7 +52,8 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh) {
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-std::pair<double, double> measureDomain(std::string msh_file_name) {
+std::pair<double, double> measureDomain(std::string msh_file_name)
+{
   double volume, length;
   /* BEGIN_SOLUTION */
   // read in mesh file
@@ -63,4 +70,4 @@ std::pair<double, double> measureDomain(std::string msh_file_name) {
 }
 /* SAM_LISTING_END_3 */
 
-}  // namespace LengthOfBoundary
+} // namespace LengthOfBoundary
