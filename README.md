@@ -5,7 +5,7 @@
 * Don't loose time on files in `mysolution/` and `templates/`. They will later be generated automatically from `mastersolution/` by a script.
 * Not only the solutions, but also the corresponding templates need to compile and run without crash. So be careful when setting the solution/template tags in `mastersolution/`.
 * The bullets below are only a selection. If you spot additional issues, e.g. ugly or too complicated code, fix it.
-* Names of .cc and .h files: Consider for example the problem in the folder `MyHomeworkProblem/`.
+* Names of .cc and .h files: For example the files in the folder `MyHomeworkProblem/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem_foo.cc`, `myhomeworkproblem_foo.h`, where foo is a placeholder for any name (summarized: lowercase, split words by _).
 
 ## Polishing
 
