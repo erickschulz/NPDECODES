@@ -28,7 +28,7 @@ public:
 
 Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity)
 {
-  const lf::geometry::Geometry *geo_ptr = entity->Geometry();
+  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
   Eigen::Matrix3d loc_mat;
 
   // BEGIN_SOLUTION
@@ -59,7 +59,7 @@ Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
 {
   Eigen::Vector3d loc_vec;
 
-  const lf::geometry::Geometry *geo_ptr = entity->Geometry();
+  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
 
   // BEGIN_SOLUTION
   // TODO Your implementation goes here!

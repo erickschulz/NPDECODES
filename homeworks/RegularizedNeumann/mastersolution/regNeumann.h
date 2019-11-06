@@ -101,12 +101,12 @@ public:
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity)
   {
-    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                   "Function only defined for triangular cells");
     Eigen::Vector3d result;
     /* BEGIN_SOLUTION */
     // Obtain shape information for the cell
-    const lf::geometry::Geometry *geo_ptr = entity->Geometry();
+    const lf::geometry::Geometry *geo_ptr = entity.Geometry();
     // Fetch area
     const double area = lf::geometry::Volume(*geo_ptr);
     // Initialize element vector |K|/3*[1,1,1]^T
