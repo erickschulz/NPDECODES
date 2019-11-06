@@ -77,6 +77,5 @@ int main()
   std::cout << "L2-error:  " << std::get<1>(solution) << std::endl;
   std::cout << "H1s-error: " << std::get<2>(solution) << std::endl;
 
-  /* SOLUTION_END */
 }
 /* SAM_LISTING_END_2 */
