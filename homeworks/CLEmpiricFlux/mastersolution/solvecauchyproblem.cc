@@ -20,7 +20,7 @@ Eigen::Vector2d findSupport(const UniformCubicSpline &f,
                             const Eigen::Vector2d &initsupp, double t) {
   Eigen::Vector2d result;
   /* SOLUTION_BEGIN */
-  Eigen::Vector2d speed = {f.derivative(-1.0), f.derivative(1.0)};
+  Eigen::Vector2d speed = {-f.derivative(-1.0), f.derivative(1.0)};
   result = initsupp + t * speed;
   /* SOLUTION_END */
   return result;
