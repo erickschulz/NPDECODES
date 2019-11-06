@@ -15,12 +15,14 @@
 #include <lf/mesh/mesh.h>
 #include "cr_fe_space.h"
 
-namespace NonConformingCrouzeixRaviartFiniteElements {
+namespace NonConformingCrouzeixRaviartFiniteElements
+{
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTION>
 double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
-                        const Eigen::VectorXd &mu, FUNCTION &&u) {
+                        const Eigen::VectorXd &mu, FUNCTION &&u)
+{
   double l2_error = 0.;
   /* BEGIN_SOLUTION */
   // Obtain local-to-global map and current mesh object
@@ -28,11 +30,12 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
   auto mesh_ptr = fe_space->Mesh();
 
   // Loop over all cells of the mesh (entities of co-dimension 0)
-  for (const lf::mesh::Entity &cell : mesh_ptr->Entities(0)) {
-    const size_type num_nodes = cell.RefEl().NumNodes();
+  for (const lf::mesh::Entity *cell : mesh_ptr->Entities(0))
+  {
+    const size_type num_nodes = cell->RefEl().NumNodes();
     LF_ASSERT_MSG(num_nodes == 3, "Only meaningful for triangles!");
     // Obtain pointer to shape information for cell
-    lf::geometry::Geometry &cell_geom{*cell.Geometry()};
+    lf::geometry::Geometry &cell_geom{*(cell->Geometry())};
     // 2x3- matrix with corner coordinates in its columns
     const Eigen::MatrixXd vertices{lf::geometry::Corners(cell_geom)};
     // clang-format off
@@ -45,14 +48,15 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
 		     .finished()};
     // clang-format on
     // Obtain global indices of local shape functions
-    const lf::base::RandomAccessRange<const gdof_idx_t> cell_dof_idx(
-        dof_handler.GlobalDofIndices(cell));
+    nonstd::span<const gdof_idx_t> cell_dof_idx(
+        dof_handler.GlobalDofIndices(*cell));
 
     // Sum contributions of quadrature nodes
     double local_sum = 0.;
     // The CR interpolation nodes are the midpoints and so the exact
     // solution needs to be evaluated at the same points
-    for (int loc_idx = 0; loc_idx < num_nodes; ++loc_idx) {
+    for (int loc_idx = 0; loc_idx < num_nodes; ++loc_idx)
+    {
       local_sum +=
           std::pow(mu[cell_dof_idx[loc_idx]] - u(midpoints.col(loc_idx)), 2);
     }
@@ -64,6 +68,6 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace NonConformingCrouzeixRaviartFiniteElements
+} // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif  // NUMPDE_COMPUTE_CR_L2_ERROR_H
+#endif // NUMPDE_COMPUTE_CR_L2_ERROR_H
