@@ -50,7 +50,7 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   // Initialize triangle
   mesh_factory_ptr->AddEntity(
       lf::base::RefEl::kTria(),
-      lf::base::ForwardRange<const size_type>({0, 1, 2}),
+      nonstd::span<const size_type>({0, 1, 2}),
       std::unique_ptr<lf::geometry::Geometry>(nullptr));
 
   // Get a pointer to the mesh
@@ -143,7 +143,7 @@ double solveTemperatureDistribution(
       mf_bc)};
 
   // Eliminate Dirichlet dofs from linear system
-  lf::assemble::fix_flagged_solution_components<double>(
+  lf::assemble::FixFlaggedSolutionComponents<double>(
       [&ess_bdc_flags_values](glb_idx_t gdof_idx) {
         return ess_bdc_flags_values[gdof_idx];
       },
