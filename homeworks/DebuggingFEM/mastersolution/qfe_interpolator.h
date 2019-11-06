@@ -44,14 +44,14 @@ Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
   Eigen::VectorXd result = Eigen::VectorXd::Zero(N_dofs);
 
   /* SOLUTION_BEGIN */
-  for (const lf::mesh::Entity &cell : mesh->Entities(0))
+  for (const lf::mesh::Entity *cell : mesh->Entities(0))
   {
     // get local to global map for the cell
-    auto glob_ind = dofh.GlobalDofIndices(cell);
+    auto glob_ind = dofh.GlobalDofIndices(*cell);
     for (int i = 0; i < 6; i++)
     {
       // update the result vector
-      auto coords = globalCoordinate(i, cell);
+      auto coords = globalCoordinate(i, *cell);
       result(glob_ind[i]) = f(coords);
     }
   }

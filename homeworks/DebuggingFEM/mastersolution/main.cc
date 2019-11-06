@@ -19,13 +19,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include "../utils/figure.h"
-
 using size_type = lf::base::size_type;
-
-mgl::Figure fig1;
-mgl::Figure fig2;
-mgl::Figure fig3;
 
 int main()
 {
@@ -119,50 +113,5 @@ int main()
               << H1SMerr_3[l] << std::endl;
   }
 
-  // plot the results
-  {
-    fig1.plot(ndofs, H1SMerr_1, "b-s2").label("Assembler 1");
-    // fig1.grid(true);
-    fig1.xlabel("Num Dofs");
-    fig1.ylabel("Error");
-    fig1.title("Convergence : Assembler 1");
-    fig1.ranges(100, 100000, 1e-7, 1);
-    fig1.setlog(true, true);
-    fig1.setHeight(800);
-    fig1.setWidth(800);
-    fig1.setFontSize(4);
-    fig1.save("assembler_1");
-    std::cout << "Wrote convergence plot to assembler_1.eps\n";
-  }
-
-  {
-    fig2.plot(ndofs, H1SMerr_2, "b-s2").label("Assembler 2");
-    // fig2.grid(true);
-    fig2.xlabel("Num Dofs");
-    fig2.ylabel("Error");
-    fig2.title("Convergence : Assembler 2");
-    fig2.ranges(100, 100000, 1e-7, 1);
-    fig2.setlog(true, true);
-    fig2.setHeight(800);
-    fig2.setWidth(800);
-    fig2.setFontSize(4);
-    fig2.save("assembler_2");
-    std::cout << "Wrote convergence plot to assembler_2.eps\n";
-  }
-
-  {
-    fig3.plot(ndofs, H1SMerr_3, "b-s2").label("Assembler 3");
-    // fig3.grid(true);
-    fig3.xlabel("Num Dofs");
-    fig3.ylabel("Error");
-    fig3.title("Convergence : Assembler 3");
-    fig3.ranges(100, 100000, 1e-7, 1);
-    fig3.setlog(true, true);
-    fig3.setHeight(800);
-    fig3.setWidth(800);
-    fig3.setFontSize(4);
-    fig3.save("assembler_3");
-    std::cout << "Wrote convergence plot to assembler_3.eps\n";
-  }
   return 0;
 }
