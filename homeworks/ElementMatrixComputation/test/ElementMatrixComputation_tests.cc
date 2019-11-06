@@ -125,12 +125,12 @@ TEST(MyLinearLoadVector, testTriangles)
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)>
       elvec_builder_exact(mf_f);
 
-  for (const lf::mesh::Entity &cell : mesh_p->Entities(0))
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0))
   {
-    if (cell.RefEl() == lf::base::RefEl::kTria())
+    if (cell->RefEl() == lf::base::RefEl::kTria())
     {
-      auto elem_vec = elvec_builder.Eval(cell);
-      auto elem_vec_exact = elvec_builder_exact.Eval(cell);
+      auto elem_vec = elvec_builder.Eval(*cell);
+      auto elem_vec_exact = elvec_builder_exact.Eval(*cell);
       double error = (elem_vec - elem_vec_exact).norm();
       EXPECT_LT(error, numericalPrecision);
     }
@@ -148,12 +148,12 @@ TEST(MyLinearLoadVector, testQuads)
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)>
       elvec_builder_exact(mf_f);
 
-  for (const lf::mesh::Entity &cell : mesh_p->Entities(0))
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0))
   {
-    if (cell.RefEl() == lf::base::RefEl::kQuad())
+    if (cell->RefEl() == lf::base::RefEl::kQuad())
     {
-      auto elem_vec = elvec_builder.Eval(cell);
-      auto elem_vec_exact = elvec_builder_exact.Eval(cell);
+      auto elem_vec = elvec_builder.Eval(*cell);
+      auto elem_vec_exact = elvec_builder_exact.Eval(*cell);
       double error = (elem_vec - elem_vec_exact).norm();
       EXPECT_LT(error, numericalPrecision);
     }
@@ -179,12 +179,12 @@ TEST(MyLinearFEElementMatrix, testTriangles)
       double, decltype(mf_alpha), decltype(mf_gamma)>
       elmat_builder_exact(fe_space, mf_alpha, mf_gamma);
 
-  for (const lf::mesh::Entity &cell : mesh.Entities(0))
+  for (const lf::mesh::Entity *cell : mesh.Entities(0))
   {
-    if (cell.RefEl() == lf::base::RefEl::kTria())
+    if (cell->RefEl() == lf::base::RefEl::kTria())
     {
-      auto elem_mat = elmat_builder.Eval(cell);
-      auto elem_mat_exact = elmat_builder_exact.Eval(cell);
+      auto elem_mat = elmat_builder.Eval(*cell);
+      auto elem_mat_exact = elmat_builder_exact.Eval(*cell);
       double error = (elem_mat.block(0, 0, 3, 3) - elem_mat_exact).norm();
       EXPECT_LT(error, numericalPrecision);
     }
@@ -208,12 +208,12 @@ TEST(MyLinearFEElementMatrix, testQuads)
       double, decltype(mf_alpha), decltype(mf_gamma)>
       elmat_builder_exact(fe_space, mf_alpha, mf_gamma);
 
-  for (const lf::mesh::Entity &cell : mesh.Entities(0))
+  for (const lf::mesh::Entity *cell : mesh.Entities(0))
   {
-    if (cell.RefEl() == lf::base::RefEl::kQuad())
+    if (cell->RefEl() == lf::base::RefEl::kQuad())
     {
-      auto elem_mat = elmat_builder.Eval(cell);
-      auto elem_mat_exact = elmat_builder_exact.Eval(cell);
+      auto elem_mat = elmat_builder.Eval(*cell);
+      auto elem_mat_exact = elmat_builder_exact.Eval(*cell);
       double error = (elem_mat - elem_mat_exact).norm();
       EXPECT_LT(error, numericalPrecision);
     }
