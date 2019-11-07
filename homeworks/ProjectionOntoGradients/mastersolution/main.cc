@@ -24,7 +24,8 @@ int main() {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // Compute solution
-  const Eigen::VectorXd sol_vec = ProjectionOntoGradients::projectOntoGradients(dofh, f);
+  const Eigen::VectorXd sol_vec =
+      ProjectionOntoGradients::projectOntoGradients(dofh, f);
   std::cout << sol_vec << std::endl;
 
   // END_SOLUTION

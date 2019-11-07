@@ -20,8 +20,7 @@
 
 #endif
 
-namespace ElementMatrixComputation
-{
+namespace ElementMatrixComputation {
 
 /**
  * @brief      Given element builders, it creates FE space, assembles Galerkin
@@ -35,8 +34,7 @@ namespace ElementMatrixComputation
  */
 template <class ELMAT_BUILDER, class ELVEC_BUILDER>
 Eigen::VectorXd solve(ELMAT_BUILDER &elmat_builder,
-                      ELVEC_BUILDER &elvec_builder)
-{
+                      ELVEC_BUILDER &elvec_builder) {
   // Use one of LehrFEM++'s default meshes. Try different meshes by changing the
   // function index parameter
   // std::shared_ptr<lf::mesh::Mesh> mesh_p =
@@ -111,8 +109,7 @@ double f(Eigen::Vector2d x) { return 1 + x(0) * x(0) + x(1) * x(1); };
  *
  * @return     The solution vector
  */
-Eigen::VectorXd solvePoissonBVP()
-{
+Eigen::VectorXd solvePoissonBVP() {
   // Convert tPoissonda function f to a LehrFEM++ mesh function object
   lf::uscalfe::MeshFunctionGlobal mf_f{f};
 
@@ -135,8 +132,7 @@ Eigen::VectorXd solvePoissonBVP()
  *
  * @return     The solution vector
  */
-Eigen::VectorXd solveNeumannEq()
-{
+Eigen::VectorXd solveNeumannEq() {
   // Define the solution vector
   Eigen::VectorXd solution;
 
@@ -146,4 +142,4 @@ Eigen::VectorXd solveNeumannEq()
 
   return solution;
 }
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation

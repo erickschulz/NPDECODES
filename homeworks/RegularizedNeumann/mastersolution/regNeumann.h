@@ -19,8 +19,7 @@
 #include <lf/uscalfe/uscalfe.h>
 #include "lf/mesh/test_utils/test_meshes.h"
 
-namespace RegularizedNeumann
-{
+namespace RegularizedNeumann {
 typedef Eigen::Triplet<double> Triplet;
 
 // SUB-EXERCISE c)
@@ -29,8 +28,7 @@ template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
     const std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>>
         fe_space,
-    const FUNCT_F f, FUNCT_H h)
-{
+    const FUNCT_F f, FUNCT_H h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs();
@@ -73,13 +71,10 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   // dropping the first tent function from the basis.
   /* SAM_LISTING_BEGIN_1 */
   auto selector = [](lf::base::glb_idx_t idx) -> std::pair<bool, double> {
-    if (idx == 0)
-    {
-      return {true, 0.0}; // fix first d.o.f. to zero
-    }
-    else
-    {
-      return {false, 42.0}; // keep all others
+    if (idx == 0) {
+      return {true, 0.0};  // fix first d.o.f. to zero
+    } else {
+      return {false, 42.0};  // keep all others
     }
   };
   lf::assemble::FixFlaggedSolutionComponents(selector, A_aux, rhs_vec);
@@ -94,13 +89,11 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 // You can use write a helper class which should implement
 // ENTITY_VECTOR_PROVIDER to calculate vector c using LehrFEM assembly functions
 /* SAM_LISTING_BEGIN_6 */
-class VecHelper
-{
-public:
+class VecHelper {
+ public:
   explicit VecHelper() {}
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
-  Eigen::Vector3d Eval(const lf::mesh::Entity &entity)
-  {
+  Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {
     LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                   "Function only defined for triangular cells");
     Eigen::Vector3d result;
@@ -118,8 +111,7 @@ public:
 /* SAM_LISTING_END_6 */
 
 /* SAM_LISTING_BEGIN_5 */
-Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh)
-{
+Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh) {
   Eigen::VectorXd c(dofh.NumDofs());
   /* BEGIN_SOLUTION */
   // Do not forget to initialize vector before assembly!
@@ -136,8 +128,7 @@ Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh)
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
     const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
-    const FUNCT_F f, const FUNCT_H h)
-{
+    const FUNCT_F f, const FUNCT_H h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs() + 1;
@@ -177,8 +168,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   // Calculate vector c
   Eigen::VectorXd c = assembleVector_c(dofh);
   // Add c to the matrix
-  for (int i = 0; i < c.size(); i++)
-  {
+  for (int i = 0; i < c.size(); i++) {
     // add triplets for vector c
     A_aux.AddToEntry(N_dofs - 1, i, c(i));
     A_aux.AddToEntry(i, N_dofs - 1, c(i));
@@ -190,6 +180,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   return std::make_pair(A, rhs_vec);
 }
 
-} // namespace RegularizedNeumann
+}  // namespace RegularizedNeumann
 
-#endif // define __GRADPROJECTION_H
+#endif  // define __GRADPROJECTION_H

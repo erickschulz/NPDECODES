@@ -19,8 +19,7 @@
 #include <lf/uscalfe/uscalfe.h>
 #include "lf/mesh/test_utils/test_meshes.h"
 
-namespace RegularizedNeumann
-{
+namespace RegularizedNeumann {
 typedef Eigen::Triplet<double> Triplet;
 
 // SUB-EXERCISE c)
@@ -28,8 +27,7 @@ typedef Eigen::Triplet<double> Triplet;
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
     const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space,
-    const FUNCT_F &f, const FUNCT_H &h)
-{
+    const FUNCT_F &f, const FUNCT_H &h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs();
@@ -74,16 +72,13 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 
 // SUB-EXERCISE f)
 
-// You can use write a helper class which should implement ENTITY_VECTOR_PROVIDER to calculate vector c using
-// LehrFEM assembly functions
-class VecHelper
-{
-public:
+// You can use write a helper class which should implement
+// ENTITY_VECTOR_PROVIDER to calculate vector c using LehrFEM assembly functions
+class VecHelper {
+ public:
   explicit VecHelper() {}
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
-  Eigen::Vector3d Eval(const lf::mesh::Entity &entity)
-  {
-
+  Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {
     LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity->RefEl(),
                   "Function only defined for triangular cells");
     Eigen::Vector3d result;
@@ -94,9 +89,7 @@ public:
   }
 };
 
-Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh)
-{
-
+Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh) {
   Eigen::VectorXd c(dofh.NumDofs());
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
@@ -107,8 +100,7 @@ Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh)
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
     const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space,
-    const FUNCT_F &f, const FUNCT_H &h)
-{
+    const FUNCT_F &f, const FUNCT_H &h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs() + 1;
@@ -150,6 +142,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   return std::make_pair(A, rhs_vec);
 }
 
-} // namespace RegularizedNeumann
+}  // namespace RegularizedNeumann
 
-#endif // define __GRADPROJECTION_H
+#endif  // define __GRADPROJECTION_H

@@ -14,9 +14,15 @@
 
 namespace {
 
-template <typename T> constexpr T Square(T x) { return x * x; }
+template <typename T>
+constexpr T Square(T x) {
+  return x * x;
+}
 
-template <typename T> constexpr T Cube(T x) { return x * x * x; }
+template <typename T>
+constexpr T Cube(T x) {
+  return x * x * x;
+}
 
 constexpr int getJ(double a, double b, unsigned int n, double u) {
   return u < b ? (int)(n * ((u - a) / (b - a)) + 1.0) : n;
@@ -44,8 +50,9 @@ double UniformCubicSpline::operator()(double u) const {
   double tau = (u - zeta(_a, _b, _n, j - 1)) / h;
 
   return _f(j) * tau + _f(j - 1) * (1.0 - tau) +
-      Square(h) / 6.0 * (_M(j) * (Cube(tau) - tau) +
-      _M(j - 1) * (-Cube(tau) + 3.0 * Square(tau) - 2.0 * tau));
+         Square(h) / 6.0 *
+             (_M(j) * (Cube(tau) - tau) +
+              _M(j - 1) * (-Cube(tau) + 3.0 * Square(tau) - 2.0 * tau));
 }
 
 double UniformCubicSpline::derivative(double u) const {
@@ -53,7 +60,11 @@ double UniformCubicSpline::derivative(double u) const {
   double h = (_b - _a) / _n;
   double tau = (u - zeta(_a, _b, _n, j - 1)) / h;
 
-  return (_f(j) - _f(j - 1) + Square(h) / 6.0 * (_M(j) * (3.0 * Square(tau) - 1.0) + _M(j - 1) * (-3.0 * Square(tau) + 6.0 * tau - 2.0))) * (1.0 / h);
+  return (_f(j) - _f(j - 1) +
+          Square(h) / 6.0 *
+              (_M(j) * (3.0 * Square(tau) - 1.0) +
+               _M(j - 1) * (-3.0 * Square(tau) + 6.0 * tau - 2.0))) *
+         (1.0 / h);
 }
 
 }  // namespace CLEmpiricFlux

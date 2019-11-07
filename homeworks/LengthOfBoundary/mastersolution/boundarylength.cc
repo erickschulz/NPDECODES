@@ -66,4 +66,4 @@ std::pair<double, double> measureDomain(std::string filename) {
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace LengthOfBoundary
+}  // namespace LengthOfBoundary

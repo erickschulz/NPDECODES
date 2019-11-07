@@ -2,8 +2,7 @@
 #include "gradprojection.h"
 
 /* SAM_LISTING_BEGIN_1 */
-TEST(GradProjection, div_free_test)
-{
+TEST(GradProjection, div_free_test) {
   /* BEGIN_SOLUTION */
 
   // Initialize all objects we need for our test case
@@ -25,8 +24,7 @@ TEST(GradProjection, div_free_test)
   // The GoogleTest framework provides a function we may use:
   /*   EXPECT_NEAR(value 1, value 2, max. difference) */
   const double eps = 1e-15;
-  for (std::size_t i = 0; i < sol_vec.size(); ++i)
-  {
+  for (std::size_t i = 0; i < sol_vec.size(); ++i) {
     EXPECT_NEAR(sol_vec[i], 0.0, eps);
     // Try testing for equality, you'll see it will fail miserably!
     /* EXPECT_EQ(sol_vec[i], 0.0); */
@@ -35,8 +33,7 @@ TEST(GradProjection, div_free_test)
 }
 /* SAM_LISTING_END_1 */
 
-TEST(GradProjection, exact_sol_test)
-{
+TEST(GradProjection, exact_sol_test) {
   // mesh builder in a world of dimension 2
   lf::mesh::hybrid2d::TPTriagMeshBuilder my_builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
@@ -63,29 +60,22 @@ TEST(GradProjection, exact_sol_test)
   const auto f = [&dofh](Eigen::Vector2d x) -> Eigen::Vector2d {
     int triang_idx = 9;
     // first determine of which triangle the coordinate is part of
-    if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.0 && x(1) <= 0.5)
-    {
+    if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.0 && x(1) <= 0.5) {
       if (x(0) < x(1))
         triang_idx = 0;
       else
         triang_idx = 1;
-    }
-    else if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.5 && x(1) <= 1.0)
-    {
+    } else if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.5 && x(1) <= 1.0) {
       if (x(0) + 0.5 < x(1))
         triang_idx = 2;
       else
         triang_idx = 3;
-    }
-    else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.0 && x(1) <= 0.5)
-    {
+    } else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.0 && x(1) <= 0.5) {
       if (x(0) < 0.5 + x(1))
         triang_idx = 4;
       else
         triang_idx = 5;
-    }
-    else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.5 && x(1) <= 1.0)
-    {
+    } else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.5 && x(1) <= 1.0) {
       if (x(0) < x(1))
         triang_idx = 6;
       else
@@ -93,29 +83,28 @@ TEST(GradProjection, exact_sol_test)
     }
     // then return the function value according to the definition in the
     // exercise
-    switch (triang_idx)
-    {
-    case 0:
-      return Eigen::Vector2d(2, 0);
-      break;
-    case 1:
-      return Eigen::Vector2d(0, 2);
-      break;
-    case 3:
-      return Eigen::Vector2d(2, -2);
-      break;
-    case 4:
-      return Eigen::Vector2d(-2, 2);
-      break;
-    case 6:
-      return Eigen::Vector2d(0, -2);
-      break;
-    case 7:
-      return Eigen::Vector2d(-2, 0);
-      break;
-    default:
-      return Eigen::Vector2d(0, 0);
-      break;
+    switch (triang_idx) {
+      case 0:
+        return Eigen::Vector2d(2, 0);
+        break;
+      case 1:
+        return Eigen::Vector2d(0, 2);
+        break;
+      case 3:
+        return Eigen::Vector2d(2, -2);
+        break;
+      case 4:
+        return Eigen::Vector2d(-2, 2);
+        break;
+      case 6:
+        return Eigen::Vector2d(0, -2);
+        break;
+      case 7:
+        return Eigen::Vector2d(-2, 0);
+        break;
+      default:
+        return Eigen::Vector2d(0, 0);
+        break;
     }
   };
 

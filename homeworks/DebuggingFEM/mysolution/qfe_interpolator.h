@@ -13,8 +13,7 @@
 #include <lf/mesh/mesh.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace DebuggingFEM
-{
+namespace DebuggingFEM {
 
 using size_type = lf::base::size_type;
 
@@ -33,8 +32,7 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell);
  */
 template <typename FUNCTOR>
 Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
-                                      FUNCTOR &&f)
-{
+                                      FUNCTOR &&f) {
   // get mesh and set up finite element space
   auto mesh = dofh.Mesh();
 
@@ -46,6 +44,6 @@ Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
   /* SOLUTION_END */
   return result;
 }
-} // namespace DebuggingFEM
+}  // namespace DebuggingFEM
 
 #endif

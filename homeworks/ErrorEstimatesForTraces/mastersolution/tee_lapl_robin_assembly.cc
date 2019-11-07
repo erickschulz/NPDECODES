@@ -8,12 +8,10 @@
 
 #include "tee_lapl_robin_assembly.h"
 
-namespace ErrorEstimatesForTraces
-{
+namespace ErrorEstimatesForTraces {
 
 Eigen::VectorXd solveBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space)
-{
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space) {
   // I : Creating coefficients as Lehrfem++ mesh functions
   // Coefficients used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
@@ -41,7 +39,7 @@ Eigen::VectorXd solveBVP(
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Right hand side vector
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
-  phi.setZero(); // has to be zero initially
+  phi.setZero();  // has to be zero initially
 
   // III : Computing element and mass (volume integrals) matrix
   // Initialize object taking care of local mass (volume) computations.
@@ -96,8 +94,7 @@ Eigen::VectorXd solveBVP(
 /* SAM_LISTING_BEGIN_9 */
 double bdFunctionalEval(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
-    Eigen::VectorXd &coeff_vec)
-{
+    Eigen::VectorXd &coeff_vec) {
   double bd_functional_val = 0;
 
   /* SOLUTION_BEGIN */
@@ -119,10 +116,8 @@ double bdFunctionalEval(
 
   // Computing the integral of function_vec on the flagged edges
   double edge_length;
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
-  {
-    if (bd_flags(*edge))
-    {
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
+    if (bd_flags(*edge)) {
       // Obtain endpoints of the edge
       auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
       LF_ASSERT_MSG(endpoints.cols() == 2, "Wrong no endpoints in " << edge);
@@ -141,4 +136,4 @@ double bdFunctionalEval(
 }
 /* SAM_LISTING_END_9 */
 
-} // namespace ErrorEstimatesForTraces
+}  // namespace ErrorEstimatesForTraces

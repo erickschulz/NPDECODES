@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Solution of source-free heat equation and computation of H1 
+ * @brief Solution of source-free heat equation and computation of H1
  *  	  seminorms on different triangular meshes and refinement levels
  * @author Julien Gacon, Ralf Hiptmair
  * @date   March 2019

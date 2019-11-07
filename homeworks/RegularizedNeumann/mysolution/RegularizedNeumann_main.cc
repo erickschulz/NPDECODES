@@ -9,10 +9,8 @@
 #include "regNeumann.h"
 
 int main() {
-
   /* BEGIN_SOLUTION */
   /* TODO Your implementation goes here! */
   /* END_SOLUTION */
   std::cout << "You can use the mainfile to call your functions" << std::endl;
-
 }

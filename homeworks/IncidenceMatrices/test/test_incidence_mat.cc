@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../mysolution/incidence_mat.h"  
+#include "../mysolution/incidence_mat.h"
 
 // Create demo mesh from exercise sheet and test if edge vertex incidence
 // matrix is the same as the one calculated by hand

@@ -44,9 +44,7 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolateInitialData(
   // Generate Lehrfem++ mesh functions out of the functors
   /* SOLUTION_BEGIN */
 
-
-                       // WRITE YOUR CODE HERE ...
-
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
 
@@ -72,14 +70,12 @@ Eigen::VectorXd solveBoundaryWave(
   lf::assemble::COOMatrix<double> A = buildA(fe_space_p);
   /* SOLUTION_BEGIN */
 
-
-                     // WRITE YOUR CODE HERE ...
-
+  // WRITE YOUR CODE HERE ...
 
   /* SOLUTION_END */
   return bdyWaveSol;
 };
 
-} // namespace BoundaryWave
+}  // namespace BoundaryWave
 
 #endif

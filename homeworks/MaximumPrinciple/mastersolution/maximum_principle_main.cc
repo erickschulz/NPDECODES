@@ -41,7 +41,7 @@ int main() {
   Eigen::MatrixXd A_dense = A;
   std::cout << "Inverse of Galerkin matrix for M = 4, c = 0.99" << std::endl
             << A_dense.partialPivLu().inverse() << std::endl;
-  
+
   Eigen::SparseMatrix<double> A_TR = computeGalerkinMatrixTR(M, c);
   Eigen::VectorXd mu_TR = solver.compute(A_TR).solve(phi);
   std::cout << "mu_TR = " << std::endl << mu_TR << std::endl;
