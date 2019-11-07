@@ -2,7 +2,4 @@
 
 #include <iostream>
 
-int main() {
-  
-  std::cout << "world" << std::endl;
-}
+int main() { std::cout << "world" << std::endl; }

@@ -8,15 +8,13 @@
 
 #include "radau_three_timestepping.h"
 
-namespace RadauThreeTimestepping
-{
+namespace RadauThreeTimestepping {
 
 /** @brief Implementation of the right hand side (time dependent) source vector
  * for the parabolic heat equation*/
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
-                                    double time)
-{
+                                    double time) {
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Right-hand side vector has to be set to zero initially
@@ -25,16 +23,13 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
   // Functor for computing the source function at 2d coordinates
   auto f = [time](Eigen::Vector2d x) -> double {
     Eigen::Vector2d v(std::cos(time * M_PI), std::sin(time * M_PI));
-    if ((x - 0.5 * v).norm() < 0.5)
-    {
+    if ((x - 0.5 * v).norm() < 0.5) {
       return 1.0;
-    }
-    else
-    {
+    } else {
       return 0.0;
     }
   };
-  auto mesh_p = dofh.Mesh(); // pointer to current mesh
+  auto mesh_p = dofh.Mesh();  // pointer to current mesh
   phi.setZero();
 
   /* Assembling right-hand side source vector */
@@ -56,10 +51,8 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
     return bd_flags(vertex);
   };
   // Assigning zero to the boundary values of phi
-  for (const lf::mesh::Entity *vertex : mesh_p->Entities(2))
-  {
-    if (bd_flags(*vertex))
-    {
+  for (const lf::mesh::Entity *vertex : mesh_p->Entities(2)) {
+    if (bd_flags(*vertex)) {
       auto dof_idx = dofh.GlobalDofIndices(*vertex);
       LF_ASSERT_MSG(
           dofh.NumLocalDofs(*vertex) == 1,
@@ -78,12 +71,11 @@ iterates its applicaiton starting from the initial condition
 * @param m is total number of steps until final time final_time (double) */
 /* SAM_LISTING_BEGIN_6 */
 Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
-                                   unsigned int m, double final_time)
-{
+                                   unsigned int m, double final_time) {
   Eigen::VectorXd discrete_heat_sol;
   /* SOLUTION_BEGIN */
-  double tau = final_time / m;                         // step size
-  const lf::uscalfe::size_type N_dofs(dofh.NumDofs()); // dim. of FE space
+  double tau = final_time / m;                          // step size
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());  // dim. of FE space
 
   std::cout << "*********************************************************"
             << std::endl;
@@ -105,8 +97,7 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
   // iteration to stay away from potential harming aliasing effects of putting
   // an Eigen::Vector on both sides of an assignment statement.
   Eigen::VectorXd discrete_solution_next;
-  for (int i = 1; i < m; i++)
-  {
+  for (int i = 1; i < m; i++) {
     discrete_solution_next = radau_solver.discreteEvolutionOperator(
         i * tau, tau, discrete_solution_cur);
     discrete_solution_cur = discrete_solution_next;
@@ -119,8 +110,7 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
 
 /* Implementing member function Eval of class LinFEMassMatrixProvider*/
 Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
-    const lf::mesh::Entity &tria)
-{
+    const lf::mesh::Entity &tria) {
   Eigen::Matrix<double, 3, 3> elMat;
   /* SOLUTION_BEGIN */
   // Throw error in case no triangular cell
@@ -136,26 +126,25 @@ Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
   // clang-format on
   elMat *= area / 12.0;
   /* SOLUTION_END */
-  return elMat; // return the local mass element matrix
-} // LinFEMassMatrixProvider::Eval
+  return elMat;  // return the local mass element matrix
+}  // LinFEMassMatrixProvider::Eval
 
 /* Implementing constructor of class Radau3MOLTimestepper */
 /* SAM_LISTING_BEGIN_4 */
 Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
-    : dofh_(dofh)
-{
+    : dofh_(dofh) {
   /* SOLUTION_BEGIN */
   std::cout << "\n>> Constructing SRadau3MOLTimestepper " << std::endl;
-  auto mesh_p = dofh.Mesh(); // pointer to current mesh
+  auto mesh_p = dofh.Mesh();  // pointer to current mesh
 
   // Instantiating Galerkin matrices to be pre-computed
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Matrices in triplet format holding Galerkin matrices, zero initially.
   lf::assemble::COOMatrix<double> A_COO(N_dofs,
-                                        N_dofs); // element matrix Laplace
+                                        N_dofs);  // element matrix Laplace
   lf::assemble::COOMatrix<double> M_COO(N_dofs,
-                                        N_dofs); // element mass matrix
+                                        N_dofs);  // element mass matrix
 
   std::cout << "> Initializing the Galerking local matrices builders"
             << std::endl;
@@ -208,7 +197,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
     b_ << 0.75, 0.25;
   // clang-format on
   /* SOLUTION_END */
-} // Radau3MOLTimestepper constructor
+}  // Radau3MOLTimestepper constructor
 /* SAM_LISTING_END_4 */
 
 /* Implementation of Radau3MOLTimestepper member functions */
@@ -217,8 +206,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
 // Butcher table as stored in the Radau3MOLTimestepper class
 /* SAM_LISTING_BEGIN_5 */
 Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
-    double time, double tau, const Eigen::VectorXd &mu) const
-{
+    double time, double tau, const Eigen::VectorXd &mu) const {
   Eigen::VectorXd discrete_evolution_operator;
   /* SOLUTION_BEGIN */
   // Dimension of finite element space
@@ -230,7 +218,7 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
   // Building the linear system for the implicitely defined increments
   // Assembling the right hand side using block initialization
   Eigen::VectorXd linSys_rhs(2 * N_dofs);
-  Eigen::VectorXd rhs_subtraction_term = A_ * mu; // precomputation
+  Eigen::VectorXd rhs_subtraction_term = A_ * mu;  // precomputation
   linSys_rhs << rhsVectorheatSource(dofh_, time + c_[0] * tau) -
                     rhs_subtraction_term,
       rhsVectorheatSource(dofh_, time + tau) - rhs_subtraction_term;
@@ -259,4 +247,4 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace RadauThreeTimestepping
+}  // namespace RadauThreeTimestepping

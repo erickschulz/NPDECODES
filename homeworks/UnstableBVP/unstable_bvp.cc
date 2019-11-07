@@ -9,12 +9,10 @@
 
 #include "unstable_bvp.h"
 
-namespace UnstableBVP
-{
+namespace UnstableBVP {
 
 std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
-    const int reflevels, const std::string &mesh_type)
-{
+    const int reflevels, const std::string &mesh_type) {
   // Helper object: mesh factory
   std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -22,16 +20,11 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   // Decide where the triangular domain should be locted in x_2 direction
   // by adding an offset to the x_2 coordinate of the nodes
   double offset = 0;
-  if (mesh_type == "top")
-  {
+  if (mesh_type == "top") {
     offset = 1.5;
-  }
-  else if (mesh_type == "bottom")
-  {
+  } else if (mesh_type == "bottom") {
     offset = -1.5;
-  }
-  else
-  {
+  } else {
     // already at 0
   }
 
@@ -41,17 +34,15 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   std::array<double, 2>({0.5, -0.5 + offset }),
   std::array<double, 2>({0  ,  0.5 + offset }),
   std::array<double, 2>({1  ,  0.5 + offset })};
-  // clang-format on
-  for (const auto &node : node_coord)
-  {
+  // clang-format on 9 
+  for (const auto &node : node_coord) {
     mesh_factory_ptr->AddPoint(coord_t({node[0], node[1]}));
   }
 
   // Initialize triangle
-  mesh_factory_ptr->AddEntity(
-      lf::base::RefEl::kTria(),
-      nonstd::span<const size_type>({0, 1, 2}),
-      std::unique_ptr<lf::geometry::Geometry>(nullptr));
+  mesh_factory_ptr->AddEntity(lf::base::RefEl::kTria(),
+                              nonstd::span<const size_type>({0, 1, 2}),
+                              std::unique_ptr<lf::geometry::Geometry>(nullptr));
 
   // Get a pointer to the mesh
   std::shared_ptr<lf::mesh::Mesh> mesh_p = mesh_factory_ptr->Build();
@@ -68,8 +59,7 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
 }
 
 double solveTemperatureDistribution(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p)
-{
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   // **********************************************************************
   // Stage 0: provide all coefficient functions mainly through lambda
   //          functions and derived MeshFunctions
@@ -183,4 +173,4 @@ double solveTemperatureDistribution(
   return norm;
 }
 
-} // namespace UnstableBVP
+}  // namespace UnstableBVP

@@ -107,7 +107,7 @@ template <typename FUNCTOR>
 Eigen::Vector3d TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval(
     const lf::mesh::Entity &tria) {
   Eigen::Vector3d ElemVec;
-     /* SOLUTION_BEGIN */
+  /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
   /* SOLUTION_END */
   return ElemVec;
@@ -138,7 +138,7 @@ class Radau3MOLTimestepper {
   // const shared_ptr(lf::assemble::DofHandler) dofh_;
   double tau_;
   const lf::assemble::DofHandler &dofh_;  // dangerous
-   /* SOLUTION_BEGIN */
+                                          /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
   /* SOLUTION_END */
 };  // class Radau3MOLTimestepper

@@ -19,15 +19,13 @@
 #include <lf/uscalfe/uscalfe.h>
 #include "lf/mesh/test_utils/test_meshes.h"
 
-namespace RegularizedNeumann
-{
+namespace RegularizedNeumann {
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE(
     const std::shared_ptr<lf::uscalfe::ScalarUniformFESpace<double>> fe_space,
-    const FUNCT_F &f, const FUNCT_H &h)
-{
+    const FUNCT_F &f, const FUNCT_H &h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs();
@@ -64,6 +62,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE(
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace RegularizedNeumann
+}  // namespace RegularizedNeumann
 
 #endif

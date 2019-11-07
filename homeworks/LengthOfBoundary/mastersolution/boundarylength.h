@@ -13,6 +13,8 @@
 #include <memory>
 #include <string>
 
+#include <boost/filesystem.hpp>
+
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
@@ -21,11 +23,11 @@
 
 namespace LengthOfBoundary {
 
-double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh);
+double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p);
 
-double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh);
+double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p);
 
-std::pair<double, double> measureDomain(std::string msh_file_name);
+std::pair<double, double> measureDomain(std::string filename);
 
 }  // namespace LengthOfBoundary
 #endif

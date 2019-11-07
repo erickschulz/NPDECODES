@@ -13,7 +13,7 @@ namespace RadauThreeTimestepping {
 /* SAM_LISTING_BEGIN_1 */
 std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int m) {
   std::vector<double> sol_vec;
-   /* SOLUTION_BEGIN */
+  /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
   /* SOLUTION_END */
   return sol_vec;
@@ -22,7 +22,7 @@ std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int m) {
 
 /* SAM_LISTING_BEGIN_2 */
 void testConvergenceTwoStageRadauLinScalODE() {
-    /* SOLUTION_BEGIN */
+  /* SOLUTION_BEGIN */
   /* TODO Your implementation goes here! */
   /* SOLUTION_END */
 }

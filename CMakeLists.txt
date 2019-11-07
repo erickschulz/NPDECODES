@@ -7,7 +7,7 @@ HunterGate(
     LOCAL # use cmake/Hunter/config.cmake
 )
 
-project(NumPDE)
+project(NPDECODES)
 
 message("Project source dir =" "${PROJECT_SOURCE_DIR}")
 message("Project binary dir =" "${PROJECT_BINARY_DIR}")

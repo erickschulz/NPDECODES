@@ -40,4 +40,4 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
   return muT;
 }
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux

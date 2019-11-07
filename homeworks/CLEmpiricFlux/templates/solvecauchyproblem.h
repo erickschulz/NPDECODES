@@ -42,8 +42,7 @@ Eigen::Vector2d findSupport(const UniformCubicSpline &f,
  */
 template <typename FUNCTOR>
 Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
-                               double h,
-                               double T) {
+                               double h, double T) {
   Eigen::VectorXd mu0;
   /* SOLUTION_BEGIN */
   /* SOLUTION_END */
@@ -78,6 +77,6 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T);
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux
 
 #endif

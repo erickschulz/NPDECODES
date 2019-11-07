@@ -1,0 +1,17 @@
+List of polished problems.
+
+CHAPTER 1
+
+
+CHAPTER 2
+
+TransformationOfGalerkinMatrices
+
+TestQuadratureRules
+
+BoundaryLength 
+
+CHAPTER 3
+
+
+CHAPTER 4

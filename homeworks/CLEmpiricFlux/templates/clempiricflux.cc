@@ -25,7 +25,7 @@ namespace CLEmpiricFlux {
  */
 template <typename FUNCTOR>
 double findRoots(double v, double w, FUNCTOR &&g, double tol = 1.0E-6) {
-  double x = v; // approximate root
+  double x = v;  // approximate root
   const double len = w - v;
   constexpr static const int maxN = 1000;
   double gv = g(v), gw = g(w);
@@ -56,4 +56,4 @@ double GodunovFlux::operator()(double v, double w) const {
   return result;
 }
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux

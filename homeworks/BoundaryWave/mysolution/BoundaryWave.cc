@@ -7,13 +7,11 @@
 
 #include "BoundaryWave.h"
 
-namespace BoundaryWave
-{
+namespace BoundaryWave {
 
 /* SAM_LISTING_BEGIN_1 */
-lf::assemble::COOMatrix<double>
-buildM(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p)
-{
+lf::assemble::COOMatrix<double> buildM(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
   // I. TOOLS AND DATA
   // Pointer to current fe_space and mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p(fe_space_p->Mesh());
@@ -35,9 +33,8 @@ buildM(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-lf::assemble::COOMatrix<double>
-buildA(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p)
-{
+lf::assemble::COOMatrix<double> buildA(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
   // I. TOOLS AND DATA
   // Pointer to current fe_space and mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p(fe_space_p->Mesh());
@@ -59,4 +56,4 @@ buildA(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p
 
 /* SAM_LISTING_END_2 */
 
-} // namespace BoundaryWave
+}  // namespace BoundaryWave

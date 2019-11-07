@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Homeworks)
+project(homeworks)
 
 add_subdirectory(AvgValBoundary)
 add_subdirectory(hello)

@@ -7,11 +7,11 @@
 
 #include <math.h>
 #include <iostream>
-#include <vector> 
+#include <vector>
 
 namespace RadauThreeTimestepping {
 
 std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int);
 void testConvergenceTwoStageRadauLinScalODE();
 
-}  // RadauThreeTimestepping
+}  // namespace RadauThreeTimestepping

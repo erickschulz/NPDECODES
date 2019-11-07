@@ -16,7 +16,7 @@ TEST(BoundaryLength, area_test) {
   // "auto" = std::shared_ptr<lf::mesh::Mesh>
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
 
-  EXPECT_NEAR(LengthOfBoundary::volumeOfDomain(mesh_p), 9.0, 1e-10);
+  EXPECT_NEAR(LengthOfBoundary::volumeOfDomain(mesh_p), 9.0, 1e-12);
 }
 
 TEST(BoundaryLength, length_test) {
@@ -24,7 +24,7 @@ TEST(BoundaryLength, length_test) {
   // "auto" = std::shared_ptr<lf::mesh::Mesh>
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
 
-  EXPECT_NEAR(LengthOfBoundary::lengthOfBoundary(mesh_p), 12.0, 1e-10);
+  EXPECT_NEAR(LengthOfBoundary::lengthOfBoundary(mesh_p), 12.0, 1e-12);
 }
 
 }  // namespace LengthOfBoundary::test
