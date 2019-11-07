@@ -10,7 +10,7 @@ set(mastersolution_sources
 
 
 set(test_mastersolution_sources
-  test/test_incidence_mat.cc
+  test/test_master_incidence_mat.cc
   mastersolution/incidence_mat.cc
   mastersolution/incidence_mat.h
 )
