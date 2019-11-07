@@ -28,9 +28,9 @@ std::shared_ptr<Mesh> createDemoMesh()
   MatrixXd nodesOfTria(2, 3);
   nodesOfTria << 1, 1, 0.5, 0, 1, 1;
   mesh_factory_ptr->AddEntity(
-      lf::base::RefEl::kTria(),                        // we want a triangle
-      nonstd::span<const size_type>({1, 2, 4}),        // indices of the nodes
-      std::unique_ptr<lf::geometry::TriaO1>(nullptr)); // node coords
+      lf::base::RefEl::kTria(),                             // we want a triangle
+      nonstd::span<const size_type>({1, 2, 4}),             // indices of the nodes
+      std::make_unique<lf::geometry::TriaO1>(nodesOfTria)); // node coords
 
   // Add the quadrilateral
   MatrixXd nodesOfQuad(2, 4);
