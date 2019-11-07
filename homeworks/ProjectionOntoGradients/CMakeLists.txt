@@ -12,7 +12,7 @@ set(master_test_sources
 add_executable(ProjectionOntoGradients_mastersolution ${mastersolution_sources})
 
 target_link_libraries(ProjectionOntoGradients_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -28,7 +28,7 @@ add_executable(ProjectionOntoGradients_test_mastersolution ${master_test_sources
 add_library(ProjectionOntoGradients_master.solution ${mastersolution_sources})
 
 target_link_libraries(ProjectionOntoGradients_master.solution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
