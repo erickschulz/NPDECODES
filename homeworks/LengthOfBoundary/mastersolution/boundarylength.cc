@@ -8,17 +8,14 @@
 
 #include "boundarylength.h"
 
-namespace LengthOfBoundary
-{
+namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */
-double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p)
-{
+double volumeOfDomain(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   double volume = 0.0;
   /* BEGIN_SOLUTION */
   // iterate over all cells (co-dimension = 0)
-  for (const lf::mesh::Entity *cell : mesh_p->Entities(0))
-  {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
     lf::geometry::Geometry *geo_p = cell->Geometry();
     volume += lf::geometry::Volume(*geo_p);
   }
@@ -28,8 +25,7 @@ double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p)
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p)
-{
+double lengthOfBoundary(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   double length = 0.0;
   /* BEGIN_SOLUTION */
   // Obtain an array of boolean flags for the vertices of the mesh: 'true'
@@ -37,11 +33,9 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p)
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
 
   // iterate over all edges (co-dimension = 1)
-  for (const lf::mesh::Entity *cell : mesh_p->Entities(1))
-  {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(1)) {
     // check if edge is part of the boundary
-    if (bd_flags(*cell))
-    {
+    if (bd_flags(*cell)) {
       lf::geometry::Geometry *geo_p = cell->Geometry();
       length += lf::geometry::Volume(*geo_p);
     }
@@ -52,8 +46,7 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p)
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-std::pair<double, double> measureDomain(std::string filename)
-{
+std::pair<double, double> measureDomain(std::string filename) {
   double volume, length;
 
   /* BEGIN_SOLUTION */
