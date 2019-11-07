@@ -8,30 +8,34 @@
 
 #include "test_quad_rules.h"
 
-namespace TestQuadratureRules {
+namespace TestQuadratureRules
+{
 
-using Vec = Eigen::VectorXd;
-using Mat = Eigen::MatrixXd;
+using Eigen::VectorXd = Eigen::VectorXd;
+using Eigen::MatrixXd = Eigen::MatrixXd;
 
 bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
-                       unsigned int order) {
-  bool order_isExact = true;  // return variable
+                       unsigned int order)
+{
+  bool order_isExact = true; // return variable
   /* SOLUTION_BEGIN */
-  
+
   /* SOLUTION_END */
   return order_isExact;
 }
 
 bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
-                       unsigned int order) {
-  bool order_isExact = true;  // return variable
+                       unsigned int order)
+{
+  bool order_isExact = true; // return variable
   /* SOLUTION_BEGIN */
-  
+
   /* SOLUTION_END */
   return order_isExact;
 }
 
-unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule) {
+unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule)
+{
   unsigned int maximal_order = quad_rule.Order();
 
   /* SOLUTION_BEGIN */
@@ -40,4 +44,4 @@ unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule) {
   return maximal_order;
 }
 
-}  // namespace TestQuadratureRules
+} // namespace TestQuadratureRules

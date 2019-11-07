@@ -5,6 +5,7 @@ CHAPTER 1
 
 CHAPTER 2
 TransformationOfGalerkinMatrices
+TestQuadratureRules
 
 CHAPTER 3
 
