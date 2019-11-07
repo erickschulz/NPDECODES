@@ -5,11 +5,9 @@ CHAPTER 1
 
 CHAPTER 2
 
-TransformationOfGalerkinMatrices
-
-TestQuadratureRules
-
 BoundaryLength 
+TestQuadratureRules
+TransformationOfGalerkinMatrices
 
 CHAPTER 3
 
