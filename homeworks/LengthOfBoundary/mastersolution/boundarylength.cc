@@ -11,7 +11,7 @@
 namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */
-double volumeOfDomain(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
   double volume = 0.0;
   /* BEGIN_SOLUTION */
   // iterate over all cells (co-dimension = 0)
@@ -25,7 +25,7 @@ double volumeOfDomain(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double lengthOfBoundary(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
   double length = 0.0;
   /* BEGIN_SOLUTION */
   // Obtain an array of boolean flags for the vertices of the mesh: 'true'
@@ -54,8 +54,8 @@ std::pair<double, double> measureDomain(std::string filename) {
   boost::filesystem::path here = __FILE__;
   auto mesh_path = here.parent_path().parent_path() / filename;
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
-  auto mesh_p = reader.mesh();
+  lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
+  std::shared_ptr<lf::mesh::Mesh> mesh_p = reader.mesh();
 
   // call the functions we already implemented
   length = LengthOfBoundary::lengthOfBoundary(mesh_p);

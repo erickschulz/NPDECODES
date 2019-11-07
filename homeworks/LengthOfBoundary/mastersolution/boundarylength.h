@@ -23,9 +23,9 @@
 
 namespace LengthOfBoundary {
 
-double volumeOfDomain(const std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p);
 
-double lengthOfBoundary(const std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p);
 
 std::pair<double, double> measureDomain(std::string filename);
 
