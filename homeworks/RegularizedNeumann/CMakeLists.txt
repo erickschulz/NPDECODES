@@ -24,7 +24,7 @@ set(my_test_sources
 add_executable(RegularizedNeumann_mastersolution ${mastersolution_sources})
 
 # target_link_libraries(RegularizedNeumann_template
-#   PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+#   PUBLIC Eigen3::Eigen
 #   LF::lf.mesh
 #   LF::lf.mesh.utils
 #   LF::lf.mesh.test_utils
@@ -34,7 +34,7 @@ add_executable(RegularizedNeumann_mastersolution ${mastersolution_sources})
 #   LF::lf.uscalfe
 # )
 # target_link_libraries(RegularizedNeumann_mysolution
-#   PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+#   PUBLIC Eigen3::Eigen
 #   LF::lf.mesh
 #   LF::lf.mesh.utils
 #   LF::lf.mesh.test_utils
@@ -44,7 +44,7 @@ add_executable(RegularizedNeumann_mastersolution ${mastersolution_sources})
 # )
 
 target_link_libraries(RegularizedNeumann_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -62,7 +62,7 @@ add_executable(RegularizedNeumann_test_mastersolution ${master_test_sources})
 add_library(RegularizedNeumann_master.solution ${mastersolution_sources})
 
 # target_link_libraries(RegularizedNeumann_my.solution
-#   PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+#   PUBLIC Eigen3::Eigen
 #   LF::lf.mesh
 #   LF::lf.mesh.utils
 #   LF::lf.mesh.test_utils
@@ -72,7 +72,7 @@ add_library(RegularizedNeumann_master.solution ${mastersolution_sources})
 #   LF::lf.uscalfe
 #   )
 target_link_libraries(RegularizedNeumann_master.solution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils

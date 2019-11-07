@@ -17,17 +17,14 @@ add_executable(radauthreetimestepping_mastersolution ${mastersolution_sources})
 
 target_link_libraries(radauthreetimestepping_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+    LF::lf.uscalfe
+    LF::lf.mesh
+    LF::lf.mesh.utils
+    LF::lf.mesh.test_utils
+    LF::lf.mesh.hybrid2d
+    LF::lf.refinement
+    LF::lf.assemble
+    LF::lf.io
 )
