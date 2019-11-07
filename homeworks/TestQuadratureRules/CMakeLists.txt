@@ -25,7 +25,6 @@ add_executable(TestQuadratureRules_test_mastersolution ${mastersolution_test_sou
 
 target_link_libraries(TestQuadratureRules_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
 	LF::lf.base
 	LF::lf.quad
 )
@@ -33,7 +32,6 @@ target_link_libraries(TestQuadratureRules_mastersolution
 
 target_link_libraries(TestQuadratureRules_mastersolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
 	LF::lf.base
 	LF::lf.quad
 )
@@ -43,7 +41,6 @@ target_link_libraries(TestQuadratureRules_test_mastersolution
 	PUBLIC Eigen3::Eigen	
 	GTest::gtest_main
 	TestQuadratureRules_mastersolution.solution
-	Boost::system
 	LF::lf.base
 	LF::lf.quad
 )
