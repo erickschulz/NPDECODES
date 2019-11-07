@@ -8,19 +8,16 @@
 
 #include "boundarylength.h"
 
-namespace LengthOfBoundary
-{
+namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */
-double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh)
-{
+double volumeOfDomain(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   double volume = 0.0;
   /* BEGIN_SOLUTION */
   // iterate over all cells (co-dimension = 0)
-  for (const lf::mesh::Entity *ent : mesh->Entities(0))
-  {
-    lf::geometry::Geometry *geo_ptr = ent->Geometry();
-    volume += lf::geometry::Volume(*geo_ptr);
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    lf::geometry::Geometry *geo_p = cell->Geometry();
+    volume += lf::geometry::Volume(*geo_p);
   }
   /* END_SOLUTION */
   return volume;
@@ -28,22 +25,19 @@ double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh)
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh)
-{
+double lengthOfBoundary(const std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   double length = 0.0;
   /* BEGIN_SOLUTION */
-  // This function returns an array of flags
-  // a flag is true if an edge is part of the boundary
-  auto edge_marker = lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1);
+  // Obtain an array of boolean flags for the vertices of the mesh: 'true'
+  // indicates that the vertex lies on the boundary.
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
 
   // iterate over all edges (co-dimension = 1)
-  for (const lf::mesh::Entity *ent : mesh->Entities(1))
-  {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(1)) {
     // check if edge is part of the boundary
-    if (edge_marker(*ent))
-    {
-      lf::geometry::Geometry *geo_ptr = ent->Geometry();
-      length += lf::geometry::Volume(*geo_ptr);
+    if (bd_flags(*cell)) {
+      lf::geometry::Geometry *geo_p = cell->Geometry();
+      length += lf::geometry::Volume(*geo_p);
     }
   }
   /* END_SOLUTION */
@@ -52,13 +46,15 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh)
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-std::pair<double, double> measureDomain(std::string msh_file_name)
-{
+std::pair<double, double> measureDomain(std::string filename) {
   double volume, length;
+
   /* BEGIN_SOLUTION */
-  // read in mesh file
+  // Load mesh into a Lehrfem++ object
+  boost::filesystem::path here = __FILE__;
+  auto mesh_path = here.parent_path().parent_path() / filename;
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), msh_file_name);
+  const lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
   auto mesh_p = reader.mesh();
 
   // call the functions we already implemented
