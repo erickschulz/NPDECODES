@@ -2,9 +2,6 @@ include(GoogleTest)
 
 set(libraries
   Eigen3::Eigen
-  Boost::filesystem
-  Boost::system
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils

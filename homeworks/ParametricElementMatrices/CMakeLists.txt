@@ -76,7 +76,6 @@ add_executable(ParametricElementMatrices_test_mastersolution ${mastersolution_te
 
 target_link_libraries(ParametricElementMatrices_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
 	LF::lf.mesh
 	LF::lf.mesh.test_utils
 	LF::lf.assemble
@@ -87,7 +86,6 @@ target_link_libraries(ParametricElementMatrices_mastersolution
 
 target_link_libraries(ParametricElementMatrices_test_mastersolution
 	PUBLIC Eigen3::Eigen 
-	Boost::system
 	LF::lf.mesh
 	LF::lf.mesh.test_utils
 	LF::lf.assemble
@@ -98,7 +96,6 @@ target_link_libraries(ParametricElementMatrices_test_mastersolution
 
 # target_link_libraries(ParametricElementMatrices_mysolution
 # 	PUBLIC Eigen3::Eigen
-# 	Boost::system
 # 	LF::lf.mesh
 # 	LF::lf.mesh.test_utils
 # 	LF::lf.assemble
@@ -109,7 +106,6 @@ target_link_libraries(ParametricElementMatrices_test_mastersolution
 
 # target_link_libraries(ParametricElementMatrices_test_mysolution
 # 	PUBLIC Eigen3::Eigen 
-# 	Boost::system
 # 	LF::lf.mesh
 # 	LF::lf.mesh.test_utils
 # 	LF::lf.assemble
@@ -120,7 +116,6 @@ target_link_libraries(ParametricElementMatrices_test_mastersolution
 
 # target_link_libraries(ParametricElementMatrices_templates
 # 	PUBLIC Eigen3::Eigen
-# 	Boost::system
 # 	LF::lf.mesh
 # 	LF::lf.mesh.test_utils
 # 	LF::lf.assemble
@@ -131,7 +126,6 @@ target_link_libraries(ParametricElementMatrices_test_mastersolution
 
 # target_link_libraries(ParametricElementMatrices_test_templates
 # 	PUBLIC Eigen3::Eigen 
-# 	Boost::system
 # 	LF::lf.mesh
 # 	LF::lf.mesh.test_utils
 # 	LF::lf.assemble

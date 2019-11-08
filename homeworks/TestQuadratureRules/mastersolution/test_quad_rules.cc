@@ -8,8 +8,17 @@
 
 #include "test_quad_rules.h"
 
+#include <cassert>
+#include <cmath>
+
+#include <Eigen/Core>
+
+#include <lf/base/base.h>
+
 namespace TestQuadratureRules
 {
+
+double factorial(int i) { return std::tgamma(i + 1); }
 
 /* SAM_LISTING_BEGIN_1 */
 bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
@@ -21,7 +30,7 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
   // Retrieve the passed quadrature rule's reference element
   const auto ref_element = quad_rule.RefEl();
   // Check that the passed reference element is triangular
-  BOOST_ASSERT(ref_element == lf::base::RefElType::kTria);
+  assert(ref_element == lf::base::RefElType::kTria);
   // A quadrature rule involves quadrature nodes and weights defined so that
   // the weighted sum of the value of a function at these points approximates
   // the integral of that function.
@@ -45,9 +54,9 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
   {
     for (int J = 0; J < order - I; J++)
     {
-      exact_integral = boost::math::factorial<double>(I) *
-                       boost::math::factorial<double>(J) /
-                       boost::math::factorial<double>(I + J + 2);
+      exact_integral = factorial(I) *
+                       factorial(J) /
+                       factorial(I + J + 2);
       quad_rule_sum = eval_p_IJ(I, J).dot(weights);
 
       // Check if the difference bewteen the results is within tolerance
@@ -75,7 +84,7 @@ bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
   // Retrieve the passed quadrature rule's reference element
   const auto ref_element = quad_rule.RefEl();
   // Check that the passed reference element is triangular
-  BOOST_ASSERT(ref_element == lf::base::RefElType::kQuad);
+  assert(ref_element == lf::base::RefElType::kQuad);
   // A quadrature rule consists of quadrature nodes and weights defined so that
   // the weighted sum of the value of a function at these points approximates
   // the integral of that function.
@@ -128,7 +137,7 @@ unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule)
 
   if (ref_element == lf::base::RefElType::kTria)
   {
-    BOOST_ASSERT(testQuadOrderTria(quad_rule, maximal_order));
+    assert(testQuadOrderTria(quad_rule, maximal_order));
     while (testQuadOrderTria(quad_rule, maximal_order + 1))
     {
       maximal_order++;
@@ -137,7 +146,7 @@ unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule)
 
   if (ref_element == lf::base::RefElType::kQuad)
   {
-    BOOST_ASSERT(testQuadOrderQuad(quad_rule, maximal_order));
+    assert(testQuadOrderQuad(quad_rule, maximal_order));
     while (testQuadOrderQuad(quad_rule, maximal_order + 1))
     {
       maximal_order++;

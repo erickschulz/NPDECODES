@@ -18,7 +18,7 @@ add_executable(HandlingDOFs_mastersolution ${mastersolution_sources})
 add_executable(HandlingDOFs_test_mastersolution ${test_mastersolution_sources})
 
 target_link_libraries(HandlingDOFs_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -32,9 +32,6 @@ target_link_libraries(HandlingDOFs_mastersolution
 target_link_libraries(HandlingDOFs_test_mastersolution
   GTest::gtest_main
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils

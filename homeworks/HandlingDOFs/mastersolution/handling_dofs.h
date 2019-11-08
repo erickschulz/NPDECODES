@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include <Eigen/Dense>
-#include "boost/filesystem.hpp"
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"

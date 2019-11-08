@@ -8,6 +8,9 @@
 
 #include <gtest/gtest.h>
 
+#include <lf/base/base.h>
+#include <lf/quad/quad.h>
+
 #include "../mastersolution/test_quad_rules.h"
 
 namespace TestQuadratureRules::test {
