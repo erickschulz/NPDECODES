@@ -8,13 +8,9 @@ int main() {
 
   // demo reading and writing mesh mesh
 
-  // get path to mesh
-  boost::filesystem::path here = __FILE__;
-  auto mesh_path = here.parent_path().parent_path() / "meshes/square.msh";
-
   // read mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR"/meshes/square.msh");
   auto mesh = reader.mesh();
 
   // Python output

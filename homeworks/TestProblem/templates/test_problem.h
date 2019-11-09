@@ -7,6 +7,4 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <boost/filesystem.hpp>
-
 int add(int a, int b);
