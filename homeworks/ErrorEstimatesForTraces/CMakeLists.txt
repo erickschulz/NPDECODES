@@ -27,6 +27,9 @@ set(mysolution_test_sources
   test/tee_lapl_robin_assembly_test_mysolution.cc
 )
 
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
+
 # Libraries
 add_library(ErrorEstimatesForTraces_mastersolution.solution ${mastersolution_sources})
 add_library(ErrorEstimatesForTraces_mysolution.solution ${mysolution_sources})
@@ -41,126 +44,103 @@ add_executable(ErrorEstimatesForTraces_test_mysolution ${mysolution_test_sources
 
 target_link_libraries(ErrorEstimatesForTraces_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
 )
 
 target_link_libraries(ErrorEstimatesForTraces_mysolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
 )
 
 target_link_libraries(ErrorEstimatesForTraces_template
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
 )
 target_link_libraries(ErrorEstimatesForTraces_mastersolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
-        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
 )
 
 target_link_libraries(ErrorEstimatesForTraces_mysolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
-        GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
 )
 
 target_link_libraries(ErrorEstimatesForTraces_test_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
-        GTest::gtest_main
+  GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
-        ErrorEstimatesForTraces_mastersolution.solution
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
+  ErrorEstimatesForTraces_mastersolution.solution
 )
 
 target_link_libraries(ErrorEstimatesForTraces_test_mysolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-        Boost::filesystem
-        Boost::program_options
-        GTest::gtest_main
+  GTest::gtest_main
 	LF::lf.base
 	LF::lf.quad
-        LF::lf.uscalfe
-        LF::lf.mesh
-        LF::lf.mesh.utils
-        LF::lf.mesh.test_utils
-        LF::lf.mesh.hybrid2d
-        LF::lf.refinement
-        LF::lf.assemble
-        LF::lf.io
-        ErrorEstimatesForTraces_mysolution.solution
+  LF::lf.uscalfe
+  LF::lf.mesh
+  LF::lf.mesh.utils
+  LF::lf.mesh.test_utils
+  LF::lf.mesh.hybrid2d
+  LF::lf.refinement
+  LF::lf.assemble
+  LF::lf.io
+  ErrorEstimatesForTraces_mysolution.solution
 )
 
 
