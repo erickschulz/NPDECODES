@@ -26,6 +26,9 @@ set(mastersolution_test_sources
   test/BoundaryWave_test_mastersolution.cc
 )
 
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
+
 # Libraries
 add_library(BoundaryWave_mastersolution.solution ${mastersolution_sources})
 add_library(BoundaryWave_mysolution.solution ${mysolution_sources})
@@ -40,8 +43,6 @@ add_executable(BoundaryWave_mastersolution ${mastersolution_sources})
 
 target_link_libraries(BoundaryWave_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -52,8 +53,6 @@ target_link_libraries(BoundaryWave_mastersolution
 
 target_link_libraries(BoundaryWave_mysolution
  	PUBLIC Eigen3::Eigen
- 	Boost::system
- 	Boost::filesystem
  	LF::lf.base
  	LF::lf.uscalfe
  	LF::lf.mesh
@@ -64,8 +63,6 @@ target_link_libraries(BoundaryWave_mysolution
 
 target_link_libraries(BoundaryWave_template
  	PUBLIC Eigen3::Eigen
- 	Boost::system
- 	Boost::filesystem
  	LF::lf.base
  	LF::lf.uscalfe
  	LF::lf.mesh
@@ -76,8 +73,6 @@ target_link_libraries(BoundaryWave_template
 
 target_link_libraries(BoundaryWave_mastersolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -88,8 +83,6 @@ target_link_libraries(BoundaryWave_mastersolution.solution
 
  target_link_libraries(BoundaryWave_mysolution.solution
  	PUBLIC Eigen3::Eigen
- 	Boost::system
- 	Boost::filesystem
  	LF::lf.base
  	LF::lf.uscalfe
  	LF::lf.mesh
@@ -100,9 +93,6 @@ target_link_libraries(BoundaryWave_mastersolution.solution
 
 #target_link_libraries(BoundaryWave_test_mastersolution
 #	PUBLIC Eigen3::Eigen
-#	Boost::system
-#        Boost::filesystem
-#        Boost::program_options
 #        GTest::main
 #	LF::lf.base
 #	LF::lf.quad
@@ -119,9 +109,6 @@ target_link_libraries(BoundaryWave_mastersolution.solution
 
 #target_link_libraries(BoundaryWave_test_mysolution
 #	PUBLIC Eigen3::Eigen
-#	Boost::system
-#        Boost::filesystem
-#        Boost::program_options
 #        GTest::main
 #	LF::lf.base
 #	LF::lf.quad
