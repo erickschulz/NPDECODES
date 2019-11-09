@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#include <lf/base/base.h>
+#include <lf/quad/quad.h>
+
 #include "test_quad_rules.h"
 
 using namespace TestQuadratureRules;
