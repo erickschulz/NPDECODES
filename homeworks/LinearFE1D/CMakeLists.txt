@@ -36,9 +36,6 @@ add_executable(LinearFE1D_test_mastersolution ${master_test_sources})
 
 target_link_libraries(LinearFE1D_template
 Eigen3::Eigen
-Boost::filesystem
-Boost::system
-Boost::program_options
 LF::lf.mesh
 LF::lf.mesh.utils
 LF::lf.mesh.test_utils
@@ -50,9 +47,6 @@ LF::lf.uscalfe
 
 target_link_libraries(LinearFE1D_mysolution
 Eigen3::Eigen
-Boost::filesystem
-Boost::system
-Boost::program_options
 LF::lf.mesh
 LF::lf.mesh.utils
 LF::lf.mesh.test_utils
@@ -63,9 +57,6 @@ LF::lf.uscalfe
 )
 target_link_libraries(LinearFE1D_mastersolution
 Eigen3::Eigen
-Boost::filesystem
-Boost::system
-Boost::program_options
 LF::lf.mesh
 LF::lf.mesh.utils
 LF::lf.mesh.test_utils
@@ -77,9 +68,6 @@ LF::lf.uscalfe
 
 target_link_libraries(LinearFE1Dmy.solution
 Eigen3::Eigen
-Boost::filesystem
-Boost::system
-Boost::program_options
 LF::lf.mesh
 LF::lf.mesh.utils
 LF::lf.mesh.test_utils
@@ -91,9 +79,6 @@ LF::lf.uscalfe
 
 target_link_libraries(LinearFE1Dmaster.solution
 Eigen3::Eigen
-Boost::filesystem
-Boost::system
-Boost::program_options
 LF::lf.mesh
 LF::lf.mesh.utils
 LF::lf.mesh.test_utils
