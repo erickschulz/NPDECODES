@@ -2,9 +2,6 @@ include(GoogleTest)
 
 set(libraries
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -58,7 +55,7 @@ add_library(ElementMatrixComputation.mastersolution ${mastersolution_sources})
 # use this include directory.
 target_include_directories(ElementMatrixComputation.mastersolution PUBLIC ./mastersolution)
 
-# Link the mastersolution library with all LehrFEM++/boost libraries$
+# Link the mastersolution library with all LehrFEM++ libraries
 # The PUBLIC specifier is used so that all dependent executables/libraries that
 # use this library also link with the `${libraries}`
 target_link_libraries(ElementMatrixComputation.mastersolution PUBLIC ${libraries})
