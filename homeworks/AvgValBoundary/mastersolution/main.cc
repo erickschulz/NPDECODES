@@ -11,10 +11,8 @@
 /* SAM_LISTING_BEGIN_1 */
 int main() {
   // read in mesh and set up finite element space
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR"/meshes/square.msh");
   auto mesh = reader.mesh();
   // obtain dofh for lagrangian finite element space
   auto fe_space =

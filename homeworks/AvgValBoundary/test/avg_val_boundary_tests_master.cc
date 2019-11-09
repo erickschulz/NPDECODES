@@ -1,19 +1,17 @@
 #include <gtest/gtest.h>
-#include <boost/filesystem.hpp>
 #include "../mastersolution/comp_gal_mat.h"
 
 namespace AvgValBoundary::test {
-TEST(AvgValBoundary, TestH1SemiNorm) {
-  // read in mesh and set up finite element space
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
 
+constexpr char mesh_file[] = CURRENT_SOURCE_DIR"/meshes/square.msh";
+
+TEST(AvgValBoundary, TestH1SemiNorm) {
   // constant identity mesh function
   lf::uscalfe::MeshFunctionConstant mf_identity{1.};
 
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
@@ -28,16 +26,12 @@ TEST(AvgValBoundary, TestH1SemiNorm) {
 }
 
 TEST(AvgValBoundary, TestBoundaryFunctional) {
-  // read in mesh and set up finite element space
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
-
   // constant identity mesh function
   lf::uscalfe::MeshFunctionConstant mf_identity{1.};
 
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);

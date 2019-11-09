@@ -19,6 +19,9 @@ set(mastersolution_sources
   mastersolution/main.cc
 )
 
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
+
 set(test_sources
   test/avg_val_boundary_tests.cc
 )
@@ -43,7 +46,7 @@ add_executable(AvgValBoundary_test_mastersolution ${master_test_sources})
 
 
 target_link_libraries(AvgValBoundary_template
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -55,7 +58,7 @@ target_link_libraries(AvgValBoundary_template
 )
 
 target_link_libraries(AvgValBoundary_mysolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -67,7 +70,7 @@ target_link_libraries(AvgValBoundary_mysolution
 )
 
 target_link_libraries(AvgValBoundary_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -79,7 +82,7 @@ target_link_libraries(AvgValBoundary_mastersolution
 )
 
 target_link_libraries(AvgValBoundary.solution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -91,7 +94,7 @@ target_link_libraries(AvgValBoundary.solution
   )
 
 target_link_libraries(AvgValBoundary.mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
