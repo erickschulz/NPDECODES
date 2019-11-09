@@ -57,12 +57,10 @@ target_link_libraries(MaximumPrinciple_template
 
 target_link_libraries(MaximumPrinciple_mastersolution.solution
   PUBLIC Eigen3::Eigen 
-  Boost::system
 )
 
 target_link_libraries(MaximumPrinciple_mysolution.solution
   PUBLIC Eigen3::Eigen 
-  Boost::system
 )
 
 target_link_libraries(MaximumPrinciple_test_mastersolution 
