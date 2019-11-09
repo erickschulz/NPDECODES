@@ -17,8 +17,6 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/refinement/refinement.h>
 
-#include <boost/filesystem.hpp>
-
 #include "../utils/figure.h"
 
 using size_type = lf::base::size_type;
@@ -29,11 +27,8 @@ mgl::Figure fig3;
 
 int main() {
   // read mesh
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square_64.msh";
-
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR"/meshes/square_64.msh");
   auto mesh = reader.mesh();
 
   // refine mesh

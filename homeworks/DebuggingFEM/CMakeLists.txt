@@ -10,6 +10,8 @@ set(mastersolution_sources
   mastersolution/qfe_provider_tester.h
 )
 
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
 set(mastersolution_test_sources
   test/debugging_fem_test_mastersolution.cc
@@ -27,7 +29,7 @@ add_executable(DebuggingFEM_test_mastersolution ${mastersolution_test_sources})
 
 
 target_link_libraries(DebuggingFEM_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -39,7 +41,7 @@ target_link_libraries(DebuggingFEM_mastersolution
 )
 
 target_link_libraries(DebuggingFEM_mastersolution.solution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system Boost::program_options
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
