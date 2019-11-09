@@ -57,6 +57,9 @@ add_executable(NonConformingCrouzeixRaviart_template
   ${template_sources}
 )
 
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
+
 add_library(NonConformingCrouzeixRaviart_mastersolution_lib
   ${mastersolution_sources}
 )
@@ -74,7 +77,7 @@ add_executable(NonConformingCrouzeixRaviart_test_mysolution
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_mastersolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -86,7 +89,7 @@ target_link_libraries(NonConformingCrouzeixRaviart_mastersolution
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_mysolution
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -98,7 +101,7 @@ target_link_libraries(NonConformingCrouzeixRaviart_mysolution
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_template
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -110,7 +113,7 @@ target_link_libraries(NonConformingCrouzeixRaviart_template
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_mastersolution_lib
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -122,7 +125,7 @@ target_link_libraries(NonConformingCrouzeixRaviart_mastersolution_lib
 )
 
 target_link_libraries(NonConformingCrouzeixRaviart_mysolution_lib
-  PUBLIC Eigen3::Eigen Boost::filesystem Boost::system
+  PUBLIC Eigen3::Eigen
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
