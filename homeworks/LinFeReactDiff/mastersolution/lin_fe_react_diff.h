@@ -14,8 +14,6 @@
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <boost/filesystem.hpp>
-
 namespace LinFeReactDiff {
 
 using glb_idx_t = lf::assemble::glb_idx_t;
