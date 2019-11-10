@@ -19,10 +19,11 @@ TEST(LinearFE1D, solution_testA) {
   Vector sol_cor(9);
   sol_cor << 0, 0.0183782, 0.029688, 0.0361259, 0.0592791, 0.0566354, 0.0468281,
       0.0453619, 0;
-
+  
   Vector sol = LinearFE1D::solveA(mesh, gamma, f);
+
   for (int i = 0; i < sol.size(); i++) 
-    EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
+    EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
 }
 
 TEST(LinearFE1D, solution_testB) {
@@ -34,8 +35,10 @@ TEST(LinearFE1D, solution_testB) {
   Vector sol_cor(9);
   sol_cor << 0.1, 0.412824, 0.48503, 0.514233, 0.576841, 0.570645, 0.556138,
       0.554131, 0.5;
-
+  
   Vector sol = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
+  
+  std::cout << "B" << sol << std::endl;
   for (int i = 0; i < sol.size(); i++) 
     EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
