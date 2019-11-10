@@ -18,7 +18,7 @@ typedef Eigen::VectorXd Vector;
 
 namespace LinearFE1D {
 
-// Calculate the matrix entries corresponding to the integral containg alpha
+// Calculate the matrix entries corresponding to the integral containg alpha using composite midpoint rule
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR1>
 std::vector<Triplet> mat_alpha(const Eigen::VectorXd &mesh, FUNCTOR1 alpha) {
@@ -62,6 +62,7 @@ std::vector<Triplet> mat_alpha(const Eigen::VectorXd &mesh, FUNCTOR1 alpha) {
 /* SAM_LISTING_END_1 */
 
 // Calculate the matrix entries corresponding to the integral containg gamma
+// trapezoidal rule
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR1>
 std::vector<Triplet> mat_gamma(const Eigen::VectorXd &mesh, FUNCTOR1 gamma) {
@@ -101,7 +102,7 @@ std::vector<Triplet> mat_gamma(const Eigen::VectorXd &mesh, FUNCTOR1 gamma) {
 // composite trapezoidal rule
 /* SAM_LISTING_BEGIN_3 */
 template <typename FUNCTOR1>
-Eigen::VectorXd rhs_f(const Eigen::VectorXd &mesh, FUNCTOR1 f) {
+Vector rhs_f(const Vector &mesh, FUNCTOR1 f) {
   double dx;
   unsigned M = mesh.size() - 1;
   Vector b = Vector::Zero(M + 1);
@@ -125,8 +126,8 @@ Eigen::VectorXd rhs_f(const Eigen::VectorXd &mesh, FUNCTOR1 f) {
 
 // Calculate the rhs vector corresponding to the integral containg just v
 /* SAM_LISTING_BEGIN_4 */
-Eigen::VectorXd rhs_constant(const Eigen::VectorXd &mesh) {
-  double dx_left, dx_right;
+Vector rhs_constant(const Vector &mesh) {
+  double dx;
   unsigned M = mesh.size() - 1;
   Vector b = Vector::Zero(M + 1);
   // BEGIN-SOLUTION
@@ -136,9 +137,8 @@ Eigen::VectorXd rhs_constant(const Eigen::VectorXd &mesh) {
   b(M) = (mesh(M) - mesh(M - 1)) / 2.;
   // other entries
   for (unsigned i = 1; i < M; ++i) {
-    dx_left = mesh(i) - mesh(i - 1);
-    dx_right = mesh(i + 1) - mesh(i);
-    b(i) = dx_left / 2. + dx_right / 2.;
+    dx = mesh(i+1) - mesh(i-1);
+    b(i) = dx;
   }
 
   // END-SOLUTION
@@ -149,7 +149,7 @@ Eigen::VectorXd rhs_constant(const Eigen::VectorXd &mesh) {
 // Build and solve the LSE corresponding to (A)
 /* SAM_LISTING_BEGIN_A */
 template <typename FUNCTOR1, typename FUNCTOR2>
-Eigen::VectorXd solveA(const Eigen::VectorXd &mesh, FUNCTOR1 gamma,
+Vector solveA(const Vector &mesh, FUNCTOR1 gamma,
                        FUNCTOR2 f) {
   unsigned M = mesh.size() - 1;
   Vector u(M + 1);
@@ -160,7 +160,7 @@ Eigen::VectorXd solveA(const Eigen::VectorXd &mesh, FUNCTOR1 gamma,
   triplets.reserve(2 * M + 1);
 
   /// STEP1: Build the Galerkin matrix A
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   auto alpha = [](double x) { return 1; };
   double tmp_diag, tmp_offd;
   double dx_left, dx_right;
@@ -196,25 +196,25 @@ Eigen::VectorXd solveA(const Eigen::VectorXd &mesh, FUNCTOR1 gamma,
 
   A.setFromTriplets(triplets.begin(), triplets.end());
 
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP2: Build the RHS vector b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   // calculate the rhs entries resulting from the function f
   for (unsigned i = 1; i < M; ++i) {
     dx = mesh(i + 1) - mesh(i - 1);
     b(i - 1) = f(mesh(i)) * 0.5 * dx;
   }
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP3: Enforce dirichlet boundary conditions
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   // as the bcs are homogeneous we don't need to change the entries b(1) and
   // b(M-1) of the rhs vector
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP4: Solve the system Au = b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   Eigen::SimplicialLDLT<SparseMatrix, Eigen::Lower> solver;
   solver.compute(A);
 
@@ -226,7 +226,7 @@ Eigen::VectorXd solveA(const Eigen::VectorXd &mesh, FUNCTOR1 gamma,
   u(M) = 0;
   u.segment(1, M - 1) = solver.solve(b);
 
-  // END-SOLUTION
+  /* SOlUTION_END */
 
   return u;
 }
@@ -235,7 +235,7 @@ Eigen::VectorXd solveA(const Eigen::VectorXd &mesh, FUNCTOR1 gamma,
 // Build an solve the LSE corresponding to (B)
 /* SAM_LISTING_BEGIN_B */
 template <typename FUNCTOR1, typename FUNCTOR2>
-Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
+Vector solveB(const Vector &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
                        double u0, double u1) {
   unsigned M = mesh.size() - 1;
   Vector u(M + 1);
@@ -246,7 +246,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
   triplets.reserve(2 * M + 1);
 
   /// STEP1: Build the Galerkin matrix A
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
 
   double tmp_diag, tmp_offd;
   double dx_left, dx_right;
@@ -268,10 +268,10 @@ Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
     triplets.push_back(Triplet(i - 1, i, tmp_offd));
   }
   A.setFromTriplets(triplets.begin(), triplets.end());
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP2: Build the RHS vector b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
 
   // calculate the rhs entries resulting from the function f
   double dx;
@@ -279,20 +279,20 @@ Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
     dx = mesh(i + 1) - mesh(i - 1);
     b(i - 1) = f(mesh(i)) * 0.5 * dx;
   }
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP3: Enforce dirichlet boundary conditions
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   // Change A and b to enforce non-homogeneous dirichle boundary contions using
   // the offset function technique
   dx_left = mesh(1) - mesh(0);
   b(0) += u0 * alpha((mesh(0) + mesh(1)) / 2.) / dx_left;
   dx_right = mesh(M) - mesh(M - 1);
   b(M - 2) += u1 * alpha((mesh(M - 1) + mesh(M)) / 2.) / dx_right;
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP4: Solve the system Au = b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   Eigen::SimplicialLDLT<SparseMatrix> solver;
   solver.compute(A);
 
@@ -304,7 +304,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
   u(M) = u1;
   u.segment(1, M - 1) = solver.solve(b);
 
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   return u;
 }
@@ -313,7 +313,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd &mesh, FUNCTOR1 alpha, FUNCTOR2 f,
 // Build an solve the LSE corresponding to (C)
 /* SAM_LISTING_BEGIN_C */
 template <typename FUNCTOR1, typename FUNCTOR2>
-Eigen::VectorXd solveC(const Eigen::VectorXd &mesh, FUNCTOR1 alpha,
+Vector solveC(const Vector &mesh, FUNCTOR1 alpha,
                        FUNCTOR2 gamma) {
   unsigned M = mesh.size() - 1;
   Vector u(M + 1);
@@ -324,7 +324,7 @@ Eigen::VectorXd solveC(const Eigen::VectorXd &mesh, FUNCTOR1 alpha,
   triplets.reserve(2 * M + 1);
 
   /// STEP1: Build the Galerkin matrix A
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
 
   // calculate the contributions from the summand with the alpha function
   double tmp_diag, tmp_offd;
@@ -380,10 +380,10 @@ Eigen::VectorXd solveC(const Eigen::VectorXd &mesh, FUNCTOR1 alpha,
   // as we are using the trapezoidal rule we do not get any off-diagonal entries
 
   A.setFromTriplets(triplets.begin(), triplets.end());
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP2: Build the RHS vector b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
 
   // calculate the rhs entries resulting from the function f
   // first and last entry need to be calculated separately
@@ -398,10 +398,10 @@ Eigen::VectorXd solveC(const Eigen::VectorXd &mesh, FUNCTOR1 alpha,
 
   // Since we have newmann boundary conditions we don't need to adapt the LSE to
   // enforce boundary conditions
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   /// STEP3: Solve the system Au = b
-  // BEGIN-SOLUTION
+  /* SOLUTION_BEGIN */
   Eigen::SimplicialLDLT<SparseMatrix> solver;
   solver.compute(A);
 
@@ -411,7 +411,7 @@ Eigen::VectorXd solveC(const Eigen::VectorXd &mesh, FUNCTOR1 alpha,
 
   u = solver.solve(b);
 
-  // END-SOLUTION
+  /* SOLUTION_END */
 
   return u;
 }
