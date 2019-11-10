@@ -13,8 +13,6 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-// Boost includes
-#include <boost/filesystem.hpp>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>

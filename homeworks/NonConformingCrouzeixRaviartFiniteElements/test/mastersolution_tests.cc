@@ -10,7 +10,6 @@
 #include <lf/base/base.h>
 #include <lf/io/io.h>
 #include <lf/mesh/test_utils/test_meshes.h>
-#include <boost/filesystem.hpp>
 #include "../mastersolution/cr_fe_space.h"
 #include "../mastersolution/l2_error_cr_discretization_dirichlet_bvp.h"
 
@@ -98,20 +97,14 @@ TEST(CRFeSpace, Constructor) {
 
 TEST(NonConformingCrouzeixRaviartFiniteElements,
      L2errorCRDiscretizationDirichletBVP) {
-  // Obtain paths to mesh files
-  boost::filesystem::path file_path = __FILE__;
-  auto mesh_dir_path = file_path.parent_path().parent_path() / "meshes";
-
   std::vector<double> l2_errors = {0.0227969, 0.00579489, 0.0014546923,
                                    0.000364046};
 
   // Loop over meshes
   for (int i = 1; i <= 4; ++i) {
-    std::string mesh_path =
-        (mesh_dir_path / ("refined_square" + std::to_string(i) + ".msh"))
-            .string();
+    std::string mesh_file = CURRENT_SOURCE_DIR"/meshes/refined_square" + std::to_string(i) + ".msh";
 
-    EXPECT_FLOAT_EQ(L2errorCRDiscretizationDirichletBVP(mesh_path),
+    EXPECT_FLOAT_EQ(L2errorCRDiscretizationDirichletBVP(mesh_file),
                     l2_errors[i - 1]);
   }
 }

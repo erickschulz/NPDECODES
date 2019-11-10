@@ -6,9 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <boost/assert.hpp>
-
 #include "trans_gal_mat.h"
+
+#include <cassert>
 
 namespace TransformationOfGalerkinMatrices {
 
@@ -27,8 +27,8 @@ std::vector<triplet_t> transformCOOmatrix(const std::vector<triplet_t> &A) {
   int n_rows = rows_max_idx + 1;
   int n_cols = cols_max_idx + 1;
 
-  BOOST_ASSERT_MSG(n_rows == n_cols, "Matrix must be square");
-  BOOST_ASSERT_MSG(n_cols % 2 == 0, "Matrix dimension must be even");
+  assert(n_rows == n_cols);
+  assert(n_cols % 2 == 0);
 
   int N = n_cols;      // Size of (square) matrix
   int M = n_cols / 2;  // Half the size
@@ -68,7 +68,7 @@ std::vector<triplet_t> transformCOOmatrix(const std::vector<triplet_t> &A) {
       A_t.emplace_back((I + 1) / 2 + M - 1, J / 2 - 1, it.value());
       A_t.emplace_back((I + 1) / 2 - 1, J / 2 + M - 1, -it.value());
     } else {
-      BOOST_ASSERT_MSG(false, "Should never get there!");
+      assert(false);
     }
   }
   /* SAM_LISTING_END_1 */

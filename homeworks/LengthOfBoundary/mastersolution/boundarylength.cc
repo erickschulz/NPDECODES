@@ -51,10 +51,8 @@ std::pair<double, double> measureDomain(std::string filename) {
 
   /* BEGIN_SOLUTION */
   // Load mesh into a Lehrfem++ object
-  boost::filesystem::path here = __FILE__;
-  auto mesh_path = here.parent_path().parent_path() / filename;
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), filename);
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader.mesh();
 
   // call the functions we already implemented

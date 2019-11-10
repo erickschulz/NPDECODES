@@ -8,6 +8,8 @@
 
 #include "tee_lapl_robin_assembly.h"
 
+#include <string>
+
 using namespace ErrorEstimatesForTraces;
 
 int main(int /*argc*/, const char ** /*argv*/) {
@@ -17,15 +19,10 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::MatrixXd results(N_meshes, 2);
 
   for (int i = 1; i <= N_meshes; i++) {  // for each mesh
-    std::string idx_str = std::to_string(i);
-
     // Load mesh into a Lehrfem++ object
-    boost::filesystem::path here = __FILE__;
-    std::string filename = "/meshes/hex" + idx_str + ".msh";
-    auto mesh_path = here.parent_path().parent_path() / filename;
+    std::string mesh_file = CURRENT_SOURCE_DIR"/meshes/hex" + std::to_string(i) + ".msh";
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-    const lf::io::GmshReader reader(std::move(mesh_factory),
-                                    mesh_path.string());
+    const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
     auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
     // Finite element space
@@ -45,7 +42,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
     double error = bd_functional_val - 2.081541059732923;
     results(i - 1, 0) = error;
 
-    std::cout << filename;
+    std::cout << mesh_file;
     std::cout << "\t(Ndofs = " << N_dofs;
     std::cout << "):";
     std::cout << std::setprecision(16);

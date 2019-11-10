@@ -7,8 +7,6 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <boost/filesystem.hpp>
-
 namespace TestProblem {
 
 /** @brief trivial function */

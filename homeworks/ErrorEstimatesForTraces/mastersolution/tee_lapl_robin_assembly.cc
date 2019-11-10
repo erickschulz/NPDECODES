@@ -8,6 +8,8 @@
 
 #include "tee_lapl_robin_assembly.h"
 
+#include <cassert>
+
 namespace ErrorEstimatesForTraces {
 
 Eigen::VectorXd solveBVP(
@@ -125,7 +127,7 @@ double bdFunctionalEval(
       edge_length = (endpoints.col(1) - endpoints.col(0)).norm();
       // Find the endpoints global indices
       auto dof_idx = dofh.GlobalDofIndices(*edge);
-      BOOST_ASSERT(dofh.NumLocalDofs(*edge) == 2);
+      assert(dofh.NumLocalDofs(*edge) == 2);
       bd_functional_val +=
           (coeff_vec.coeff(dof_idx[0]) + coeff_vec.coeff(dof_idx[1])) *
           edge_length / 2.0;

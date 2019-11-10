@@ -1,16 +1,14 @@
 #include <gtest/gtest.h>
-#include <boost/filesystem.hpp>
 #include "../mysolution/lin_fe_react_diff.h"
 
-namespace LinFeReactDiff::test
-{
+namespace LinFeReactDiff::test {
+
+constexpr char mesh_file[] = CURRENT_SOURCE_DIR"/meshes/square.msh";
 
 TEST(LinFeReactDiff, TestSolveFe)
 {
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
   Eigen::VectorXd mu = solveFE(mesh);
   ASSERT_NEAR(mu(mu.size() - 1), 0.00254543, 0.00001);
@@ -19,10 +17,8 @@ TEST(LinFeReactDiff, TestSolveFe)
 
 TEST(LinFeReactDiff, TestEnergy)
 {
-  boost::filesystem::path here = __FILE__;
-  auto square_path = here.parent_path().parent_path() / "meshes/square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), square_path.string());
+  lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
 
   // Implementation from solution to not depend on the first task

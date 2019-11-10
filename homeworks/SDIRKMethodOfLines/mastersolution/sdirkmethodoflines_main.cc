@@ -8,6 +8,8 @@
 #include "sdirkmethodoflines.h"
 #include "sdirkmethodoflines_ode.h"
 
+#include <string>
+
 using namespace SDIRKMethodOfLines;
 
 int main(int /*argc*/, char ** /*argv*/)
@@ -33,11 +35,8 @@ int main(int /*argc*/, char ** /*argv*/)
 
   /* SAM_LISTING_BEGIN_1 */
   // Load mesh into a Lehrfem++ object
-  boost::filesystem::path here = __FILE__;
-  std::string filename = "/meshes/square64_bnd.msh";
-  auto mesh_path = here.parent_path().parent_path() / filename;
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), mesh_path.string());
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR"/meshes/square64_bnd.msh");
   auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
 
   // Finite element space

@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include <boost/filesystem.hpp>
-
 #include <mgl2/mgl.h>
 
 namespace SimpleLinearFiniteElements {
@@ -14,12 +12,8 @@ static mglGraph graph;
  * @param filename name of the mesh file
  */
 TriaMesh2D::TriaMesh2D(const std::string &filename) {
-  boost::filesystem::path here = __FILE__;
-  auto filepath =
-      (here.parent_path().parent_path() / ("meshes/" + filename)).string();
-
-  std::ifstream mesh_file(filepath, std::ifstream::in);
-  std::cout << "Load mesh " << filepath << std::endl;
+  std::ifstream mesh_file(filename, std::ifstream::in);
+  std::cout << "Load mesh " << filename << std::endl;
   if (!mesh_file.good()) {
     throw std::runtime_error("Cannot open mesh file! File not found");
     return;

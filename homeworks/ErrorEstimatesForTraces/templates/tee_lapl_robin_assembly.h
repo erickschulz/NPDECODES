@@ -9,12 +9,9 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <string>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <boost/assert.hpp>
-#include <boost/filesystem.hpp>
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>

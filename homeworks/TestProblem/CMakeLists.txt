@@ -23,25 +23,20 @@ set(test_sources
   test/test_problem_tests.cc
 )
 
-add_library(TestProblem.solution ${mysolution_sources})
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
+add_library(TestProblem.solution ${mysolution_sources})
 add_library(TestProblem.mastersolution ${mastersolution_sources})
 
 add_executable(TestProblem_template ${template_sources})
-
 add_executable(TestProblem_mysolution ${mysolution_sources})
-
 add_executable(TestProblem_mastersolution ${mastersolution_sources})
-
 add_executable(TestProblem_test_mysolution ${test_sources})
-
 add_executable(TestProblem_test_mastersolution ${test_sources})
 
 target_link_libraries(TestProblem_template
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -53,9 +48,6 @@ target_link_libraries(TestProblem_template
 
 target_link_libraries(TestProblem_mysolution
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -67,9 +59,6 @@ target_link_libraries(TestProblem_mysolution
 
 target_link_libraries(TestProblem_mastersolution
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -81,9 +70,6 @@ target_link_libraries(TestProblem_mastersolution
 
 target_link_libraries(TestProblem.solution
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
@@ -95,9 +81,6 @@ target_link_libraries(TestProblem.solution
 
 target_link_libraries(TestProblem.mastersolution
   Eigen3::Eigen
-  Boost::filesystem 
-  Boost::system 
-  Boost::program_options
   LF::lf.mesh
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils

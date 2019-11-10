@@ -13,8 +13,6 @@
 #include <memory>
 #include <string>
 
-#include <boost/filesystem.hpp>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>

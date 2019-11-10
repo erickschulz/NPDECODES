@@ -9,8 +9,6 @@
 #include <math.h>
 
 #include <Eigen/Dense>
-#include <boost/assert.hpp>
-#include <boost/math/special_functions/factorials.hpp>
 
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>

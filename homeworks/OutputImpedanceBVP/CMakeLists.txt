@@ -24,7 +24,8 @@ set(template_sources
   templates/evalclass.cc
 )
 
-
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
 # Libraries
 add_library(OutputImpedanceBVP_mastersolution.solution ${mastersolution_sources})
@@ -38,8 +39,6 @@ add_executable(OutputImpedanceBVP_template ${template_sources})
 
 target_link_libraries(OutputImpedanceBVP_mastersolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -50,8 +49,6 @@ target_link_libraries(OutputImpedanceBVP_mastersolution
 
 target_link_libraries(OutputImpedanceBVP_mysolution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -62,8 +59,6 @@ target_link_libraries(OutputImpedanceBVP_mysolution
 
 target_link_libraries(OutputImpedanceBVP_template
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -73,8 +68,6 @@ target_link_libraries(OutputImpedanceBVP_template
 )
 target_link_libraries(OutputImpedanceBVP_mastersolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh
@@ -85,8 +78,6 @@ target_link_libraries(OutputImpedanceBVP_mastersolution.solution
 
 target_link_libraries(OutputImpedanceBVP_mysolution.solution
 	PUBLIC Eigen3::Eigen
-	Boost::system
-	Boost::filesystem
 	LF::lf.base
 	LF::lf.uscalfe
 	LF::lf.mesh

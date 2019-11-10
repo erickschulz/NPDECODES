@@ -18,11 +18,9 @@
 #include <string>
 #include <thread>
 
-// Eigen and boost includes
+// Eigen includes
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <boost/assert.hpp>
-#include <boost/filesystem.hpp>
 #include <unsupported/Eigen/KroneckerProduct>
 
 // Lehrfem++ includes

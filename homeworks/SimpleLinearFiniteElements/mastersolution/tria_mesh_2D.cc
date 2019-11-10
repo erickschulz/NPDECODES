@@ -1,8 +1,7 @@
 #include "simple_linear_finite_elements.h"
 
+#include<fstream>
 #include <iostream>
-
-#include <boost/filesystem.hpp>
 
 namespace SimpleLinearFiniteElements
 {
@@ -13,12 +12,8 @@ namespace SimpleLinearFiniteElements
  */
 TriaMesh2D::TriaMesh2D(const std::string &filename)
 {
-  boost::filesystem::path here = __FILE__;
-  auto filepath =
-      (here.parent_path().parent_path() / ("meshes/" + filename)).string();
-
-  std::ifstream mesh_file(filepath, std::ifstream::in);
-  std::cout << "Load mesh " << filepath << std::endl;
+  std::ifstream mesh_file(filename, std::ifstream::in);
+  std::cout << "Load mesh " << filename << std::endl;
   if (!mesh_file.good())
   {
     throw std::runtime_error("Cannot open mesh file! File not found");
