@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.10)
 project(homeworks)
 
 add_subdirectory(AvgValBoundary)
-add_subdirectory(hello)
-add_subdirectory(world)
 add_subdirectory(DebuggingFEM)
 add_subdirectory(ElementMatrixComputation)
 add_subdirectory(TestProblem)
