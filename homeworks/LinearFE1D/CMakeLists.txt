@@ -6,7 +6,7 @@ mastersolution/linearfe1d_main.cc
 )
 
 set(master_test_sources
-test/master_tests.cc
+test/linearfe1d_test_mastersolution.cc
 )
 
 
