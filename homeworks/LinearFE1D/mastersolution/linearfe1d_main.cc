@@ -1,12 +1,12 @@
 /**
  * @ file LinearFE1D.cc
  * @ brief NPDE homework LinearFE1D code
- * @ author Christian Mitsch
- * @ date 01.03.2019
+ * @ author Christian Mitsch, Amélie Loher
+ * @ date 11.11.2019
  * @ copyright Developed at ETH Zurich
  */
 
-#include "solve_LinearFE1D.h"
+#include "linearfe1d.h"
 
 int main() {
   // There is no main function to be implemented in this exercise but feel free
@@ -14,7 +14,7 @@ int main() {
 
   // BEGIN_SOLUTION
   // Vector mesh = Vector::LinSpaced(11, 0., 1.);
-  Vector mesh(9);
+  Eigen::VectorXd mesh(9);
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
   auto alpha = [](double x) { return x; };
   auto f = [](double x) { return x; };
