@@ -6,7 +6,7 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include "solve_LinearFE1D.h"
+#include "linearfe1d.h"
 
 int main() {
   // There is no main function to be implemented in this exercise but feel free
@@ -19,7 +19,7 @@ int main() {
   auto alpha = [](double x) { return x; };
   auto f = [](double x) { return x; };
   auto gamma = [](double x) { return x; };
-  Eigen::VectorXd uA, uB, uC;
+  Vector uA, uB, uC;
   uA = LinearFE1D::solveA(mesh, gamma, f);
   uB = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
   uC = LinearFE1D::solveC(mesh, alpha, gamma);
