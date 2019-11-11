@@ -6,14 +6,16 @@
  * @ copyright Developed at ETH Zurich
  */
 
+/* This problem does not rely on Lehrfempp. It is solely based on the
+library Eigen. As the computational domain is simply the 1D interval
+(0,1), the mesh is stored as a vector whose entries are the
+coordinates of the nodes (i.e. the distance of the node from origin 0.0).
+*/
+
 #include "linearfe1d.h"
 
 int main() {
-  // There is no main function to be implemented in this exercise but feel free
-  // to use this main to call and test your function
-
-  // BEGIN_SOLUTION
-  // Vector mesh = Vector::LinSpaced(11, 0., 1.);
+  // SOLVING BVP (A), (B) and (C)
   Eigen::VectorXd mesh(9);
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
   auto alpha = [](double x) { return x; };
@@ -24,16 +26,36 @@ int main() {
   uB = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
   uC = LinearFE1D::solveC(mesh, alpha, gamma);
 
-  std::cout << "solveA:" << std::endl;
-  std::cout << uA << std::endl;
-  std::cout << "solveB:" << std::endl;
-  std::cout << uB << std::endl;
-  std::cout << "solveC:" << std::endl;
-  std::cout << uC << std::endl;
-
-  // END_SOLUTION
-
-  std::cout
-      << "You can use this main file to call the function LinearFE1D::solveB"
-      << std::endl;
+  // PRINTING RESULTS TO.csv FILE
+  // Defining CSV output file format
+  const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
+                                         Eigen::DontAlignCols, ", ", "\n");
+  std::ofstream ofs;
+  // Printing results to file for problem (A)
+  std::string filename = "uA.csv";
+  ofs.open(filename.c_str());
+  if (ofs.is_open()) {
+    ofs << uA.format(CSVFormat);
+  }
+  ofs.close();
+  if (ofs.is_open()) {
+    std::cout << "File uA.csv was not properly closed." << std::endl;
+  }
+  // Printing results to file for problem (B)
+  filename = "uB.csv";
+  ofs.open(filename.c_str());
+  if (ofs.is_open()) {
+    ofs << uB.format(CSVFormat);
+  }
+  ofs.close();
+  if (ofs.is_open()) {
+    std::cout << "File uB.csv was not properly closed." << std::endl;
+  }
+  // Printing results to file for problem (C)
+  filename = "uC.csv";
+  ofs.open(filename.c_str());
+  if (ofs.is_open()) {
+    ofs << uC.format(CSVFormat);
+  }
+  ofs.close();
 }
