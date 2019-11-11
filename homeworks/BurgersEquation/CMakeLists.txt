@@ -11,8 +11,9 @@ set(mastersolution_sources
   mastersolution/burgersequation.h
   mastersolution/burgersequation.cc
 )
-configure_file(mastersolution/plot_solution.py plot_solution_mastersolution.py COPYONLY)
-configure_file(mastersolution/plot_error.py plot_error_mastersolution.py COPYONLY)
+
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
 set(mysolution_sources
   mysolution/burgersequation_main.cc
