@@ -1,16 +1,6 @@
 /**
  * @ file master_tests.cc
  * @ brief NPDE homework LinearFE1D code
-<<<<<<< HEAD
- * @ author Christian Mitsch
- * @ date 01.03.2019
- * @ copyright Developed at ETH Zurich
- */
-
-#include <gtest/gtest.h>
-#include "../mastersolution/linearfe1d.h"
-
-=======
  * @ author Christian Mitsch, Amélie Loher
  * @ date 11.11.2019
  * @ copyright Developed at ETH Zurich
@@ -20,23 +10,10 @@
 
 #include <gtest/gtest.h>
 
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
 // Test the solver functions
 TEST(LinearFE1D, solution_testA) {
   auto gamma = [](double x) { return x; };
   auto f = [](double x) { return x; };
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
-
-  Vector sol_cor(9);
-  sol_cor << 0, 0.0183782, 0.029688, 0.0361259, 0.0592791, 0.0566354, 0.0468281,
-      0.0453619, 0;
-
-  Vector sol = LinearFE1D::solveA(mesh, gamma, f);
-  for (int i = 0; i < sol.size(); i++) 
-    EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
 
@@ -50,36 +27,11 @@ TEST(LinearFE1D, solution_testA) {
 
   for (int i = 0; i < sol.size(); i++) 
     EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
 }
 
 TEST(LinearFE1D, solution_testB) {
   auto alpha = [](double x) { return x; };
   auto f = [](double x) { return x; };
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
-
-  Vector sol_cor(9);
-  sol_cor << 0.1, 0.412824, 0.48503, 0.514233, 0.576841, 0.570645, 0.556138,
-      0.554131, 0.5;
-
-  Vector sol = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
-  for (int i = 0; i < sol.size(); i++) 
-    EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
-}
-TEST(LinearFE1D, solution_testC) {
-  auto alpha = [](double x) { return x; };
-  auto gamma = [](double x) { return x; };
-  Vector mesh(9);
-  mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
-
-  Vector sol_cor(9);
-  sol_cor << 2.42215, 2.30215, 2.23596, 2.19856, 2.04132, 1.96425, 1.94288,
-      1.941, 1.92054;
-
-  Vector sol = LinearFE1D::solveC(mesh, alpha, gamma);
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
 
@@ -108,7 +60,6 @@ TEST(LinearFE1D, solution_testC) {
   
   std::cout << "C" << sol << std::endl;
   
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
   for (int i = 0; i < sol.size(); i++) 
     EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
@@ -117,18 +68,6 @@ TEST(LinearFE1D, solution_testC) {
 //TODO: Implement tests for auxillary functions
 TEST(LinearFE1D, test_mat_alpha) {
 
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
-  auto alpha = [](double x) { return x; };
-
-  std::vector<Triplet> alpha_triplets = LinearFE1D::mat_alpha(mesh, alpha);
-  SparseMatrix A(9,9);
-  A.setFromTriplets(alpha_triplets.begin(), alpha_triplets.end());
-  //std::cout << A << std::endl;
-  
-  SparseMatrix A_cor(9,9); 
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
   auto alpha = [](double x) { return x; };
@@ -139,7 +78,6 @@ TEST(LinearFE1D, test_mat_alpha) {
   //std::cout << A << std::endl;
   
   Eigen::SparseMatrix<double> A_cor(9,9); 
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
 
   A_cor.insert(0,0) = 0.5; A_cor.insert(0,1) = -0.5;
   A_cor.insert(1,1) = 2.5; A_cor.insert(1,0) = -0.5; A_cor.insert(1,2) = -2.;
@@ -169,19 +107,6 @@ TEST(LinearFE1D, test_mat_alpha) {
 
 TEST(LinearFE1D, test_mat_gamma) {
 
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
-  auto gamma = [](double x) { return x; };
-
-  std::vector<Triplet> gamma_triplets = LinearFE1D::mat_gamma(mesh, gamma);
-  //maybe build the sparse matrix for easier testing
-  SparseMatrix M(9,9);
-  M.setFromTriplets(gamma_triplets.begin(), gamma_triplets.end());
-  //std::cout << M << std::endl;
-  
-  SparseMatrix M_cor(9,9);
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
   auto gamma = [](double x) { return x; };
@@ -193,7 +118,6 @@ TEST(LinearFE1D, test_mat_gamma) {
   //std::cout << M << std::endl;
   
   Eigen::SparseMatrix<double> M_cor(9,9);
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
 
   M_cor.insert(0,0) = 0.;
   M_cor.insert(1,1) = 0.012;
@@ -211,16 +135,6 @@ TEST(LinearFE1D, test_mat_gamma) {
 
 TEST(LinearFE1D, test_rhs_f) {
 
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
-  auto f = [](double x) { return x; };
-
-  Vector rhs_vector = LinearFE1D::rhs_f(mesh, f);
-  //std::cout << rhs_vector << std::endl;
-  
-  Vector rhs_cor(9);
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
   auto f = [](double x) { return x; };
@@ -229,7 +143,6 @@ TEST(LinearFE1D, test_rhs_f) {
   //std::cout << rhs_vector << std::endl;
   
   Eigen::VectorXd rhs_cor(9);
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
   rhs_cor << 0., 0.012, 0.013, 0.0375, 0.1125, 0.1015, 0.0395, 0.084, 0.1;
 
   for(int i = 0; i < rhs_vector.size(); ++i) {
@@ -240,16 +153,6 @@ TEST(LinearFE1D, test_rhs_f) {
 
 TEST(LinearFE1D, test_rhs_constant) {
 
-<<<<<<< HEAD
-  Vector mesh(9);
-  mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
-  auto f = [](double x) { return x; };
-
-  Vector rhs_vector = LinearFE1D::rhs_constant(mesh);
-  //std::cout << rhs_vector << std::endl;
-
-  Vector rhs_cor(9);
-=======
   Eigen::VectorXd mesh(9);
   mesh << 0.0 , 0.12 , 0.2, 0.25, 0.5, 0.7, 0.79, 0.80 ,1.0;
   auto f = [](double x) { return x; };
@@ -258,7 +161,6 @@ TEST(LinearFE1D, test_rhs_constant) {
   //std::cout << rhs_vector << std::endl;
 
   Eigen::VectorXd rhs_cor(9);
->>>>>>> c7251ba0f5e9d9253641e5b87e3b21652db4f278
   rhs_cor << 0.06, 0.2, 0.13, 0.3, 0.45, 0.29, 0.1, 0.21, 0.1;
 
   for(int i = 0; i < rhs_vector.size(); ++i) {
@@ -266,4 +168,3 @@ TEST(LinearFE1D, test_rhs_constant) {
   }
 
 }
-
