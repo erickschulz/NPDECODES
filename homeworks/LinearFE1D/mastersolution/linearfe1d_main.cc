@@ -36,6 +36,7 @@ int main() {
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uA.format(CSVFormat);
+    std::cout << "Components of uA were written to uA.csv" << std::endl;
   }
   ofs.close();
   if (ofs.is_open()) {
@@ -46,6 +47,7 @@ int main() {
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uB.format(CSVFormat);
+    std::cout << "Components of uB were written to uB.csv" << std::endl;
   }
   ofs.close();
   if (ofs.is_open()) {
@@ -56,6 +58,7 @@ int main() {
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uC.format(CSVFormat);
+    std::cout << "Components of uC were written to uC.csv" << std::endl;
   }
   ofs.close();
 }

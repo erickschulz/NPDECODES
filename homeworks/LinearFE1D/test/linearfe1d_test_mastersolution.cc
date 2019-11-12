@@ -68,7 +68,7 @@ TEST(LinearFE1D, test_mat_alpha) {
   auto alpha = [](double x) { return x; };
 
   std::vector<Eigen::Triplet<double>> alpha_triplets =
-      LinearFE1D::computeALap(mesh, alpha);
+      LinearFE1D::computeA(mesh, alpha);
   Eigen::SparseMatrix<double> A(9, 9);
   A.setFromTriplets(alpha_triplets.begin(), alpha_triplets.end());
   // std::cout << A << std::endl;
@@ -122,7 +122,7 @@ TEST(LinearFE1D, test_mat_gamma) {
   auto gamma = [](double x) { return x; };
 
   std::vector<Eigen::Triplet<double>> gamma_triplets =
-      LinearFE1D::computeMassMatrix(mesh, gamma);
+      LinearFE1D::computeM(mesh, gamma);
   // maybe build the sparse matrix for easier testing
   Eigen::SparseMatrix<double> M(9, 9);
   M.setFromTriplets(gamma_triplets.begin(), gamma_triplets.end());
@@ -149,7 +149,7 @@ TEST(LinearFE1D, test_rhs_f) {
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
   auto f = [](double x) { return x; };
 
-  Eigen::VectorXd rhs_vector = LinearFE1D::rhs_f(mesh, f);
+  Eigen::VectorXd rhs_vector = LinearFE1D::computeRHS(mesh, f);
   // std::cout << rhs_vector << std::endl;
 
   Eigen::VectorXd rhs_cor(9);
@@ -165,7 +165,9 @@ TEST(LinearFE1D, test_rhs_constant) {
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
   auto f = [](double x) { return x; };
 
-  Eigen::VectorXd rhs_vector = LinearFE1D::rhs_constant(mesh);
+  Eigen::VectorXd rhs_vector =
+      LinearFE1D::computeRHS(mesh, [](double) -> double { return 1.0; });
+  // Eigen::VectorXd rhs_vector = LinearFE1D::rhs_constant(mesh);
   // std::cout << rhs_vector << std::endl;
 
   Eigen::VectorXd rhs_cor(9);
