@@ -93,25 +93,8 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   Eigen::SparseMatrix<double> M = getM_full(N, h).block(0, 0, N, N);
   // Matrix for returning solution
   Eigen::MatrixXd R(m + 1, N + 1);
-  Eigen::VectorXd mu = Eigen::VectorXd::Zero(N);   // = mu^(0)
-  Eigen::VectorXd nu = Eigen::VectorXd::Zero(N);   // = nu^(-1/2)
-  Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);  // = phi(t_0)
-  // Universally zero initial conditions make it possible to skip
-  // the special initial step usually required for leapfrog. 
-  double tau = T / m;  // Timestep size
-  // The diagonal matrix to be "inverted" in each timestep
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver(1.0 / tau * M + 0.5 * B);
-  for (int j = 0; j < m; ++j) {
-    R.row(j).head(N) = mu.transpose();
-    phi(N - 1) = c / h * g(j * tau);
-    nu = solver.solve(-A * mu + (1.0 / tau * M - 0.5 * B) * nu + phi);
-    mu = mu + tau * nu;
-  }
-  R.row(m).head(N) = mu.transpose();
-
-  for (int i = 0; i < m + 1; ++i) {
-    R(i, N) = g(i * tau);
-  }
+    // Your Code goes here:
+    // Fill the matrix R.
 
   return R;
 }
@@ -130,17 +113,8 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> computeEnergies(
   Eigen::VectorXd E_pot(m + 1);
   Eigen::VectorXd E_kin(m);
 
-  Eigen::VectorXd mu0;
-  Eigen::VectorXd mu1 = full_solution.row(0).transpose();
-  for (int j = 0; j < m; ++j) {
-    mu0.swap(mu1);
-    E_pot(j) = 0.5 * mu0.dot(A * mu0);
-    mu1 = full_solution.row(j + 1).transpose();
-
-    Eigen::VectorXd nu = (mu1 - mu0) / tau;
-    E_kin(j) = 0.5 * nu.dot(M * nu);
-  }
-  E_pot(m) = 0.5 * mu1.dot(A * mu1);
+    // Your Code goes here:
+    // Fill the vectors E_pot and E_kin.
 
   return std::make_pair(E_pot, E_kin);
 }

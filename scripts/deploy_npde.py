@@ -69,7 +69,8 @@ def deploy(filename, indir, outdir,
 
         cmd.append(indir + filename)
 
-        print("Preparing templates for '{}'".format(filename))
+        print("Preparing " + outdir.split('/')[-2] + " for '{}'".format(filename))
+        # print("Preparing templates/ for '{}'".format(filename))
         print(" ".join(cmd))
 
         f = open(outdir + filename, "w")
@@ -103,19 +104,25 @@ def is_hpp(file):
     return file.split(".")[-1] in ["hpp", "h"]
 
 
-def generate_templates(problem_dir):
+def generate_templates_and_mysolution(problem_dir):
     """
-    First create templates directory
-    then copy the cpp/hpp files in mastersolution to templates folder
+    First create templates and mysolution directory,
+    then copy the cpp/hpp files in "mastersolution_tagged" to them
+    (remove "#if SOLUTION" block, that is, -DSOLUTION=0).
+    Then create "mastersolution" directory, copy the files in "mastersolution_tagged" with the solution(-DSOLUTION=1)
 
     :param problem_dir: "../homeworks/problem_name/"
     """
     mkdir(problem_dir + "templates/")  # "../homeworks/problem_name/templates"
-    fileInMastersolution = os.listdir(problem_dir + 'mastersolution/')
+    mkdir(problem_dir + "mysolution/")
+    mkdir(problem_dir + "mastersolution/")
+    fileInMastersolution = os.listdir(problem_dir + 'mastersolution_tagged/')
     for file in fileInMastersolution:
-        file_path = problem_dir + 'mastersolution/' + file
+        file_path = problem_dir + 'mastersolution_tagged/' + file
+        deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mastersolution/', True)
         if is_cpp(file_path) or is_hpp(file_path):
-            deploy(file, problem_dir + 'mastersolution/', problem_dir + 'templates/', False)
+            deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'templates/', False)
+            deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mysolution/', False)
 
 
 def parse_json(filename):
@@ -138,9 +145,12 @@ def parse_json(filename):
 
     print("Looking for files in '{}'".format(assignment_dir))
 
-    for problem in obj["ProblemSheets"]:
+    for problem in obj["Problems"]:
+        # for every problem folder, rename the "mastersolution" to "mastersolution_tagged" (if not exists)
         problem_dir = assignment_dir + problem
-        generate_templates(problem_dir)
+        if not os.path.exists(problem_dir + "mastersolution_tagged"):
+            os.rename(problem_dir + "mastersolution", problem_dir + "mastersolution_tagged")
+        generate_templates_and_mysolution(problem_dir)
 
 
 if __name__ == "__main__":
