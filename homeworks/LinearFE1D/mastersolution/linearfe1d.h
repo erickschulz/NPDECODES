@@ -221,11 +221,12 @@ Eigen::VectorXd solveB(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   /* SOLUTION_BEGIN */
   // Proceeding as in solveA, we begin by dropping the first and last rows
   // and columns of the galerkin matrix. The rhs_vec needs to be modified to
-  // account for the non-homegenous Dirichlet boundary conditions
+  // account for the non-homegenous Dirichlet boundary conditions. It is
+  // modified using an offset function.
   Eigen::SparseMatrix<double> A_reduced = A.block(1, 1, N - 1, N - 1);
-  Eigen::VectorXd rhs_vec_reduced = rhs_vec.segment(1, N - 1);
-  rhs_vec_reduced = rhs_vec_reduced - A.block(1, 0, N - 1, 1) * u0 -
-                    A.block(1, N, N - 1, 1) * u1;
+  Eigen::VectorXd rhs_vec_reduced = rhs_vec.segment(1, N - 1) -
+                                    A.block(1, 0, N - 1, 1) * u0 -
+                                    A.block(1, N, N - 1, 1) * u1;
   /* SOLUTION_END */
 
   // IV. Solve the LSE A*u = rhs_vec using an Eigen solver
@@ -243,7 +244,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   u(0) = u0;  // left boundary node
   u(N) = u1;  // right boundary node
   return u;
-} // solveB
+}  // solveB
 
 // Build an sol!ve the LSE corresponding to (C)
 /* SAM_LISTING_BEGIN_C */
@@ -290,7 +291,7 @@ Eigen::VectorXd solveC(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   /* SOLUTION_END */
 
   return u;
-} // solveC
+}  // solveC
 /* SAM_LISTING_END_C */
 
 }  // namespace LinearFE1D

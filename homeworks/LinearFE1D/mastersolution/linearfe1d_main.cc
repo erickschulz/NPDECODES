@@ -19,7 +19,7 @@ int main() {
   Eigen::VectorXd mesh(9);
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
   auto alpha = [](double x) { return x; };
-  auto f = [](double x) { return x; };
+  auto f = [](double x) { return 1.0; };
   auto gamma = [](double x) { return x; };
   Eigen::VectorXd uA, uB, uC;
   uA = LinearFE1D::solveA(mesh, gamma, f);
