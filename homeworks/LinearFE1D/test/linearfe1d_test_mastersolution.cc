@@ -25,7 +25,8 @@ TEST(LinearFE1D, solution_testA) {
 
   std::cout << "A" << sol << std::endl;
 
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++) 
+	  EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
 }
 
 TEST(LinearFE1D, solution_testB) {
@@ -41,7 +42,8 @@ TEST(LinearFE1D, solution_testB) {
   Eigen::VectorXd sol = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
 
   std::cout << "B" << sol << std::endl;
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++) 
+	  EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
 
 TEST(LinearFE1D, solution_testC) {
@@ -51,14 +53,15 @@ TEST(LinearFE1D, solution_testC) {
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
 
   Eigen::VectorXd sol_cor(9);
-  sol_cor << 4.3481, 4.2281, 4.12347, 4.05999, 3.77105, 3.61799, 3.57185,
-      3.56757, 3.51175;
+  sol_cor << 2.12211, 2.11491, 2.10414, 2.09553, 2.03461, 1.98665, 1.97017,
+      1.96861, 1.94962;
 
   Eigen::VectorXd sol = LinearFE1D::solveC(mesh, alpha, gamma);
 
   std::cout << "C" << sol << std::endl;
 
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++) 
+	  EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
 
 // TODO: Implement tests for auxillary functions
@@ -102,14 +105,14 @@ TEST(LinearFE1D, test_mat_alpha) {
   A_cor.insert(8, 7) = -4.5;
 
   /*A_cor << 0.5, -0.5, 0, 0, 0, 0, 0, 0, 0,
-                        -0.5, 2.5, -2., 0, 0, 0, 0, 0, 0,
-                         0, -2., 6.5, -4.5, 0, 0, 0, 0, 0,
-                     0, 0, -4.5, 6, -1.5, 0, 0, 0, 0, 0,
-                         0, 0, 0, -1.5, 4.5, -3., 0, 0, 0,
-                         0, 0, 0, 0, -3., 11.27778, -8.27778, 0, 0,
-                         0, 0, 0, 0, 0, -8.27778, 87.77778, -79.5, 0,
-                         0, 0, 0, 0, 0, 0, -79.5, 84, -4.5,
-                         0, 0, 0, 0, 0, 0, 0, -4.5, 4.5;
+            -0.5, 2.5, -2., 0, 0, 0, 0, 0, 0,
+             0, -2., 6.5, -4.5, 0, 0, 0, 0, 0,
+			 0, 0, -4.5, 6, -1.5, 0, 0, 0, 0, 0,
+             0, 0, 0, -1.5, 4.5, -3., 0, 0, 0,
+			 0, 0, 0, 0, -3., 11.27778, -8.27778, 0, 0,
+             0, 0, 0, 0, 0, -8.27778, 87.77778, -79.5, 0,
+			 0, 0, 0, 0, 0, 0, -79.5, 84, -4.5,
+             0, 0, 0, 0, 0, 0, 0, -4.5, 4.5;
   */
 
   double error = (A_cor - A).norm();
@@ -160,20 +163,3 @@ TEST(LinearFE1D, test_rhs_f) {
   }
 }
 
-TEST(LinearFE1D, test_rhs_constant) {
-  Eigen::VectorXd mesh(9);
-  mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
-  auto f = [](double x) { return x; };
-
-  Eigen::VectorXd rhs_vector =
-      LinearFE1D::computeRHS(mesh, [](double) -> double { return 1.0; });
-  // Eigen::VectorXd rhs_vector = LinearFE1D::rhs_constant(mesh);
-  // std::cout << rhs_vector << std::endl;
-
-  Eigen::VectorXd rhs_cor(9);
-  rhs_cor << 0.06, 0.2, 0.13, 0.3, 0.45, 0.29, 0.1, 0.21, 0.1;
-
-  for (int i = 0; i < rhs_vector.size(); ++i) {
-    EXPECT_NEAR(rhs_vector(i), rhs_cor(i), 1e-5);
-  }
-}
