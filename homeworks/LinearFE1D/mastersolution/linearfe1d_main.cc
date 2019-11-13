@@ -15,16 +15,23 @@ coordinates of the nodes (i.e. the distance of the node from origin 0.0).
 #include "linearfe1d.h"
 
 int main() {
-  // SOLVING BVP (A), (B) and (C)
-  Eigen::VectorXd mesh(9);
-  mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
-  auto alpha = [](double x) { return x; };
-  auto f = [](double x) { return 1.0; };
-  auto gamma = [](double x) { return x; };
+  // Creating a 1D mesh of the interval (0,1)
+  int N = 100;                  // nb. of cells
+  Eigen::VectorXd mesh(N + 1);  // nb. of nodes
+  // Nodes are equally spaced
+  for (int i = 0; i < N + 1; i++) {
+    mesh[i] = i * (1.0 / N);
+  }
+ 
+  // Constant and variable parameters
+  auto identity = [](double x) { return x; };
+  auto const_one = [](double x) { return 1.0; };
+
+  // Solving the BVPs
   Eigen::VectorXd uA, uB, uC;
-  uA = LinearFE1D::solveA(mesh, gamma, f);
-  uB = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
-  uC = LinearFE1D::solveC(mesh, alpha, gamma);
+  uA = LinearFE1D::solveA(mesh, identity, const_one);
+  uB = LinearFE1D::solveB(mesh, identity, const_one, 0.1, 0.5);
+  uC = LinearFE1D::solveC(mesh, identity, identity);
 
   // PRINTING RESULTS TO.csv FILE
   // Defining CSV output file format

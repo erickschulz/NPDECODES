@@ -23,7 +23,7 @@ TEST(LinearFE1D, solution_testA) {
 
   Eigen::VectorXd sol = LinearFE1D::solveA(mesh, gamma, f);
 
-  std::cout << "A" << sol << std::endl;
+  //std::cout << "A" << sol << std::endl;
 
   for (int i = 0; i < sol.size(); i++) 
 	  EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
@@ -41,7 +41,7 @@ TEST(LinearFE1D, solution_testB) {
 
   Eigen::VectorXd sol = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
 
-  std::cout << "B" << sol << std::endl;
+  //std::cout << "B" << sol << std::endl;
   for (int i = 0; i < sol.size(); i++) 
 	  EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
@@ -58,7 +58,7 @@ TEST(LinearFE1D, solution_testC) {
 
   Eigen::VectorXd sol = LinearFE1D::solveC(mesh, alpha, gamma);
 
-  std::cout << "C" << sol << std::endl;
+  //std::cout << "C" << sol << std::endl;
 
   for (int i = 0; i < sol.size(); i++) 
 	  EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
