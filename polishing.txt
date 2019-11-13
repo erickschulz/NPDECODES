@@ -5,9 +5,6 @@ CHAPTER 1
 
 CHAPTER 2
 
-LengthOfBoundary
-TestQuadratureRules
-TransformationOfGalerkinMatrices
 
 CHAPTER 3
 
