@@ -1,38 +1,15 @@
-include(GoogleTest)
+# Name this problem the same name as the containing folder.
+get_filename_component(PROBLEM_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+message(STATUS "Processing ${PROBLEM_NAME}")
 
-set(mastersolution_sources
-  mastersolution/1dwaveabsorbingbc_main.cc
-  mastersolution/1dwaveabsorbingbc.h
-  mastersolution/1dwaveabsorbingbc.cc
-)
-configure_file(mastersolution/viswave.py viswave_mastersolution.py COPYONLY)
-configure_file(mastersolution/visenergies.py visenergies_mastersolution.py COPYONLY)
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
-set(mastersolution_test_sources
-  test/1dwaveabsorbingbc_test_mastersolution.cc
-)
+# Provides a variable CURRENT_BINARY_DIR containing the path to the binary output directory.
+add_definitions(-DCURRENT_BINARY_DIR=\"${CMAKE_BINARY_SOURCE_DIR}\")
 
-# Libraries
-add_library(1DWaveAbsorbingBC_mastersolution.solution ${mastersolution_sources})
+# Provides build_problem(...) and build_test(...)
+include(build_rules.cmake)
 
-# Executables
-add_executable(1DWaveAbsorbingBC_mastersolution ${mastersolution_sources})
-add_executable(1DWaveAbsorbingBC_test_mastersolution ${mastersolution_test_sources})
-
-
-# Linking
-target_link_libraries(1DWaveAbsorbingBC_mastersolution
-	PUBLIC Eigen3::Eigen
-)
-
-target_link_libraries(1DWaveAbsorbingBC_mastersolution.solution
-  PUBLIC Eigen3::Eigen 
-)
-
-target_link_libraries(1DWaveAbsorbingBC_test_mastersolution 
-	PUBLIC Eigen3::Eigen	
-	GTest::gtest_main
-	1DWaveAbsorbingBC_mastersolution.solution
-)
-
-gtest_discover_tests(1DWaveAbsorbingBC_test_mastersolution)
+build_problem(${PROBLEM_NAME} mastersolution)
+build_test(${PROBLEM_NAME} mastersolution)

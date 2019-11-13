@@ -67,3 +67,7 @@ add_subdirectory(lecturecodes)
 add_custom_target(test_master
     COMMAND ${CMAKE_SOURCE_DIR}/scripts/run-tests.sh
 )
+
+add_custom_target(templates
+    COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/deploy_npde.py
+)

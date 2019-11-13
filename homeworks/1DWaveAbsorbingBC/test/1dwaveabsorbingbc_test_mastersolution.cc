@@ -8,7 +8,11 @@
 
 #include <gtest/gtest.h>
 
+#if 1
 #include "../mastersolution/1dwaveabsorbingbc.h"
+#else
+#include "../mysolution/1dwaveabsorbingbc.h"
+#endif
 
 #include <Eigen/Core>
 

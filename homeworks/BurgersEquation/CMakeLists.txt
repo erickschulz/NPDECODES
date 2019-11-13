@@ -1,37 +1,15 @@
-include(GoogleTest)
+# Name this problem the same name as the containing folder.
+get_filename_component(PROBLEM_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+message(STATUS "Processing ${PROBLEM_NAME}")
 
-set(mastersolution_sources
-  mastersolution/burgersequation_main.cc
-  mastersolution/burgersequation.h
-  mastersolution/burgersequation.cc
-)
-configure_file(mastersolution/plot_solution.py plot_solution_mastersolution.py COPYONLY)
-configure_file(mastersolution/plot_error.py plot_error_mastersolution.py COPYONLY)
+# Provides a variable CURRENT_SOURCE_DIR containing the path to this CMakeLists.txt file.
+add_definitions(-DCURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\")
 
-set(mastersolution_test_sources
-  test/burgersequation_test_mastersolution.cc
-)
+# Provides a variable CURRENT_BINARY_DIR containing the path to the binary output directory.
+add_definitions(-DCURRENT_BINARY_DIR=\"${CMAKE_BINARY_SOURCE_DIR}\")
 
-# Executables
-add_executable(BurgersEquation_mastersolution ${mastersolution_sources})
-add_executable(BurgersEquation_test_mastersolution ${mastersolution_test_sources})
+# Provides build_problem(...) and build_test(...)
+include(build_rules.cmake)
 
-# Libraries
-add_library(BurgersEquation_mastersolution.solution ${mastersolution_sources})
-
-# Linking
-target_link_libraries(BurgersEquation_mastersolution
-	PUBLIC Eigen3::Eigen
-)
-
-target_link_libraries(BurgersEquation_mastersolution.solution
-  PUBLIC Eigen3::Eigen
-)
-
-target_link_libraries(BurgersEquation_test_mastersolution 
-	PUBLIC Eigen3::Eigen	
-	GTest::gtest_main
-	BurgersEquation_mastersolution.solution
-)
-
-gtest_discover_tests(BurgersEquation_test_mastersolution)
+build_problem(${PROBLEM_NAME} mastersolution)
+build_test(${PROBLEM_NAME} mastersolution)
