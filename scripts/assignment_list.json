@@ -2,7 +2,7 @@
     "working_dir" : "./",
     "assignment_dir" : "../homeworks",
 
-    "ProblemSheets" :
+    "Problems" :
     [
         "1DWaveAbsorbingBC/",
         "BurgersEquation/"
