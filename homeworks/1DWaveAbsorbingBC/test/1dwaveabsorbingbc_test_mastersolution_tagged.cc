@@ -8,10 +8,10 @@
 
 #include <gtest/gtest.h>
 
-#if 1
-#include "../mastersolution/1dwaveabsorbingbc.h"
+#if SOLUTION
+#include "../mastersolution_tagged/1dwaveabsorbingbc.h" // master
 #else
-#include "../mysolution/1dwaveabsorbingbc.h"
+#include "../mastersolution_tagged/1dwaveabsorbingbc.h" // mysolution
 #endif
 
 #include <Eigen/Core>

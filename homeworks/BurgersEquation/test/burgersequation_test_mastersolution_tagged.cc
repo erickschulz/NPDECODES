@@ -8,7 +8,11 @@
 
 #include <gtest/gtest.h>
 
-#include "../mastersolution/burgersequation.h"
+#if SOLUTION
+#include "../mastersolution_tagged/burgersequation.h" // master
+#else
+#include "../mastersolution_tagged/burgersequation.h" // mysolution
+#endif
 
 #include <Eigen/Core>
 

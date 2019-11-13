@@ -11,5 +11,5 @@ add_definitions(-DCURRENT_BINARY_DIR=\"${CMAKE_BINARY_SOURCE_DIR}\")
 # Provides build_problem(...) and build_test(...)
 include(build_rules.cmake)
 
-build_problem(${PROBLEM_NAME} mastersolution)
-build_test(${PROBLEM_NAME} mastersolution)
+build_problem(${PROBLEM_NAME} mastersolution_tagged)
+build_test(${PROBLEM_NAME} mastersolution_tagged)
