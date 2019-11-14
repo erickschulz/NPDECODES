@@ -25,6 +25,43 @@
 
 namespace CoupledSecondOrderBVP {
 
+/** @Brief This function enforces Dirichlet zero boundary conditions on the
+ * Galerkin stiffness and mass matrices. It transforms every columns and rows
+ * associated to a global index belonging to a degree of freedom lying on the
+ * boundary to zero entries but the diagonal one which is set to 1.0
+ * @param selectvals is the predicate identifying the boundary indices of the
+ * rows and columns that are to be dropped */
+template <typename SCALAR, typename SELECTOR>
+void dropMatrixRowsAndColumns(SELECTOR &&selectvals,
+                              lf::assemble::COOMatrix<SCALAR> &A) {
+  const lf::assemble::size_type N(A.cols());
+  LF_ASSERT_MSG(A.rows() == N, "Matrix must be square!");
+  A.setZero(
+      [&selectvals](lf::assemble::gdof_idx_t i, lf::assemble::gdof_idx_t j) {
+        return (selectvals(i) || selectvals(j));
+      });
+  for (lf::assemble::gdof_idx_t dofnum = 0; dofnum < N; ++dofnum) {
+    const auto selval{selectvals(dofnum)};
+    if (selval) {
+      A.AddToEntry(dofnum, dofnum, 1.0);
+    }
+  }
+}
+
+/** @Brief This function enforces Dirichlet zero boundary conditions on the
+ * Galerkin stiffness and mass matrices. It transforms every rows
+ * associated to a global index belonging to a degree of freedom lying on the
+ * boundary to zero entries
+ * @param selectvals is the predicate identifying the boundary indices of the
+ * rows that are to be dropped */
+template <typename SCALAR, typename SELECTOR>
+void dropMatrixRows(SELECTOR &&selectvals, lf::assemble::COOMatrix<SCALAR> &M) {
+  M.setZero(
+      [&selectvals](lf::assemble::gdof_idx_t i, lf::assemble::gdof_idx_t j) {
+        return (selectvals(i));
+      });
+}
+
 // Function solving the coupled BVP
 template <typename FUNCTOR>
 Eigen::VectorXd solveCoupledBVP(
@@ -41,15 +78,10 @@ Eigen::VectorXd solveCoupledBVP(
   // Data related to Dirichlet B.C.
   // Obtain an array of boolean flags for the nodes of the mesh, 'true'
   // indicates that the node lies on the boundary
-  auto nodes_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 0)};
-  // Inspired by the example in the documentation of
-  // InitEssentialConditionFromFunction()
-  // https://craffael.github.io/lehrfempp/namespacelf_1_1uscalfe.html#a5afbd94919f0382cf3fb200c452797ac
-  // Creating a predicate that will guarantee that the computations are carried
-  // only on the exterior boundary nodes of the mesh using the boundary flags
-  auto nodes_predicate_Dirichlet =
-      [&nodes_bd_flags](const lf::mesh::Entity &node) -> bool {
-    return nodes_bd_flags(node);
+  auto nodes_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2)};
+  // Index predicate for the selectvals FUNCTOR of dropMatrixRowsAndColumns
+  auto nodes_bd_selector = [&nodes_bd_flags, &dofh](unsigned int idx) -> bool {
+    return nodes_bd_flags(dofh.Entity(idx));
   };
 
   /* I : Creating coefficients as Lehrfem++ mesh functions */
@@ -67,8 +99,10 @@ Eigen::VectorXd solveCoupledBVP(
   lf::assemble::COOMatrix<double> A1(N_dofs, N_dofs);  // lower right block
   lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);   // off-diag blocks
   lf::assemble::COOMatrix<double> L(2 * N_dofs, 2 * N_dofs);  // full matrix
-  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs); // rhs vec
+  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);       // source f
   phi.setZero();  // set to zero initially
+  Eigen::Matrix<double, Eigen::Dynamic, 1> rhs(2 * N_dofs);  // full rhs vector
+  rhs.setZero();  // set to zero initially
 
   /* III : Computing the Galerkin matrices */
   // III.i Computing A0 : standard negative Laplace Galerkin Matrix
@@ -80,6 +114,8 @@ Eigen::VectorXd solveCoupledBVP(
   // a Dofhandler object, argument 'dofh'. This function call adds triplets to
   // the internal COO-format representation of the sparse matrix A.
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, A0_builder, A0);
+  // Enforce Dirichlet boundary conditions
+  dropMatrixRowsAndColumns(nodes_bd_selector, A0);
   // III.ii Computing A01 : Laplacian with reaction term
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
       double, decltype(const_one), decltype(const_one)>
@@ -90,32 +126,44 @@ Eigen::VectorXd solveCoupledBVP(
       double, decltype(const_zero), decltype(const_one)>
       M_builder(fe_space, const_zero, const_one);
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, M_builder, M);
-  // III.iv : Computing right-hand side vector
-  // Wrap the right-hand side lambda source function f in a Lehrfem++ MeshFunction
-  auto mf_f =
-      lf::uscalfe::MeshFunctionGlobal(f);
+  // Enforce Dirichlet boundary conditions
+  dropMatrixRows(nodes_bd_selector, M);
+
+  // IV : Computing the element vector phi (associated to source f)
+  // Wrap the lambda source function f in a Lehrfem++ MeshFunction
+  auto mf_f = lf::uscalfe::MeshFunctionGlobal(f);
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
-      elvec_builder(fe_space_p, mf_f);
+      elvec_builder(fe_space, mf_f);
   // Invoke assembly on cells (codim == 0)
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
+  // Assigning zero to the boundary values of phi
+  for (const lf::mesh::Entity *node : mesh_p->Entities(2)) {
+    if (nodes_bd_flags(*node)) {
+      auto dof_idx = dofh.GlobalDofIndices(*node);
+      LF_ASSERT_MSG(
+          dofh.NumLocalDofs(*node) == 1,
+          "Too many global indices were returned for a vertex entity!");
+      phi(dof_idx[0]) = 0.0;
+    }
+  }
 
-  /* IV : Assemble the full linear system matrix and right hand side vector */
+  /* V : Assemble the full linear system matrix and right hand side vector */
   //                        _        _
-  //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T
+  //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T           (*)
   //                       |_ M^T  A1_|
   //
-  // IV.i Inserting A0 in L
+  // V.i Inserting A0 in L
   const std::vector<Eigen::Triplet<double>> A0_triplets_vec = A0.triplets();
   for (auto &triplet : A0_triplets_vec) {
     L.AddToEntry(triplet.row(), triplet.col(), triplet.value());
   }
-  // IV.ii Inserting A1 in L
+  // V.ii Inserting A1 in L
   const std::vector<Eigen::Triplet<double>> A1_triplets_vec = A1.triplets();
   for (auto &triplet : A1_triplets_vec) {
     L.AddToEntry(triplet.row() + N_dofs, triplet.col() + N_dofs,
                  triplet.value());
   }
-  // IV.iii Inserting M in L
+  // V.iii Inserting M in L
   // Notice the symmetry between the entries. The two indices of the entry
   // are flipped so that it is the tranpose of M that is added to the left lower
   // diagonal block of L.
@@ -126,6 +174,23 @@ Eigen::VectorXd solveCoupledBVP(
     L.AddToEntry(triplet.col() + N_dofs, triplet.row(),
                  triplet.value());  // for M^T in lower left block
   }
+  // V.iv Assembling full right hand side vector
+  // Recall that rhs was initialized with zero entries
+  for (int i = 0; i < N_dofs; i++) {
+    rhs(i) = phi(i);
+  }
+
+  // VI. Solve the LSE (*) of step (V) using an Eigen solver
+  // Convert COO matrix A into CRS format using Eigen's internal
+  // conversion routines.
+  Eigen::SparseMatrix<double> L_crs = L.makeSparse();
+  /* SOLUTION_BEGIN */
+  Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>, Eigen::Lower> solver;
+  solver.compute(L_crs);
+  if (solver.info() != Eigen::Success) {
+    throw std::runtime_error("Could not decompose the matrix");
+  }
+  sol_vec = solver.solve(rhs);
 
   return sol_vec;
 }
