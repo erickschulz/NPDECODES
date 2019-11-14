@@ -6,12 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
+// HACK:
+#undef SOLUTION
+#define SOLUTION 1
+
 #include <gtest/gtest.h>
 
 #if SOLUTION
-#include "../mastersolution_tagged/burgersequation.h" // master
+#include "../mastersolution_tagged/burgersequation.h"
 #else
-#include "../mastersolution_tagged/burgersequation.h" // mysolution
+#include "../mysolution/burgersequation.h"
 #endif
 
 #include <Eigen/Core>

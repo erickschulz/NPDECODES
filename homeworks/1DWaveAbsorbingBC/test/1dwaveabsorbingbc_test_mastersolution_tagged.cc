@@ -6,12 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
+// HACK:
+#undef SOLUTION
+#define SOLUTION 1
+
 #include <gtest/gtest.h>
 
 #if SOLUTION
-#include "../mastersolution_tagged/1dwaveabsorbingbc.h" // master
+#include "../mastersolution_tagged/1dwaveabsorbingbc.h"
 #else
-#include "../mastersolution_tagged/1dwaveabsorbingbc.h" // mysolution
+#include "../mysolution/1dwaveabsorbingbc.h"
 #endif
 
 #include <Eigen/Core>
