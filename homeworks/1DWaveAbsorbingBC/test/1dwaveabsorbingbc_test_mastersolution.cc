@@ -12,11 +12,7 @@
 
 #include <gtest/gtest.h>
 
-#if SOLUTION
-#include "../mastersolution_tagged/1dwaveabsorbingbc.h"
-#else
-#include "../mysolution/1dwaveabsorbingbc.h"
-#endif
+#include "../mastersolution/1dwaveabsorbingbc.h"
 
 #include <Eigen/Core>
 

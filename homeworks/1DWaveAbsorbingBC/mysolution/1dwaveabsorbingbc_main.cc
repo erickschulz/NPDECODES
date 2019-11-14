@@ -33,32 +33,9 @@ int main() {
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(m + 1, 0.0, T);
 
   // print the data, e.g. to a .csv file, in a suitable way
-  #if SOLUTION
-  std::ofstream solution_file, energies_file;
-
-  solution_file.open("solution.csv");
-  Eigen::MatrixXd tR(m + 1, N + 2);
-  tR.col(0) = t;
-  tR.block(0, 1, m + 1, N + 1) = R;
-  solution_file << tR.format(CSVFormat) << std::endl;
-  solution_file.close();
-  std::cout << "The solution has been written to solution.csv. Run the script "
-               "visvave_mastersolution.py to plot the data."
-            << std::endl;
-
-  energies_file.open("energies.csv");
-  energies_file << t.transpose().format(CSVFormat) << std::endl
-                << E_pot.transpose().format(CSVFormat) << std::endl
-                << E_kin.transpose().format(CSVFormat) << std::endl;
-  energies_file.close();
-  std::cout << "The energies have been written to energies.csv. Run the script "
-               "visenergies_mastersolution.py to plot the data."
-            << std::endl;
-  #else
   // Your Code goes here:
   // Write the solution and the energies in a .csv file
   // that can be plotted by a Python script.
-  #endif
 
   return 0;
 }

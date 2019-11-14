@@ -12,11 +12,7 @@
 
 #include <gtest/gtest.h>
 
-#if SOLUTION
-#include "../mastersolution_tagged/burgersequation.h"
-#else
-#include "../mysolution/burgersequation.h"
-#endif
+#include "../mastersolution/burgersequation.h"
 
 #include <Eigen/Core>
 

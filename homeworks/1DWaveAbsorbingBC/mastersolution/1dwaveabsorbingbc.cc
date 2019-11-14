@@ -93,7 +93,6 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   Eigen::SparseMatrix<double> M = getM_full(N, h).block(0, 0, N, N);
   // Matrix for returning solution
   Eigen::MatrixXd R(m + 1, N + 1);
-  #if SOLUTION
   Eigen::VectorXd mu = Eigen::VectorXd::Zero(N);   // = mu^(0)
   Eigen::VectorXd nu = Eigen::VectorXd::Zero(N);   // = nu^(-1/2)
   Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);  // = phi(t_0)
@@ -113,10 +112,6 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   for (int i = 0; i < m + 1; ++i) {
     R(i, N) = g(i * tau);
   }
-  #else
-    // Your Code goes here:
-    // Fill the matrix R.
-  #endif
 
   return R;
 }
@@ -135,7 +130,6 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> computeEnergies(
   Eigen::VectorXd E_pot(m + 1);
   Eigen::VectorXd E_kin(m);
 
-  #if SOLUTION
   Eigen::VectorXd mu0;
   Eigen::VectorXd mu1 = full_solution.row(0).transpose();
   for (int j = 0; j < m; ++j) {
@@ -147,10 +141,6 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> computeEnergies(
     E_kin(j) = 0.5 * nu.dot(M * nu);
   }
   E_pot(m) = 0.5 * mu1.dot(A * mu1);
-  #else
-    // Your Code goes here:
-    // Fill the vectors E_pot and E_kin.
-  #endif
 
   return std::make_pair(E_pot, E_kin);
 }
