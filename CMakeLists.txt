@@ -61,7 +61,13 @@ find_package(Boost CONFIG REQUIRED chrono timer system filesystem program_option
 
 # Include Subdirectories
 ###############################################################################
+option(DEVEL "usage: cmake -DDEVEL=ON/OFF .." OFF)
+message(STATUS "DEVEL ${DEVEL}")
+if(DEVEL)
+add_subdirectory(developers)
+else()
 add_subdirectory(homeworks)
+endif()
 add_subdirectory(lecturecodes)
 
 add_custom_target(test_master
