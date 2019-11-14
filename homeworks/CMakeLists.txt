@@ -34,4 +34,5 @@ add_subdirectory(DiscontinuousGalerkin1D)
 add_subdirectory(CLEmpiricFlux)
 add_subdirectory(BoundaryWave)
 add_subdirectory(OutputImpedanceBVP)
+add_subdirectory(CoupledSecondOrderBVP)
 

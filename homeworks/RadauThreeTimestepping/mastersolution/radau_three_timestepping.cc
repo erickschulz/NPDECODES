@@ -192,7 +192,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
   // time
   // clang-format off
     U_ << 5.0/12.0, -1.0/12.0,
-      0.75,      0.25;
+              0.75,      0.25;
     c_ << 1.0/3.0, 1.0;
     b_ << 0.75, 0.25;
   // clang-format on

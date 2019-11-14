@@ -4,7 +4,6 @@
  *  	  seminorms on different triangular meshes and refinement levels
  * @author Julien Gacon
  * @date   March 2019
- * @copyright MIT License
  */
 
 #include "unstable_bvp.h"

@@ -34,7 +34,7 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
                                    unsigned int m, double final_time);
 
 /** @Brief This function enforces Dirichlet zero boundary conditions on the
- * Galerkin stiffness and mass matrices. It transforms every columns and vectors
+ * Galerkin stiffness and mass matrices. It transforms every columns and rows
  * associated to a global index belonging to a degree of freedom lying on the
  * boundary to zero entries but the diagonal one which is set to 1.0
  * @param selectvals is the predicate identifying the boundary indices of the
