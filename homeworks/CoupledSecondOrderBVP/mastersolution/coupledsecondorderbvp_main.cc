@@ -22,11 +22,28 @@ int main(int /*argc*/, const char** /*argv*/) {
   // We discretization by means of piecewise QUADRATIC lagrangian FE
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  // Obtain local->global index mapping for current finite element space
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
+  // Dimension of finite element space
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
-  // Solve the coupled boundary value problem
-  double gamma = 1.0; // reaction coefficient
+  /* Solve the coupled boundary value problem */
+  double gamma = 1.0; // reaction coefficientS
   // Right-hand side source function f
   auto f = lf::uscalfe::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return std::cos(x.norm()); });
   Eigen::VectorXd sol_vec = solveCoupledBVP(fe_space, gamma, f);
+
+  /* Output results to vtk file */
+  lf::io::VtkWriter vtk_writer(mesh_p, "CoupledSecondOrderBVP_solution.vtk");
+  // Write nodal data taking the values of the discrete solution at the vertices
+  auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
+    nodal_data->operator()(dofh.Entity(global_idx)) =
+        sol_vec[global_idx];
+  };
+  vtk_writer.WritePointData("CoupledSecondOrderBVP_solution", *nodal_data);
+  /* SAM_LISTING_END_1 */
+  std::cout << "\n The solution vector was written to:" << std::endl;
+  std::cout << ">> CoupledSecondOrderBVP_solution.vtk\n" << std::endl;
 }

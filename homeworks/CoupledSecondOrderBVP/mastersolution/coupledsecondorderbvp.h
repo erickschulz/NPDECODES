@@ -68,7 +68,7 @@ Eigen::VectorXd solveCoupledBVP(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     double gamma, FUNCTOR &&f) {
   Eigen::VectorXd sol_vec;  // solution vector
-  // Get pointer to current f32divf32x
+  // Get pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space->Mesh();
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
