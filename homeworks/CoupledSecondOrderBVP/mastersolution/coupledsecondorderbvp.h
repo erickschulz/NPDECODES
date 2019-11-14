@@ -60,16 +60,15 @@ Eigen::VectorXd solveCoupledBVP(
   auto const_zero = lf::uscalfe::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 0.0; });
 
-  /* II: Instantiating finite element matrices */
+  /* II: Instantiating finite element matrices and right hand side vector*/
   // Matrices in triplet format holding  the Galerkin matrices
   // (set to zero initially)
   lf::assemble::COOMatrix<double> A0(N_dofs, N_dofs);  // upper left block
   lf::assemble::COOMatrix<double> A1(N_dofs, N_dofs);  // lower right block
   lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);   // off-diag blocks
   lf::assemble::COOMatrix<double> L(2 * N_dofs, 2 * N_dofs);  // full matrix
-  // Right hand side vector
-  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
-  phi.setZero();  // has to be zero initially
+  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs); // rhs vec
+  phi.setZero();  // set to zero initially
 
   /* III : Computing the Galerkin matrices */
   // III.i Computing A0 : standard negative Laplace Galerkin Matrix
