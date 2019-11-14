@@ -100,9 +100,9 @@ Eigen::VectorXd solveCoupledBVP(
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
   /* IV : Assemble the full linear system matrix and right hand side vector */
-  //                     _        _
-  //    L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T
-  //                    |_ M^T  A1_|
+  //                        _        _
+  //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T
+  //                       |_ M^T  A1_|
   //
   // IV.i Inserting A0 in L
   const std::vector<Eigen::Triplet<double>> A0_triplets_vec = A0.triplets();
