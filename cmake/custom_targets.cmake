@@ -8,7 +8,7 @@
 
 function(custom_targets HOMEWORKS DEVELOPERS LECTURECODES)
 
-  set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
+  set(DIR ${CMAKE_SOURCE_DIR})
 
   # Add custom targets for homeworks
   if(HOMEWORKS)
