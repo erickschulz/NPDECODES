@@ -1,5 +1,5 @@
 /**
- * @file burgersequation_test_mysolution.cc
+ * @file burgersequation_test_mastersolution.cc
  * @brief NPDE homework BurgersEquation code
  * @author Oliver Rietmann
  * @date 15.04.2019

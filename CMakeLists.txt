@@ -75,5 +75,5 @@ add_custom_target(test_master
 )
 
 add_custom_target(templates
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/deploy_npde.py
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/make_templates.sh ${CMAKE_CURRENT_SOURCE_DIR}/developers/*/
 )
