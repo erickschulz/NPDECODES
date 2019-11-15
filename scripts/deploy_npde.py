@@ -42,26 +42,25 @@ def copy(file, indir, outdir):
         """
 
 
-def deploy(filename, indir, outdir,
-           with_solution=False, with_internal=False):
+def deploy(filename, indir, outdir, handle_unifdef, with_solution=False):
     """
-    Parse a C++ file trough "unifdef" and remove SOLUTIONS and INTERNAL ifdef
-    code blocks. Must have "unifdef" program. Can toggle if INTERNAL and SOLUTIONS are
-    true or false.
+    Parse a file trough "unifdef" and remove SOLUTIONS ifdef code blocks.
+    Must have "unifdef" program. Can toggle if SOLUTIONS is true or false.
 
     :param filename:  e.g. "1dwaveabsorbingbc.cc"
-    :param indir:     "../homeworks/1DWaveAbsorbingBC/mastersolution"
+    :param indir:     "../homeworks/1DWaveAbsorbingBC/mastersolution_tagged"
     :param outdir:    "../homeworks/1DWaveAbsorbingBC/templates"
-    :param with_solution: remove block in #if SOLUTION
-    :param with_internal:
+    :param parse_unifdef: deal with #if ... block if true
+    :param with_solution: keep block in #if SOLUTION if true
     :return:
     """
-    if is_cpp(indir + filename) or is_hpp(indir + filename):
+    # if is_cpp(indir + filename) or is_hpp(indir + filename):
+    if handle_unifdef:
         cmd = ["unifdef"]
-        if with_internal:
-            cmd.append("-DINTERNAL=1")
-        else:
-            cmd.append("-DINTERNAL=0")
+        # if with_internal:
+        #     cmd.append("-DINTERNAL=1")
+        # else:
+        #     cmd.append("-DINTERNAL=0")
         if with_solution:
             cmd.append("-DSOLUTION=1")
         else:
@@ -104,10 +103,26 @@ def is_hpp(file):
     return file.split(".")[-1] in ["hpp", "h"]
 
 
+def is_py(file_path):
+    """
+    :param file_path: the path of a file
+    :return: true if file is a python file(ends with .py)
+    """
+    return file_path.split(".")[-1] == "py"
+
+
+def is_cmake(file_path):
+    """
+    :param file_path: the path of a file
+    :return: true if file with suffix .cmake
+    """
+    return file_path.split(".")[-1] == "cmake"
+
+
 def generate_templates_and_mysolution(problem_dir):
     """
     First create templates and mysolution directory,
-    then copy the cpp/hpp files in "mastersolution_tagged" to them
+    then copy the files in "mastersolution_tagged" to them
     (remove "#if SOLUTION" block, that is, -DSOLUTION=0).
     Then create "mastersolution" directory, copy the files in "mastersolution_tagged" with the solution(-DSOLUTION=1)
 
@@ -119,10 +134,16 @@ def generate_templates_and_mysolution(problem_dir):
     fileInMastersolution = os.listdir(problem_dir + 'mastersolution_tagged/')
     for file in fileInMastersolution:
         file_path = problem_dir + 'mastersolution_tagged/' + file
-        deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mastersolution/', True)
-        if is_cpp(file_path) or is_hpp(file_path):
-            deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'templates/', False)
-            deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mysolution/', False)
+        if is_cpp(file_path) or is_hpp(file_path) or is_cmake(file_path) or is_py(file_path):
+            handle_unifder = True
+        else:
+            handle_unifder = False
+        deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mastersolution/',
+               handle_unifder, with_solution=True)
+        deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'templates/',
+               handle_unifder, with_solution=False)
+        deploy(file, problem_dir + 'mastersolution_tagged/', problem_dir + 'mysolution/',
+               handle_unifder, with_solution=False)
 
 
 def parse_json(filename):
