@@ -1,9 +1,10 @@
 #! /bin/bash
-root=/userdata/Teaching/NumPDE_FS2019/github_npdecodes
+
+script_dir=$(dirname $0)
+root=$script_dir/..
 
 for dir in $@; do
 
-  #echo $dir
   ProblemName=$(basename $dir)
   echo "-- "$ProblemName
 

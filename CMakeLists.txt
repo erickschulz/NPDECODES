@@ -58,22 +58,31 @@ find_package(Boost CONFIG REQUIRED chrono timer system filesystem program_option
 
 # Problem: Actually boost::math is also needed, but there is a problem
 # setting it up through hunter. 
-
-# Include Subdirectories
 ###############################################################################
-option(DEVEL "usage: cmake -DDEVEL=ON/OFF .." OFF)
-message(STATUS "DEVEL ${DEVEL}")
-if(DEVEL)
-add_subdirectory(developers)
-else()
-add_subdirectory(homeworks)
+
+# Add switches
+option(HOMEWORKS "usage: cmake -DHOMEWORKS=ON/OFF .." ON)
+message(STATUS "HOMEWORKS ${HOMEWORKS}")
+
+option(DEVELOPERS "usage: cmake -DDEVELOPERS=ON/OFF .." OFF)
+message(STATUS "DEVELOPERS ${DEVELOPERS}")
+
+option(LECTURECODES "usage: cmake -DLECTURECODES=ON/OFF .." OFF)
+message(STATUS "LECTURECODES ${LECTURECODES}")
+
+# Add subdirectories
+if(HOMEWORKS)
+  add_subdirectory(homeworks)
 endif()
-add_subdirectory(lecturecodes)
 
-add_custom_target(test_master
-    COMMAND ${CMAKE_SOURCE_DIR}/scripts/run-tests.sh
-)
+if(DEVELOPERS)
+  add_subdirectory(developers)
+endif()
 
-add_custom_target(templates
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/make_templates.sh ${CMAKE_CURRENT_SOURCE_DIR}/developers/*/
-)
+if(LECTURECODES)
+  add_subdirectory(lecturecodes)
+endif()
+
+# Add custom targets
+include("cmake/custom_targets.cmake")
+custom_targets(${HOMEWORKS} ${DEVELOPERS} ${LECTURECODES})
