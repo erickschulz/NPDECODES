@@ -84,5 +84,5 @@ if(LECTURECODES)
 endif()
 
 # Add custom targets
-include("cmake/custom_targets.cmake")
+include("cmake/modules/custom_targets.cmake")
 custom_targets(${HOMEWORKS} ${DEVELOPERS} ${LECTURECODES})

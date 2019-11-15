@@ -1,8 +1,8 @@
 # Provides variable PROBLEM_NAME
-include(${CMAKE_SOURCE_DIR}/cmake/build_variables.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/modules/build_variables.cmake)
 
 # Provides functions build_problem and build_test
-include(${CMAKE_SOURCE_DIR}/cmake/build_rules.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/modules/build_rules.cmake)
 
 function(build PROBLEM_NAME DIR)
   build_problem(${PROBLEM_NAME}_${DIR} ${DIR} ${PROBLEM_NAME}_${DIR})

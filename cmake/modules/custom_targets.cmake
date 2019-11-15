@@ -12,10 +12,10 @@ function(custom_targets HOMEWORKS DEVELOPERS LECTURECODES)
 
   # Add custom target for running all unit tests
   add_custom_target(test_mastersolution
-      COMMAND ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mastersolution developers/*/*_test_mastersolution
+      COMMAND shopt -s nullglob &&  ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mastersolution developers/*/*_test_mastersolution
   )
   add_custom_target(test_mysolution
-      COMMAND ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mysolution developers/*/*_test_mysolution
+      COMMAND shopt -s nullglob && ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mysolution developers/*/*_test_mysolution
   )
 
   # Add custom target for creating templates from developers/ folder
