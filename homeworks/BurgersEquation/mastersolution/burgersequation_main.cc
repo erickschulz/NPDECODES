@@ -15,7 +15,7 @@
 
 int main() {
   /* SAM_LISTING_BEGIN_1 */
-  const unsigned int N = 102;
+  const unsigned int N = 100;
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
   Eigen::VectorXd mu03 = BurgersEquation::solveBurgersGodunov(0.3, N);
   Eigen::VectorXd mu30 = BurgersEquation::solveBurgersGodunov(3.0, N);
