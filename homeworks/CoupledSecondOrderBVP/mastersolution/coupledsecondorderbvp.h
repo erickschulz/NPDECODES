@@ -25,6 +25,24 @@
 
 namespace CoupledSecondOrderBVP {
 
+template <typename SCALAR>
+class FeSpaceLagrangeO2 : public lf::uscalfe::UniformScalarFESpace<SCALAR> {
+ public:
+  FeSpaceLagrangeO2() = delete;
+  FeSpaceLagrangeO2(const FeSpaceLagrangeO2 &) = delete;
+  FeSpaceLagrangeO2(FeSpaceLagrangeO2 &&) noexcept = default;
+  FeSpaceLagrangeO2 &operator=(const FeSpaceLagrangeO2 &) = delete;
+  FeSpaceLagrangeO2 &operator=(FeSpaceLagrangeO2 &&) noexcept = default;
+  explicit FeSpaceLagrangeO2(
+      const std::shared_ptr<const lf::mesh::Mesh> &mesh_p)
+      : lf::uscalfe::UniformScalarFESpace<SCALAR>(
+            mesh_p, std::make_shared<lf::uscalfe::FeLagrangeO2Tria<SCALAR>>(),
+            std::make_shared<lf::uscalfe::FeLagrangeO2Quad<SCALAR>>(),
+            std::make_shared<lf::uscalfe::FeLagrangeO2Segment<SCALAR>>(),
+            std::make_shared<lf::uscalfe::FeLagrangePoint<SCALAR>>(2)) {}
+  ~FeSpaceLagrangeO2() override = default;
+};  // FeSpaceLagrangeO2
+
 /** @Brief This function enforces Dirichlet zero boundary conditions on the
  * Galerkin stiffness and mass matrices. It transforms every columns and rows
  * associated to a global index belonging to a degree of freedom lying on the
@@ -65,8 +83,8 @@ void dropMatrixRows(SELECTOR &&selectvals, lf::assemble::COOMatrix<SCALAR> &M) {
 // Function solving the coupled BVP
 template <typename FUNCTOR>
 Eigen::VectorXd solveCoupledBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
-    double gamma, FUNCTOR &&f) {
+    std::shared_ptr<FeSpaceLagrangeO2<double>> &fe_space, double gamma,
+    FUNCTOR &&f) {
   Eigen::VectorXd sol_vec;  // solution vector
   // Get pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space->Mesh();
@@ -79,9 +97,18 @@ Eigen::VectorXd solveCoupledBVP(
   // Obtain an array of boolean flags for the nodes of the mesh, 'true'
   // indicates that the node lies on the boundary
   auto nodes_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2)};
+  // Similarly for edges
+  auto edges_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Index predicate for the selectvals FUNCTOR of dropMatrixRowsAndColumns
-  auto nodes_bd_selector = [&nodes_bd_flags, &dofh](unsigned int idx) -> bool {
-    return nodes_bd_flags(dofh.Entity(idx));
+  auto bd_selector = [&nodes_bd_flags, &edges_bd_flags,
+                      &dofh](unsigned int idx) -> bool {
+    if (dofh.Entity(idx).RefEl() == lf::base::RefElType::kPoint) {
+      return nodes_bd_flags(dofh.Entity(idx));
+      
+    } else {
+      return edges_bd_flags(dofh.Entity(idx));
+      
+    }
   };
 
   /* I : Creating coefficients as Lehrfem++ mesh functions */
@@ -115,7 +142,7 @@ Eigen::VectorXd solveCoupledBVP(
   // the internal COO-format representation of the sparse matrix A.
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, A0_builder, A0);
   // Enforce Dirichlet boundary conditions
-  dropMatrixRowsAndColumns(nodes_bd_selector, A0);
+  dropMatrixRowsAndColumns(bd_selector, A0);
   // III.ii Computing A01 : Laplacian with reaction term
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
       double, decltype(const_one), decltype(const_one)>
@@ -127,8 +154,7 @@ Eigen::VectorXd solveCoupledBVP(
       M_builder(fe_space, const_zero, const_one);
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, M_builder, M);
   // Enforce Dirichlet boundary conditions
-  dropMatrixRows(nodes_bd_selector, M);
-
+  dropMatrixRows(bd_selector, M);
   // IV : Computing the element vector phi (associated to source f)
   // Wrap the lambda source function f in a Lehrfem++ MeshFunction
   auto mf_f = lf::uscalfe::MeshFunctionGlobal(f);
@@ -146,7 +172,7 @@ Eigen::VectorXd solveCoupledBVP(
       phi(dof_idx[0]) = 0.0;
     }
   }
-
+ 
   /* V : Assemble the full linear system matrix and right hand side vector */
   //                        _        _
   //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T           (*)
