@@ -5,8 +5,8 @@ include(${CMAKE_SOURCE_DIR}/cmake/build_variables.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/build_rules.cmake)
 
 function(build PROBLEM_NAME DIR)
-  build_problem(${PROBLEM_NAME}_${DIR} ${DIR})
-  build_test(${PROBLEM_NAME}_test_${DIR} ${PROBLEM_NAME}_${DIR} ${DIR})
+  build_problem(${PROBLEM_NAME}_${DIR} ${DIR} ${PROBLEM_NAME}_${DIR})
+  build_test(${PROBLEM_NAME}_test_${DIR} ${PROBLEM_NAME}_${DIR} ${DIR} ${PROBLEM_NAME}_test_${DIR})
 endfunction(build)
 
 message(STATUS "Processing ${PROBLEM_NAME}")
