@@ -4,6 +4,7 @@ EXIT_CODE=0
 FAILED_TESTS=()
 
 for e in $@; do
+  echo "Running ./"$e
   "$e"
   if [ $? -ne 0 ]; then
     FAILED_TESTS+=("$e")
