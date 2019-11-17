@@ -7,8 +7,9 @@
  * @copyright MIT License
  */
 
+#include "../mastersolution/unstablebvp.h"
+
 #include <gtest/gtest.h>
-#include "../unstable_bvp.h"
 
 TEST(UnstableBVP, TopMesh) {
   // Define the number of refinement levels we want for our mesh
@@ -79,7 +80,7 @@ TEST(UnstableBVP, CenterMesh) {
         EXPECT_NEAR(std::abs(h1 - h1_uL), 0.519206, 1e-6);
         break;
       case 6:
-        EXPECT_NEAR(h1, 1.91311, 1e-6);
+        EXPECT_NEAR(h1, 1.913105, 1e-6);
         EXPECT_NEAR(std::abs(h1 - h1_uL), 0.115094, 1e-6);
         break;
       default:

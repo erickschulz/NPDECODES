@@ -8,5 +8,5 @@ The file `h1.txt` contains the output of the executable, which is the values of 
 the solutions for different refinement levels for different locations of the domain, as well as the 
 difference of the seminorms to the most refined level.
 
-The script `plot.py` visualises the output and the results are shown in `h1_seminorms(differences).png`.
+The script `plot.py` visualises the output and the results are shown in `h1_seminorms(differences).eps`.
 

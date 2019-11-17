@@ -2,11 +2,11 @@
  * @file
  * @brief Solution of source-free heat equation and computation of H1
  *  	  seminorms on different triangular meshes and refinement levels
- * @author Julien Gacon
+ * @author Julien Gacon, Amélie Loher
  * @date   March 2019
  */
 
-#include "unstable_bvp.h"
+#include "unstablebvp.h"
 
 namespace UnstableBVP {
 
@@ -16,7 +16,7 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
 
-  // Decide where the triangular domain should be locted in x_2 direction
+  // Decide where the triangular domain should be located in x_2 direction
   // by adding an offset to the x_2 coordinate of the nodes
   double offset = 0;
   if (mesh_type == "top") {
@@ -28,19 +28,18 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   }
 
   // Define the nodes
-  // clang-format off
   std::array<std::array<double, 2>, 3> node_coord{
-  std::array<double, 2>({0.5, -0.5 + offset }),
-  std::array<double, 2>({0  ,  0.5 + offset }),
-  std::array<double, 2>({1  ,  0.5 + offset })};
-  // clang-format on 9 
+  	std::array<double, 2>({0.5, -0.5 + offset }),
+  	std::array<double, 2>({0  ,  0.5 + offset }),
+  	std::array<double, 2>({1  ,  0.5 + offset })};
+   
   for (const auto &node : node_coord) {
-    mesh_factory_ptr->AddPoint(coord_t({node[0], node[1]}));
+    mesh_factory_ptr->AddPoint(Eigen::Vector2d({node[0], node[1]}));
   }
 
   // Initialize triangle
   mesh_factory_ptr->AddEntity(lf::base::RefEl::kTria(),
-                              nonstd::span<const size_type>({0, 1, 2}),
+                              nonstd::span<const lf::base::size_type>({0, 1, 2}),
                               std::unique_ptr<lf::geometry::Geometry>(nullptr));
 
   // Get a pointer to the mesh
@@ -71,7 +70,7 @@ double solveTemperatureDistribution(
   // Wrap into a MeshFunction
   lf::uscalfe::MeshFunctionGlobal mf_bc{bc};
 
-  // We use lowest-order (p.w. linear Lagrangian finite elements, for which
+  // We use lowest-order (p.w. linear Lagrangian finite elements), for which
   // LehrFEM++ provides a built-in description according to the paradigm of
   // parametric finite elements.
   auto fe_space =
@@ -86,7 +85,7 @@ double solveTemperatureDistribution(
   // **********************************************************************
 
   // Dimension of finite element space`
-  const size_type N_dofs(dofh.NumDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
 
@@ -133,7 +132,7 @@ double solveTemperatureDistribution(
 
   // Eliminate Dirichlet dofs from linear system
   lf::assemble::FixFlaggedSolutionComponents<double>(
-      [&ess_bdc_flags_values](glb_idx_t gdof_idx) {
+      [&ess_bdc_flags_values](lf::assemble::glb_idx_t gdof_idx) {
         return ess_bdc_flags_values[gdof_idx];
       },
       A, phi);

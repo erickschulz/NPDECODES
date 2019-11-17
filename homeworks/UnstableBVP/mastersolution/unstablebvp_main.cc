@@ -2,16 +2,16 @@
  * @file
  * @brief Solution of source-free heat equation and computation of H1
  *  	  seminorms on different triangular meshes and refinement levels
- * @author Julien Gacon, Ralf Hiptmair
+ * @author Julien Gacon, Ralf Hiptmair, Amélie Loher
  * @date   March 2019
  * @copyright MIT License
  */
+#include "unstablebvp.h"
 
-#include <Eigen/Dense>
 #include <fstream>
 #include <iomanip>
 
-#include "unstable_bvp.h"
+#include <Eigen/Dense>
 
 int main() {
   // Define the number of refinement levels we want for our mesh
@@ -75,7 +75,6 @@ int main() {
             << std::setw(20) << "||u_L| - |u_k||"
             << "\n";
 
-  // clang-format off
   for (int l = 0; l < reflevels; ++l) {
     std::cout << std::setw(9) << l
               << std::setw(10) << h1_seminorms(l, 0)
@@ -92,7 +91,6 @@ int main() {
             << std::setw(20) << 0
             << std::setw(10) << h1_seminorms(reflevels, 2)
             << std::setw(20) << 0 << "\n";
-  // clang-format on
 
   return 0;
 }

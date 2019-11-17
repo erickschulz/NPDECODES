@@ -2,10 +2,13 @@
  * @file
  * @brief Solution of source-free heat equation and computation of H1
  *  	  seminorms on different triangular meshes and refinement levels
- * @author Julien Gacon
+ * @author Julien Gacon, Amélie Loher
  * @date   March 2019
  * @copyright MIT License
  */
+
+#include <cmath>
+#include <string>
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
@@ -14,13 +17,6 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
-#include <cmath>
-#include <string>
-
-// Abbreviations for types
-using size_type = lf::base::size_type;
-using glb_idx_t = lf::assemble::glb_idx_t;
-using coord_t = Eigen::Vector2d;
 
 namespace UnstableBVP {
 
