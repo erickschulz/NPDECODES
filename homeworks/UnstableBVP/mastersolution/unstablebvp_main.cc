@@ -1,17 +1,13 @@
 /**
  * @file
- * @brief Solution of source-free heat equation and computation of H1
- *  	  seminorms on different triangular meshes and refinement levels
+ * @brief  NPDE UnstableBVP. Solution of source-free heat equation and
+ * computation of H1 seminorms on different triangular meshes and refinement
+ * levels
  * @author Julien Gacon, Ralf Hiptmair, Amélie Loher
  * @date   March 2019
  * @copyright MIT License
  */
 #include "unstablebvp.h"
-
-#include <fstream>
-#include <iomanip>
-
-#include <Eigen/Dense>
 
 int main() {
   // Define the number of refinement levels we want for our mesh
@@ -62,7 +58,7 @@ int main() {
     ++type_idx;
   }
 
-  // Print
+  // Print to terminal
   std::cout << std::left << std::setfill('-');
   std::cout << std::setw(39) << "#  -- Above x2 = 0 " << std::setw(30)
             << "|-- Intersecting x2 = 0 " << std::setw(30)
@@ -76,21 +72,16 @@ int main() {
             << "\n";
 
   for (int l = 0; l < reflevels; ++l) {
-    std::cout << std::setw(9) << l
-              << std::setw(10) << h1_seminorms(l, 0)
-              << std::setw(20) << h1_diffs(l, 0)
-              << std::setw(10) << h1_seminorms(l, 1)
-              << std::setw(20) << h1_diffs(l, 1)
-              << std::setw(10) << h1_seminorms(l, 2)
-              << std::setw(20) << h1_diffs(l, 2) << "\n";
+    std::cout << std::setw(9) << l << std::setw(10) << h1_seminorms(l, 0)
+              << std::setw(20) << h1_diffs(l, 0) << std::setw(10)
+              << h1_seminorms(l, 1) << std::setw(20) << h1_diffs(l, 1)
+              << std::setw(10) << h1_seminorms(l, 2) << std::setw(20)
+              << h1_diffs(l, 2) << "\n";
   }
-  std::cout << std::setw(9) << reflevels
-            << std::setw(10) << h1_seminorms(reflevels, 0)
-            << std::setw(20) << 0
-            << std::setw(10) << h1_seminorms(reflevels, 1)
-            << std::setw(20) << 0
-            << std::setw(10) << h1_seminorms(reflevels, 2)
-            << std::setw(20) << 0 << "\n";
+  std::cout << std::setw(9) << reflevels << std::setw(10)
+            << h1_seminorms(reflevels, 0) << std::setw(20) << 0 << std::setw(10)
+            << h1_seminorms(reflevels, 1) << std::setw(20) << 0 << std::setw(10)
+            << h1_seminorms(reflevels, 2) << std::setw(20) << 0 << "\n";
 
   return 0;
 }
