@@ -1,7 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sys import argv
 
-data = np.genfromtxt("error.csv", delimiter=',')
+input_filename = str(argv[1])
+output_filename = str(argv[2])
+
+data = np.genfromtxt(input_filename, delimiter=',')
 h = data[0]
 error_short = data[1]
 error_long = data[2]
@@ -15,6 +19,6 @@ plt.loglog(x, x, '--', label='slope 1')
 plt.xlabel('mesh-width h')
 plt.ylabel('error')
 plt.legend()
-plt.savefig("error.png")
+plt.savefig(output_filename)
 
-print("Generated error.png")
+print('Generated ' + output_filename)

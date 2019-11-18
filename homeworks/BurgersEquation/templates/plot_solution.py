@@ -1,7 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sys import argv
 
-data = np.genfromtxt("solution.csv", delimiter=',')
+input_filename = str(argv[1])
+output_filename = str(argv[2])
+
+data = np.genfromtxt(input_filename, delimiter=',')
 x = data[0]
 solution_short = data[1]
 solution_long = data[2]
@@ -12,6 +16,6 @@ plt.plot(x, solution_long, '--', label='T = 3.0')
 plt.xlabel('x')
 plt.ylabel('u(x, T)')
 plt.legend()
-plt.savefig("solution.png")
+plt.savefig(output_filename)
 
-print("Generated solution.png")
+print('Generated ' + output_filename)

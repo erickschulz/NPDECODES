@@ -33,8 +33,9 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
   Eigen::VectorXd mu = x.unaryExpr(&w0);
 
-  // Your code goes here:
-  // Fill the vector mu.
+  //====================
+  // Your code goes here
+  //====================
 
   return mu;
 }
@@ -68,8 +69,9 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
   Eigen::Matrix<double, 3, 4> result;
   result.row(0) = h.transpose();
 
-  // Your code goes here:
-  // Fill the vector result.
+  //====================
+  // Your code goes here
+  //====================
 
   return result;
 }
