@@ -33,7 +33,7 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
   Eigen::VectorXd mu = x.unaryExpr(&w0);
 
-  #if SOLUTION
+#if SOLUTION
   for (int i = 0; i < m; ++i) {
     for (int j = N; 0 < j; --j) {
       // Standard fully discrete evolution based on explicit Euler timestepping
@@ -43,10 +43,11 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
     // information flows from left to right.
     mu(0) = 0.0; // Value of u0 to the left of x=0
   }
-  #else
-  // Your code goes here:
-  // Fill the vector mu.
-  #endif
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return mu;
 }
@@ -80,7 +81,7 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
   Eigen::Matrix<double, 3, 4> result;
   result.row(0) = h.transpose();
 
-  #if SOLUTION
+#if SOLUTION
   for (int k = 0; k < 2; ++k) {
     Eigen::VectorXd mu_ref = solveBurgersGodunov(T(k), N_large);
     Eigen::Vector4d error;
@@ -91,10 +92,11 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
     }
     result.row(k + 1) = error.transpose();
   }
-  #else
-  // Your code goes here:
-  // Fill the vector result.
-  #endif
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return result;
 }
