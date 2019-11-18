@@ -12,13 +12,13 @@
 
 #include <gtest/gtest.h>
 
+#include <Eigen/Core>
+
 #if SOLUTION
 #include "../mastersolution/1dwaveabsorbingbc.h"
 #else
 #include "../mysolution/1dwaveabsorbingbc.h"
 #endif
-
-#include <Eigen/Core>
 
 namespace WaveAbsorbingBC1D::test {
 

@@ -33,7 +33,7 @@ int main() {
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(m + 1, 0.0, T);
 
   // print the data, e.g. to a .csv file, in a suitable way
-  #if SOLUTION
+#if SOLUTION
   std::ofstream solution_file, energies_file;
 
   solution_file.open("solution.csv");
@@ -54,11 +54,11 @@ int main() {
   std::cout << "The energies have been written to energies.csv. Run the script "
                "visenergies_mastersolution.py to plot the data."
             << std::endl;
-  #else
-  // Your Code goes here:
-  // Write the solution and the energies in a .csv file
-  // that can be plotted by a Python script.
-  #endif
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return 0;
 }
