@@ -33,9 +33,9 @@ int main() {
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(m + 1, 0.0, T);
 
   // print the data, e.g. to a .csv file, in a suitable way
-  // Your Code goes here:
-  // Write the solution and the energies in a .csv file
-  // that can be plotted by a Python script.
+  //====================
+  // Your code goes here
+  //====================
 
   return 0;
 }

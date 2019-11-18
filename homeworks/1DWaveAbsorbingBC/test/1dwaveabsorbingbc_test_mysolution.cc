@@ -12,9 +12,9 @@
 
 #include <gtest/gtest.h>
 
-#include "../mysolution/1dwaveabsorbingbc.h"
-
 #include <Eigen/Core>
+
+#include "../mysolution/1dwaveabsorbingbc.h"
 
 namespace WaveAbsorbingBC1D::test {
 

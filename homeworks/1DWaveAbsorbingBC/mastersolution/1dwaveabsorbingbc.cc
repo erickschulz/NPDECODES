@@ -112,7 +112,6 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   for (int i = 0; i < m + 1; ++i) {
     R(i, N) = g(i * tau);
   }
-
   return R;
 }
 /* SAM_LISTING_END_1 */
