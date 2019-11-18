@@ -14,4 +14,3 @@ message(STATUS "Solution ${SOLUTION}")
 
 add_subdirectory(BurgersEquation)
 add_subdirectory(1DWaveAbsorbingBC)
-add_subdirectory(NewProblem)
