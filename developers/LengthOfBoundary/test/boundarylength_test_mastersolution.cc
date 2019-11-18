@@ -1,0 +1,41 @@
+/**
+ * @ file master_tests.cc
+ * @ brief NPDE homework LengthOfBoundary code
+ * @ author Christian Mitsch
+ * @ date 03.03.2019
+ * @ copyright Developed at ETH Zurich
+ */
+
+// HACK:
+#undef SOLUTION
+#define SOLUTION 1
+
+#include <gtest/gtest.h>
+
+#include <lf/mesh/test_utils/test_meshes.h>
+
+#if SOLUTION
+#include "../mastersolution/boundarylength.h"
+#else
+#include "../mysolution/boundarylength.h"
+#endif
+
+namespace LengthOfBoundary::test {
+
+TEST(BoundaryLength, area_test) {
+  // define the test mesh
+  // "auto" = std::shared_ptr<lf::mesh::Mesh>
+  auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+
+  EXPECT_NEAR(LengthOfBoundary::volumeOfDomain(mesh_p), 9.0, 1e-12);
+}
+
+TEST(BoundaryLength, length_test) {
+  // define the test mesh
+  // "auto" = std::shared_ptr<lf::mesh::Mesh>
+  auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+
+  EXPECT_NEAR(LengthOfBoundary::lengthOfBoundary(mesh_p), 12.0, 1e-12);
+}
+
+}  // namespace LengthOfBoundary::test
