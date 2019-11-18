@@ -9,9 +9,9 @@ function(build_problem TARGET DIR OUTPUT_NAME)
 	  ${LIBRARIES}
   )
 
-  add_library(${TARGET}.shared SHARED ${SOURCES})
-  set_target_properties(${TARGET}.shared PROPERTIES OUTPUT_NAME ${OUTPUT_NAME}.shared)
-  target_link_libraries(${TARGET}.shared
+  add_library(${TARGET}.static STATIC ${SOURCES})
+  set_target_properties(${TARGET}.static PROPERTIES OUTPUT_NAME ${OUTPUT_NAME}.static)
+  target_link_libraries(${TARGET}.static
 	  ${LIBRARIES}
   )
 endfunction(build_problem)
@@ -26,7 +26,7 @@ function(build_test TARGET TARGET_TO_TEST DIR OUTPUT_NAME)
   set_target_properties(${TARGET} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
   target_link_libraries(${TARGET}
     ${LIBRARIES}
-    ${TARGET_TO_TEST}.shared
+    ${TARGET_TO_TEST}.static
   )
 
   gtest_discover_tests(${TARGET})
