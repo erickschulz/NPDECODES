@@ -36,6 +36,6 @@ class AnisotropicDiffusionElementMatrixProvider {
   // tensor k:coords -> matrix as k(x) = I + d(x)d(x)^T for example in
   // heat conduction models.
   std::function<Eigen::Vector2d(Eigen::Vector2d)> anisotropy_vec_field_;
-};
+}; // class AnisotropicDiffusionElementMatrixProvider
 
 }  // namespace ParametricElementMatrices

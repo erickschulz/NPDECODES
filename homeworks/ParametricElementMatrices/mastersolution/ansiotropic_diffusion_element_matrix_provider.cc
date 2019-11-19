@@ -7,7 +7,7 @@
 
 namespace ParametricElementMatrices {
 
-/** @brief Compute local element matrix for the Galerkin matrix of
+/** @brief Compute the local element matrix for the Galerkin matrix of
  *
  *     \int_{\Omega} (1 + d(x)d(x)') * grad(u(x)).grad(v(x)) dx
  *
@@ -20,7 +20,7 @@ namespace ParametricElementMatrices {
  * @param cell current cell */
 Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
     const lf::mesh::Entity &cell) {
-  Eigen::MatrixXd element_matrix;  // local matrix to be returned
+  Eigen::MatrixXd element_matrix;  // local matrix to return
 
   // Cell data
   auto cell_geometry = cell.Geometry();
@@ -125,10 +125,10 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
         Eigen::Matrix2d diffusion_tensor =
             Eigen::Matrix2d::Identity(2, 2) +
             anisotropy_vec * anisotropy_vec.transpose();
-        // III. ii Compute gradients of the global basis functions
+        // III.ii Compute gradients of the global basis functions
         Eigen::Matrix<double, 2, 4> gradients_param{
             JinvT.block(0, 2 * i, 2, 2) * gradients_ref(midpoints_ref.col(i))};
-        // III. iii Compute local contribution to the element matrix
+        // III.iii Compute local contribution to the element matrix
         for (int j = 0; j < 4; j++) {
           for (int k = 0; k < 4; k++) {
             double integrand = (gradients_param.col(j).transpose() *

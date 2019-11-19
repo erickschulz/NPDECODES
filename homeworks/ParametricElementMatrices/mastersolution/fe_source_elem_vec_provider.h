@@ -1,10 +1,7 @@
-/**
- * @file fe_source_elem_vec_provider.cc
- * @brief NPDE homework ParametricElementMatrices code
- * @author Simon Meierhans
- * @date 14/03/2019
- * @copyright Developed at ETH Zurich
- */
+/** @brief NPDE homework ParametricElementMatrices code
+ * @author Simon Meierhans, Erick Schulz (refactoring)
+ * @date 13/03/2019, 19/11/2019 (refactoring)
+ * @copyright Developed at ETH Zurich */
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
@@ -20,22 +17,25 @@ namespace ParametricElementMatrices {
 
 class FESourceElemVecProvider {
  public:
-  using elem_vec_t = Eigen::Matrix<double, Eigen::Dynamic, 1>;
-
-  using ElemVec = const elem_vec_t;
-
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
-
+  /** @brief Constructor storing the basis expansion vector of the variable
+   * coefficient and the finite elements space */
   FESourceElemVecProvider(
-      std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>>
-          lin_Lagr_fe_space,
-      Eigen::VectorXd w_coeff_vec);
-
-  ElemVec Eval(const lf::mesh::Entity &cell);
+      std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
+      Eigen::VectorXd coeff_expansion)
+      : fe_space_(fe_space), coeff_expansion_(coeff_expansion) {}
+  /** @brief Default implement: all cells are active */
+  bool isActive(const lf::mesh::Entity &cell) { return true; }
+   /** @brief Main method for computing the element vector
+   * @param cell refers to current cell (triangle or quadrilateral) for which
+   * the element veector is desired. The implementation uses local edge-midpoint
+   * quadrature rule. */
+  Eigen::VectorXd Eval(const lf::mesh::Entity &cell);
 
  private:
-  std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> lin_Lagr_fe_space_;
-  Eigen::VectorXd w_coeff_vec_;
-};
+  // Linear first-order lagrangian finite element space
+  std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
+  // Finite element basis expansion vector of the coefficient function
+  Eigen::VectorXd coeff_expansion_;
+}; // class FESourceElemVecProvider
 
 }  // namespace ParametricElementMatrices
