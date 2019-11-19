@@ -1,11 +1,8 @@
 
-/**
- * @file ansiotropic_diffusion_element_matrix_provider.h
- * @brief NPDE homework ParametricElementMatrices code
- * @author Simon Meierhans
- * @date 13/03/2019
- * @copyright Developed at ETH Zurich
- */
+/** @brief NPDE homework ParametricElementMatrices code
+ * @author Simon Meierhans, Erick Schulz (refactoring)
+ * @date 13/03/2019, 19/11/2019 (refactoring)
+ * @copyright Developed at ETH Zurich */
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
@@ -21,15 +18,24 @@ namespace ParametricElementMatrices {
 
 class AnisotropicDiffusionElementMatrixProvider {
  public:
-  using elem_mat_t = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>;
-  using ElemMat = const elem_mat_t;
-  using vectorfield_t = std::function<Eigen::Vector2d(Eigen::Vector2d)>;
-  AnisotropicDiffusionElementMatrixProvider(vectorfield_t Vf_d);
+  /** @brief Constructor storing the vector field of modelling anisotropy */
+  AnisotropicDiffusionElementMatrixProvider(
+      std::function<Eigen::Vector2d(Eigen::Vector2d)> anisotropy_vec_field)
+      : anisotropy_vec_field_(anisotropy_vec_field){};
+  /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity &) { return true; }
-  ElemMat Eval(const lf::mesh::Entity &cell);
+  /** @brief Main method for computing the element matrix
+   * @param cell refers to current cell (triangle or quadrilateral) for which
+   * the element matrix is desired. The implementation uses local edge-midpoint
+   * quadrature rule. */
+  Eigen::MatrixXd Eval(const lf::mesh::Entity &cell);
 
  private:
-  vectorfield_t Vf_d_;
+  // This vector-valued function of the form d:coords -> vector is used to
+  // describe anisotropic material properties. It enters for the diffusion
+  // tensor k:coords -> matrix as k(x) = I + d(x)d(x)^T for example in
+  // heat conduction models.
+  std::function<Eigen::Vector2d(Eigen::Vector2d)> anisotropy_vec_field_;
 };
 
 }  // namespace ParametricElementMatrices

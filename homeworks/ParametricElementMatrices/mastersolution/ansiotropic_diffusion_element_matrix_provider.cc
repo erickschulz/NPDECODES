@@ -1,126 +1,154 @@
-/**
- * @file ansiotropic_diffusion_element_matrix_provider.cc
- * @brief NPDE homework ParametricElementMatrices code
- * @author Simon Meierhans
- * @date 13/03/2019
- * @copyright Developed at ETH Zurich
- */
+/** @brief NPDE homework ParametricElementMatrices code
+ * @author Simon Meierhans, Erick Schulz (refactoring)
+ * @date 13/03/2019, 19/11/2019 (refactoring)
+ * @copyright Developed at ETH Zurich */
 
 #include "ansiotropic_diffusion_element_matrix_provider.h"
 
 namespace ParametricElementMatrices {
 
-/**
- * @brief compute element matrix for \int_{\Omega} grad(u(x)) (1 + d(x)d(x)')
- * grad(v(x)) dx
- * @param cell edge on the boundary
- */
-AnisotropicDiffusionElementMatrixProvider::ElemMat
-AnisotropicDiffusionElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
-  auto geom = cell.Geometry();
-  auto ref_element = geom->RefEl();
-  Eigen::MatrixXd result;
+/** @brief Compute local element matrix for the Galerkin matrix of
+ *
+ *     \int_{\Omega} (1 + d(x)d(x)') * grad(u(x)).grad(v(x)) dx
+ *
+ * using linear first-order lagrangian finite elements. A local edge-midpoint
+ * quadrature rule is used for integration over a cell:
+ *
+ *   \int_K phi(x) dx = (vol(K)/#vertices(K)) * sum_{edges} phi(midpoint)
+ *
+ * where K is a cell.
+ * @param cell current cell */
+Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
+    const lf::mesh::Entity &cell) {
+  Eigen::MatrixXd element_matrix;  // local matrix to be returned
+
+  // Cell data
+  auto cell_geometry = cell.Geometry();
+
   /* SOLUTION_BEGIN */
+  // Integration formula distinguishes between triagular and quadrilateral cells
+  switch (cell_geometry->RefEl()) {
+    /* TRIANGULAR CELL */
+    case lf::base::RefEl::kTria(): {
+      /* SAM_LISTING_BEGIN_1 */
+      // I. OBTAIN COORDINATES OF THE MIDPOINTS
+      // I.i Hard-code the midpoints of the edges on the reference triangle
+      Eigen::Matrix<double, 2, 3> midpoints_ref(2, 3);
+      midpoints_ref << 0.5, 0.5, 0, 0, 0.5, 0.5;
+      // I.ii Obtain the midpoints of the parametrized triangle
+      auto midpoints_param = cell_geometry->Global(midpoints_ref);
 
-  // distinguish between triangles and quadrilaterals
-  if (ref_element.NumNodes() == 3) {
-    /* SAM_LISTING_BEGIN_1 */
-    result = Eigen::MatrixXd::Zero(3, 3);
-    // midpoints of the edges of the reference triangle
-    Eigen::Matrix<double, 2, 3> midpoints_loc(2, 3);
-    midpoints_loc << 0.5, 0.5, 0, 0, 0.5, 0.5;
-    // obtain global midpoints
-    auto midpoints_glob = geom->Global(midpoints_loc);
+      // II. COMPUTE LOCAL INTEGRATION DATA
+      // II.i Compute the inverse of the tranposed Jacobian
+      //     (J^T)^{-1} = J*(J^T*J)^{-1}
+      // of the parametrization map at the midpoints of the reference triangle
+      const Eigen::MatrixXd JinvT(
+          cell_geometry->JacobianInverseGramian(midpoints_ref));
+      // II.ii Compute the integration element
+      //     integration_element(x) = sqrt(det(J^T*J))
+      // where J is the Jacobian of the parametrization map
+      const Eigen::VectorXd integration_element(
+          cell_geometry->IntegrationElement(midpoints_ref));
+      // II.iii Hard-code the gradients of the reference basis functions
+      Eigen::Matrix<double, 2, 3> gradients_ref(2, 3);
+      gradients_ref << -1, 1, 0, -1, 0, 1;
 
-    // get jacobian and determinants (scaling)
-    const Eigen::MatrixXd JinvT(geom->JacobianInverseGramian(midpoints_loc));
-    const Eigen::VectorXd determinants(geom->IntegrationElement(midpoints_loc));
-    // local gradients
-    Eigen::Matrix<double, 2, 3> grads_loc(2, 3);
-    grads_loc << -1, 1, 0, -1, 0, 1;
-    // loop over quadrature points
-    for (int i = 0; i < 3; i++) {
-      // prepare extra factor matrix
-      Eigen::Vector2d d_x = AnisotropicDiffusionElementMatrixProvider::Vf_d_(
-          midpoints_glob.col(i));
-      Eigen::Matrix2d factor_matrix =
-          Eigen::Matrix2d::Identity(2, 2) + d_x * d_x.transpose();
-      // compute global gradients
-      Eigen::MatrixXd grad_glob(2, 3);
-      grad_glob = JinvT.block(0, 2 * i, 2, 2) * grads_loc;
-      // add contributions to element matrix
-      for (int j = 0; j < 3; j++) {
-        for (int k = 0; k < 3; k++) {
-          double tmp =
-              grad_glob.col(j).transpose() * factor_matrix * grad_glob.col(k);
-          result(j, k) += determinants(i) * tmp;
+      // III. PERFORM NUMERICAL QUADRATURE
+      element_matrix = Eigen::MatrixXd::Zero(3, 3);
+      for (int i = 0; i < 3; i++) {  // for each local degree of freedom
+        // III.i Evaluate the diffusion tensor
+        Eigen::Vector2d anisotropy_vec =
+            anisotropy_vec_field_(midpoints_param.col(i));
+        Eigen::Matrix2d diffusion_tensor =
+            Eigen::Matrix2d::Identity(2, 2) +
+            anisotropy_vec * anisotropy_vec.transpose();
+        // III. ii Compute gradients of the global basis functions
+        Eigen::MatrixXd gradients_param(2, 3);
+        gradients_param = JinvT.block(0, 2 * i, 2, 2) * gradients_ref;
+        // III. iii Compute local contribution to the element matrix
+        for (int j = 0; j < 3; j++) {
+          for (int k = 0; k < 3; k++) {
+            double integrand = (gradients_param.col(j).transpose() *
+                                diffusion_tensor * gradients_param.col(k));
+            element_matrix(j, k) += integration_element(i) * integrand;
+          }
         }
       }
+      element_matrix *= 1. / 6.;
+      break;
     }
-    // multiply with area divided by 6 (3 quad points and RefEl has area 0.5)
-    result *= 1. / 6.;
-    /* SAM_LISTING_END_1 */
-  } else if (ref_element.NumNodes() == 4) {
-    /* SAM_LISTING_BEGIN_2 */
-    result = Eigen::MatrixXd::Zero(4, 4);
-    // midpoints of the edges of the reference triangle
-    Eigen::Matrix<double, 2, 4> midpoints_loc(2, 4);
-    midpoints_loc << 0.5, 1, 0.5, 0, 0, 0.5, 1, 0.5;
-    // obtain global midpoints
-    auto midpoints_glob = geom->Global(midpoints_loc);
-    // get jacobian and determinants (scaling)
-    const Eigen::MatrixXd JinvT(geom->JacobianInverseGramian(midpoints_loc));
-    const Eigen::VectorXd determinants(geom->IntegrationElement(midpoints_loc));
-    // analytic gradients for all for basis functions
-    auto grad_f = [](Eigen::Vector2d x) -> Eigen::Matrix<double, 2, 4> {
-      Eigen::Matrix<double, 2, 4> result;
-      result(0, 0) = x(1) - 1;
-      result(1, 0) = x(0) - 1;
-      result(0, 1) = 1 - x(1);
-      result(1, 1) = -x(0);
-      result(0, 2) = x(1);
-      result(1, 2) = x(0);
-      result(0, 3) = -x(1);
-      result(1, 3) = 1 - x(0);
-      return result;
-    };
-    // Loop over quadrature points
-    for (int i = 0; i < 4; i++) {
-      // prepare extra factor matrix
-      Eigen::Vector2d d_x = AnisotropicDiffusionElementMatrixProvider::Vf_d_(
-          midpoints_glob.col(i));
-      Eigen::Matrix2d factor_matrix =
-          Eigen::Matrix2d::Identity(2, 2) + d_x * d_x.transpose();
-      // compute global gradients
-      Eigen::Matrix<double, 2, 4> grad_glob{JinvT.block(0, 2 * i, 2, 2) *
-                                            grad_f(midpoints_loc.col(i))};
-      // add contributions to element matrix
-      for (int j = 0; j < 4; j++) {
-        for (int k = 0; k < 4; k++) {
-          double tmp =
-              (grad_glob.col(j).transpose() * factor_matrix * grad_glob.col(k));
-          result(j, k) += determinants(i) * tmp;
+      /* SAM_LISTING_END_1 */
+
+    /* QUADRILATERAL CELL */
+    case lf::base::RefEl::kQuad(): {
+      /* SAM_LISTING_BEGIN_2 */
+      // I. OBTAIN COORDINATES OF THE MIDPOINTS
+      // I.i Hard-code the midpoints of the edges on the reference quadrilateral
+      Eigen::Matrix<double, 2, 4> midpoints_ref(2, 4);
+      midpoints_ref << 0.5, 1, 0.5, 0, 0, 0.5, 1, 0.5;
+      // I.ii Obtain the midpoints of the parametrized quadrilateral
+      auto midpoints_param = cell_geometry->Global(midpoints_ref);
+
+      // II. COMPUTE LOCAL INTEGRATION DATA
+      // II.i Compute the inverse of the tranposed Jacobian of the
+      //     (J^T)^{-1} = J*(J^T*J)^{-1}
+      // parametrization map at the midpoints of the reference quadrilateral
+      const Eigen::MatrixXd JinvT(
+          cell_geometry->JacobianInverseGramian(midpoints_ref));
+      // II.ii Compute the integration element
+      //     integration_element(x) = sqrt(det(J^T*J))
+      // where J is the Jacobian of the parametrization map
+      const Eigen::VectorXd integration_element(
+          cell_geometry->IntegrationElement(midpoints_ref));
+      // II.iii Hard-code a matrix-valued function that returns the gradients of
+      // the reference basis functions evaluated at coordinates
+      auto gradients_ref =
+          [](Eigen::Vector2d x) -> Eigen::Matrix<double, 2, 4> {
+        Eigen::Matrix<double, 2, 4> element_matrix;
+        element_matrix(0, 0) = x(1) - 1;
+        element_matrix(1, 0) = x(0) - 1;
+        element_matrix(0, 1) = 1 - x(1);
+        element_matrix(1, 1) = -x(0);
+        element_matrix(0, 2) = x(1);
+        element_matrix(1, 2) = x(0);
+        element_matrix(0, 3) = -x(1);
+        element_matrix(1, 3) = 1 - x(0);
+        return element_matrix;
+      };
+
+      // III. PERFORM NUMERICAL QUADRATURE
+      element_matrix = Eigen::MatrixXd::Zero(4, 4);
+      for (int i = 0; i < 4; i++) {  // for each local degree of freedom
+        // III.i Evaluate the diffusion tensor
+        Eigen::Vector2d anisotropy_vec =
+            anisotropy_vec_field_(midpoints_param.col(i));
+        Eigen::Matrix2d diffusion_tensor =
+            Eigen::Matrix2d::Identity(2, 2) +
+            anisotropy_vec * anisotropy_vec.transpose();
+        // III. ii Compute gradients of the global basis functions
+        Eigen::Matrix<double, 2, 4> gradients_param{
+            JinvT.block(0, 2 * i, 2, 2) * gradients_ref(midpoints_ref.col(i))};
+        // III. iii Compute local contribution to the element matrix
+        for (int j = 0; j < 4; j++) {
+          for (int k = 0; k < 4; k++) {
+            double integrand = (gradients_param.col(j).transpose() *
+                                diffusion_tensor * gradients_param.col(k));
+            element_matrix(j, k) += integration_element(i) * integrand;
+          }
         }
       }
+      element_matrix *= 1. / 4.;
+      break;
     }
-    // multiply with area divided by 4 (number of quad points)
-    result *= 1. / 4.;
     /* SAM_LISTING_END_2 */
-  } else {
-    throw std::invalid_argument("received neither triangle nor quadrilateral");
+    
+    /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
+    default:
+      throw std::invalid_argument(
+          "received neither triangle nor quadrilateral");
   }
   /* SOLUTION_END */
-  return result;
-}
+  return element_matrix;
+}  // AnisotropicDiffusionElementMatrixProvider::Eval
 
-/**
- * @brief constructor of AnisotropicDiffusionElementMatrixProvider for
- * \int_{\Omega} grad(u(x)) (1 + d(x)d(x)') grad(v(x)) dx
- * @param Vf_d vectorfield d(x)
- */
-AnisotropicDiffusionElementMatrixProvider::
-    AnisotropicDiffusionElementMatrixProvider(
-        AnisotropicDiffusionElementMatrixProvider::vectorfield_t Vf_d) {
-  AnisotropicDiffusionElementMatrixProvider::Vf_d_ = Vf_d;
-}
 }  // namespace ParametricElementMatrices
