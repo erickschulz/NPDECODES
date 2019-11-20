@@ -64,11 +64,17 @@ find_package(Boost CONFIG REQUIRED chrono timer system filesystem program_option
 option(HOMEWORKS "usage: cmake -DHOMEWORKS=ON/OFF .." ON)
 message(STATUS "HOMEWORKS ${HOMEWORKS}")
 
-option(DEVELOPERS "usage: cmake -DDEVELOPERS=ON/OFF .." OFF)
+option(DEVELOPERS "usage: cmake -DDEVELOPERS=ON/OFF .." ON)
 message(STATUS "DEVELOPERS ${DEVELOPERS}")
 
-option(LECTURECODES "usage: cmake -DLECTURECODES=ON/OFF .." OFF)
+option(LECTURECODES "usage: cmake -DLECTURECODES=ON/OFF .." ON)
 message(STATUS "LECTURECODES ${LECTURECODES}")
+
+option(MASTERSOLUTION "usage: cmake -DMASTERSOLUTION=ON/OFF .." ON)
+message(STATUS "MASTERSOLUTION ${MASTERSOLUTION}")
+
+option(MYSOLUTION "usage: cmake -DMYSOLUTION=ON/OFF .." ON)
+message(STATUS "MYSOLUTION ${MYSOLUTION}")
 
 # Add subdirectories
 if(HOMEWORKS)

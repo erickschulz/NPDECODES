@@ -4,11 +4,24 @@ include(${CMAKE_SOURCE_DIR}/cmake/modules/build_variables.cmake)
 # Provides functions build_problem and build_test
 include(${CMAKE_SOURCE_DIR}/cmake/modules/build_rules.cmake)
 
+# pass correct arguemnts to build rules
 function(build PROBLEM_NAME DIR)
-  build_problem(${PROBLEM_NAME}_${DIR} ${DIR} ${PROBLEM_NAME}_${DIR})
-  build_test(${PROBLEM_NAME}_test_${DIR} ${PROBLEM_NAME}_${DIR} ${DIR} ${PROBLEM_NAME}_test_${DIR})
+  set(PROBLEM_TARGET ${PROBLEM_NAME}_${DIR})
+  set(TEST_TARGET ${PROBLEM_NAME}_test_${DIR})
+
+  # problem
+  build_problem(${PROBLEM_TARGET} ${DIR} ${PROBLEM_TARGET})
+
+  # tests
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test)
+    build_test(${TEST_TARGET} ${PROBLEM_TARGET} ${DIR} ${TEST_TARGET})
+  endif()
 endfunction(build)
 
-message(STATUS "Processing ${PROBLEM_NAME}")
-build(${PROBLEM_NAME} mastersolution)
-build(${PROBLEM_NAME} mysolution)
+if(${MASTERSOLUTION})
+  build(${PROBLEM_NAME} mastersolution)
+endif()
+
+if(${MYSOLUTION})
+  build(${PROBLEM_NAME} mysolution)
+endif()

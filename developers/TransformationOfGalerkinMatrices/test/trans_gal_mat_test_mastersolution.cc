@@ -1,7 +1,3 @@
-// HACK:
-#undef SOLUTION
-#define SOLUTION 1
-
 #include <gtest/gtest.h>
 
 #include <Eigen/SparseCore>
