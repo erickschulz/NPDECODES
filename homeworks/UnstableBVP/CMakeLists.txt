@@ -8,7 +8,6 @@ set(libraries
   LF::lf.mesh.hybrid2d
   LF::lf.refinement
   LF::lf.assemble
-  LF::lf.io
   LF::lf.uscalfe
 )
 
