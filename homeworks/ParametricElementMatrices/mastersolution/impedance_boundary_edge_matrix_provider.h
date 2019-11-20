@@ -1,11 +1,7 @@
-
-/**
- * @file impedance_boundary_edge_matrix_provider.h
- * @brief NPDE homework ParametricElementMatrices code
- * @author Simon Meierhans
- * @date 14/03/2019
- * @copyright Developed at ETH Zurich
- */
+/** @brief NPDE homework ParametricElementMatrices code
+ * @author Simon Meierhans, Erick Schulz (refactoring)
+ * @date 13/03/2019, 19/11/2019 (refactoring)
+ * @copyright Developed at ETH Zurich */
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>

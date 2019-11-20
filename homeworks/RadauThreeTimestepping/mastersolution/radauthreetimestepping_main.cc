@@ -1,10 +1,7 @@
-/**
- * @file
- * @brief NPDE homework RadauThreeTimestepping
+/** @brief NPDE homework RadauThreeTimestepping
  * @author Erick Schulz
  * @date 08/04/2019
- * @copyright Developed at ETH Zurich
- */
+ * @copyright Developed at ETH Zurich */
 
 #include "radau_three_timestepping.h"
 #include "radau_three_timestepping_ode.h"

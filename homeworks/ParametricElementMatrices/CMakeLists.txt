@@ -8,7 +8,7 @@ set(mastersolution_sources
   mastersolution/fe_source_elem_vec_provider.h
   mastersolution/impedance_boundary_edge_matrix_provider.h
   mastersolution/impedance_boundary_edge_matrix_provider.cc
-  mastersolution/main.cc
+  mastersolution/parametricelementmatrices_main.cc
 )
 
 set(mastersolution_test
@@ -81,7 +81,8 @@ target_link_libraries(ParametricElementMatrices_mastersolution
 	LF::lf.assemble
 	LF::lf.uscalfe
 	LF::lf.quad
-	LF::lf.geometry
+  LF::lf.geometry
+  LF::lf.io
 )
 
 target_link_libraries(ParametricElementMatrices_test_mastersolution

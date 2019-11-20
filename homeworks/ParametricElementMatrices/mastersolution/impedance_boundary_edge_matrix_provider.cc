@@ -1,17 +1,12 @@
-
-/**
- * @file impedance_boundary_edge_matrix_provider.cc
- * @brief NPDE homework ParametricElementMatrices code
- * @author Simon Meierhans
- * @date 14/03/2019
- * @copyright Developed at ETH Zurich
- */
+/** @brief NPDE homework ParametricElementMatrices code
+ * @author Simon Meierhans, Erick Schulz (refactoring)
+ * @date 13/03/2019, 19/11/2019 (refactoring)
+ * @copyright Developed at ETH Zurich */
 
 #include "impedance_boundary_edge_matrix_provider.h"
 
 namespace ParametricElementMatrices {
 
-// Constructor for class ImpedanceBoundaryEdgeMatrix
 /* SAM_LISTING_BEGIN_0 */
 ImpedanceBoundaryEdgeMatrixProvider::ImpedanceBoundaryEdgeMatrixProvider(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
@@ -27,10 +22,6 @@ ImpedanceBoundaryEdgeMatrixProvider::ImpedanceBoundaryEdgeMatrixProvider(
 }
 /* SAM_LISTING_END_0 */
 
-/**
- * @brief true if edge is on the boundary
- * @param edge edge to be tested for
- */
 /* SAM_LISTING_BEGIN_1 */
 bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
     const lf::mesh::Entity &edge) {
@@ -42,46 +33,44 @@ bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
 }
 /* SAM_LISTING_END_1 */
 
-/**
- * @brief compute element matrix for \int_{\boundary \Omega} w(x)^2 u(x) v(x) dx
- * @param cell edge on the boundary
- */
+/**  @brief Compute the local edge element matrix for the Galerkin matrix of
+ * 
+ *           \int_{\boundary \Omega} w(x)^2 u(x) v(x) dx
+ * 
+ * @param edge current edge */
 /* SAM_LISTING_BEGIN_2 */
 Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
-    const lf::mesh::Entity &cell) {
-  Eigen::MatrixXd result(2, 2);
+    const lf::mesh::Entity &edge) {
+  Eigen::MatrixXd element_matrix(2, 2);
   /* SOLUTION_BEGIN */
-  // get local to global mapping to obtain the coefficients of w
-  const lf::assemble::DofHandler &dofh{
-      ImpedanceBoundaryEdgeMatrixProvider::fe_space_->LocGlobMap()};
-  auto glob_indices = dofh.GlobalDofIndices(cell);
+
+  /* TOOLS AND DATA */
+  // Obtain local->global index mapping for current finite element space
+  const lf::assemble::DofHandler &dofh{fe_space_->LocGlobMap()};
+  // Obtain edge data
+  auto edge_global_idx = dofh.GlobalDofIndices(edge);
+
+  // I. COMPUTE LOCAL INTEGRATION DATA
   Eigen::Vector2d w;
+  // Evaluate w(x) at the degrees of freedom (endpoints of the edge)
   for (int i = 0; i < 2; i++) {
-    w(i) =
-        ImpedanceBoundaryEdgeMatrixProvider::coeff_expansion_(glob_indices[i]);
+    w(i) = coeff_expansion_(edge_global_idx[i]);
   }
 
-  // set up the computed matrices
-  Eigen::MatrixXd m_1(2, 2);
+  // II. COMPUTE LOCAL INTEGRATION DATA
+  double edge_length = lf::geometry::Volume(*edge.Geometry());
+  // It is assumed here that the edge is straight!
+  Eigen::MatrixXd m_1(2, 2), m_2(2,2), m_3(2,2);
   m_1 << 24, 6, 6, 4;
-  m_1 *= w(0) * w(0);
-
-  Eigen::MatrixXd m_2(2, 2);
   m_2 << 6, 4, 4, 6;
-  m_2 *= w(0) * w(1);
-
-  Eigen::MatrixXd m_3(2, 2);
   m_3 << 4, 6, 6, 24;
-  m_3 *= w(1) * w(1);
 
-  result = m_1 + m_2 + m_3;
+  // III. PERFORM NUMERICAL QUADRATURE
+  element_matrix = (w(0)*w(0))*m_1 + (w(0)*w(1))*m_2 + (w(1) * w(1))*m_3;
+  element_matrix *= edge_length / 120.;
 
-  // multiply by length and divide by 120 as derived
-  auto geom = cell.Geometry();
-  double length = lf::geometry::Volume(*geom);
-  result *= length / 120.;
   /* SOLUTION_END */
-  return result;
+  return element_matrix;
 }
 /* SAM_LISTING_END_2 */
 
