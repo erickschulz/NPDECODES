@@ -7,6 +7,17 @@
  */
 
 #include "unstablebvp.h"
+// General includes
+#include <fstream>
+#include <iomanip>
+// Math includes
+#include <cmath>
+// Eigen
+#include <Eigen/Dense>
+//Lehrfempp
+#include <lf/assemble/assemble.h>
+#include <lf/geometry/geometry.h>
+#include <lf/uscalfe/uscalfe.h>
 
 namespace UnstableBVP {
 

@@ -8,8 +8,19 @@
  */
 
 #include "../mastersolution/unstablebvp.h"
-
+// General includes
+#include <fstream>
+#include <iomanip>
+// Math includes
+#include <cmath>
+// Eigen
+#include <Eigen/Dense>
+// Google Test
 #include <gtest/gtest.h>
+//Lehrfempp
+#include <lf/assemble/assemble.h>
+#include <lf/geometry/geometry.h>
+#include <lf/uscalfe/uscalfe.h>
 
 TEST(UnstableBVP, TopMesh) {
   // Define the number of refinement levels we want for our mesh
