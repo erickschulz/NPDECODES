@@ -21,19 +21,20 @@ namespace ParametricElementMatrices {
 
 class ImpedanceBoundaryEdgeMatrixProvider {
  public:
-  using elem_mat_t = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>;
-  using ElemMat = const elem_mat_t;
+  /** @brief Constructor storing the basis expansion vector of the variable
+   * coefficient, the finite elements space and the boundary edge predicate */
   ImpedanceBoundaryEdgeMatrixProvider(
-      std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>>
-          lin_Lagr_fe_space,
-      Eigen::VectorXd w_coeff_vec);
+      std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
+      Eigen::VectorXd coeff_expansion);
   bool isActive(const lf::mesh::Entity &edge);
-  ElemMat Eval(const lf::mesh::Entity &cell);
+  Eigen::MatrixXd Eval(const lf::mesh::Entity &cell);
 
  private:
-  std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> lin_Lagr_fe_space_;
-  Eigen::VectorXd w_coeff_vec_;
+  // Linear first-order lagrangian finite element space
+  std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
+  // Finite element basis expansion vector of the coefficient function
+  Eigen::VectorXd coeff_expansion_;
+  // Predicate returning true if an edge is on the boundary
   std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<bool>> bd_flags_;
 };
-
 }  // namespace ParametricElementMatrices

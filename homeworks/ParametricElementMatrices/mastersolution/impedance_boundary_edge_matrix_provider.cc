@@ -11,24 +11,19 @@
 
 namespace ParametricElementMatrices {
 
-/**
- * @brief initialize ImpedanceBoundaryEdgeMatrixProvider for \int_{\boundary
- * \Omega} w(x)^2 u(x) v(x) dx
- * @param lin_Lagr_fe_space discretization of computational domain
- *        w_coeff_vec coefficients of w interpolated on lin_Lagr_fe_space
- */
+// Constructor for class ImpedanceBoundaryEdgeMatrix
 /* SAM_LISTING_BEGIN_0 */
 ImpedanceBoundaryEdgeMatrixProvider::ImpedanceBoundaryEdgeMatrixProvider(
-    std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>>
-        lin_Lagr_fe_space,
-    Eigen::VectorXd w_coeff_vec) {
-  ImpedanceBoundaryEdgeMatrixProvider::lin_Lagr_fe_space_ = lin_Lagr_fe_space;
-  ImpedanceBoundaryEdgeMatrixProvider::w_coeff_vec_ = w_coeff_vec;
-  // initialize boundary flags for isActive() function
-  auto mesh = lin_Lagr_fe_space->Mesh();
-  ImpedanceBoundaryEdgeMatrixProvider::bd_flags_ =
-      std::make_shared<lf::mesh::utils::CodimMeshDataSet<bool>>(
-          lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1));
+    std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
+    Eigen::VectorXd coeff_expansion) {
+  fe_space_ = fe_space;
+  coeff_expansion_ = coeff_expansion;
+  auto mesh = fe_space->Mesh();
+  // Obtain an array of boolean flags for the edges of the mesh: 'true'
+  // indicates that the edge lies on the boundary. This predicate will
+  // guarantee that the computations are carried only on the boundary edges
+  bd_flags_ = std::make_shared<lf::mesh::utils::CodimMeshDataSet<bool>>(
+      lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1));
 }
 /* SAM_LISTING_END_0 */
 
@@ -39,11 +34,11 @@ ImpedanceBoundaryEdgeMatrixProvider::ImpedanceBoundaryEdgeMatrixProvider(
 /* SAM_LISTING_BEGIN_1 */
 bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
     const lf::mesh::Entity &edge) {
-  bool result;
+  bool is_bd_edge;
   /* SOLUTION_BEGIN */
-  result = (*ImpedanceBoundaryEdgeMatrixProvider::bd_flags_)(edge);
+  is_bd_edge = (*bd_flags_)(edge);
   /* SOLUTION_END */
-  return result;
+  return is_bd_edge;
 }
 /* SAM_LISTING_END_1 */
 
@@ -52,17 +47,18 @@ bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
  * @param cell edge on the boundary
  */
 /* SAM_LISTING_BEGIN_2 */
-ImpedanceBoundaryEdgeMatrixProvider::ElemMat
-ImpedanceBoundaryEdgeMatrixProvider::Eval(const lf::mesh::Entity &cell) {
+Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
+    const lf::mesh::Entity &cell) {
   Eigen::MatrixXd result(2, 2);
   /* SOLUTION_BEGIN */
   // get local to global mapping to obtain the coefficients of w
   const lf::assemble::DofHandler &dofh{
-      ImpedanceBoundaryEdgeMatrixProvider::lin_Lagr_fe_space_->LocGlobMap()};
+      ImpedanceBoundaryEdgeMatrixProvider::fe_space_->LocGlobMap()};
   auto glob_indices = dofh.GlobalDofIndices(cell);
   Eigen::Vector2d w;
   for (int i = 0; i < 2; i++) {
-    w(i) = ImpedanceBoundaryEdgeMatrixProvider::w_coeff_vec_(glob_indices[i]);
+    w(i) =
+        ImpedanceBoundaryEdgeMatrixProvider::coeff_expansion_(glob_indices[i]);
   }
 
   // set up the computed matrices
