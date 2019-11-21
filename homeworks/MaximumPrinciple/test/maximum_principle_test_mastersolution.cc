@@ -6,10 +6,6 @@
  * @copyright Developed at ETH Zurich
  */
 
-// HACK:
-#undef SOLUTION
-#define SOLUTION 1
-
 #include <gtest/gtest.h>
 
 #include <functional>
