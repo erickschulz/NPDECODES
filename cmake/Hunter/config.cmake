@@ -7,8 +7,8 @@ hunter_config(Eigen VERSION 3.3.5)
 #hunter_config(lehrfempp VERSION 0.7.20)
 hunter_config(lehrfempp
   # Currently using commit 'rename No->Num(#157)'
-  URL "https://github.com/craffael/lehrfempp/archive/a3042d5ade52ca8b50c1f25d71bc88a283bdb6e8.tar.gz"
-  SHA1 "0b1ab3e0ba01ef71817808b2c008dbc404f67a21"
+  URL "https://github.com/craffael/lehrfempp/archive/489d6da16187b44026c2c94f2592daa0dfe7170f.tar.gz"
+  SHA1 "3bd5fe8b9013f6edbb784d40fcc8c7b402fca22c"
 )
 
 hunter_config(GTest VERSION 1.10.0)
