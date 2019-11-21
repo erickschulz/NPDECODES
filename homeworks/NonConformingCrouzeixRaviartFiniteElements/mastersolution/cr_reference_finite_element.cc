@@ -1,65 +1,34 @@
-/**
- * @file
- * @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
+/** @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
  * @author Anian Ruoss
  * @date   16.03.2019
- * @copyright Developed at ETH Zurich
- */
+ * @copyright Developed at ETH Zurich */
 
 #include "cr_reference_finite_element.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
 /* SAM_LISTING_BEGIN_1 */
+/* BEGIN_SOLUTION */
+// Crouzeix-Raviart finite element space defined on triangular meshes only
 lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
-  lf::base::RefElType ref_el_type;
-
-  // TODO: task 2-14.q)
-  /* BEGIN_SOLUTION */
-  // Crouzeix-Raviart finite element space defined on triangular meshes only
-  ref_el_type = lf::base::RefElType::kTria;
-  /* END_SOLUTION */
-
-  return lf::base::RefEl(ref_el_type);
+  return lf::base::RefEl(lf::base::RefElType::kTria);
 }
-/* SAM_LISTING_END_1 */
+// Crouzeix-Raviart are piecewise linear polynomials
+unsigned int CRReferenceFiniteElement::Degree() const { return 1; }
 
-/* SAM_LISTING_BEGIN_2 */
-unsigned int CRReferenceFiniteElement::Degree() const {
-  unsigned int degree;
-
-  // TODO: task 2-14.q)
-  /* BEGIN_SOLUTION */
-  degree = 1;
-  /* END_SOLUTION */
-
-  return degree;
-}
-/* SAM_LISTING_END_2 */
-
-/* SAM_LISTING_BEGIN_3 */
 size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
   size_type num_ref_shape_functions;
-
-  // TODO: task 2-14.q)
-  /* BEGIN_SOLUTION */
-  num_ref_shape_functions = 3;
-  /* END_SOLUTION */
-
-  return num_ref_shape_functions;
+  return 3;
 }
 
 size_type CRReferenceFiniteElement::NumRefShapeFunctions(dim_t codim) const {
-  // TODO: task 2-14.q)
   switch (codim) {
-      /* BEGIN_SOLUTION */
     case 0:
       return 0;
     case 1:
       return 1;
     case 2:
       return 0;
-      /* END_SOLUTION */
     default:
       LF_VERIFY_MSG(false, "Codimension out of range for triangle")
       return 0;
@@ -108,7 +77,8 @@ CRReferenceFiniteElement::EvalReferenceShapeFunctions(
 
   return eval_ref_shape_functions;
 }
-/* SAM_LISTING_END_4 */
+/* END_SOLUTION */
+/* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Matrix<scalar_type, Eigen::Dynamic, Eigen::Dynamic>

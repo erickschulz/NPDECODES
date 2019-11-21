@@ -144,8 +144,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
     
     /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
     default:
-      throw std::invalid_argument(
-          "received neither triangle nor quadrilateral");
+      LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");
   }
   /* SOLUTION_END */
   return element_matrix;

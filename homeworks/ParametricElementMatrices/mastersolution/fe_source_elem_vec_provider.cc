@@ -39,7 +39,7 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
       midpoints_ref << 0.5, 0.5, 0, 0, 0.5, 0.5;
       // I.ii Obtain the midpoints of the parametrized triangle
       auto midpoints_param = cell_geometry->Global(midpoints_ref);
-      
+
       // II. COMPUTE LOCAL INTEGRATION DATA
       // II.i Compute the integration element
       //     integration_element(x) = sqrt(det(J^T*J))
@@ -54,7 +54,7 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
 
       // III. PERFORM NUMERICAL QUADRATURE
       element_vector = Eigen::VectorXd::Zero(3);
-      for (int i = 0; i < 3; i++) { // for each local degree of freedom
+      for (int i = 0; i < 3; i++) {  // for each local degree of freedom
         element_vector(i) +=
             integration_element(i) *
             (0.5 / (1. + std::pow(0.5 * w(i) + 0.5 * w((i + 1) % 3), 2)));
@@ -74,7 +74,7 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
       midpoints_ref << 0.5, 1, 0.5, 0, 0, 0.5, 1, 0.5;
       // I.ii Obtain the midpoints of the parametrized quadrilateral
       auto midpoints_param = cell_geometry->Global(midpoints_ref);
-      
+
       // II. COMPUTE LOCAL INTEGRATION DATA
       // II.i Compute the integration element
       //     integration_element(x) = sqrt(det(J^T*J))
@@ -89,7 +89,7 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
 
       // III. PERFORM NUMERICAL QUADRATURE
       element_vector = Eigen::VectorXd::Zero(4);
-      for (int i = 0; i < 4; i++) { // for each local degree of freedom
+      for (int i = 0; i < 4; i++) {  // for each local degree of freedom
         element_vector(i) +=
             integration_element(i) *
             (0.5 / (1. + std::pow(0.5 * w(i) + 0.5 * w((i + 1) % 4), 2)));
@@ -103,11 +103,9 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
     }
       /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
     default:
-      throw std::invalid_argument(
-          "received neither triangle nor quadrilateral");
+      LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");
       /* SOLUTION_END */
-    /* SOLUTION_END */
-}
+  }
   return element_vector;
 }
 }  // namespace ParametricElementMatrices

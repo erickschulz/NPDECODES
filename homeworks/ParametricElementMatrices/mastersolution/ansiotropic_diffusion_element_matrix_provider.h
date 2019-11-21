@@ -12,7 +12,6 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include <iostream>
-#include <stdexcept>
 
 namespace ParametricElementMatrices {
 
