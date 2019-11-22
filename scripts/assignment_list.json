@@ -1,10 +1,38 @@
 {
-    "working_dir" : "./",
-    "assignment_dir" : "../homeworks",
+  "working_dir" : "./",
+  "source_dir" : "../developers/",
+  "homework_dir" : "../homeworks/",
 
-    "Problems" :
-    [
-        "1DWaveAbsorbingBC/",
-        "BurgersEquation/"
-    ]
+  "Problems" :
+  [
+    "1DWaveAbsorbingBC/",
+    "AvgValBoundary/",
+    "BoundaryWave/",
+    "BurgersEquation/",
+    "CLEmpiricFlux/",
+    "CoupledSecondOrderBVP/",
+    "DebuggingFEM/",
+    "DiscontinuousGalerkin1D/",
+    "ElementMatrixComputation/",
+    "EngquistOsherNumericalFlux/",
+    "ErrorEstimatesForTraces/",
+    "FiniteVolumeSineConsLaw/",
+    "HandlingDOFs/",
+    "IPDGFEM/",
+    "IncidenceMatrices/",
+    "LengthOfBoundary/",
+    "LinFeReactDiff/",
+    "LinearFE1D/",
+    "MaximumPrinciple/",
+    "NonConformingCrouzeixRaviartFiniteElements/",
+    "ParametricElementMatrices/",
+    "RadauThreeTimestepping/",
+    "RegularizedNeumann/",
+    "SDIRKMethodOfLines/",
+    "SimpleLinearFiniteElements/",
+    "SymplecticTimesteppingWaves/",
+    "TestQuadratureRules/",
+    "TransformationOfGalerkinMatrices/",
+    "UnstableBVP/"
+  ]
 }
