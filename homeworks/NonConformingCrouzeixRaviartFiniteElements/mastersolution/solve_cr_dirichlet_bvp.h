@@ -66,7 +66,6 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
     solver.compute(A_crs);
     sol = solver.solve(phi);
     /* SAM_LISTING_END_1 */
-
     return sol;
 }
 

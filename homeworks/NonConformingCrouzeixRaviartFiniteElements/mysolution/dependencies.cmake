@@ -1,4 +1,4 @@
-# Add your custom dependencies here:
+# Dependencies of mastersolution:
 
 # DIR will be provided by the calling file.
 

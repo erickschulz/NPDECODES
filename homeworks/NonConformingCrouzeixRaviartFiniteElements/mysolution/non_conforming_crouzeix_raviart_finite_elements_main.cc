@@ -29,13 +29,15 @@ int main() {
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
     auto mesh_ptr = reader.mesh();
 
-    //====================
     // TODO: 2-14.i)
-    //====================
+  //====================
+  // Your code goes here
+  //====================
 
-    //====================
     // TODO: 2-14.y)
-    //====================
+  //====================
+  // Your code goes here
+  //====================
   }
 
   return 0;

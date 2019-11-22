@@ -23,6 +23,7 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   double l2_error;
 
+  // TODO: task 2-14.x)
   // Right-hand-side source function
   auto f = [](Eigen::Vector2d x) -> double {
     return (2. * M_PI * M_PI + x.prod()) * std::sin(M_PI * x(0)) *
@@ -46,7 +47,6 @@ double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   Eigen::VectorXd mu = solveCRDirichletBVP(fe_space, gamma, f);
   // Compute L2 norm of error
   l2_error = computeCRL2Error(fe_space, mu, u);
-
   return l2_error;
 }
 /* SAM_LISTING_END_1 */
