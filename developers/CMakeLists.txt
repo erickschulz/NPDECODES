@@ -23,6 +23,7 @@ add_subdirectory(LinearFE1D)
 add_subdirectory(MaximumPrinciple)
 add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
 add_subdirectory(OutputImpedanceBVP)
+add_subdirectory(ParametricElementMatrices)
 # add_subdirectory(PointEvaluationRhs)  # Didn't compile
 add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumann)
