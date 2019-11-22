@@ -117,6 +117,7 @@ double f(Eigen::Vector2d x) { return 1 + x(0) * x(0) + x(1) * x(1); };
  *
  * @return     The solution vector
  */
+
 /* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solvePoissonBVP() {
   // Convert tPoissonda function f to a LehrFEM++ mesh function object
@@ -149,6 +150,9 @@ Eigen::VectorXd solvePoissonBVP() {
  * @return     The solution vector
  */
 Eigen::VectorXd solveNeumannEq() {
+  // Define the solution vector
+  Eigen::VectorXd solution;
+
   /* BEGIN_SOLUTION */
   // Define the element matrix and element vector builders and solve the system
   MyLinearFEElementMatrix elmat_builder;
@@ -157,7 +161,7 @@ Eigen::VectorXd solveNeumannEq() {
   std::cout << "===================" << std::endl;
   std::cout << "solveNeumannEq" << std::endl;
   // The actual computation
-  Eigen::VectorXd solution = solve(elmat_builder, elvec_builder);
+  solution = solve(elmat_builder, elvec_builder);
   /* END_SOLUTION */
 
   return solution;

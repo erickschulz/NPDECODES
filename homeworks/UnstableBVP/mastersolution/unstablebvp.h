@@ -7,7 +7,6 @@
  * @copyright MIT License
  */
 
-// Math includes
 #include <memory>
 #include <string>
 //Lehrfempp

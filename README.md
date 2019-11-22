@@ -72,4 +72,3 @@ AvgValBoundary, BoundaryWave, DebuggingFEM, ElementMatrixComputation, ErrorEstim
 
 ### No/Wrong unit tests
 BoundaryWave, OutputImpedanceBVP, ParametricElementMatrices, PointEvaluationRhs, ProjectionOntoGradients, RadauThreeTimestepping, SDIRKMethodOfLines, SymplecticTimesteppingWaves, hello, world
-

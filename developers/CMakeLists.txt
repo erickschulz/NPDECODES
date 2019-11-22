@@ -23,9 +23,9 @@ add_subdirectory(LinFeReactDiff)
 add_subdirectory(LinearFE1D)
 add_subdirectory(MaximumPrinciple)
 add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
-add_subdirectory(OutputImpedanceBVP)
+# add_subdirectory(OutputImpedanceBVP) # test_mysolution has infinite loop
 add_subdirectory(ParametricElementMatrices)
-# add_subdirectory(PointEvaluationRhs)  # Didn't compile
+# add_subdirectory(PointEvaluationRhs)  # unit tests don't compile
 add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumann)
 add_subdirectory(SDIRKMethodOfLines)
