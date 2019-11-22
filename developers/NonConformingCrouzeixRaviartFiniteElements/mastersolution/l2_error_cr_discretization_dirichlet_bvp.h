@@ -23,6 +23,7 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   double l2_error;
 
+  // TODO: task 2-14.x)
 #if SOLUTION
   // Right-hand-side source function
   auto f = [](Eigen::Vector2d x) -> double {
@@ -50,10 +51,8 @@ double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
 #else
   //====================
   // Your code goes here
-  // TODO: task 2-14.x)
   //====================
 #endif
-
   return l2_error;
 }
 /* SAM_LISTING_END_1 */

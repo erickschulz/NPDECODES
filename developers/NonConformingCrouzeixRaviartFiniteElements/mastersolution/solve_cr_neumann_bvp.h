@@ -55,9 +55,9 @@ Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
     solver.compute(A_crs);
     sol = solver.solve(phi);
 #else
-    //====================
-    // Your code goes here
-    //====================
+  //====================
+  // Your code goes here
+  //====================
 #endif
     return sol;
 }
