@@ -1,17 +1,21 @@
-import numpy as np
+from numpy import array
 import matplotlib.pyplot as plt
 import csv
+from sys import argv
 
-with open('energies.csv', 'r') as inputFile:
+input_file = str(argv[1])
+output_file = str(argv[2])
+
+with open(input_file, 'r') as inputFile:
 	reader = csv.reader(inputFile, delimiter=',')
 	rows = list(reader)
-	t = np.array([float(ri) for ri in rows[0]])
-	E_pot = np.array([float(ri) for ri in rows[1]])
-	E_kin = np.array([float(ri) for ri in rows[2]])
+	t = array([float(ri) for ri in rows[0]])
+	E_pot = array([float(ri) for ri in rows[1]])
+	E_kin = array([float(ri) for ri in rows[2]])
 inputFile.close()
 
 # converts an array of size m+1 to size m
-Reduce = lambda x: np.array([(x[i] + x[i + 1]) * 0.5 for i in np.arange(len(x) - 1)])
+Reduce = lambda x: array([(x[i] + x[i + 1]) * 0.5 for i in range(len(x) - 1)])
 
 t_reduced = Reduce(t)
 E_pot_reduced = Reduce(E_pot)
@@ -24,6 +28,6 @@ plt.plot(t_reduced, E_tot, label='total energy')
 plt.xlabel('time t')
 plt.ylabel('energy')
 plt.legend()
-plt.savefig("visenergies.png")
+plt.savefig(output_file)
 
-print("The plot has been written to visenergies.png.")
+print("Generated ", output_file)
