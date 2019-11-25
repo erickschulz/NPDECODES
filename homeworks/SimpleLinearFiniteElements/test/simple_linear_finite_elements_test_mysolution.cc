@@ -38,7 +38,7 @@ TEST(SimpleLinearFiniteElements, TestElementMatrix_Mass_LFE) {
  */
 TEST(SimpleLinearFiniteElements, TestL2Error) {
   // read coarsest mesh
-  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR"/meshes/Square1.txt");
+  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../meshes/Square1.txt");
   // exact solution
   auto uExact = [](double x, double y) {
     return std::cos(2 * pi * x) * std::cos(2 * pi * y);
@@ -72,7 +72,7 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
  */
 TEST(SimpleLinearFiniteElements, TestH1Serror) {
   // read coarsest mesh
-  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR"/meshes/Square3.txt");
+  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../meshes/Square3.txt");
   // exact gradient
   auto gradUExact = [](double x, double y) {
     Eigen::Vector2d gradient;

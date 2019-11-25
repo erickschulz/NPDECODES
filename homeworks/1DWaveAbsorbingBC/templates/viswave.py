@@ -1,22 +1,25 @@
-import numpy as np
+from matplotlib.pyplot import figure, savefig
 from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
+from numpy import genfromtxt, linspace, meshgrid
+from sys import argv
 
-tR = np.genfromtxt("solution.csv", delimiter=',')
+input_file = str(argv[1])
+output_file = str(argv[2])
+
+tR = genfromtxt(input_file, delimiter=',')
 t = tR[:,0]
 R = tR[:,1:]
 
 m, n = R.shape
-x = np.linspace(0, 1, n)
-X, T = np.meshgrid(x, t)
+x = linspace(0, 1, n)
+X, T = meshgrid(x, t)
 
-
-fig = plt.figure()
+fig = figure()
 ax = fig.gca(projection='3d')
 ax.plot_surface(X, T, R, cmap='cool', edgecolor='black', alpha=0.5)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u(x,t)')
-plt.savefig("viswave.png")
+savefig(output_file)
 
-print("The plot has been written to viswave.png.")
+print('Generated ' + output_file)

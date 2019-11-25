@@ -14,7 +14,7 @@
 
 namespace DebuggingFEM::test {
 
-double Square(double x) { return x * x; }
+constexpr double Square(double x) { return x * x; }
 
 struct TestPair {
   typedef Eigen::Matrix<double, 6, 1> Vector6d;

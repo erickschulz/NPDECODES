@@ -33,7 +33,7 @@ int main() {
                 << std::endl;
   solution_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
-  std::system("python " CURRENT_SOURCE_DIR "/mastersolution/plot_solution.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+  std::system("python " CURRENT_SOURCE_DIR "/plot_solution.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
 #else
   //====================
   // Your code goes here
@@ -51,7 +51,7 @@ int main() {
   error_file << result.format(BurgersEquation::CSVFormat) << std::endl;
   error_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/error.csv" << std::endl;
-  std::system("python " CURRENT_SOURCE_DIR "/mastersolution/plot_error.py " CURRENT_BINARY_DIR "/error.csv " CURRENT_BINARY_DIR "/error.png");
+  std::system("python " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR "/error.csv " CURRENT_BINARY_DIR "/error.png");
 #else
   //====================
   // Your code goes here

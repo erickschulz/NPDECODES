@@ -8,6 +8,7 @@
 
 #include "1dwaveabsorbingbc.h"
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 
@@ -41,18 +42,16 @@ int main() {
   tR.block(0, 1, m + 1, N + 1) = R;
   solution_file << tR.format(CSVFormat) << std::endl;
   solution_file.close();
-  std::cout << "The solution has been written to solution.csv. Run the script "
-               "visvave_mastersolution.py to plot the data."
-            << std::endl;
+  std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
 
   energies_file.open("energies.csv");
   energies_file << t.transpose().format(CSVFormat) << std::endl
                 << E_pot.transpose().format(CSVFormat) << std::endl
                 << E_kin.transpose().format(CSVFormat) << std::endl;
   energies_file.close();
-  std::cout << "The energies have been written to energies.csv. Run the script "
-               "visenergies_mastersolution.py to plot the data."
-            << std::endl;
+  std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
 
   return 0;
 }

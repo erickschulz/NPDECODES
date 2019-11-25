@@ -8,7 +8,7 @@
 
 namespace AvgValBoundary::test {
 
-constexpr char mesh_file[] = CURRENT_SOURCE_DIR"/meshes/square.msh";
+constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../meshes/square.msh";
 
 TEST(AvgValBoundary, TestH1SemiNorm) {
   // constant identity mesh function

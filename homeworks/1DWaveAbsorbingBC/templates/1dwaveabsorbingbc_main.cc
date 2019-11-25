@@ -8,6 +8,7 @@
 
 #include "1dwaveabsorbingbc.h"
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 

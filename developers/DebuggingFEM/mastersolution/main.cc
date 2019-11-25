@@ -25,7 +25,7 @@ using size_type = lf::base::size_type;
 int main() {
   // read mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/meshes/square_64.msh");
+  lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square_64.msh");
   auto mesh = reader.mesh();
 
   // refine mesh
@@ -40,7 +40,7 @@ int main() {
   element_matrix_provider.emplace_back(std::make_unique<DebuggingFEM::LocalLaplaceQFE1>());
   element_matrix_provider.emplace_back(std::make_unique<DebuggingFEM::LocalLaplaceQFE2>());
   element_matrix_provider.emplace_back(std::make_unique<DebuggingFEM::LocalLaplaceQFE3>());
-  int num_emp = element_matrix_provider.size();
+  const int num_emp = element_matrix_provider.size();
 
   // vectors accumulating the computed errors
   Eigen::MatrixXd H1SMerr(L, num_emp);
@@ -64,19 +64,20 @@ int main() {
       auto f = [](const Eigen::VectorXd &x) -> double {
         return std::exp(x(1) * x(1) + x(0) * x(0));
       };
+#if SOLUTION
       // Matrix in triplet format holding Galerkin for LocalLaplaceQFEX matrix,
       // zero initially.
       DebuggingFEM::QFEProviderTester qfe_provider_tester(dofh, *element_matrix_provider[i]);
-
-      // compute the energy / error
-#if SOLUTION
+      // compute the energy and error
       double energy = qfe_provider_tester.energyOfInterpolant(f);
-      H1SMerr(level, i) = std::abs(23.76088 - energy);
 #else
       //====================
       // Your code goes here
+      // Use DebuggingFEM::QFEProviderTester to compute the energy
+      double energy = 0.0;  // dummy value
       //====================
 #endif
+      H1SMerr(level, i) = std::abs(23.76088 - energy);
 
     }
 
@@ -92,7 +93,7 @@ int main() {
               << H1SMerr(level, 2) << std::endl;
   }
 
-  /*// Write .csv file and plot it by a python script
+  // Write .csv file and plot it by a python script
   Eigen::MatrixXd data(L, num_emp + 1);
   data.col(0) = N.cast<double>();
   data.rightCols(num_emp) = H1SMerr;
@@ -103,7 +104,7 @@ int main() {
   error_file << data.format(CSVFormat) << std::endl;
   error_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/error.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/mastersolution/plot_error.py " CURRENT_BINARY_DIR "/error.csv " CURRENT_BINARY_DIR "/error.png");*/
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR "/error.csv " CURRENT_BINARY_DIR "/error.png");
 
   return 0;
 }

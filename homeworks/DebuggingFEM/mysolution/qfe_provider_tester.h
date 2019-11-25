@@ -24,7 +24,7 @@ class QFEProviderTester {
    * @param dofh dof handler
    * @param element_matrix_provider an instance of LocalLaplaceQFEX, X=1,2,3
    */
-  QFEProviderTester(lf::assemble::DofHandler &dofh,
+  QFEProviderTester(const lf::assemble::DofHandler &dofh,
                     ENTITY_MATRIX_PROVIDER &element_matrix_provider);
 
   /**
@@ -35,7 +35,7 @@ class QFEProviderTester {
   double energyOfInterpolant(FUNCTOR &&u) const;
 
  private:
-  lf::assemble::DofHandler &dofh_;
+  const lf::assemble::DofHandler &dofh_;
   ENTITY_MATRIX_PROVIDER &element_matrix_provider_;
   Eigen::SparseMatrix<double> A_;
 };
@@ -44,7 +44,7 @@ class QFEProviderTester {
 /* SAM_LISTING_BEGIN_2 */
 template <typename ENTITY_MATRIX_PROVIDER>
 QFEProviderTester<ENTITY_MATRIX_PROVIDER>::QFEProviderTester(
-    lf::assemble::DofHandler &dofh,
+    const lf::assemble::DofHandler &dofh,
     ENTITY_MATRIX_PROVIDER &element_matrix_provider)
     : dofh_(dofh), element_matrix_provider_(element_matrix_provider) {
   //====================

@@ -64,7 +64,7 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
 /* SAM_LISTING_BEGIN_2 */
 int main()
 {
-  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR"/meshes/Square4.txt");
+  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../meshes/Square4.txt");
   std::cout << "Mesh loaded " << std::endl;
   std::cout << "Mesh info: " << square_mesh.Coordinates.rows() << " vertices, "
             << square_mesh.Elements.rows() << " elements" << std::endl;

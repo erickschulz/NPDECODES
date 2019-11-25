@@ -17,22 +17,28 @@
 
 namespace DebuggingFEM {
 
-class LocalLaplaceQFE1 {
+class EntityMatrixProvider {
  public:
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
+  virtual bool isActive(const lf::mesh::Entity &cell) = 0;
+  virtual Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell) = 0;
+};
+
+class LocalLaplaceQFE1 : public EntityMatrixProvider {
+ public:
+  bool isActive(const lf::mesh::Entity &cell) override { return true; }
   Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell);
 };
 
-class LocalLaplaceQFE2 {
+class LocalLaplaceQFE2 : public EntityMatrixProvider {
  public:
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
-  Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell);
+  bool isActive(const lf::mesh::Entity &cell) override { return true; }
+  Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell) override;
 };
 
-class LocalLaplaceQFE3 {
+class LocalLaplaceQFE3 : public EntityMatrixProvider {
  public:
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
-  Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell);
+  bool isActive(const lf::mesh::Entity &cell) override { return true; }
+  Eigen::Matrix<double, 6, 6> Eval(const lf::mesh::Entity &cell) override;
 };
 
 }  // namespace DebuggingFEM

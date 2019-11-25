@@ -17,7 +17,7 @@
 
 namespace LinFeReactDiff::test {
 
-constexpr char mesh_file[] = CURRENT_SOURCE_DIR"/meshes/square.msh";
+constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../meshes/square.msh";
 
 TEST(LinFeReactDiff, TestSolveFe)
 {
