@@ -22,4 +22,4 @@ ax.set_ylabel('t')
 ax.set_zlabel('u(x,t)')
 savefig(output_file)
 
-print("Generated", output_file)
+print('Generated ' + output_file)

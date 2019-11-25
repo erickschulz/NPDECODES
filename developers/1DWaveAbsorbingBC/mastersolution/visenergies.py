@@ -29,4 +29,4 @@ ylabel('energy')
 legend()
 savefig(output_file)
 
-print("Generated", output_file)
+print('Generated ' + output_file)
