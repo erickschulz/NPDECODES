@@ -43,7 +43,7 @@ int main() {
   tR.block(0, 1, m + 1, N + 1) = R;
   solution_file << tR.format(CSVFormat) << std::endl;
   solution_file.close();
-  std::cout << "Generated solution.csv" << std::endl;
+  std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/mastersolution/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
 
   energies_file.open("energies.csv");
@@ -51,7 +51,7 @@ int main() {
                 << E_pot.transpose().format(CSVFormat) << std::endl
                 << E_kin.transpose().format(CSVFormat) << std::endl;
   energies_file.close();
-  std::cout << "Generated energies.csv" << std::endl;
+  std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/mastersolution/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
 #else
   //====================
