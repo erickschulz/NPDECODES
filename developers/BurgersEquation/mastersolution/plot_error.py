@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sys import argv
 
-input_filename = str(argv[1])
-output_filename = str(argv[2])
+input_file = str(argv[1])
+output_file = str(argv[2])
 
-data = np.genfromtxt(input_filename, delimiter=',')
+data = np.genfromtxt(input_file, delimiter=',')
 h = data[0]
 error_short = data[1]
 error_long = data[2]
@@ -19,6 +19,6 @@ plt.loglog(x, x, '--', label='slope 1')
 plt.xlabel('mesh-width h')
 plt.ylabel('error')
 plt.legend()
-plt.savefig(output_filename)
+plt.savefig(output_file)
 
-print('Generated ' + output_filename)
+print('Generated ' + output_file)
