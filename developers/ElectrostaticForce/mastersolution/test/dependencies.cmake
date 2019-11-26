@@ -7,7 +7,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  test/electrostaticforce_test_${DIR}.cc
+  ${DIR}/test/electrostaticforce_test.cc
 )
 
 set(LIBRARIES

@@ -12,11 +12,7 @@
 
 #include <gtest/gtest.h>
 
-#if SOLUTION
-#include "../mastersolution/electrostaticforce.h"
-#else
-#include "../mysolution/electrostaticforce.h"
-#endif
+#include "../electrostaticforce.h"
 
 #include <Eigen/Core>
 
