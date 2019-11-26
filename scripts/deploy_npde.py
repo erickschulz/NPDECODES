@@ -126,34 +126,29 @@ def is_cmake(file_path):
     """
     return file_path.split(".")[-1] == "cmake"
 
-
-def generate_test(problem_dir, problem_dir_source):
+def recursive_copy_and_replace(input_dir, output_dir, with_solution):
     """
-    Create test folder in problem_dir (if already exists, delete first)
-    Create following files from problem_dir_source/test/,
-    problem_dir/test/xxx_test_mastersolution (-DSOLUTION=1)
-    problem_dir/test/xxx_test_mysolution (-DSOLUTION=0)
+    Recursively apply deploy(...) to files in subfolders
 
-    :param problem_dir: "../homeworks/problem_name/"
-    :param problem_dir_source: "../developers/problem_name/"
-    :return:
+    :param input_dir: "path/to/input/dir/"
+    :param output_dir_source: "path/to/output/dir"
+    :with_solution: bool, use -DSOLUTION=1 on content if 'True' and -DSOLUTION=1 if 'False'
     """
-    mkdir(problem_dir + "test/")  # "../homeworks/problem_name/test/"
-    fileInTest = os.listdir(problem_dir_source + 'test/')
-    for file in fileInTest:
-        file_path = problem_dir_source + 'test/' + file
-        if is_cpp(file_path):
-            # e.g. file = '1dwaveabsorbingbc_test_mastersolution.cc'
-            test_problem = file.split('_test_mastersolution')[0]  # test_problem = '1dwaveabsorbingbc'
-            suffix = file.split(".")[-1]
-            deploy(file, problem_dir_source + 'test/', problem_dir + 'test/', True,
-                   with_solution=True, output_name=test_problem + "_test_mastersolution." + suffix)
-            deploy(file, problem_dir_source + 'test/', problem_dir + 'test/', True,
-                   with_solution=False, output_name=test_problem + "_test_mysolution." + suffix)
+    filesAndFolders = os.listdir(input_dir)
+    for fileOrFolder in filesAndFolders:
+        path = input_dir + fileOrFolder
+        if os.path.isfile(path):
+            file = fileOrFolder
+            if is_cpp(file) or is_hpp(file) or is_cmake(file) or is_py(file):
+                handle_unifder = True
+            else:
+                handle_unifder = False
+            deploy(file, input_dir, output_dir, handle_unifder, with_solution=with_solution)
+        elif os.path.isdir(path):
+            mkdir(output_dir + fileOrFolder + '/')
+            recursive_copy_and_replace(path + '/', output_dir + fileOrFolder + '/', with_solution)
         else:
-            deploy(file, problem_dir_source + 'test/', problem_dir + 'test/', True,
-                   with_solution=True)
-
+            print('Unknown file type occured: ' + fileOrFolder)
 
 def generate_templates_and_mysolution(problem_dir, problem_dir_source):
     """
@@ -168,19 +163,13 @@ def generate_templates_and_mysolution(problem_dir, problem_dir_source):
     mkdir(problem_dir + "templates/")   # "../homeworks/problem_name/templates"
     mkdir(problem_dir + "mysolution/")  # "../homeworks/problem_name/mysolution"
     mkdir(problem_dir + "mastersolution/")  # "../homeworks/problem_name/mastersolution"
-    fileInMastersolution = os.listdir(problem_dir_source + 'mastersolution/')
-    for file in fileInMastersolution:
-        file_path = problem_dir_source + 'mastersolution/' + file
-        if is_cpp(file_path) or is_hpp(file_path) or is_cmake(file_path) or is_py(file_path):
-            handle_unifder = True
-        else:
-            handle_unifder = False
-        deploy(file, problem_dir_source + 'mastersolution/', problem_dir + 'templates/',
-               handle_unifder, with_solution=False)
-        deploy(file, problem_dir_source + 'mastersolution/', problem_dir + 'mysolution/',
-               handle_unifder, with_solution=False)
-        deploy(file, problem_dir_source + 'mastersolution/', problem_dir + 'mastersolution/',
-               handle_unifder, with_solution=True)
+
+    if not os.path.exists(problem_dir_source + "mastersolution/test/"):
+        print("There is no unit test in {}".format(problem_dir_source))
+
+    recursive_copy_and_replace(problem_dir_source + 'mastersolution/', problem_dir + 'templates/', False)
+    recursive_copy_and_replace(problem_dir_source + 'mastersolution/', problem_dir + 'mysolution/', False)
+    recursive_copy_and_replace(problem_dir_source + 'mastersolution/', problem_dir + 'mastersolution/', True)
 
 
 def parse_json(filename):
@@ -213,10 +202,6 @@ def parse_json(filename):
         problem_dir = homework_dir + problem  # "../homeworks/problem_name/"
         problem_dir_source = source_dir + problem  # "../developers/problem_name/"
         generate_templates_and_mysolution(problem_dir, problem_dir_source)
-        if os.path.exists(problem_dir_source + "test/"):
-            generate_test(problem_dir, problem_dir_source)
-        else:
-            print("There is no unit test in {}".format(problem_dir_source))
 
 
 if __name__ == "__main__":
