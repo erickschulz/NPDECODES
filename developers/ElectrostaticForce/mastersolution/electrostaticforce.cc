@@ -139,6 +139,12 @@ Eigen::VectorXd solvePoissonBVP(
     return false;
   };
   dropMatrixRowsAndColumns(nodes_exterior_bd_selector, A);
+  // Assigning zero to the exterior boundary values of phi
+  for (unsigned int dof_idx = 0; dof_idx < N_dofs; ++dof_idx){
+  if (nodes_exterior_bd_selector(dof_idx)){
+      phi(dof_idx) = 0.0;
+    }
+  }
 #else
   //====================
   // Your code goes here
