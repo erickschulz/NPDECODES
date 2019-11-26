@@ -7,7 +7,6 @@
  */
 
 #include <cmath>
-#include <iostream>
 #include <utility>
 
 #include <Eigen/Core>
@@ -42,7 +41,6 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   const int N = 2 * N_half;
   Eigen::VectorXd Gvec(N);
 #if SOLUTION
-  std::cout << "SOLUTION = " << SOLUTION << std::endl;
   double uN_xminus = 0.0;  // since we extend mu to the left by zero
   double uN_xplus = mu(0) - 0.5 * h * mu(1);
   double F_old;
@@ -73,7 +71,6 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   double I = 0.5 * h * (f(x_minus) + f(x_plus));
   Gvec(2 * (N_half - 1) + 1) = 0.5 * h * (F_new + F_old) - I;
 #else
-  std::cout << "SOLUTION = " << SOLUTION << std::endl;
   //====================
   // Your code goes here
   // Fill the vector Gvec
