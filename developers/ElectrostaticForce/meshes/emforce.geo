@@ -1,0 +1,17 @@
+cl__1 = 1;
+Point(1) = {0.2666666666666667, 0, 0, 1};
+Point(2) = {0.9333333333333333, 0, 0, 1};
+Point(3) = {0.9333333333333333, 0, 0, 1};
+Point(4) = {-0.4, 0, 0, 1};
+Point(5) = {0, 0, 0, 1};
+Point(6) = {-0.2666666666666667, 0, 0, 1};
+Circle(1) = {2, 1, 4};
+Circle(2) = {4, 1, 2};
+Circle(3) = {1, 5, 6};
+Circle(4) = {6, 5, 1};
+Line Loop(7) = {1, 2, -4, -3};
+Plane Surface(7) = {7};
+Physical Line("Outer") = {1, 2};
+Physical Line("Inner") = {3, 4};
+Physical Surface("Surface") = {7};
+Mesh.CharacteristicLengthFactor = 0.1;
