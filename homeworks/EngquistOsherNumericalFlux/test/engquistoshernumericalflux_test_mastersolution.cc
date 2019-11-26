@@ -10,7 +10,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/engquistoshernumericalflux.h"
+#else
+#include "../mysolution/engquistoshernumericalflux.h"
+#endif
 
 namespace EngquistOsherNumericalFlux::test {
 

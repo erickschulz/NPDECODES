@@ -11,7 +11,11 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 
+#if SOLUTION
 #include "../mastersolution/linearfe1d.h"
+#else
+#include "../mysolution/linearfe1d.h"
+#endif
 
 // Test the solver functions
 TEST(LinearFE1D, solution_testA) {

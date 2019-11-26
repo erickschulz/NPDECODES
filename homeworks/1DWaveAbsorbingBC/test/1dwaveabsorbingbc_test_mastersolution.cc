@@ -10,7 +10,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/1dwaveabsorbingbc.h"
+#else
+#include "../mysolution/1dwaveabsorbingbc.h"
+#endif
 
 namespace WaveAbsorbingBC1D::test {
 

@@ -8,8 +8,6 @@
 
 #include "discontinuousgalerkin1d.h"
 
-#include <fstream>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 
@@ -36,11 +34,8 @@ double Feo(double v, double w) {
 }
 /* SAM_LISTING_END_2 */
 
-const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
-                                       Eigen::DontAlignCols, ", ", "\n");
-
 /* SAM_LISTING_BEGIN_3 */
-void solveTrafficFlow() {
+Solution solveTrafficFlow() {
   int Ml = 40;
   int Mr = 40;
   int N_half = Mr + Ml + 1;
@@ -51,9 +46,15 @@ void solveTrafficFlow() {
   double T = 1.0;
   unsigned int m = (unsigned int)(T / tau);
 
+
   //====================
   // Your code goes here
+  // Fill the following vectors
+  Eigen::VectorXd x;
+  Eigen::VectorXd u;
   //====================
+
+  return Solution(std::move(x), std::move(u));
 }
 /* SAM_LISTING_END_3 */
 

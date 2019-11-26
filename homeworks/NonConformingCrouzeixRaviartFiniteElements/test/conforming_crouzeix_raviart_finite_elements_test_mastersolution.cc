@@ -14,8 +14,13 @@
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
+#if SOLUTION
 #include "../mastersolution/cr_fe_space.h"
 #include "../mastersolution/l2_error_cr_discretization_dirichlet_bvp.h"
+#else
+#include "../mysolution/cr_fe_space.h"
+#include "../mysolution/l2_error_cr_discretization_dirichlet_bvp.h"
+#endif
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 

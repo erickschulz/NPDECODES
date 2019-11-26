@@ -10,7 +10,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/burgersequation.h"
+#else
+#include "../mysolution/burgersequation.h"
+#endif
 
 namespace BurgersEquation::test {
 

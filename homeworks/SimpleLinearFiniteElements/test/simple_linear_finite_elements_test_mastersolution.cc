@@ -2,7 +2,11 @@
 
 #include <Eigen/SparseLU>
 
+#if SOLUTION
 #include "../mastersolution/simple_linear_finite_elements.h"
+#else
+#include "../mysolution/simple_linear_finite_elements.h"
+#endif
 
 const double pi = 3.1415926535897;
 

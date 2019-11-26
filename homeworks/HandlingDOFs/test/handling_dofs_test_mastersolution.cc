@@ -9,7 +9,11 @@
 #include "lf/mesh/hybrid2d/hybrid2d.h"
 #include "lf/mesh/test_utils/test_meshes.h"
 
+#if SOLUTION
 #include "../mastersolution/handling_dofs.h"
+#else
+#include "../mysolution/handling_dofs.h"
+#endif
 
 using size_type = lf::base::size_type;
 

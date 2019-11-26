@@ -10,7 +10,11 @@
 
 #include <string>
 
+#if SOLUTION
 #include "../mastersolution/tee_lapl_robin_assembly.h"
+#else
+#include "../mysolution/tee_lapl_robin_assembly.h"
+#endif
 
 namespace ErrorEstimatesForTraces::test {
 

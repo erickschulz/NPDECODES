@@ -12,7 +12,11 @@
 
 #include <gtest/gtest.h>
 
+#if SOLUTION
 #include "../mastersolution/ipdgfem.h"
+#else
+#include "../mysolution/ipdgfem.h"
+#endif
 
 #include <Eigen/Core>
 

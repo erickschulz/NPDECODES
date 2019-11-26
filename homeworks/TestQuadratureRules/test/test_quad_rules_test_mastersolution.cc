@@ -11,7 +11,11 @@
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
 
+#if SOLUTION
 #include "../mastersolution/test_quad_rules.h"
+#else
+#include "../mysolution/test_quad_rules.h"
+#endif
 
 namespace TestQuadratureRules::test {
 

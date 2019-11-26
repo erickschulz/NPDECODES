@@ -10,7 +10,11 @@
 
 #include <lf/mesh/test_utils/test_meshes.h>
 
+#if SOLUTION
 #include "../mastersolution/boundarylength.h"
+#else
+#include "../mysolution/boundarylength.h"
+#endif
 
 namespace LengthOfBoundary::test {
 

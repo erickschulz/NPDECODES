@@ -2,7 +2,11 @@
 
 #include <Eigen/SparseCore>
 
+#if SOLUTION
 #include "../mastersolution/trans_gal_mat.h"
+#else
+#include "../mysolution/trans_gal_mat.h"
+#endif
 
 namespace TransformationOfGalerkinMatrices::test
 {

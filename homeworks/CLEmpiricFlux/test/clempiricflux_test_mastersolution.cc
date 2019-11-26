@@ -12,9 +12,15 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/clempiricflux.cc"
 #include "../mastersolution/solvecauchyproblem.cc"
 #include "../mastersolution/uniformcubicspline.cc"
+#else
+#include "../mysolution/clempiricflux.cc"
+#include "../mysolution/solvecauchyproblem.cc"
+#include "../mysolution/uniformcubicspline.cc"
+#endif
 
 namespace CLEmpiricFlux::test {
 

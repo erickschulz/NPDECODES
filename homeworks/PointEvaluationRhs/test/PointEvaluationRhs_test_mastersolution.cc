@@ -13,8 +13,13 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#if SOLUTION
 #include "../mastersolution/norms.h"
 #include "../mastersolution/pointEvaluation.h"
+#else
+#include "../mysolution/norms.h"
+#include "../mysolution/pointEvaluation.h"
+#endif
 
 
 /* SAM_LISTING_BEGIN_1 */

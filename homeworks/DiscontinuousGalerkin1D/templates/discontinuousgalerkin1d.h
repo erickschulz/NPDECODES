@@ -42,6 +42,7 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   Eigen::VectorXd Gvec(N);
   //====================
   // Your code goes here
+  // Fill the vector Gvec
   //====================
   return Gvec;
 }
@@ -81,11 +82,17 @@ Eigen::VectorXd dgcl(Eigen::VectorXd mu0, FUNCTOR &&f, NUMFLUX &&F, double T,
  */
 double Feo(double v, double w);
 
+struct Solution {
+  Solution(Eigen::VectorXd x, Eigen::VectorXd u) : x_(std::move(x)), u_(std::move(u)) {}
+  Eigen::VectorXd x_;
+  Eigen::VectorXd u_;
+};
+
 /**
  * @brief Time evolution according to dgcl(...) on the spacial interval [-2, 2]
  * with mesh-width h = 0.05, on th time interval [0, 1] with timestep size h
  * / 3. The solution at endtime is written to solution.csv.
  */
-void solveTrafficFlow();
+Solution solveTrafficFlow();
 
 }  // namespace DiscontinuousGalerkin1D

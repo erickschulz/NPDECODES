@@ -8,9 +8,15 @@
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
+#if SOLUTION
 #include "../mastersolution/local_laplace_qfe.h"
 #include "../mastersolution/qfe_interpolator.h"
 #include "../mastersolution/qfe_provider_tester.h"
+#else
+#include "../mysolution/local_laplace_qfe.h"
+#include "../mysolution/qfe_interpolator.h"
+#include "../mysolution/qfe_provider_tester.h"
+#endif
 
 namespace DebuggingFEM::test {
 

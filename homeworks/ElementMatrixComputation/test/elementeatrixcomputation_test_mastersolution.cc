@@ -14,7 +14,11 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#if SOLUTION
 #include "../mastersolution/solve.h"
+#else
+#include "../mysolution/solve.h"
+#endif
 
 double numericalPrecision = 1e-8;
 

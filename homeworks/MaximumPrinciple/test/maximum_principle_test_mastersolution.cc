@@ -12,7 +12,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/maximum_principle.h"
+#else
+#include "../mysolution/maximum_principle.h"
+#endif
 
 namespace MaximumPrinciple::test {
 

@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
 
+#if SOLUTION
 #include "../mastersolution/comp_gal_mat.h"
+#else
+#include "../mysolution/comp_gal_mat.h"
+#endif
 
 namespace AvgValBoundary::test {
 

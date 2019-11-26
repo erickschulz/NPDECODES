@@ -10,7 +10,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/laxwendroffscheme.h"
+#else
+#include "../mysolution/laxwendroffscheme.h"
+#endif
 
 namespace LaxWendroffScheme::test {
 

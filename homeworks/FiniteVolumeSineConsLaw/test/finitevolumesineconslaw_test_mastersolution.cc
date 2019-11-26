@@ -10,7 +10,11 @@
 
 #include <Eigen/Core>
 
+#if SOLUTION
 #include "../mastersolution/finitevolumesineconslaw.h"
+#else
+#include "../mysolution/finitevolumesineconslaw.h"
+#endif
 
 namespace FiniteVolumeSineConsLaw::test {
 

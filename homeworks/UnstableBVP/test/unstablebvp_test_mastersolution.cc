@@ -7,7 +7,11 @@
  * @copyright MIT License
  */
 
+#if SOLUTION
 #include "../mastersolution/unstablebvp.h"
+#else
+#include "../mysolution/unstablebvp.h"
+#endif
 
 // General includes
 #include <cmath>

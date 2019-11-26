@@ -10,7 +10,11 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#if SOLUTION
 #include "../mastersolution/regNeumann.h"
+#else
+#include "../mysolution/regNeumann.h"
+#endif
 
 // Test for sub-exercise c with functions h and f being constant
 TEST(RegularizedNeumann, solution_test_dropDof_const) {

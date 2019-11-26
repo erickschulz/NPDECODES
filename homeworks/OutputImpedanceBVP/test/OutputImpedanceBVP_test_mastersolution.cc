@@ -17,8 +17,13 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#if SOLUTION
 #include "../mastersolution/OutputImpedanceBVP.h"
 #include "../mastersolution/evalclass.h"
+#else
+#include "../mysolution/OutputImpedanceBVP.h"
+#include "../mysolution/evalclass.h"
+#endif
 
 namespace OutputImpedanceBVP::test
 {
