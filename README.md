@@ -44,7 +44,7 @@
 
 * `BoundaryWave`: mysolution has core dump
 * `CoupledSecondOrderBVP`: needs tests and tags
-* `ElementMatrixComputation`: bad unit tests
+* `ElementMatrixComputation`: unit tests all pass even for template
 * `IncidenceMatrices`: wrong file structure and mysolution has core dump
 * `LaxWendroffScheme`: unit test of mastersolution takes too long
 * `LinearFE1D`: Stupid unit tests all pass even for mysolution (because of empty vectors)
@@ -55,7 +55,6 @@
 * `SDIRKMethodOfLines`: mysolution has core dump
 * `SimpleLinearFiniteElements`: bad names of files and classes
 * `TransformationOfGalerkinMatrices`: bad typedefs
-* `UnstableBVP`: No solution tags, i.e. #if SOLUTION,...
 
 ## Overview of Files
 
