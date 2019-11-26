@@ -15,17 +15,17 @@ for dir in $@; do
 
   # problems
   cp -r $output_dir/mastersolution/. $output_dir/mysolution
-  unifdef -DSOLUTION=1 -x 2 -m $output_dir/mastersolution/*
-  unifdef -DSOLUTION=0 -x 2 -m $output_dir/mysolution/*
-  cp -r $output_dir/mysolution/. $output_dir/templates
+  unifdef -DSOLUTION=1 -x 2 -m $output_dir/mastersolution/*.*
+  unifdef -DSOLUTION=0 -x 2 -m $output_dir/mysolution/*.*
 
-  if [ -d "$output_dir/test" ]; then
-    # tests
-    rename _mastersolution.cc _mysolution.cc $output_dir/test/*_mastersolution.cc
-    cp $input_dir/test/*_mastersolution.cc $output_dir/test/
-    unifdef -DSOLUTION=1 -x 2 -m $output_dir/test/*_mastersolution.cc
-    unifdef -DSOLUTION=0 -x 2 -m $output_dir/test/*_mysolution.cc
+  # tests
+  if [ -d "$output_dir/mastersolution/test" ]; then
+    unifdef -DSOLUTION=1 -x 2 -m $output_dir/mastersolution/test/*.*
+    unifdef -DSOLUTION=0 -x 2 -m $output_dir/mysolution/test/*.*
   else
     echo "     Warning: Found no unit tests for $ProblemName"
   fi
+
+  # templates it just plain copy of processed mysolution
+  cp -r $output_dir/mysolution/. $output_dir/templates
 done
