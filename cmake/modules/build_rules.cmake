@@ -23,12 +23,12 @@ endfunction(build_problem)
 # Build rule for tests
 function(build_test TARGET TARGET_TO_TEST DIR OUTPUT_NAME)
   # Defines SOURCES and LIBRARIES
-  include(test/dependencies.cmake)
+  include(${DIR}/test/dependencies.cmake)
   include(GoogleTest)
 
   add_executable(${TARGET} ${SOURCES})
   set_target_properties(${TARGET} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
-  target_compile_definitions(${TARGET} PRIVATE CURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/${DIR}\")
+  target_compile_definitions(${TARGET} PRIVATE CURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/${DIR}/test\")
   target_compile_definitions(${TARGET} PRIVATE CURRENT_BINARY_DIR=\"${CMAKE_CURRENT_BINARY_DIR}\")
   target_link_libraries(${TARGET}
     ${LIBRARIES}

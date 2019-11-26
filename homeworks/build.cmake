@@ -13,7 +13,7 @@ function(build PROBLEM_NAME DIR)
   build_problem(${PROBLEM_TARGET} ${DIR} ${PROBLEM_TARGET})
 
   # tests
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DIR}/test)
     build_test(${TEST_TARGET} ${PROBLEM_TARGET} ${DIR} ${TEST_TARGET})
   endif()
 endfunction(build)

@@ -15,9 +15,9 @@ function(build PROBLEM_NAME DIR SOLUTION)
   target_compile_definitions(${PROBLEM_TARGET}_dev.static PRIVATE SOLUTION=${SOLUTION})
 
   # tests
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/mastersolution/test)
     build_test(${TEST_TARGET}_dev ${PROBLEM_TARGET}_dev mastersolution ${TEST_TARGET})
-    target_compile_definitions(${TEST_TARGET}_dev PRIVATE SOLUTION=1)
+    target_compile_definitions(${TEST_TARGET}_dev PRIVATE SOLUTION=${SOLUTION})
   else()
     message(STATUS "*** Warning: Found no unit tests for ${PROBLEM_NAME} ***")
   endif()
