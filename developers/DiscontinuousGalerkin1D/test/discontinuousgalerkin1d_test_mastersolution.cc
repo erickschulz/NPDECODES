@@ -10,11 +10,7 @@
 
 #include <Eigen/Core>
 
-#if SOLUTION
-#include "../mastersolution/discontinuousgalerkin1d.h"
-#else
-#include "../mysolution/discontinuousgalerkin1d.h"
-#endif
+#include "../discontinuousgalerkin1d.h"
 
 namespace DiscontinuousGalerkin1D::test {
 
