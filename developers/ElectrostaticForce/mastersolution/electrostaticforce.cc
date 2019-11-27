@@ -1,18 +1,46 @@
-/** @file electrostaticforce.cc
- * @brief NPDE homework ElectrostaticForce code
+/**
+ * @file electrostaticforce.cc
+ * @brief ElectrostaticForce
  * @author Erick Schulz
- * @date 25/11/2019
- * @copyright Developed at ETH Zurich */
+ * @date 27.11.2019
+ * @copyright Developed at ETH Zurich
+ */
 
 #include "electrostaticforce.h"
 
-#include <math.h>
-#include <iostream>
-
-#include <Eigen/Core>
-#include <Eigen/Dense>
-
 namespace ElectrostaticForce {
+
+double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
+  double mesh_size = 0.0;
+
+  // Find maximal edge length
+  double edge_length;
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
+    // Compute the length of the edge
+    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
+    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
+    if (mesh_size < edge_length) {
+      mesh_size = edge_length;
+    }
+  }
+
+  return mesh_size;
+};  // getMeshSize
+
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(
+    const lf::mesh::Entity &entity) {
+  LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
+                "Unsupported cell type " << entity.RefEl());
+
+  // Get vertices of the triangle
+  auto endpoints = lf::geometry::Corners(*(entity.Geometry()));
+
+  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
+  X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
+  X.block<3, 2>(0, 1) = endpoints.transpose();
+
+  return X.inverse().block<2, 3>(1, 0);
+}  // gradbarycoordinates
 
 Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d force;  // return vector
@@ -49,14 +77,11 @@ Eigen::Vector2d computeExactForce() {
   force *= r * M_PI / N;
 
   return force;
-}
+}  // computeExactForce
 
 Eigen::VectorXd solvePoissonBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
-  // Related implementations:
-  // Homework problem ErrorEstimatesForTraces:
-  // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
-  Eigen::VectorXd discrete_solution;
+  Eigen::VectorXd approx_sol;  // to return
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
   // Obtain local->global index mapping for current finite element space
@@ -89,82 +114,117 @@ Eigen::VectorXd solvePoissonBVP(
 #endif
 
   // II. IMPOSING ESSENTIAL BOUNDARY CONDITIONS
-  // Creating Dirichlet data as mesh functions
-  auto mf_zero_f = lf::uscalfe::MeshFunctionGlobal(
-      [](Eigen::Vector2d x) -> double { return 0.0; });
-  auto mf_one_f = lf::uscalfe::MeshFunctionGlobal(
-      [](Eigen::Vector2d x) -> double { return 1.0; });
+  // II.i Producing Dirichlet data
+  auto mf_bd_values =
+      lf::uscalfe::MeshFunctionGlobal([](Eigen::Vector2d x) -> double {
+        if (x.norm() < 0.27) {
+          return 1.0;
+        }
+        return 0.0;
+      });
 #if SOLUTION
   // Obtain arrays of boolean flags for the edges and nodes of the mesh, 'true'
   // indicates that the edge or node lies on the boundary
-  auto edges_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
-  auto nodes_bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2)};
-  // Inspired by the example in the documentation of
-  // InitEssentialConditionFromFunction()
-  // https://craffael.github.io/lehrfempp/namespacelf_1_1uscalfe.html#a5afbd94919f0382cf3fb200c452797ac
-  // Creating a predicate that will guarantee that the computations are carried
-  // only on the proper edges of the mesh using the boundary flags
-  auto edges_predicate_interior_bd =
-      [&edges_bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (edges_bd_flags(edge)) {
-      auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
-      if (endpoints.col(0).norm() > 2.7) {
-        return false;
-      }
-    }
-    return true;
-  };
-  // II.i Imposing interior Dirichlet boundary condition
-  // Determine the fixed dofs on the interior boundary and their values
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+  // Determine the fixed dofs on the boundary and their values
   // Alternative: See lecturedemoDirichlet() in
   // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
-  auto edges_flag_interior_values{
-      lf::uscalfe::InitEssentialConditionFromFunction(
-          dofh, *rsf_edge_p, edges_predicate_interior_bd, mf_one_f)};
-  // Eliminate interior Dirichlet dofs from the linear system
+  auto flag_values{lf::uscalfe::InitEssentialConditionFromFunction(
+      dofh, *rsf_edge_p, bd_flags, mf_bd_values)};
+  // II.ii Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
-      [&edges_flag_interior_values](lf::assemble::glb_idx_t dof_idx) {
-        return edges_flag_interior_values[dof_idx];
+      [&flag_values](lf::assemble::glb_idx_t dof_idx) {
+        return flag_values[dof_idx];
       },
       A, phi);
-  // II.ii Imposing exterior Dirichlet boundary condition
-  // Index predicate for the selectvals FUNCTOR of dropMatrixRowsAndColumns
-  auto nodes_exterior_bd_selector = [&nodes_bd_flags, &dofh](unsigned int idx) -> bool {
-    if (nodes_bd_flags(dofh.Entity(idx))) {
-      auto coordinates = lf::geometry::Corners(*(dofh.Entity(idx).Geometry()));
-      if (coordinates.norm() > 0.27) {
-        return true;
-      }
-    }
-    return false;
-  };
-  dropMatrixRowsAndColumns(nodes_exterior_bd_selector, A);
-  // Assigning zero to the exterior boundary values of phi
-  for (unsigned int dof_idx = 0; dof_idx < N_dofs; ++dof_idx){
-  if (nodes_exterior_bd_selector(dof_idx)){
-      phi(dof_idx) = 0.0;
-    }
-  }
 #else
   //====================
   // Your code goes here
   //====================
 #endif
 
-  // Assembly completed! Convert COO matrix A into CRS format using Eigen's
-  // internal conversion routines.
-  Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
-
   // II : SOLVING  THE LINEAR SYSTEM
+  //  Convert COO format to CRS using Eigen's internal conversion routines.
+  Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
   // II.i : Setting up Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_sparse);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
   // II.ii : Solving
-  discrete_solution = solver.solve(phi);
+  approx_sol = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
 
-  return discrete_solution;
-};
+  return approx_sol;
+}  // solvePoissonBVP
+
+Eigen::Vector2d computeForceFunctional(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    Eigen::VectorXd approx_sol) {
+  Eigen::Vector2d approx_force;  // to return
+
+  // MESH AND FINITE ELEMENTS SPACE DATA
+  // Pointer to current mesh
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
+  // Obtain local->global index mapping for current finite element space
+  const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
+  // Obtain arrays of boolean flags for the edges and nodes of the mesh, 'true'
+  // indicates that the edge or node lies on the boundary
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+  // This predicate returns 'true' if the edge belongs to the interior boundary
+  auto interior_bd_flags = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
+    if (bd_flags(edge)) {
+      auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
+      if (endpoints.col(0).norm() > 0.27) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
+  // INTEGRATION TOOLS
+  double edge_length;
+  Eigen::VectorXd normal_vec;
+  Eigen::Matrix2d rotation_mat;
+  rotation_mat << 0, 1, -1, 0;             // rotates a 2d vec by 90 deg.
+  Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
+  Eigen::Vector2d grad_approx_sol;  // gradient expansion coeff FE solution
+
+  // PERFORMING INTEGRATION
+  approx_force.setZero();
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    for (const lf::mesh::Entity *edge : cell->SubEntities(1)) {
+      if (interior_bd_flags(*edge)) {
+        auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
+        edge_length = (endpoints.col(1) - endpoints.col(0)).norm();
+
+        // I COMPUTING NORMAL VECTOR
+        // I.i Finding a unit vector perpendicular to the edge
+        normal_vec =
+            rotation_mat * (endpoints.col(1) - endpoints.col(0)).normalized();
+        // I.ii The normal vector must be pointing outward
+        if (normal_vec.dot(endpoints.col(0)) > 0) {
+          normal_vec *= -1.0;
+        }
+
+        // II COMPUTING GRADIENT OF THE FE APPROXIMATE SOLUTION
+        // II.i Obtain global FE indices of the vertices
+        const auto dof_idx_vec = dofh.GlobalDofIndices(*cell);
+        // II.ii Obtain the gradients of the barycentric coordinate functions
+        elgrad_mat = gradbarycoordinates(*cell);
+        // II.iii Compute the gradient of the passed coefficient vector
+        grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
+                          elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
+                          elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
+
+        // III SUMMING LOCAL CONTRIBUTION
+        approx_force += edge_length * grad_approx_sol.dot(normal_vec) *
+                        grad_approx_sol;
+      }
+    }
+  }
+  approx_force *= 0.5;
+  return approx_force;
+}
 
 }  // namespace ElectrostaticForce
