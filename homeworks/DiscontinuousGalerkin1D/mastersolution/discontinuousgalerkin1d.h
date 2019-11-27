@@ -6,6 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <iostream>
+
+
 #include <cmath>
 #include <utility>
 
@@ -119,6 +122,11 @@ Eigen::VectorXd dgcl(Eigen::VectorXd mu0, FUNCTOR &&f, NUMFLUX &&F, double T,
 double Feo(double v, double w);
 
 struct Solution {
+  Solution(const Solution &other) {
+    x_ = other.x_;
+    u_ = other.u_;
+    std::cout << "Called copy contructor" << std::endl;
+  }
   Solution(Eigen::VectorXd x, Eigen::VectorXd u) : x_(std::move(x)), u_(std::move(u)) {}
   Eigen::VectorXd x_;
   Eigen::VectorXd u_;
