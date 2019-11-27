@@ -38,7 +38,7 @@ int main() {
   Eigen::Vector2d exact_force = computeExactForce();
 
   for (int i = 0; i < N_meshes; i++) {  // for each mesh
-    // GENERATE COMPUTATIONAL DOMAIN
+    // READ MESH INTO LEHRFEMPP
     // Load mesh into a Lehrfem++ object
     std::string mesh_file = CURRENT_SOURCE_DIR "/../meshes/emforce" +
                             std::to_string(i + 1) + ".msh";
