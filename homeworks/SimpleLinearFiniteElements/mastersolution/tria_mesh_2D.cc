@@ -1,6 +1,7 @@
 #include "simple_linear_finite_elements.h"
 
-#include<fstream>
+#include <cassert>
+#include <fstream>
 #include <iostream>
 
 namespace SimpleLinearFiniteElements
@@ -55,6 +56,52 @@ TriaMesh2D::TriaMesh2D(std::string filename)
     nE++;
   }
   mesh_file.close();
+}
+
+/**
+ * @brief Adds a z component to the mesh file
+ * @param input_file Filename of the mesh to read from
+ * @param input_file Filename of the new mesh with z component
+ * @param z vector of z-values, in correct order
+ */
+void TriaMesh2D::addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z) {
+  std::ifstream input;
+  input.open(input_file);
+
+  std::ofstream output;
+  output.open(output_file);
+
+  int n_vertices;
+  std::string dummy1;
+  input >> n_vertices >> dummy1;
+  if (n_vertices != z.size()) {
+    std::cout << "Error: Number of vertices of input file and z need to agree!" << std::endl;
+    output.close();
+    input.close();
+    assert(false);
+  }
+
+  output << n_vertices << " " << dummy1 << std::endl;
+  
+  for (int i = 0; i < n_vertices; ++i) {
+    double x, y;
+    input >> x >> y;
+    output << x << " " << y << " " << z(i) << std::endl;
+  }
+
+  int n_elements;
+  std::string dummy2;
+  input >> n_elements >> dummy2;
+  output << n_elements << " " << dummy2 << std::endl;
+
+  for (int i = 0; i < n_elements; ++i) {
+    int a, b, c;
+    input >> a >> b >> c;
+    output << a << " " << b << " " << c << std::endl;
+  }
+
+  output.close();
+  input.close();
 }
 
 } // namespace SimpleLinearFiniteElements

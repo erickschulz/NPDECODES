@@ -24,10 +24,7 @@ struct TriaMesh2D {
   TriaMesh2D(std::string filename);
   virtual ~TriaMesh2D(void) {}
 
-  // Creates EPS rendering of mesh geometry using MathGL
-  void plotMesh(const std::string& epsfile, int drawvertices = 0) const;
-  void plotSurf(const std::string& epsfile,
-                const Eigen::VectorXd& values) const;
+  static void addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z);
 
   // Data members describing geometry and topolgy
   Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
