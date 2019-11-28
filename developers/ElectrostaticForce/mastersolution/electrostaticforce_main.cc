@@ -19,9 +19,11 @@ int main() {
   // TOOLS AND DATA
   int N_meshes = 5;
   Eigen::VectorXd approx_sol;  // basis coeff expansion of approx solution
-  Eigen::Vector2d approx_force;
-  double errorsL2PoissonBVP[N_meshes];       // L2 errors for domain BVP
-  double errorsl2ForceFunctional[N_meshes];  // l2 errors for force functional
+  Eigen::Vector2d approx_force_boundary_functional;
+  Eigen::Vector2d approx_force_domain_functional;
+  double errorsL2PoissonBVP[N_meshes];       // L2 error domain BVP
+  double errorsl2ForceBoundaryFunctional[N_meshes];  // l2 err force bd functional
+  double errorsl2ForceDomainFunctional[N_meshes];  // l2 err force domain functional
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p;
   std::shared_ptr<const lf::mesh::Mesh> mesh_p;
   double mesh_sizes[N_meshes];
@@ -52,8 +54,9 @@ int main() {
 
     // SOLVE POISSON DIRICHLET BVP
     approx_sol = solvePoissonBVP(fe_space_p);
-    // COMPUTE FORCE FUNCTIONAL
-    approx_force = computeForceFunctional(fe_space_p, approx_sol);
+    // COMPUTE FORCE FUNCTIONALs
+    approx_force_boundary_functional = computeForceBoundaryFunctional(fe_space_p, approx_sol);
+    approx_force_domain_functional = computeForceDomainFunctional(fe_space_p, approx_sol);
 
     // COMPUTE L2 ERROR FOR THE POISSON DIRICHLET PROBLEM
     auto mf_approx_sol = lf::uscalfe::MeshFunctionFE(fe_space_p, approx_sol);
@@ -61,26 +64,24 @@ int main() {
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
 
     // COMPUTE l2 ERROR FOR THE FORCE
-    errorsl2ForceFunctional[i] = (exact_force - approx_force).norm();
-  /*  std::cout << "approx force" << std::endl;
-    std::cout << approx_force << std::endl;
-    std::cout << "exact force" << std::endl;
-    std::cout << exact_force << std::endl;
-    std::cout << "difference" << std::endl;
-    std::cout << approx_force - exact_force << std::endl;
-    std::cout << "norm" << std::endl;
-    std::cout << (approx_force - exact_force).norm() << std::endl; */
+    errorsl2ForceBoundaryFunctional[i] = (exact_force - approx_force_boundary_functional).norm();
+
   }
 
   // CALCULATING CONVERGENCE RATES
   double ratesL2PoissonBVP[N_meshes - 1];
-  double ratesl2ForceFunctional[N_meshes - 1];
+  double ratesl2ForceBoundaryFunctional[N_meshes - 1];
+  double ratesl2ForceDomainFunctional[N_meshes - 1];
+  double log_mesh_size_denumerator;
   for (int k = 0; k < N_meshes - 1; k++) {
     ratesL2PoissonBVP[k] =
         log(errorsL2PoissonBVP[k] / errorsL2PoissonBVP[k + 1]) /
         log(mesh_sizes[k] / mesh_sizes[k + 1]);
-    ratesl2ForceFunctional[k] =
-        log(errorsl2ForceFunctional[k] / errorsl2ForceFunctional[k + 1]) /
+    ratesl2ForceBoundaryFunctional[k] =
+        log(errorsl2ForceBoundaryFunctional[k] / errorsl2ForceBoundaryFunctional[k + 1]) /
+        log(mesh_sizes[k] / mesh_sizes[k + 1]);
+    ratesl2ForceDomainFunctional[k] =
+        log(errorsl2ForceDomainFunctional[k] / errorsl2ForceDomainFunctional[k + 1]) /
         log(mesh_sizes[k] / mesh_sizes[k + 1]);
   }
 
@@ -120,8 +121,10 @@ int main() {
             << std::endl;
   std::cout << "" << std::endl;
 
-  // DISPLAY CONVERGENCE TABLE FOR BOUNDARY FORCE FUNCTIONALS
+  // DISPLAY CONVERGENCE TABLE FOR BOUNDARY FORCE FUNCTIONAL
   std::cout << "         l2 errors of the approximate forces             "
+            << std::endl;
+  std::cout << "          computed with BOUNDARY functional              "
             << std::endl;
   std::cout << "---------------------------------------------------------"
             << std::endl;
@@ -133,9 +136,33 @@ int main() {
             << std::endl;
   for (int k = 0; k < N_meshes; k++) {
     std::cout << k << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
-              << "\t|" << errorsl2ForceFunctional[k];
+              << "\t|" << errorsl2ForceBoundaryFunctional[k];
     if (k > 0) {
-      std::cout << std::fixed << "\t|" << ratesl2ForceFunctional[k - 1];
+      std::cout << std::fixed << "\t|" << ratesl2ForceBoundaryFunctional[k - 1];
+    }
+    std::cout << "\n";
+  }
+  std::cout << "---------------------------------------------------------"
+            << std::endl;
+
+  // DISPLAY CONVERGENCE TABLE FOR DOMAIN FORCE FUNCTIONAL
+  std::cout << "         l2 errors of the approximate forces             "
+            << std::endl;
+  std::cout << "          computed with DOMAIN functional                "
+            << std::endl;
+  std::cout << "---------------------------------------------------------"
+            << std::endl;
+  std::cout << "iteration"
+            << "\t mesh size"
+            << "\t l2 error"
+            << "\t rates" << std::endl;
+  std::cout << "---------------------------------------------------------"
+            << std::endl;
+  for (int k = 0; k < N_meshes; k++) {
+    std::cout << k << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
+              << "\t|" << errorsl2ForceDomainFunctional[k];
+    if (k > 0) {
+      std::cout << std::fixed << "\t|" << ratesl2ForceDomainFunctional[k - 1];
     }
     std::cout << "\n";
   }
