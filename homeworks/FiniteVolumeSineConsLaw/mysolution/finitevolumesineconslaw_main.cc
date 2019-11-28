@@ -32,8 +32,11 @@ int main() {
   Eigen::VectorXd ufinal = solveSineConsLaw(&sineClawRhs, N, M);
   //====================
   // Your code goes here
+  // Use std::ofstream to write the solution to
+  // the file "ufinal.csv". To plot this
+  // file you may uncomment the following line:
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
   //====================
-  std::cout << "Generated ufinal.csv" << std::endl;
   /* SAM_LISTING_END_1 */
 
   // with reaction term: -c * u(x, t), where c = 1.0
@@ -44,8 +47,11 @@ int main() {
   Eigen::VectorXd ufinal_reaction = solveSineConsLaw(bind_c, N, M);
   //====================
   // Your code goes here
+  // Use std::ofstream to write the solution to
+  // the file "ufinal_reaction.csv". To plot this
+  // file you may uncomment the following line:
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
   //====================
-  std::cout << "Generated ufinal_reaction.csv" << std::endl;
 
   // Finding the optimal timestep (no reaction term)
   unsigned int M_small = findTimesteps();

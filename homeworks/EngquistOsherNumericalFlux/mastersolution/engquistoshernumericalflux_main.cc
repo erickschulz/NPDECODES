@@ -8,6 +8,7 @@
 
 #include "engquistoshernumericalflux.h"
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 
@@ -36,7 +37,9 @@ int main() {
   file << x.transpose().format(CSVFormat) << std::endl;
   file << ufinal.transpose().format(CSVFormat) << std::endl;
   file.close();
-  std::cout << "Wrote solution to ufinal.csv" << std::endl;
+
+  std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_solution.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
 
   return 0;
 }

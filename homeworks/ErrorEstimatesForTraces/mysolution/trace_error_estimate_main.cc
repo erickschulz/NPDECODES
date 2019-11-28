@@ -6,9 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "tee_lapl_robin_assembly.h"
-
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
 #include <string>
+
+#include "tee_lapl_robin_assembly.h"
 
 using namespace ErrorEstimatesForTraces;
 
@@ -32,7 +35,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
     const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
     // Dimension of finite element space
     const lf::base::size_type N_dofs(dofh.NumDofs());
-    results(i - 1, 1) = N_dofs;
+    results(i - 1, 0) = N_dofs;
 
     // Solve the boundary value problem with Robin boundary conditions
     Eigen::VectorXd sol_vec = solveBVP(fe_space);
@@ -40,8 +43,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
     // Integrate the solution sol_vec over the flagged edges
     double bd_functional_val = bdFunctionalEval(fe_space, sol_vec);
 
-    double error = bd_functional_val - 2.081541059732923;
-    results(i - 1, 0) = error;
+    double error = std::abs(bd_functional_val - 2.081541059732923);
+    results(i - 1, 1) = error;
     /* SAM_LISTING_END_1 */
 
     std::cout << mesh_file;
@@ -56,9 +59,14 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Define output file format
   const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");
-  std::string errors_file_name = "results.csv";
-  std::ofstream file(errors_file_name.c_str());
-  if (file.is_open()) {
-    file << results.format(CSVFormat);
-  }
+
+  // Write N_dofs and error to results.csv
+  std::ofstream file;
+  file.open("results.csv");
+  file << results.format(CSVFormat);
+  file.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/results.csv" << std::endl;
+
+  // Apply plot.py to results.csv
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/results.csv " CURRENT_BINARY_DIR "/results.png");
 }

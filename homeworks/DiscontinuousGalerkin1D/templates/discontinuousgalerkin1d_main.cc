@@ -22,8 +22,7 @@ int main() {
   // Your code goes here
   // Use std::ofstream to write the solution to
   // the file "solution.csv". To plot this file
-  // you may uncomment the following lines:
-  // std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
+  // you may uncomment the following line:
   // std::system("python3 " CURRENT_SOURCE_DIR "/plot_solution.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
   //====================
 

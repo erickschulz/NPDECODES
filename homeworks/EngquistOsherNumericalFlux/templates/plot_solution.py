@@ -7,12 +7,12 @@ output_file = str(argv[2])
 
 data = genfromtxt(input_file, delimiter=',')
 x = data[0]
-ufinal = data[1]
+y = data[1]
 
 figure()
-plot(x, ufinal, '-')
+plot(x, y)
 xlabel('x')
-ylabel('u(x, T)')
+ylabel('u(x,1)')
 savefig(output_file)
 
 print('Generated ' + output_file)

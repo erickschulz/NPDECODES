@@ -6,13 +6,13 @@ input_file = str(argv[1])
 output_file = str(argv[2])
 
 data = genfromtxt(input_file, delimiter=',')
-x = data[0]
-ufinal = data[1]
+t = data[0]
+energies = data[1]
 
 figure()
-plot(x, ufinal, '-')
-xlabel('x')
-ylabel('u(x, T)')
+plot(t, energies)
+xlabel(r'time $t$')
+ylabel(r'thermal energy $E_h(t)$')
 savefig(output_file)
 
 print('Generated ' + output_file)

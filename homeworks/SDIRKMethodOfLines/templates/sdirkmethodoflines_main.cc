@@ -5,10 +5,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <fstream>
+#include <string>
+
 #include "sdirkmethodoflines.h"
 #include "sdirkmethodoflines_ode.h"
-
-#include <string>
 
 using namespace SDIRKMethodOfLines;
 
@@ -70,16 +71,22 @@ int main(int /*argc*/, char ** /*argv*/)
   // Define output file format for the energies
   const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");
-  std::string errors_file_name = "energies.csv";
-  std::ofstream file(errors_file_name.c_str());
-  if (file.is_open())
-  {
-    file << energies.format(CSVFormat);
-  }
+
+  // Corresponding time grid for plotting
+  Eigen::VectorXd time = Eigen::VectorXd::LinSpaced(m + 1, 0.0, 1.0);
+
+  // Write .csv file of energy vs. time
+  std::ofstream file;
+  file.open("energies.csv");
+  file << time.transpose().format(CSVFormat) << std::endl;
+  file << energies.transpose().format(CSVFormat) << std::endl;
+  file.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
+
+  // Plot from .csv file using python
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
   /* SAM_LISTING_END_1 */
-  std::cout << "\n>>The energies were written to:" << std::endl;
-  std::cout << "\t energies.csv\n"
-            << std::endl;
+
   /* SAM_LISTING_BEGIN_2 */
   // Output results for the temperature function to vtk file
   lf::io::VtkWriter vtk_writer(mesh_p, "discrete_temperature_sol.vtk");
