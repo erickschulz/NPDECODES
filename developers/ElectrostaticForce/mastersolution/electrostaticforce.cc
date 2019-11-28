@@ -58,8 +58,8 @@ Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d grad;  // gradient of the exact solution
   double angle;          // interior angle
 
-  /* Compute the force using the trapezoidal rule */
-  force << 0.0, 0.0;  // initially zero
+  // Compute the force using the trapezoidal rule
+  force.setZero();  // initially zero
   for (unsigned int i = 0; i < N; i++) {
     // I. Find the euclidean coordinates of integration node
     angle = i * (2 * M_PI) / N;
@@ -99,7 +99,6 @@ Eigen::VectorXd solvePoissonBVP(
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
   phi.setZero();
   // Computing volume matrix for negative Laplace operator
-#if SOLUTION
   // Initialize object taking care of local mass (volume) computations.
   lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder{};
   // Invoke assembly on cells (co-dimension = 0 as first argument)
@@ -107,11 +106,6 @@ Eigen::VectorXd solvePoissonBVP(
   // a Dofhandler object, argument 'dofh'. This function call adds triplets to
   // the internal COO-format representation of the sparse matrix A.
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   // II. IMPOSING ESSENTIAL BOUNDARY CONDITIONS
   // II.i Producing Dirichlet data
@@ -122,13 +116,11 @@ Eigen::VectorXd solvePoissonBVP(
         }
         return 0.0;
       });
-#if SOLUTION
+
   // Obtain arrays of boolean flags for the edges and nodes of the mesh, 'true'
   // indicates that the edge or node lies on the boundary
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Determine the fixed dofs on the boundary and their values
-  // Alternative: See lecturedemoDirichlet() in
-  // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
   auto flag_values{lf::uscalfe::InitEssentialConditionFromFunction(
       dofh, *rsf_edge_p, bd_flags, mf_bd_values)};
   // II.ii Eliminate Dirichlet dofs from the linear system
@@ -137,11 +129,6 @@ Eigen::VectorXd solvePoissonBVP(
         return flag_values[dof_idx];
       },
       A, phi);
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   // II : SOLVING  THE LINEAR SYSTEM
   //  Convert COO format to CRS using Eigen's internal conversion routines.
@@ -157,7 +144,7 @@ Eigen::VectorXd solvePoissonBVP(
   return approx_sol;
 }  // solvePoissonBVP
 
-Eigen::Vector2d computeForceFunctional(
+Eigen::Vector2d computeForceBoundaryFunctional(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     Eigen::VectorXd approx_sol) {
   Eigen::Vector2d approx_force;  // to return
@@ -174,10 +161,9 @@ Eigen::Vector2d computeForceFunctional(
   auto interior_bd_flags = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
     if (bd_flags(edge)) {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
-      if (endpoints.col(0).norm() > 0.27) {
-        return false;
+      if (endpoints.col(0).norm() < 0.27) {
+        return true;
       }
-      return true;
     }
     return false;
   };
@@ -218,13 +204,69 @@ Eigen::Vector2d computeForceFunctional(
                           elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
 
         // III SUMMING LOCAL CONTRIBUTION
-        approx_force += edge_length * grad_approx_sol.dot(normal_vec) *
-                        grad_approx_sol;
+        approx_force +=
+            edge_length * grad_approx_sol.dot(normal_vec) * grad_approx_sol;
       }
     }
   }
   approx_force *= 0.5;
   return approx_force;
-}
+}  // computeForceFunctional
+
+Eigen::Vector2d computeForceDomainFunctional(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    Eigen::VectorXd approx_sol) {
+  Eigen::Vector2d approx_force;  // to return
+
+  // Pointer to current mesh
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
+  // Obtain local->global index mapping for current finite element space
+  const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
+
+  Eigen::Vector2d a(-16.0 / 15.0, 0.0);
+  Eigen::Vector2d b(-1.0 / 15.0, 0.0);
+  auto grad_uExact = [&a, &b](Eigen::VectorXd x) -> Eigen::Vector2d {
+    return ((x - a) / (x - a).squaredNorm() - (x - b) / (x - b).squaredNorm()) /
+           std::log(2.0);
+  };
+
+  // INTEGRATION TOOLS
+  Eigen::MatrixXd stress_tensor(4, 4);     // maxwell stress tensor
+  Eigen::MatrixXd mid_pts(2, 3);           // midpoints of the edges
+  Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
+  Eigen::Vector2d grad_approx_sol;  // gradient expansion coeff FE solution
+  Eigen::MatrixXd Id = Eigen::Matrix<double, 4, 4>::Identity();
+
+  // PERFORMING INTEGRATION
+  approx_force.setZero();
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    auto endpoints = lf::geometry::Corners(*(cell->Geometry()));
+    mid_pts.col(0) = 0.5 * (endpoints.col(0) + endpoints.col(1));
+    mid_pts.col(1) = 0.5 * (endpoints.col(1) + endpoints.col(2));
+    mid_pts.col(2) = 0.5 * (endpoints.col(2) + endpoints.col(1));
+
+    double area = lf::geometry::Volume(*(cell->Geometry()));
+
+    // II COMPUTING GRADIENT OF THE FE APPROXIMATE SOLUTION
+    // II.i Obtain global FE indices of the vertices
+    const auto dof_idx_vec = dofh.GlobalDofIndices(*cell);
+    // II.ii Obtain the gradients of the barycentric coordinate functions
+    elgrad_mat = gradbarycoordinates(*cell);
+    // II.iii Compute the gradient of the passed coefficient vector
+    grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
+                      elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
+                      elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
+
+    // III ASSEMBLING MAXWELL STRESS TENSOR
+    stress_tensor = grad_approx_sol * grad_approx_sol.transpose() -
+                    0.5 * grad_approx_sol.squaredNorm() * Id;
+
+    approx_force += (area / 3.0) * stress_tensor *
+                    (grad_uExact(mid_pts.col(0)) + grad_uExact(mid_pts.col(1)) +
+                     grad_uExact(mid_pts.col(2)));
+  }
+
+  return approx_force;
+}  // computeForceDomainFunctional
 
 }  // namespace ElectrostaticForce
