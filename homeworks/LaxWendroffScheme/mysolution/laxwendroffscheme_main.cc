@@ -6,11 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "laxwendroffscheme.h"
-
 #include <fstream>
+#include <iostream>
 
 #include <Eigen/Core>
+
+#include "laxwendroffscheme.h"
 
 using namespace LaxWendroffScheme;
 
@@ -32,6 +33,10 @@ int main() {
   file << error_LaxWendroffSmoothU0.transpose().format(CSVFormat) << std::endl;
   file << error_GodunovSmoothU0.transpose().format(CSVFormat) << std::endl;
   file.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/convergence.csv" << std::endl;
+
+  // To plot from convergence.csv uncomment this:
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
 
   return 0;
 }

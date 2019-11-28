@@ -17,7 +17,7 @@ add_subdirectory(FiniteVolumeSineConsLaw)
 add_subdirectory(HandlingDOFs)
 add_subdirectory(IPDGFEM)
 add_subdirectory(IncidenceMatrices)
-#add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
+# add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
 add_subdirectory(LengthOfBoundary)
 add_subdirectory(LinFeReactDiff)
 add_subdirectory(LinearFE1D)

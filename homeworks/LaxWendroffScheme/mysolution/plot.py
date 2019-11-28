@@ -1,7 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure, legend, loglog, savefig, xlabel, ylabel
+from numpy import exp, genfromtxt, log, polyfit
+from sys import argv
 
-data = np.genfromtxt("convergence.csv", delimiter=',')
+input_file = str(argv[1])
+output_file = str(argv[2])
+
+data = genfromtxt(input_file, delimiter=',')
 M = data[0]
 
 name = ['LaxWendroffRP', 'LaxWendroffSmoothU0', 'GodunovSmoothU0']
@@ -10,17 +14,17 @@ n = len(name)
 
 error = []
 p = []
-for i in np.arange(n):
+for i in range(n):
 	error.append(data[i + 1]) 
-	p.append(np.polyfit(np.log(M), np.log(error[i]), 1))
+	p.append(polyfit(log(M), log(error[i]), 1))
 
-fig = plt.figure()
-for i in np.arange(n):
-	plt.loglog(M, error[i], color[i] + 'o', label = name[i])
-	plt.loglog(M, np.exp(p[i][0] * np.log(M) + p[i][1]), color[i] + '--', label='slope = ' + str(np.round(p[i][0], 2)))
-plt.xlabel('number of time steps M')
-plt.ylabel('error')
-plt.legend()
-plt.savefig("convergence.eps")
+fig = figure()
+for i in range(n):
+	loglog(M, error[i], color[i] + 'o', label = name[i])
+	loglog(M, exp(p[i][0] * log(M) + p[i][1]), color[i] + '--', label='slope = ' + str(round(p[i][0], 2)))
+xlabel('number of time steps M')
+ylabel('error')
+legend()
+savefig(output_file)
 
-print("Generated convergence.eps")
+print('Generated ' + output_file)
