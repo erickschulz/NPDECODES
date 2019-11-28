@@ -1,11 +1,12 @@
 /**
- * @file newproblem.h
- * @brief NPDE homework NewProblem code
- * @author Oliver Rietmann, Erick Schulz
- * @date 01.01.2020
+ * @file electrostaticforce.h
+ * @brief ElectrostaticForce
+ * @author Erick Schulz
+ * @date 27.11.2019
  * @copyright Developed at ETH Zurich
  */
 
+#include <math.h>
 #include <iostream>
 // Eigen includes
 #include <Eigen/Core>
@@ -35,30 +36,15 @@ namespace ElectrostaticForce {
  * @return two dimensional force vector */
 Eigen::Vector2d computeExactForce();
 
-/** @Brief This function enforces Dirichlet zero boundary conditions on the
- * Galerkin matrices. It transforms every columns and rows associated to a
- * global index belonging to a degree of freedom lying on the boundary to zero
- * entries but the diagonal one which is set to 1.0
- * @param selectvals is the predicate identifying the boundary indices of the
- * rows and columns that are to be dropped */
-template <typename SCALAR, typename SELECTOR>
-void dropMatrixRowsAndColumns(SELECTOR &&selectvals,
-                              lf::assemble::COOMatrix<SCALAR> &A) {
-  const lf::assemble::size_type N(A.cols());
-  LF_ASSERT_MSG(A.rows() == N, "Matrix must be square!");
-  A.setZero(
-      [&selectvals](lf::assemble::gdof_idx_t i, lf::assemble::gdof_idx_t j) {
-        return (selectvals(i) || selectvals(j));
-      });
-  for (lf::assemble::gdof_idx_t dofnum = 0; dofnum < N; ++dofnum) {
-    const auto selval{selectvals(dofnum)};
-    if (selval) {
-      A.AddToEntry(dofnum, dofnum, 1.0);
-    }
-  }
-}
-
 Eigen::VectorXd solvePoissonBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p);
+
+double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p);
+
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(const lf::mesh::Entity &entity);
+
+Eigen::Vector2d computeForceFunctional(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    Eigen::VectorXd approx_sol);
 
 }  // namespace ElectrostaticForce
