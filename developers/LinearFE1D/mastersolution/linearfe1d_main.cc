@@ -1,7 +1,7 @@
 /**
- * @ file LinearFE1D.cc
+ * @ file LinearFE1D_main.cc
  * @ brief NPDE homework LinearFE1D code
- * @ author Christian Mitsch, Amélie Loher
+ * @ author Christian Mitsch, Amélie Loher, Erick Schulz
  * @ date 11.11.2019
  * @ copyright Developed at ETH Zurich
  */
@@ -39,7 +39,7 @@ int main() {
                                          Eigen::DontAlignCols, ", ", "\n");
   std::ofstream ofs;
   // Printing results to file for problem (A)
-  std::string filename = "uA.csv";
+  std::string filename = CURRENT_BINARY_DIR "/uA.csv";
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uA.format(CSVFormat);
@@ -50,7 +50,7 @@ int main() {
     std::cout << "File uA.csv was not properly closed." << std::endl;
   }
   // Printing results to file for problem (B)
-  filename = "uB.csv";
+  filename = CURRENT_BINARY_DIR "/uB.csv";
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uB.format(CSVFormat);
@@ -61,7 +61,7 @@ int main() {
     std::cout << "File uB.csv was not properly closed." << std::endl;
   }
   // Printing results to file for problem (C)
-  filename = "uC.csv";
+  filename = CURRENT_BINARY_DIR "/uC.csv";
   ofs.open(filename.c_str());
   if (ofs.is_open()) {
     ofs << uC.format(CSVFormat);
