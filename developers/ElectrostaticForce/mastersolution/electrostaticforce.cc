@@ -45,7 +45,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d force;  // return vector
 
-  unsigned int N = 1e6;  // nb. of quadrature points
+  unsigned int N = 1e7;  // nb. of quadrature points
 
   // Data
   double r = 4.0 / 15.0;  // radius of the circle
@@ -82,6 +82,7 @@ Eigen::Vector2d computeExactForce() {
 Eigen::VectorXd solvePoissonBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
   Eigen::VectorXd approx_sol;  // to return
+  
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
   // Obtain local->global index mapping for current finite element space
