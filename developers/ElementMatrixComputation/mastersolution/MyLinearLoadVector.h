@@ -6,6 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#ifndef MY_LINEAR_LOAD_VECTOR_H
+#define MY_LINEAR_LOAD_VECTOR_H
+
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
@@ -46,3 +49,5 @@ MyLinearLoadVector::ElemVec computeLoadVector(
     Eigen::MatrixXd vertices, const MyLinearLoadVector::FHandle_t f);
 
 }  // namespace ElementMatrixComputation
+
+#endif // MY_LINEAR_LOAD_VECTOR_H

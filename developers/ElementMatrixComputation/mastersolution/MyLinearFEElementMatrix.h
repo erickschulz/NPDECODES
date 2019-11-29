@@ -6,6 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#ifndef MY_LINEAR_FE_ELEMENT_MATRIX_H
+#define MY_LINEAR_FE_ELEMENT_MATRIX_H
+
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
@@ -44,3 +47,5 @@ class MyLinearFEElementMatrix {
 };
 
 }  // namespace ElementMatrixComputation
+
+#endif // MY_LINEAR_FE_ELEMENT_MATRIX_H

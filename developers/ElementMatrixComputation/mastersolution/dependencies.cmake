@@ -13,7 +13,9 @@ set(SOURCES
   ${DIR}/MyLinearLoadVector.h
   ${DIR}/MyLinearLoadVector.cc
   ${DIR}/solve.h
+  ${DIR}/solve.cc
   meshes/mesh.h
+  meshes/mesh.cc
 )
 
 set(LIBRARIES
