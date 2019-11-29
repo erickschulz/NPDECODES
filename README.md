@@ -57,15 +57,12 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `RadauThreeTimestepping`: mysolution has core dump (and mastersolution takes very long)
 * `SDIRKMethodOfLines`: mysolution has core dump
 * `SimpleLinearFiniteElements`: bad names of files and classes
-* `TransformationOfGalerkinMatrices`: bad typedefs
 
 ## New Problems to Set Up
 
 Problems PDF: www.sam.math.ethz.ch/~ralfh/tmp/NPDEFL_Problems_full.pdf
 
 * Problem 4.1: Finite Volumes with Robin Boundary Conditions
-* Problem 5.4: Electrostatic Force (Erick)
-* Problem 5.5: Coupled 2nd-order Boundary Value Problems
 * Problem 5.6: Parametric Finite Elements
 * Problem 5.7: Stable Evaluation at a Point
 * Problem 5.8: Trace Error Estimates 
