@@ -65,6 +65,7 @@ int main() {
 
     // COMPUTE l2 ERROR FOR THE FORCE
     errorsl2ForceBoundaryFunctional[i] = (exact_force - approx_force_boundary_functional).norm();
+    errorsl2ForceDomainFunctional[i] = (exact_force - approx_force_domain_functional).norm();
 
   }
 
@@ -110,7 +111,7 @@ int main() {
   std::cout << "---------------------------------------------------------"
             << std::endl;
   for (int k = 0; k < N_meshes; k++) {
-    std::cout << k << "\t\t|" << std::fixed << mesh_sizes[k] << std::scientific
+    std::cout << k+1 << "\t\t|" << std::fixed << mesh_sizes[k] << std::scientific
               << "\t|" << errorsL2PoissonBVP[k];
     if (k > 0) {
       std::cout << std::fixed << "\t|" << ratesL2PoissonBVP[k - 1];
@@ -135,7 +136,7 @@ int main() {
   std::cout << "---------------------------------------------------------"
             << std::endl;
   for (int k = 0; k < N_meshes; k++) {
-    std::cout << k << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
+    std::cout << k+1 << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
               << "\t|" << errorsl2ForceBoundaryFunctional[k];
     if (k > 0) {
       std::cout << std::fixed << "\t|" << ratesl2ForceBoundaryFunctional[k - 1];
@@ -159,7 +160,7 @@ int main() {
   std::cout << "---------------------------------------------------------"
             << std::endl;
   for (int k = 0; k < N_meshes; k++) {
-    std::cout << k << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
+    std::cout << k+1 << "\t\t|" << std::fixed << mesh_sizes[k] //<< std::scientific
               << "\t|" << errorsl2ForceDomainFunctional[k];
     if (k > 0) {
       std::cout << std::fixed << "\t|" << ratesl2ForceDomainFunctional[k - 1];

@@ -174,7 +174,7 @@ Eigen::Vector2d computeForceBoundaryFunctional(
   Eigen::Matrix2d rotation_mat;
   rotation_mat << 0, 1, -1, 0;             // rotates a 2d vec by 90 deg.
   Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
-  Eigen::Vector2d grad_approx_sol;  // gradient expansion coeff FE solution
+  Eigen::Vector2d loc_grad_approx_sol;  // gradient expansion coeff FE solution
 
   // PERFORMING INTEGRATION
   approx_force.setZero();
@@ -199,13 +199,13 @@ Eigen::Vector2d computeForceBoundaryFunctional(
         // II.ii Obtain the gradients of the barycentric coordinate functions
         elgrad_mat = gradbarycoordinates(*cell);
         // II.iii Compute the gradient of the passed coefficient vector
-        grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
-                          elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
-                          elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
+        loc_grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
+                              elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
+                              elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
 
         // III SUMMING LOCAL CONTRIBUTION
-        approx_force +=
-            edge_length * grad_approx_sol.dot(normal_vec) * grad_approx_sol;
+        approx_force += edge_length * loc_grad_approx_sol.dot(normal_vec) *
+                        loc_grad_approx_sol;
       }
     }
   }
@@ -231,11 +231,11 @@ Eigen::Vector2d computeForceDomainFunctional(
   };
 
   // INTEGRATION TOOLS
-  Eigen::MatrixXd stress_tensor(4, 4);     // maxwell stress tensor
+  Eigen::MatrixXd stress_tensor(2, 2);     // maxwell stress tensor
   Eigen::MatrixXd mid_pts(2, 3);           // midpoints of the edges
   Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
-  Eigen::Vector2d grad_approx_sol;  // gradient expansion coeff FE solution
-  Eigen::MatrixXd Id = Eigen::Matrix<double, 4, 4>::Identity();
+  Eigen::Vector2d loc_grad_approx_sol;  // gradient expansion coeff FE solution
+  Eigen::MatrixXd Id = Eigen::Matrix<double, 2, 2>::Identity();
 
   // PERFORMING INTEGRATION
   approx_force.setZero();
@@ -253,14 +253,15 @@ Eigen::Vector2d computeForceDomainFunctional(
     // II.ii Obtain the gradients of the barycentric coordinate functions
     elgrad_mat = gradbarycoordinates(*cell);
     // II.iii Compute the gradient of the passed coefficient vector
-    grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
-                      elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
-                      elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
+    loc_grad_approx_sol = elgrad_mat.col(0) * approx_sol(dof_idx_vec[0]) +
+                          elgrad_mat.col(1) * approx_sol(dof_idx_vec[1]) +
+                          elgrad_mat.col(2) * approx_sol(dof_idx_vec[2]);
 
     // III ASSEMBLING MAXWELL STRESS TENSOR
-    stress_tensor = grad_approx_sol * grad_approx_sol.transpose() -
-                    0.5 * grad_approx_sol.squaredNorm() * Id;
+    stress_tensor = loc_grad_approx_sol * loc_grad_approx_sol.transpose() -
+                    0.5 * loc_grad_approx_sol.squaredNorm() * Id;
 
+    // IV SUMMING LOCAL CONTRIBUTION
     approx_force += (area / 3.0) * stress_tensor *
                     (grad_uExact(mid_pts.col(0)) + grad_uExact(mid_pts.col(1)) +
                      grad_uExact(mid_pts.col(2)));
