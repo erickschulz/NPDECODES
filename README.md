@@ -65,8 +65,8 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 4.1: Finite Volumes with Robin Boundary Conditions
 * Problem 5.6: Parametric Finite Elements
 * Problem 5.7: Stable Evaluation at a Point
-* Problem 5.8: Trace Error Estimates 
-* Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity (Oliver)
+* Problem 5.8: Trace Error Estimates **(done already?)**
+* Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
 * Problem 7.3: Upwind Quadrature
 * Problem 7.4: Exponentially fitted upwind scheme
 * Problem 7.5: Transport Problem
