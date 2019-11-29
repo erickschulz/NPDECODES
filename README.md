@@ -61,6 +61,8 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 ## New Problems to Set Up
 
+Problems PDF: www.sam.math.ethz.ch/~ralfh/tmp/NPDEFL_Problems_full.pdf
+
 * Problem 4.1: Finite Volumes with Robin Boundary Conditions
 * Problem 5.4: Electrostatic Force (Erick)
 * Problem 5.5: Coupled 2nd-order Boundary Value Problems
