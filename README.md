@@ -58,7 +58,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `SDIRKMethodOfLines`: mysolution has core dump
 * `SimpleLinearFiniteElements`: bad names of files and classes
 
-## New Problems to Set Up
+## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
