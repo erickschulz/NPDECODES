@@ -45,7 +45,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d force;  // return vector
 
-  unsigned int N = 1e7;  // nb. of quadrature points
+  unsigned int N = 1e6;  // nb. of quadrature points
 
   // Data
   double r = 4.0 / 15.0;  // radius of the circle
@@ -141,7 +141,8 @@ Eigen::VectorXd solvePoissonBVP(
   // II.ii : Solving
   approx_sol = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
-
+  
+  LF_VERIFY_MSG(approx_sol.size() == N_dofs, "Solution has wrong size");
   return approx_sol;
 }  // solvePoissonBVP
 

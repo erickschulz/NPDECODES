@@ -177,8 +177,7 @@ int main() {
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   lf::io::VtkWriter vtk_writer(mesh_p,
                                "ElectrostaticForcePoissonBVP_solution.vtk");
-  // Write nodal data taking the values of the discrete solution at the
-  // vertices
+  // Write nodal data taking the values of the discrete solution at vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
   for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
     if (dofh.Entity(global_idx).RefEl() == lf::base::RefElType::kPoint) {
