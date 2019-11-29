@@ -60,7 +60,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 ## New Problems to Set Up
 
-Problems PDF: www.sam.math.ethz.ch/~ralfh/tmp/NPDEFL_Problems_full.pdf
+Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
 * Problem 4.1: Finite Volumes with Robin Boundary Conditions
 * Problem 5.6: Parametric Finite Elements
