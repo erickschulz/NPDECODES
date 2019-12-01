@@ -1,24 +1,28 @@
 /**
  * @file
  * @brief NPDE homework ElementMatrixComputation code
- * @author Janik Schüttler
+ * @author Janik Schüttler, edited by Oliver Rietmann
  * @date 06.03.2019
  * @copyright Developed at ETH Zurich
  */
+
+#ifndef SOLVE_H
+#define SOLVE_H
+
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#ifndef _SOLVEH_
-#define _SOLVEH_
-
-#include "../meshes/mesh.h"
-
 #include "MyLinearFEElementMatrix.h"
 #include "MyLinearLoadVector.h"
-
-#endif
+#include "../meshes/mesh.h"
 
 namespace ElementMatrixComputation {
 
@@ -68,15 +72,9 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_builder,
   // Define solution vector
   Eigen::VectorXd sol_vec = Eigen::VectorXd::Zero(N_dofs);
 
-  /* BEGIN_SOLUTION */
-  // Solve linear system using Eigen's sparse direct elimination
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-  solver.compute(A_crs);
-  if (solver.info() != Eigen::Success) {
-    throw std::runtime_error("Could not decompose the matrix");
-  }
-  sol_vec = solver.solve(phi);
-  /* END_SOLUTION */
+  //====================
+  // Your code goes here
+  //====================
   /* SAM_LISTING_END_1 */
 
   double solver_error = (A_crs * sol_vec - phi).norm();
@@ -104,66 +102,26 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_builder,
 
 /**
  * @brief      Right hand side functional `f(x)`
- *
  * @param[in]  x     A 2D vector that provides the evaluation of the source
- *
  * @return     The value of `f` evaluated at point `x`
  */
-double f(Eigen::Vector2d x) { return 1 + x(0) * x(0) + x(1) * x(1); };
+inline double f(Eigen::Vector2d x) { return 1 + x(0) * x(0) + x(1) * x(1); };
 
 /**
  * @brief Solve Poisson's equation -△u = f using LehrFEM++'s built in element
  * matrix and vector builders
- *
  * @return     The solution vector
  */
-
-/* SAM_LISTING_BEGIN_2 */
-Eigen::VectorXd solvePoissonBVP() {
-  // Convert tPoissonda function f to a LehrFEM++ mesh function object
-  lf::uscalfe::MeshFunctionGlobal mf_f{f};
-
-  // Define the solution vector
-  Eigen::VectorXd solution = Eigen::VectorXd::Zero(1);
-
-  /* BEGIN_SOLUTION */
-  // Define the element matrix and element vector builders and solve the system
-  lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder;
-  lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)> elvec_builder(
-      mf_f);
-
-  std::cout << "===================" << std::endl;
-  std::cout << "solvePoissonBVP" << std::endl;
-
-  solution = solve(elmat_builder, elvec_builder);
-  /* END_SOLUTION */
-
-  return solution;
-}
-/* SAM_LISTING_END_2 */
+Eigen::VectorXd solvePoissonBVP();
 
 /**
  * @brief Solve Neumann equation -△u + u = f where ɑ is a constant diffusion
  * coefficient using a custom implementation of element matrix and element
  * vector builders
- *
  * @return     The solution vector
  */
-Eigen::VectorXd solveNeumannEq() {
-  // Define the solution vector
-  Eigen::VectorXd solution;
+Eigen::VectorXd solveNeumannEq();
 
-  /* BEGIN_SOLUTION */
-  // Define the element matrix and element vector builders and solve the system
-  MyLinearFEElementMatrix elmat_builder;
-  MyLinearLoadVector elvec_builder(f);
-
-  std::cout << "===================" << std::endl;
-  std::cout << "solveNeumannEq" << std::endl;
-  // The actual computation
-  solution = solve(elmat_builder, elvec_builder);
-  /* END_SOLUTION */
-
-  return solution;
-}
 }  // namespace ElementMatrixComputation
+
+#endif // SOLVE_H

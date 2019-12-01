@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief NPDE homework ElementMatrixComputation code
- * @author Janik Schüttler
+ * @author Janik Schüttler, edited by Oliver Rietmann
  * @date 06.03.2019
  * @copyright Developed at ETH Zurich
  */

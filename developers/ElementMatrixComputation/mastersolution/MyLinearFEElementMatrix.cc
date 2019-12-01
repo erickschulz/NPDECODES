@@ -1,17 +1,24 @@
 /**
  * @file
  * @brief NPDE homework ElementMatrixComputation code
- * @author Janik Schüttler
+ * @author Janik Schüttler, edited by Oliver Rietmann
  * @date 03.03.2019
  * @copyright Developed at ETH Zurich
  */
 
 #include "MyLinearFEElementMatrix.h"
 
+#include <Eigen/Core>
+
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
+#include <lf/uscalfe/uscalfe.h>
+
 namespace ElementMatrixComputation {
 
 /* SAM_LISTING_BEGIN_1 */
-MyLinearFEElementMatrix::ElemMat MyLinearFEElementMatrix::Eval(
+Eigen::Matrix<double, 4, 4> MyLinearFEElementMatrix::Eval(
     const lf::mesh::Entity &cell) {
   // Topological type of the cell
   const lf::base::RefEl ref_el{cell.RefEl()};
@@ -22,13 +29,14 @@ MyLinearFEElementMatrix::ElemMat MyLinearFEElementMatrix::Eval(
   // Matrix storing corner coordinates in its columns
   auto vertices = geo_ptr->Global(ref_el.NodeCoords());
   // Matrix for returning element matrix
-  MyLinearFEElementMatrix::elem_mat_t elem_mat;
-  /* BEGIN_SOLUTION */
+  Eigen::Matrix<double, 4, 4> elem_mat;
+#if SOLUTION
   // Initialize matrix containing the mass part of the element matrix
-  MyLinearFEElementMatrix::elem_mat_t mass_elem_mat;
+  Eigen::Matrix<double, 4, 4> mass_elem_mat;
   // Retrieve laplace part of element matrix from LehrFEM's built-in laplace
   // element matrix builder
-  auto laplace_elem_mat = laplace_elmat_builder_.Eval(cell);
+  lf::uscalfe::LinearFELaplaceElementMatrix laplace_elmat_builder;
+  auto laplace_elem_mat = laplace_elmat_builder.Eval(cell);
   // Computations differ depending on the type of the cell
   switch (ref_el) {
     case lf::base::RefEl::kTria(): {
@@ -60,7 +68,13 @@ MyLinearFEElementMatrix::ElemMat MyLinearFEElementMatrix::Eval(
     default: { LF_ASSERT_MSG(false, "Illegal cell type"); }
   }  // end switch
   elem_mat = laplace_elem_mat + mass_elem_mat;
-  /* END_SOLUTION */
+#else
+
+  //====================
+  // Your code goes here
+  //====================
+
+#endif
   return elem_mat;
 }
 /* SAM_LISTING_END_1 */

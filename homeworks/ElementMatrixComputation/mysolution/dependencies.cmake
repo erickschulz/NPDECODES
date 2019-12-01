@@ -9,18 +9,17 @@ set(SOURCES
   ${DIR}/MyLinearLoadVector.h
   ${DIR}/MyLinearLoadVector.cc
   ${DIR}/solve.h
+  ${DIR}/solve.cc
   meshes/mesh.h
+  meshes/mesh.cc
 )
 
 set(LIBRARIES
   Eigen3::Eigen
-  LF::lf.mesh
-  LF::lf.mesh.utils
-  LF::lf.mesh.test_utils
-  LF::lf.mesh.hybrid2d
   LF::lf.assemble
+  LF::lf.base
   LF::lf.geometry
-  LF::lf.io
-  LF::lf.quad
+  LF::lf.mesh.hybrid2d
+  LF::lf.mesh.test_utils
   LF::lf.uscalfe
 )

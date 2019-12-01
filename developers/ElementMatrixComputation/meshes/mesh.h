@@ -1,7 +1,7 @@
 /**
   * @file mesh.h
   * @brief NPDE homework ElementMatrixComputation code
-  * @author Janik Schüttler (adapted from LehrFEM++ base code)
+  * @author Janik Schüttler, edited by Oliver Rietmann
   * @date 03.03.2019
   * @copyright Developed at ETH Zurich
   */
