@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 
 #include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 

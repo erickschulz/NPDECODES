@@ -6,28 +6,37 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <memory>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+
 #include <gtest/gtest.h>
 
 #include <lf/assemble/assemble.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include "../MyLinearFEElementMatrix.h"
+#include "../MyLinearLoadVector.h"
 #include "../solve.h"
+#include "../../meshes/mesh.h"
+
+namespace ElementMatrixComputation::test {
 
 double numericalPrecision = 1e-8;
 
+double f(Eigen::Vector2d x) { return 1 + x(0) * x(0) + x(1) * x(1); };
+
 // useful functors
-Eigen::Matrix<double, 2, 2> zeroMatrixFunctor(Eigen::Vector2d x)
-{
+Eigen::Matrix<double, 2, 2> zeroMatrixFunctor(Eigen::Vector2d x) {
   return Eigen::MatrixXd::Zero(2, 2);
 };
 
 double zeroScalar(Eigen::Vector2d x) { return 0.0; };
 
-Eigen::Matrix<double, 2, 2> identityMatrixFunctor(Eigen::Vector2d x)
-{
+Eigen::Matrix<double, 2, 2> identityMatrixFunctor(Eigen::Vector2d x) {
   return Eigen::MatrixXd::Identity(2, 2);
 };
 
@@ -36,8 +45,7 @@ double identityScalarFunctor(Eigen::Vector2d x) { return 1.0; };
 //////////////////////
 // Test solve
 //////////////////////
-TEST(Solve, test)
-{
+TEST(Solve, test) {
   auto mesh_p = Generate2DTestMesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
@@ -82,8 +90,7 @@ TEST(Solve, test)
 //////////////////////
 // Test SolvePoissonBVP
 //////////////////////
-TEST(SolvePoissonBVP, test)
-{
+TEST(SolvePoissonBVP, test) {
   lf::uscalfe::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
 
   lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder;
@@ -96,12 +103,9 @@ TEST(SolvePoissonBVP, test)
   Eigen::VectorXd student_solution =
       ElementMatrixComputation::solvePoissonBVP();
 
-  if (student_solution.norm() < numericalPrecision)
-  {
+  if (student_solution.norm() < numericalPrecision) {
     EXPECT_TRUE(false);
-  }
-  else
-  {
+  } else {
     double error = (solution - student_solution).norm();
 
     EXPECT_LT(error, numericalPrecision);
@@ -123,10 +127,8 @@ TEST(MyLinearLoadVector, testTriangles)
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)>
       elvec_builder_exact(mf_f);
 
-  for (const lf::mesh::Entity *cell : mesh_p->Entities(0))
-  {
-    if (cell->RefEl() == lf::base::RefEl::kTria())
-    {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kTria()) {
       auto elem_vec = elvec_builder.Eval(*cell);
       auto elem_vec_exact = elvec_builder_exact.Eval(*cell);
       double error = (elem_vec - elem_vec_exact).norm();
@@ -146,10 +148,8 @@ TEST(MyLinearLoadVector, testQuads)
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)>
       elvec_builder_exact(mf_f);
 
-  for (const lf::mesh::Entity *cell : mesh_p->Entities(0))
-  {
-    if (cell->RefEl() == lf::base::RefEl::kQuad())
-    {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kQuad()) {
       auto elem_vec = elvec_builder.Eval(*cell);
       auto elem_vec_exact = elvec_builder_exact.Eval(*cell);
       double error = (elem_vec - elem_vec_exact).norm();
@@ -177,10 +177,8 @@ TEST(MyLinearFEElementMatrix, testTriangles)
       double, decltype(mf_alpha), decltype(mf_gamma)>
       elmat_builder_exact(fe_space, mf_alpha, mf_gamma);
 
-  for (const lf::mesh::Entity *cell : mesh.Entities(0))
-  {
-    if (cell->RefEl() == lf::base::RefEl::kTria())
-    {
+  for (const lf::mesh::Entity *cell : mesh.Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kTria()) {
       auto elem_mat = elmat_builder.Eval(*cell);
       auto elem_mat_exact = elmat_builder_exact.Eval(*cell);
       double error = (elem_mat.block(0, 0, 3, 3) - elem_mat_exact).norm();
@@ -206,10 +204,8 @@ TEST(MyLinearFEElementMatrix, testQuads)
       double, decltype(mf_alpha), decltype(mf_gamma)>
       elmat_builder_exact(fe_space, mf_alpha, mf_gamma);
 
-  for (const lf::mesh::Entity *cell : mesh.Entities(0))
-  {
-    if (cell->RefEl() == lf::base::RefEl::kQuad())
-    {
+  for (const lf::mesh::Entity *cell : mesh.Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kQuad()) {
       auto elem_mat = elmat_builder.Eval(*cell);
       auto elem_mat_exact = elmat_builder_exact.Eval(*cell);
       double error = (elem_mat - elem_mat_exact).norm();
@@ -221,8 +217,7 @@ TEST(MyLinearFEElementMatrix, testQuads)
 //////////////////////
 // Test solveNeumannEq
 //////////////////////
-TEST(solveNeumannEq, test)
-{
+TEST(solveNeumannEq, test) {
   ElementMatrixComputation::MyLinearFEElementMatrix elmat_builder;
   ElementMatrixComputation::MyLinearLoadVector elvec_builder(
       ElementMatrixComputation::f);
@@ -231,14 +226,13 @@ TEST(solveNeumannEq, test)
       ElementMatrixComputation::solve(elmat_builder, elvec_builder);
   Eigen::VectorXd student_solution = ElementMatrixComputation::solveNeumannEq();
 
-  if (student_solution.norm() < numericalPrecision)
-  {
+  if (student_solution.norm() < numericalPrecision) {
     EXPECT_TRUE(false);
-  }
-  else
-  {
+  } else {
     double error = (solution - student_solution).norm();
 
     EXPECT_LT(error, numericalPrecision);
   }
 }
+
+}  // ElementMatrixComputation::test

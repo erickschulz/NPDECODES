@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-//#include "solve.h"
+#include "solve.h"
 
 int main(int /*argc*/, const char** /*argv*/) {
-  //ElementMatrixComputation::solvePoissonBVP();
-  //ElementMatrixComputation::solveNeumannEq();
+  ElementMatrixComputation::solvePoissonBVP();
+  ElementMatrixComputation::solveNeumannEq();
   return 0;
 }

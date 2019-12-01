@@ -1,5 +1,5 @@
 /**
- * @ file LinearFE1D.cc
+ * @ file LinearFE1D.h
  * @ brief NPDE homework LinearFE1D code
  * @ author Christian Mitsch, Amélie Loher, Erick Schulz
  * @ date 11.11.2019
