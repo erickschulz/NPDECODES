@@ -7,20 +7,13 @@
  */
 
 #include <math.h>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
 #include <lf/assemble/assemble.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
 namespace CoupledSecondOrderBVP {

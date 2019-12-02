@@ -1,10 +1,12 @@
 /**
  * @file
- * @brief NPDE homework CoupledSecondOrderBVP
+ * @brief NPDE homework CoupledSecondOrderBVP Test
  * @author Amélie Loher
  * @date 01/12/2019
  * @copyright Developed at ETH Zurich
  */
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
 
 #include <gtest/gtest.h>
 
@@ -15,7 +17,7 @@ namespace CoupledSecondOrderBVP::test {
 TEST(CoupledSecondOrderBVP, dropMatrixRowsAndColumns) {
     
   std::string mesh_file = 
-  		CURRENT_SOURCE_DIR "/meshes/simple.msh";
+  		CURRENT_SOURCE_DIR "/../../meshes/simple.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
@@ -93,7 +95,7 @@ TEST(CoupledSecondOrderBVP, dropMatrixRowsAndColumns) {
 TEST(CoupledSecondOrderBVP, dropMatrixRows) {
 
   std::string mesh_file =
-        CURRENT_SOURCE_DIR "/meshes/simple.msh";
+        CURRENT_SOURCE_DIR "/../../meshes/simple.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
@@ -173,7 +175,7 @@ TEST(CoupledSecondOrderBVP, dropMatrixRows) {
 TEST(CoupledSecondOrderBVP, solveCoupledBVP) {
   
   std::string mesh_file =
-        CURRENT_SOURCE_DIR "/meshes/simple.msh";
+        CURRENT_SOURCE_DIR "/../../meshes/simple.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
