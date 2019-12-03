@@ -50,7 +50,6 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `ElementMatrixComputation`: unit tests all pass even for template
 * `IncidenceMatrices`: wrong file structure and mysolution has core dump
 * `LaxWendroffScheme`: unit test of mastersolution takes too long
-* `OutputImpedanceBVP`: unit test of mysolution has infinite loop
 * `PointEvaluationRhs`: bad includes
 * `ProjectionOntoGradients`: completely messed up
 * `RadauThreeTimestepping`: mysolution has core dump (and mastersolution takes very long)
