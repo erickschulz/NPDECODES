@@ -53,7 +53,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `LaxWendroffScheme`: unit test of mastersolution takes too long
 * `PointEvaluationRhs`: bad includes
 * `ProjectionOntoGradients`: completely messed up
-* `RadauThreeTimestepping`: mysolution has core dump (and mastersolution takes very long)
+* `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
 * `SimpleLinearFiniteElements`: bad names of files and classes
 
