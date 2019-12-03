@@ -6,11 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <math.h>
-#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <vector>
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+#include <Eigen/Core>
+#include <Eigen/SparseCholesky>
 
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
