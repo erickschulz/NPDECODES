@@ -47,7 +47,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 * `BoundaryWave`: mysolution has core dump
 * `CoupledSecondOrderBVP`: needs tests and tags
-* `ElementMatrixComputation`: unit tests all pass even for template
+* `ElementMatrixComputation`: unit tests all pass even for template (due to absence of template tags)
 * `IncidenceMatrices`: wrong file structure and mysolution has core dump
 * `LaxWendroffScheme`: unit test of mastersolution takes too long
 * `PointEvaluationRhs`: bad includes
