@@ -28,7 +28,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // Related implementations:
   // Homework problem ErrorEstimatesForTraces:
   // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
-  Eigen::VectorXd discrete_solution;
+
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
   // Obtain local->global index mapping for current finite element space
@@ -38,6 +38,8 @@ Eigen::VectorXd solveImpedanceBVP(
   // Obtain specification for shape functions on edges
   std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
       rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+
+  Eigen::VectorXd discrete_solution(N_dofs);
 
   // I : ASSEMBLY
   // Matrix in triplet format holding Galerkin matrix, zero initially.
@@ -156,6 +158,7 @@ Eigen::VectorXd solveImpedanceBVP(
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
   // II : SOLVING  THE LINEAR SYSTEM
+  #if SOLUTION
   // II.i : Setting up Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_sparse);
@@ -163,7 +166,17 @@ Eigen::VectorXd solveImpedanceBVP(
   // II.ii : Solving
   discrete_solution = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
 
+  #if SOLUTION
+  // do nothing
+  #else
+  discrete_solution.setZero();
+  #endif
   return discrete_solution;
 };
 /* SAM_LISTING_END_9 */
