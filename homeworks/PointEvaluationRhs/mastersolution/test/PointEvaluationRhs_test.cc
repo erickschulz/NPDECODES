@@ -41,9 +41,9 @@ TEST(PoinEvaluationRhs, mapping_test) {
   // Point in reference element for testing
   Eigen::Vector2d xh(0.27, 0.41);
 
-  for (const lf::mesh::Entity& cell : mesh_p->Entities(0)) {
+  for (auto cell : mesh_p->Entities(0)) {
     // Get shape of cell
-    lf::geometry::Geometry* geo_ptr = cell.Geometry();
+    lf::geometry::Geometry* geo_ptr = cell->Geometry();
     // Get cordinates of vertices
     auto vertices = lf::geometry::Corners(*geo_ptr);
     // Global coordinates of testing point
@@ -51,7 +51,7 @@ TEST(PoinEvaluationRhs, mapping_test) {
     // Reference coordinates
     Eigen::Vector2d xh_comp;
     // Query type of cell
-    const lf::base::RefEl ref_el = cell.RefEl();
+    const lf::base::RefEl ref_el = cell->RefEl();
     // Depending on the type of cell compute the pre-image of
     // the point x
     switch (ref_el) {
@@ -70,7 +70,7 @@ TEST(PoinEvaluationRhs, mapping_test) {
     }  // end switch
 
     EXPECT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8)
-        << "cell " << cell << ": Mismatch xh = " << xh << ", x = " << x
+        << "cell " << *cell << ": Mismatch xh = " << xh << ", x = " << x
         << ", xh_comp = " << xh_comp << std::endl;
   }  // end loop over cells
 }
