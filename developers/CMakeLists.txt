@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Developers)
+project(developers)
 
 add_subdirectory(1DWaveAbsorbingBC)
 add_subdirectory(AvgValBoundary)
@@ -24,7 +24,7 @@ add_subdirectory(LinFeReactDiff)
 add_subdirectory(LinearFE1D)
 add_subdirectory(MaximumPrinciple)
 add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
-# add_subdirectory(OutputImpedanceBVP) # test_mysolution has infinite loop
+add_subdirectory(OutputImpedanceBVP)
 add_subdirectory(ParametricElementMatrices)
 add_subdirectory(PointEvaluationRhs)
 add_subdirectory(RadauThreeTimestepping)
