@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief UNITESTS for NPDE homework ErrorEstimatesForTraces
+ * @brief UNITESTS for NPDE homework OutputImpedanceBVP
  * @author Erick Schulz
  * @date 28/03/2019
  * @copyright Developed at ETH Zurich
