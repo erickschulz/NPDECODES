@@ -1,26 +1,14 @@
-# Provides the following targets in build folder (top-level only):
+# Provides functions to create custom targets
 
-# test_solution_ON
-# test_solution_OFF
-# test_mastersolution
-# test_mysolution
-# templates
-
-function(custom_targets HOMEWORKS DEVELOPERS LECTURECODES)
-
-  set(DIR ${CMAKE_SOURCE_DIR})
-
-  # Add custom target for running all unit tests
-  add_custom_target(test_mastersolution
-      COMMAND shopt -s nullglob &&  ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mastersolution developers/*/*_test_mastersolution
+# test targets
+function(add_custom_test_target TARGET_NAME ARG)
+  add_custom_target(${TARGET_NAME}
+    COMMAND shopt -s nullglob &&  ${CMAKE_SOURCE_DIR}/scripts/run-tests.sh ${ARG}
   )
-  add_custom_target(test_mysolution
-      COMMAND shopt -s nullglob && ${DIR}/scripts/run-tests.sh homeworks/*/*_test_mysolution developers/*/*_test_mysolution
-  )
+endfunction()
 
-  # Add custom target for creating templates from developers/ folder
-  add_custom_target(templates
-      COMMAND ${DIR}/scripts/make_templates.sh ${DIR}/developers/*/
-  )
-
+function(get_custom_test_targets)
+  get_filename_component(DIR ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+  add_custom_test_target(test_${DIR}_mastersolution ${CMAKE_CURRENT_BINARY_DIR}/*/*_test_mastersolution)
+  add_custom_test_target(test_${DIR}_mysolution ${CMAKE_CURRENT_BINARY_DIR}/*/*_test_mysolution)
 endfunction()

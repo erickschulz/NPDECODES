@@ -88,7 +88,3 @@ endif()
 if(LECTURECODES)
   add_subdirectory(lecturecodes)
 endif()
-
-# Add custom targets
-include("cmake/modules/custom_targets.cmake")
-custom_targets(${HOMEWORKS} ${DEVELOPERS} ${LECTURECODES})

@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(developers)
 
+# Add custom targets
+include("../cmake/modules/custom_targets.cmake")
+get_custom_test_targets()
+
 add_subdirectory(1DWaveAbsorbingBC)
 add_subdirectory(AvgValBoundary)
 add_subdirectory(BoundaryWave)
