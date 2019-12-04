@@ -1,24 +1,16 @@
 /**
- * @file newproblem_test_mastersolution.cc
+ * @file newproblem_test.cc
  * @brief NPDE homework NewProblem code
  * @author Oliver Rietmann, Erick Schulz
  * @date 01.01.2020
  * @copyright Developed at ETH Zurich
  */
 
-// HACK:
-#undef SOLUTION
-#define SOLUTION 1
+#include <Eigen/Core>
 
 #include <gtest/gtest.h>
 
-#if SOLUTION
-#include "../mastersolution/newproblem.h"
-#else
-#include "../mysolution/newproblem.h"
-#endif
-
-#include <Eigen/Core>
+#include "../newproblem.h"
 
 namespace NewProblem::test {
 

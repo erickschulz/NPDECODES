@@ -6,17 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "newproblem.h"
-
 #include <iostream>
 
 #include <Eigen/Core>
 
-const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
-                                       Eigen::DontAlignCols, ", ", "\n");
+#include "newproblem.h"
 
 int main() {
   Eigen::VectorXd v = NewProblem::dummyFunction(0.0, 0);
+
+  const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
+                                       Eigen::DontAlignCols, ", ", "\n");
   std::cout << v.transpose().format(CSVFormat) << std::endl;
 
   return 0;
