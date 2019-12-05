@@ -7,10 +7,11 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/incidence_mat_test.cc
+  ${DIR}/test/incidencematrices_test.cc
 )
 
 set(LIBRARIES
   Eigen3::Eigen
   GTest::gtest_main
+  LF::lf.mesh
 )

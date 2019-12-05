@@ -7,12 +7,16 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/main.cc
-  ${DIR}/incidence_mat.h
-  ${DIR}/incidence_mat.cc
+  ${DIR}/incidencematrices_main.cc
+  ${DIR}/incidencematrices.h
+  ${DIR}/incidencematrices.cc
 )
 
 set(LIBRARIES
   Eigen3::Eigen
+  LF::lf.base
+  LF::lf.geometry
+  LF::lf.mesh
   LF::lf.mesh.hybrid2d
+
 )
