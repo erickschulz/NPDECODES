@@ -1,9 +1,10 @@
-#include<iostream>
+#include <iostream>
+#include <memory>
 
-#include<Eigen/Core>
-#include<Eigen/SparseCore>
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
 
-#include<lf/mesh/mesh.h>
+#include <lf/mesh/mesh.h>
 
 #include "incidencematrices.h"
 

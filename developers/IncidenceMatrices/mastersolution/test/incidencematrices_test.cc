@@ -1,13 +1,15 @@
-#include<memory>
+#include <memory>
 
-#include<Eigen/Core>
-#include<Eigen/SparseCore>
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include <gtest/gtest.h>
 
-#include<lf/mesh/mesh.h>
+#include <lf/mesh/mesh.h>
 
 #include "../incidencematrices.h"
+
+namespace IncidenceMatrices::test {
 
 // Create demo mesh from exercise sheet and test if edge vertex incidence
 // matrix is the same as the one calculated by hand
@@ -57,3 +59,5 @@ TEST(Homework_2_6, CoChainComplexProperty) {
   std::shared_ptr<lf::mesh::Mesh> demoMesh = IncidenceMatrices::createDemoMesh();
   EXPECT_TRUE(IncidenceMatrices::testZeroIncidenceMatrixProduct(*demoMesh));
 }
+
+} //namespace IncidenceMatrices::test

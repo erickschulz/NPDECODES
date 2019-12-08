@@ -1,3 +1,4 @@
+#include <array>
 #include <memory>
 
 #include <Eigen/Core>
@@ -42,7 +43,7 @@ std::shared_ptr<lf::mesh::Mesh> createDemoMesh() {
   nodesOfQuad << 0, 1, 0.5, 0, 0, 0, 1, 1;
   mesh_factory_ptr->AddEntity(
       lf::base::RefEl::kQuad(),
-      std::array<lf::mesh::Mesh::size_type, 4>({0, 1, 4, 3}),
+      std::array<lf::mesh::Mesh::size_type, 4>{{0, 1, 4, 3}},
       std::make_unique<lf::geometry::QuadO1>(nodesOfQuad));
 
   std::shared_ptr<lf::mesh::Mesh> demoMesh_p = mesh_factory_ptr->Build();
