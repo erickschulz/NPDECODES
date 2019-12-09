@@ -18,5 +18,4 @@ set(LIBRARIES
   LF::lf.geometry
   LF::lf.mesh
   LF::lf.mesh.hybrid2d
-
 )
