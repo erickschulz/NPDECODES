@@ -7,7 +7,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/simplelinearfiniteelementstest.cc
+  ${DIR}/test/simplelinearfiniteelements_test.cc
 )
 
 set(LIBRARIES
