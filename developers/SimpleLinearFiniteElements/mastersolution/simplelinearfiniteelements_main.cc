@@ -1,11 +1,11 @@
-#include "simple_linear_finite_elements.h"
-
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <tuple>
 
 #include <Eigen/SparseLU>
+
+#include "simplelinearfiniteelements.h"
 
 const double pi = 3.1415926535897;
 
@@ -19,7 +19,7 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
 {
 
   // define the source function f
-  SimpleLinearFiniteElements::FHandle_t f = [](const Eigen::Vector2d &x) {
+  std::function<double(const Eigen::Vector2d&)> f = [](const Eigen::Vector2d &x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };
@@ -45,6 +45,7 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
   // Compute the galerkin matrix A and load vector L
   Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
       mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
+  
   Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(
       mesh, SimpleLinearFiniteElements::localLoadLFE, f);
 

@@ -1,6 +1,7 @@
-#include "simple_linear_finite_elements.h"
-
 #include <Eigen/Dense>
+
+#include "local_computations.h"
+#include "simple_linear_finite_elements.h"
 
 namespace SimpleLinearFiniteElements {
 
@@ -14,8 +15,8 @@ namespace SimpleLinearFiniteElements {
  * source function f and for any point x in Omega
  * @return local load vector
  */
-Eigen::Vector3d localLoadLFE(const TriGeo_t& Vertices,
-                             const FHandle_t& FHandle) {
+Eigen::Vector3d localLoadLFE(const Eigen::Matrix<double, 2, 3>& Vertices,
+                             const std::function<double(const Eigen::Vector2d&)>& FHandle) {
   // compute area of triangle, \emph{cf.} \cref{mc:ElementMatrix_LaplLFE}
   double area =
       0.5 *
@@ -39,7 +40,7 @@ Eigen::Vector3d localLoadLFE(const TriGeo_t& Vertices,
  * @return The components of the gradients as the columns of a $2\times
  * 3$-matrix.
  */
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t& Vertices) {
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(const Eigen::Matrix<double, 2, 3>& Vertices) {
   Eigen::Matrix<double, 3, 3> X;
 
   // solve for the coefficients of the barycentric coordinate functions, see
@@ -56,7 +57,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t& Vertices) {
  * 2$-matrix
  * @return The stiffness element matrix
  */
-Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t& Vertices) {
+Eigen::Matrix3d ElementMatrix_Lapl_LFE(const Eigen::Matrix<double, 2, 3>& Vertices) {
   // compute area of triangle
   double area =
       0.5 *
@@ -68,7 +69,7 @@ Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t& Vertices) {
   return area * X.transpose() * X;
 }
 
-Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const TriGeo_t& Vertices) {
+Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const Eigen::Matrix<double, 2, 3>& Vertices) {
   return ElementMatrix_Lapl_LFE(Vertices) + ElementMatrix_Mass_LFE(Vertices);
 }
 

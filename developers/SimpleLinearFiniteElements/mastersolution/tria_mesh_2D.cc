@@ -1,8 +1,8 @@
-#include "simple_linear_finite_elements.h"
-
 #include <cassert>
 #include <fstream>
 #include <iostream>
+
+#include "tria_mesh_2D.h"
 
 namespace SimpleLinearFiniteElements
 {
@@ -20,9 +20,11 @@ TriaMesh2D::TriaMesh2D(std::string filename)
     throw std::runtime_error("Cannot open mesh file! File not found");
     return;
   }
+
   int nVertices;
   mesh_file >> nVertices;
   std::cout << nVertices << " Vertices" << std::endl;
+  
   char keyword[1024];
   mesh_file.getline(keyword, 1024);
   if (!strcmp(keyword, "Vertices"))

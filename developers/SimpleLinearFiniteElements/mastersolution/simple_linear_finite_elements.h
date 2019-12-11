@@ -5,6 +5,8 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 
+#include "tria_mesh_2D.h"
+
 namespace SimpleLinearFiniteElements {
 
 using TriGeo_t = Eigen::Matrix<double, 2, 3>;
@@ -16,40 +18,25 @@ using Triplet_t = std::vector<Eigen::Triplet<double>>;
 
 Eigen::Matrix3d ElementMatrix_Mass_LFE(const TriGeo_t& vertices);
 
-/**
- * @brief simple mesh data structure used for this problem
- */
-struct TriaMesh2D {
-  // Constructor: reads mesh data from file
-  TriaMesh2D(std::string filename);
-  virtual ~TriaMesh2D(void) {}
-
-  static void addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z);
-
-  // Data members describing geometry and topolgy
-  Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
-  Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
-};
-
-double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
+double L2Error(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
                const std::function<double(double, double)> exact);
 
-double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
+double H1Serror(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
                 const std::function<Eigen::Vector2d(double, double)> exact);
 
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t& Vertices);
+//Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t& Vertices);
 
-Eigen::Vector3d localLoadLFE(const TriGeo_t& Vertices,
-                             const FHandle_t& FHandle);
+//Eigen::Vector3d localLoadLFE(const TriGeo_t& Vertices,
+  //                           const FHandle_t& FHandle);
 
-Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t& Vertices);
+//Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t& Vertices);
 
-Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const TriGeo_t& Vertices);
+//Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const TriGeo_t& Vertices);
 
 Eigen::SparseMatrix<double> GalerkinAssembly(
-    const TriaMesh2D& Mesh, const LocalMatrixHandle_t& getElementMatrix);
+    const SimpleLinearFiniteElements::TriaMesh2D& Mesh, const LocalMatrixHandle_t& getElementMatrix);
 
-Eigen::VectorXd assemLoad_LFE(const TriaMesh2D& Mesh,
+Eigen::VectorXd assemLoad_LFE(const SimpleLinearFiniteElements::TriaMesh2D& Mesh,
                               const LocalVectorHandle_t& getElementVector,
                               const FHandle_t& FHandle);
 
