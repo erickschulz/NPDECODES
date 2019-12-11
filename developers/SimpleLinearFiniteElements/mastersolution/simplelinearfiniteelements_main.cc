@@ -27,7 +27,7 @@ int main()
   std::string meshplot_3d = CURRENT_BINARY_DIR "/" MESH "_3d.png";
 
   // plot mesh
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/plot_mesh.py " + meshfile + " " + meshplot).c_str());
+  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_mesh.py " + meshfile + " " + meshplot).c_str());
   std::cout << "Generated " + meshplot << std::endl;
 
   // generate 3d mesh file from solution
@@ -35,7 +35,7 @@ int main()
   std::cout << "Generated " + meshfile_3d << std::endl;
 
   // plot the 3d mesh file
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
+  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
   std::cout << "Generated " + meshplot_3d << std::endl;
 #else
   // To plot the mesh and your solution, uncomment the following:
@@ -45,7 +45,7 @@ int main()
   std::string meshplot_3d = CURRENT_BINARY_DIR "/" MESH "_3d.png";
 
   // plot mesh
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/plot_mesh.py " + meshfile + " " + meshplot).c_str());
+  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_mesh.py " + meshfile + " " + meshplot).c_str());
   std::cout << "Generated " + meshplot << std::endl;
 
   // generate 3d mesh file from solution
@@ -53,7 +53,7 @@ int main()
   std::cout << "Generated " + meshfile_3d << std::endl;
 
   // plot the 3d mesh file
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
+  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
   std::cout << "Generated " + meshplot_3d << std::endl;*/
 #endif
 

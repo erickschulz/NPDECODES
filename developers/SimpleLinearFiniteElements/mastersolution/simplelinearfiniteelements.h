@@ -41,8 +41,6 @@ Eigen::VectorXd assemLoad_LFE(const SimpleLinearFiniteElements::TriaMesh2D& Mesh
                               const std::function<Eigen::Vector3d(const Eigen::Matrix<double, 2, 3>&, std::function<double(const Eigen::Vector2d&)>)>& getElementVector,
                               const std::function<double(const Eigen::Vector2d&)>& FHandle);
 
-const double pi = 3.1415926535897;
-
 std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh);
 
 } // namespace SimpleLinearFiniteElements 
