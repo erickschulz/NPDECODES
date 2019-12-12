@@ -328,6 +328,10 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
 #else
   //====================
   // Your code goes here
+  // Assigning some dummy values
+  U = Eigen::VectorXd::Zero(mesh.Coordinates.rows());
+  l2error = 1.0;
+  h1error = 1.0;
   //====================
 #endif
 

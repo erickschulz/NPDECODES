@@ -21,41 +21,22 @@ int main()
   std::cout << "L2-error:  " << std::get<1>(solution) << std::endl;
   std::cout << "H1s-error: " << std::get<2>(solution) << std::endl;
 
-#if SOLUTION
+  // plot MESH
   std::string meshplot = CURRENT_BINARY_DIR "/" MESH ".png";
-  std::string meshfile_3d = CURRENT_BINARY_DIR "/" MESH "_3d.txt";
-  std::string meshplot_3d = CURRENT_BINARY_DIR "/" MESH "_3d.png";
-
-  // plot mesh
   std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_mesh.py " + meshfile + " " + meshplot).c_str());
   std::cout << "Generated " + meshplot << std::endl;
 
-  // generate 3d mesh file from solution
-  SimpleLinearFiniteElements::TriaMesh2D::addZComponent(meshfile, meshfile_3d, std::get<0>(solution));
-  std::cout << "Generated " + meshfile_3d << std::endl;
-
-  // plot the 3d mesh file
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
-  std::cout << "Generated " + meshplot_3d << std::endl;
-#else
-  // To plot the mesh and your solution, uncomment the following:
-
-  /*std::string meshplot = CURRENT_BINARY_DIR "/" MESH ".png";
-  std::string meshfile_3d = CURRENT_BINARY_DIR "/" MESH "_3d.txt";
-  std::string meshplot_3d = CURRENT_BINARY_DIR "/" MESH "_3d.png";
-
-  // plot mesh
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_mesh.py " + meshfile + " " + meshplot).c_str());
-  std::cout << "Generated " + meshplot << std::endl;
+  // path and name of output files
+  std::string meshfile_solution = CURRENT_BINARY_DIR "/" MESH "_solution.txt";
+  std::string meshplot_solution = CURRENT_BINARY_DIR "/" MESH "_solution.png";
 
   // generate 3d mesh file from solution
-  SimpleLinearFiniteElements::TriaMesh2D::addZComponent(meshfile, meshfile_3d, std::get<0>(solution));
-  std::cout << "Generated " + meshfile_3d << std::endl;
+  SimpleLinearFiniteElements::TriaMesh2D::addZComponent(meshfile, meshfile_solution, std::get<0>(solution));
+  std::cout << "Generated " + meshfile_solution << std::endl;
 
   // plot the 3d mesh file
-  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_surf.py " + meshfile_3d + " " + meshplot_3d).c_str());
-  std::cout << "Generated " + meshplot_3d << std::endl;*/
-#endif
+  std::system(("python3 -B " CURRENT_SOURCE_DIR "/../scripts/plot_surf.py " + meshfile_solution + " " + meshplot_solution).c_str());
+  std::cout << "Generated " + meshplot_solution << std::endl;
 
   return 0;
 }
