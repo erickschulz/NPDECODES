@@ -81,6 +81,30 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& Vertic
 }
 /* SAM_LISTING_END_1 */
 
+/*double L2Norm_squared(const TriaMesh2D& mesh, const Eigen::VectorXd& u) {
+
+  double l2norm_squared = 0.0;
+  for (Eigen::Vector3d indices : mesh.Elements) {
+    // vertices of triangle
+    Eigen::Vector2d a = mesh.Coordinates[indices(0)];
+    Eigen::Vector2d b = mesh.Coordinates[indices(1)];
+    Eigen::Vector2d c = mesh.Coordinates[indices(2)];
+
+    // area of triangle
+    double area = 0.5 * ((b(0) - a(0)) * (c(1) - a(1)) - (b(1) - a(1)) * (c(0) - a(0)));
+
+    // values of u on vertices
+    Eigen::Vector3d values_on_vertices(u[indices(0)], u[indices(1)], u[indices(2)]);
+
+    // (approximate) L2-norm squared on single triangle
+    l2norm_squared += area / 3.0 * values_on_vertices.squaredNorm();
+
+    // TODO: Use e.g. Kahan summation algorithm to reduce cancellation
+  }
+
+  return l2norm_squared;
+}*/
+
 /**
  * @brief L2Error Computes the L2 error between the approximate solution and
  *                the exact solution
