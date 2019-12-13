@@ -86,9 +86,9 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& Vertic
   double l2norm_squared = 0.0;
   for (Eigen::Vector3d indices : mesh.Elements) {
     // vertices of triangle
-    Eigen::Vector2d a = mesh.Coordinates[indices(0)];
-    Eigen::Vector2d b = mesh.Coordinates[indices(1)];
-    Eigen::Vector2d c = mesh.Coordinates[indices(2)];
+    Eigen::Vector2d a = mesh.Vertices[indices(0)];
+    Eigen::Vector2d b = mesh.Vertices[indices(1)];
+    Eigen::Vector2d c = mesh.Vertices[indices(2)];
 
     // area of triangle
     double area = 0.5 * ((b(0) - a(0)) * (c(1) - a(1)) - (b(1) - a(1)) * (c(0) - a(0)));
