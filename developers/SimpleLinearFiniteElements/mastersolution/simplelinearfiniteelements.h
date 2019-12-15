@@ -7,7 +7,6 @@
  */
 #include <cmath>
 #include <functional>
-#include <string>
 #include <tuple>
 
 #include <Eigen/Dense>
@@ -28,11 +27,13 @@ Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const Eigen::Matrix<double, 2, 3>& Ve
 Eigen::Vector3d localLoadLFE(const Eigen::Matrix<double, 2, 3>& Vertices,
                              const std::function<double(const Eigen::Vector2d&)>& FHandle);
 
-double L2Error(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
-               const std::function<double(double, double)> exact);
+double L2Norm_squared(const TriaMesh2D& mesh, const Eigen::VectorXd& u);
 
-double H1Serror(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
-                const std::function<Eigen::Vector2d(double, double)> exact);
+double L2Error(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
+               Eigen::Vector3d& exact);
+
+double H1SError(const SimpleLinearFiniteElements::TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
+               const Eigen::Vector2d& exact);
 
 Eigen::SparseMatrix<double> GalerkinAssembly(
     const SimpleLinearFiniteElements::TriaMesh2D& Mesh, const std::function<Eigen::Matrix3d(const Eigen::Matrix<double, 2, 3>&)>& getElementMatrix);
@@ -44,3 +45,4 @@ Eigen::VectorXd assemLoad_LFE(const SimpleLinearFiniteElements::TriaMesh2D& Mesh
 std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh);
 
 } // namespace SimpleLinearFiniteElements 
+

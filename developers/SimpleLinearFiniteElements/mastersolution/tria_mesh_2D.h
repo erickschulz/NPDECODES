@@ -7,6 +7,7 @@
  */
 
 #include <string>
+#include <vector>
 
 #include <Eigen/Core>
 
@@ -23,8 +24,9 @@ struct TriaMesh2D {
   static void addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z);
 
   // Data members describing geometry and topolgy
-  Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
-  Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
+  std::vector<Eigen::Vector2d> Vertices;
+  std::vector<Eigen::Vector3i> Elements;
+
 };
 
 } // namespace SimpleLinearFiniteElements
