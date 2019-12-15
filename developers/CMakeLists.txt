@@ -31,6 +31,7 @@ add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
 add_subdirectory(OutputImpedanceBVP)
 add_subdirectory(ParametricElementMatrices)
 add_subdirectory(PointEvaluationRhs)
+add_subdirectory(ProjectionOntoGradients) # under construction
 add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumann)
 add_subdirectory(SDIRKMethodOfLines)

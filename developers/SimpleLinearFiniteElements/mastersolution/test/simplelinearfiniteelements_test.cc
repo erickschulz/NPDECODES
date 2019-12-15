@@ -2,7 +2,7 @@
 
 #include <Eigen/SparseLU>
 
-#include "../simple_linear_finite_elements.h"
+#include "../simplelinearfiniteelements.h"
 
 const double pi = 3.1415926535897;
 
@@ -11,26 +11,18 @@ const double pi = 3.1415926535897;
  */
 TEST(SimpleLinearFiniteElements, TestElementMatrix_Mass_LFE) {
   // check the produced matrix for a fairly standard triangle
-  Eigen::Matrix<double, 2, 3> input;
-  input << 0, 1, 0, 0, 0, 1;
-  Eigen::Matrix3d mat;
-  mat = SimpleLinearFiniteElements::ElementMatrix_Mass_LFE(input);
-  ASSERT_NEAR(mat(0, 0), 1. / 12., 0.00001);
-  ASSERT_NEAR(mat(1, 1), 1. / 12., 0.00001);
-  ASSERT_NEAR(mat(2, 2), 1. / 12., 0.00001);
-  ASSERT_NEAR(mat(0, 1), 1. / 24., 0.00001);
-  ASSERT_NEAR(mat(1, 0), 1. / 24., 0.00001);
-  ASSERT_NEAR(mat(2, 0), 1. / 24., 0.00001);
-  ASSERT_NEAR(mat(0, 2), 1. / 24., 0.00001);
-  ASSERT_NEAR(mat(2, 1), 1. / 24., 0.00001);
-  ASSERT_NEAR(mat(1, 2), 1. / 24., 0.00001);
+  Eigen::Matrix<double, 2, 3> test;
+  test << 0, 1, 0, 0, 0, 1;
+  Eigen::Matrix3d M;
+  M = SimpleLinearFiniteElements::ElementMatrix_Mass_LFE(test);
+  
+  Eigen::Matrix3d ref_M;
+  ref_M << 0.0833333, 0.0416667, 0.0416667,
+  			0.0416667, 0.0833333, 0.0416667,
+			0.0416667, 0.0416667, 0.0833333;
 
-  // check for another, slightly less standard triangle to catch extra errors
-  Eigen::Matrix<double, 2, 3> second_input;
-  input << 0, 0.9, 0.1, 0.2, .1, 0.3;
-  Eigen::Matrix3d second_mat;
-  second_mat = SimpleLinearFiniteElements::ElementMatrix_Mass_LFE(input);
-  ASSERT_NEAR(second_mat(0, 0), 0.0083333333, 0.00001);
+  double tol = 1e-8;
+  ASSERT_NEAR(ref_M.norm(), M.norm(), tol);
 }
 
 /**
@@ -44,10 +36,20 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
     return std::cos(2 * pi * x) * std::cos(2 * pi * y);
   };
   // source function
-  SimpleLinearFiniteElements::FHandle_t f = [](const Eigen::Vector2d& x) {
+  std::function<double(const Eigen::Vector2d&)> f = [](const Eigen::Vector2d& x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };
+  
+  // exact solution evaluated at vertices
+  Eigen::Vector3d uExact_vec;
+  for(size_t t = 0; t < square_mesh.Elements.size(); ++t) {
+	const auto& indices = square_mesh.Elements[t];
+    for(size_t i = 0; i < 3; ++i) {
+	  const auto& v = square_mesh.Vertices[indices(i)];
+	  uExact_vec(i) = uExact(v[0],v[1]); 
+    }
+  }
 
   // assemble galerkin matrix and load vector
   Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
@@ -63,8 +65,10 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
   Eigen::VectorXd U = solver.solve(L);
 
   // compare to expected error
-  double error = SimpleLinearFiniteElements::L2Error(square_mesh, U, uExact);
-  ASSERT_NEAR(error, 0.232547, 0.1);
+  double error = SimpleLinearFiniteElements::L2Error(square_mesh, U, uExact_vec);
+  
+  double tol = 1e-4;
+  ASSERT_NEAR(error, 0.0611362, tol);
 }
 
 /**
@@ -73,15 +77,19 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
 TEST(SimpleLinearFiniteElements, TestH1Serror) {
   // read coarsest mesh
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../../meshes/Square3.txt");
+  
   // exact gradient
-  auto gradUExact = [](double x, double y) {
-    Eigen::Vector2d gradient;
-    gradient << -2 * pi * std::sin(2 * pi * x) * std::cos(2 * pi * y),
-        -2 * pi * std::cos(2 * pi * x) * std::sin(2 * pi * y);
-    return gradient;
-  };
+  Eigen::Vector2d gradientExact;
+  for(size_t t = 0; t < square_mesh.Elements.size(); ++t) {
+    const auto& indices = square_mesh.Elements[t];
+    for(size_t i = 0; i < 3; ++i) {
+	  const auto& v = square_mesh.Vertices[indices(i)];
+	  gradientExact << -2 * pi * std::sin(2 * pi * v[0]) * std::cos(2 * pi * v[1]),
+        			   -2 * pi * std::cos(2 * pi * v[0]) * std::sin(2 * pi * v[1]);
+     }
+  }
   // source function
-  SimpleLinearFiniteElements::FHandle_t f = [](const Eigen::Vector2d& x) {
+  std::function<double(const Eigen::Vector2d&)> f = [](const Eigen::Vector2d& x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };
@@ -101,6 +109,8 @@ TEST(SimpleLinearFiniteElements, TestH1Serror) {
   // compare to expected error
   // high tolerance as the procedure is affected by many rounding errors
   double error =
-      SimpleLinearFiniteElements::H1Serror(square_mesh, U, gradUExact);
-    ASSERT_NEAR(error, 1.32457, 0.1);
+      SimpleLinearFiniteElements::H1SError(square_mesh, U, gradientExact);
+  
+  double tol = 1e-4;
+  ASSERT_NEAR(error, 2.5651, tol);
 }

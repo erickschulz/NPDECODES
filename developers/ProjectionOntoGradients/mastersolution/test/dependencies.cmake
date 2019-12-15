@@ -4,10 +4,10 @@
 # Add your custom dependencies here:
 #endif
 
-# DIR will be provided by the calling file.
+# PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/simplelinearfiniteelements_test.cc
+  ${DIR}/test/projectionontogradients_test.cc
 )
 
 set(LIBRARIES

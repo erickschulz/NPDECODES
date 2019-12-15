@@ -1,8 +1,8 @@
-#include "simple_linear_finite_elements.h"
-
 #include <cassert>
 #include <fstream>
 #include <iostream>
+
+#include "tria_mesh_2D.h"
 
 namespace SimpleLinearFiniteElements
 {
@@ -20,9 +20,11 @@ TriaMesh2D::TriaMesh2D(std::string filename)
     throw std::runtime_error("Cannot open mesh file! File not found");
     return;
   }
+
   int nVertices;
   mesh_file >> nVertices;
   std::cout << nVertices << " Vertices" << std::endl;
+  
   char keyword[1024];
   mesh_file.getline(keyword, 1024);
   if (!strcmp(keyword, "Vertices"))
@@ -30,13 +32,18 @@ TriaMesh2D::TriaMesh2D(std::string filename)
     throw std::runtime_error("Keyword 'Vertices' not found. Wrong file format");
     return;
   }
-  Coordinates.resize(nVertices, 2);
+  Vertices.reserve(nVertices);
   int nV = 0;
+  double tmp1;
+  double tmp2;
   while (nV < nVertices)
   {
-    mesh_file >> Coordinates(nV, 0);
-    mesh_file >> Coordinates(nV, 1);
-    nV++;
+    mesh_file >> tmp1;
+	mesh_file >> tmp2;
+	Eigen::Vector2d tmp; 
+	tmp << tmp1, tmp2;
+	Vertices.push_back(tmp);
+	nV++;
   }
   int nElements;
   mesh_file >> nElements;
@@ -46,14 +53,18 @@ TriaMesh2D::TriaMesh2D(std::string filename)
     throw std::runtime_error("Keyword 'Elements' not found. Wrong file format");
     return;
   }
-  Elements.resize(nElements, 3);
+  Elements.reserve(nElements);
   int nE = 0;
+  int tmp3, tmp4, tmp5;
   while (nE < nElements)
   {
-    mesh_file >> Elements(nE, 0);
-    mesh_file >> Elements(nE, 1);
-    mesh_file >> Elements(nE, 2);
-    nE++;
+    mesh_file >> tmp3;
+    mesh_file >> tmp4;
+    mesh_file >> tmp5;
+	Eigen::Vector3i tmp;
+	tmp << tmp3, tmp4, tmp5;
+    Elements.push_back(tmp);
+	nE++;
   }
   mesh_file.close();
 }
