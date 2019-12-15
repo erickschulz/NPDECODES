@@ -20,8 +20,7 @@
 #include <lf/refinement/refutils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace PointEvaluationRhs
-{
+namespace PointEvaluationRhs{
 
 double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
                                  const Eigen::VectorXd &mu);
@@ -29,8 +28,7 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
                              const Eigen::VectorXd &mu);
 
-class MassLocalMatrixAssembler
-{
+class MassLocalMatrixAssembler{
 private:
 public:
   explicit MassLocalMatrixAssembler() = default;
