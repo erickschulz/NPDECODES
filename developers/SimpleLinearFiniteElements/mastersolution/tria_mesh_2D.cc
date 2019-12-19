@@ -60,6 +60,14 @@ TriaMesh2D::TriaMesh2D(std::string filename)
   mesh_file.close();
 }
 
+Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
+  Eigen::Matrix<double, 2, 3> triangle;
+  for (int k = 0; k < 3; ++k) {
+    triangle.col(k) = Coordinates.row(Elements(i,k));
+  }
+  return triangle;
+}
+
 /**
  * @brief Adds a z component to the mesh file
  * @param input_file Filename of the mesh to read from

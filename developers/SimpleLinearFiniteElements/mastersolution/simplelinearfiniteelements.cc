@@ -10,8 +10,14 @@
 
 namespace SimpleLinearFiniteElements {
 
+double getArea(const Eigen::Matrix<double, 2, 3>& triangle) {
+  return 0.5 *
+      ((triangle(0, 1) - triangle(0, 0)) * (triangle(1, 2) - triangle(1, 1)) -
+       (triangle(0, 2) - triangle(0, 1)) * (triangle(1, 1) - triangle(1, 0)));
+}
+
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(const Eigen::Matrix<double, 2, 3>& Vertices) {
-  Eigen::Matrix<double, 3, 3> X;
+  Eigen::Matrix3d X;
 
   // solve for the coefficients of the barycentric coordinate functions, see
   // \eqref{eq:lambdalse}
@@ -25,11 +31,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(const Eigen::Matrix<double, 2, 3
  */
 Eigen::Matrix3d ElementMatrix_Lapl_LFE(const Eigen::Matrix<double, 2, 3>& Vertices) {
   // compute area of triangle
-  double area =
-      0.5 *
-      ((Vertices(0, 1) - Vertices(0, 0)) * (Vertices(1, 2) - Vertices(1, 1)) -
-       (Vertices(0, 2) - Vertices(0, 1)) * (Vertices(1, 1) - Vertices(1, 0)));
-  // compute gradients of barycentric coordinate functions
+  double area = getArea(Vertices);
   Eigen::Matrix<double, 2, 3> X = gradbarycoordinates(Vertices);
   // compute inner products of gradients through matrix multiplication
   return area * X.transpose() * X;
@@ -44,10 +46,7 @@ Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const Eigen::Matrix<double, 2, 3>& Ve
 Eigen::Vector3d localLoadLFE(const Eigen::Matrix<double, 2, 3>& Vertices,
                              const std::function<double(const Eigen::Vector2d&)>& FHandle) {
   // compute area of triangle, \emph{cf.} \cref{mc:ElementMatrix_LaplLFE}
-  double area =
-      0.5 *
-      ((Vertices(0, 1) - Vertices(0, 0)) * (Vertices(1, 2) - Vertices(1, 1)) -
-       (Vertices(0, 2) - Vertices(0, 1)) * (Vertices(1, 1) - Vertices(1, 0)));
+  double area = getArea(Vertices);
   // evaluate source function for vertex location
   Eigen::Vector3d philoc = Eigen::Vector3d::Zero();
   for (int i = 0; i < 3; i++) {
@@ -66,9 +65,7 @@ Eigen::Vector3d localLoadLFE(const Eigen::Matrix<double, 2, 3>& Vertices,
 Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& Vertices) {
   Eigen::Matrix3d result;
 #if SOLUTION
-  const Eigen::Vector2d a = (Vertices.col(1) - Vertices.col(0));
-  const Eigen::Vector2d b = (Vertices.col(2) - Vertices.col(0));
-  const double area = std::abs(a(0) * b(1) - a(1) * b(0)) / 2.;
+  double area = getArea(Vertices);
   // initialize matrix
   result.setConstant(area / 12.);
   result += result.diagonal().asDiagonal();
@@ -115,43 +112,29 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& Vertic
  */
 /* SAM_LISTING_BEGIN_2 */
 double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
-               const std::function<double(double, double)> exact) {
-  double error;
-  const auto& triangles = mesh.Elements;
-  const auto& vertices = mesh.Coordinates;
-
+               const std::function<double(const Eigen::Vector2d&)> exact) {
+  double l2diff_squared = 0.0;
 #if SOLUTION
-  for (size_t triangle = 0; triangle < triangles.rows(); ++triangle) {
-    // global vertex numbers
-    const auto& indexSet = triangles.row(triangle);
+  // loop over all triangles
+  for (int i = 0; i < mesh.Elements.rows(); ++i) {
+    Eigen::Matrix<double, 2, 3> triangle = mesh[i];
+    double area = getArea(triangle);
 
-    // get the 3 vertices of the triangle
-    const auto& a = vertices.row(indexSet(0));
-    const auto& b = vertices.row(indexSet(1));
-    const auto& c = vertices.row(indexSet(2));
+    Eigen::Vector3d diff_at_vertices;
+    // loop over all three vertices of the triangle
+    for (int k = 0; k < 3; ++k) {
+      diff_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.Elements(i, k));
+    }
 
-    // compute area of triangle by determinant formula
-    const double area =
-        0.5 * ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]));
+    l2diff_squared += area / 3.0 * diff_at_vertices.squaredNorm();
+  }
 
-    // compute integral over triangle by quadrature
-    double localError = 0;
-    for (size_t vertex = 0; vertex < 3; ++vertex) {
-      const auto& v = vertices.row(indexSet(vertex));
-      const double fe_val = uFEM[indexSet(vertex)];
-      const double exact_val = exact(v[0], v[1]);
-      localError += std::pow(fe_val - exact_val, 2);
-   } 
-    localError *= (area / 3.0);
-    // Sum up local error contributions
-    error += localError;
-  }  // end of main loop over triangles
 #else
   //====================
   // Your code goes here
   //====================
 #endif
-  return std::sqrt(error);
+  return std::sqrt(l2diff_squared);
 } 
 /* SAM_LISTING_END_2 */
 
@@ -167,7 +150,7 @@ double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
  */
 /* SAM_LISTING_BEGIN_3 */
 double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
-                const std::function<Eigen::Vector2d(double, double)> exact) {
+                const std::function<Eigen::Vector2d(const Eigen::Vector2d&)> exact) {
   double error = 0;
 #if SOLUTION
   const auto& triangles = mesh.Elements;
@@ -204,8 +187,8 @@ double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
     }
     
 	for (size_t vertex = 0; vertex < 3; ++vertex) {
-      const auto& v = vertices.row(indexSet(vertex));
-      Eigen::VectorXd gradientExact = exact(v[0], v[1]);
+      Eigen::Vector2d v = vertices.row(indexSet(vertex));
+      Eigen::VectorXd gradientExact = exact(v);
       for (int j = 0; j < 2; ++j)
         localError += std::pow(gradientFEM(j) - gradientExact(j), 2);
     }
@@ -316,8 +299,8 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
   };
 
   // the exact solution of the linear variational problem
-  auto uExact = [pi](double x, double y) {
-    return std::cos(2 * pi * x) * std::cos(2 * pi * y);
+  auto uExact = [pi](const Eigen::Vector2d& x) {
+    return std::cos(2 * pi * x(0)) * std::cos(2 * pi * x(1));
   };
 
   Eigen::VectorXd U;
@@ -326,10 +309,10 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
 
 #if SOLUTION
   // the gradient of uExact that can be easily analytically computed
-  auto gradUExact = [pi](double x, double y) {
+  auto gradUExact = [pi](const Eigen::Vector2d& x) {
     Eigen::Vector2d gradient;
-    gradient << -2 * pi * std::sin(2 * pi * x) * std::cos(2 * pi * y),
-        -2 * pi * std::cos(2 * pi * x) * std::sin(2 * pi * y);
+    gradient << -2 * pi * std::sin(2 * pi * x(0)) * std::cos(2 * pi * x(1)),
+        -2 * pi * std::cos(2 * pi * x(0)) * std::sin(2 * pi * x(1));
     return gradient;
   };
   // Compute the galerkin matrix A and load vector L

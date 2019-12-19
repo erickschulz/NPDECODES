@@ -32,11 +32,11 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
   // read coarsest mesh
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../../meshes/Square1.txt");
   // exact solution
-  auto uExact = [](double x, double y) {
-    return std::cos(2 * pi * x) * std::cos(2 * pi * y);
+  auto uExact = [](const Eigen::Vector2d& x) {
+    return std::cos(2 * pi * x(0)) * std::cos(2 * pi * x(1));
   };
   // source function
-  std::function<double(const Eigen::Vector2d&)> f = [](const Eigen::Vector2d& x) {
+  auto f = [](const Eigen::Vector2d& x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };
@@ -66,14 +66,14 @@ TEST(SimpleLinearFiniteElements, TestH1Serror) {
   // read coarsest mesh
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../../meshes/Square3.txt");
   // exact gradient
-  auto gradUExact = [](double x, double y) {
+  auto gradUExact = [](const Eigen::Vector2d& x) {
     Eigen::Vector2d gradient;
-    gradient << -2 * pi * std::sin(2 * pi * x) * std::cos(2 * pi * y),
-        -2 * pi * std::cos(2 * pi * x) * std::sin(2 * pi * y);
+    gradient << -2 * pi * std::sin(2 * pi * x(0)) * std::cos(2 * pi * x(1)),
+        -2 * pi * std::cos(2 * pi * x(0)) * std::sin(2 * pi * x(1));
     return gradient;
   };
   // source function
-  std::function<double(const Eigen::Vector2d&)> f = [](const Eigen::Vector2d& x) {
+  auto f = [](const Eigen::Vector2d& x) {
     return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
            std::cos(2 * pi * x(1));
   };

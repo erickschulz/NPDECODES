@@ -18,7 +18,8 @@ namespace SimpleLinearFiniteElements {
 struct TriaMesh2D {
   // Constructor: reads mesh data from file
   TriaMesh2D(std::string filename);
-  virtual ~TriaMesh2D(void) {}
+
+  Eigen::Matrix<double, 2, 3> operator[] (int i) const;
 
   static void addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z);
 
