@@ -113,28 +113,30 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& Vertic
 /* SAM_LISTING_BEGIN_2 */
 double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
                const std::function<double(const Eigen::Vector2d&)> exact) {
-  double l2diff_squared = 0.0;
+  double l2error_squared = 0.0;
 #if SOLUTION
+
   // loop over all triangles
   for (int i = 0; i < mesh.Elements.rows(); ++i) {
     Eigen::Matrix<double, 2, 3> triangle = mesh[i];
     double area = getArea(triangle);
 
-    Eigen::Vector3d diff_at_vertices;
     // loop over all three vertices of the triangle
+    Eigen::Vector3d error_at_vertices;
     for (int k = 0; k < 3; ++k) {
-      diff_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.Elements(i, k));
+      error_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.Elements(i, k));
     }
 
-    l2diff_squared += area / 3.0 * diff_at_vertices.squaredNorm();
+    // Add squared error per triangle
+    l2error_squared += area / 3.0 * error_at_vertices.squaredNorm();
   }
-
 #else
   //====================
   // Your code goes here
   //====================
 #endif
-  return std::sqrt(l2diff_squared);
+
+  return std::sqrt(l2error_squared);
 } 
 /* SAM_LISTING_END_2 */
 
@@ -151,57 +153,39 @@ double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
 /* SAM_LISTING_BEGIN_3 */
 double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
                 const std::function<Eigen::Vector2d(const Eigen::Vector2d&)> exact) {
-  double error = 0;
+  double H1Serror_squared = 0.0;
 #if SOLUTION
-  const auto& triangles = mesh.Elements;
-  const auto& vertices = mesh.Coordinates;
 
-  for (size_t triangle = 0; triangle < triangles.rows(); ++triangle) {
-    // global vertex numbers
-    const auto& indexSet = triangles.row(triangle);
+  // loop over all triangles
+  for (int i = 0; i < mesh.Elements.rows(); ++i) {
+    Eigen::Matrix<double, 2, 3> triangle = mesh[i];
 
-    // get the 3 vertices of the triangle
-    const auto& a = vertices.row(indexSet(0));
-    const auto& b = vertices.row(indexSet(1));
-    const auto& c = vertices.row(indexSet(2));
-
-    // compute area of triangle
-    double area =
-        0.5 * ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]));
-
-    double localError = 0;
-    Eigen::Matrix<double, 2, 3> element;
-    // Extract vertices of current element, see \lref{par:trimesh2Ddata}
-    for (int j = 0; j < 3; j++)
-      element.col(j) = mesh.Coordinates.row(indexSet(j)).transpose();
-    
-	auto gradBarycentric = gradbarycoordinates(element);
-
-    // integrate the exact solution over the element by quadrature
-    // the finite element solution need not be aproximated as it is constant
-    Eigen::Vector2d gradientFEM;
-    gradientFEM.setZero();
-    // compute constant gradient over the triangle
-    for (size_t vertex = 0; vertex < 3; ++vertex) {
-      gradientFEM += uFEM[indexSet(vertex)] * gradBarycentric.col(vertex);
+    // loop over all three vertices of the triangle
+    Eigen::Vector3d values_at_vertices;
+    for (int k = 0; k < 3; ++k) {
+      values_at_vertices(k) = uFEM[mesh.Elements(i, k)];
     }
-    
-	for (size_t vertex = 0; vertex < 3; ++vertex) {
-      Eigen::Vector2d v = vertices.row(indexSet(vertex));
-      Eigen::VectorXd gradientExact = exact(v);
-      for (int j = 0; j < 2; ++j)
-        localError += std::pow(gradientFEM(j) - gradientExact(j), 2);
+
+    // gradient of FEM approximation (same for all 3 vertices!)
+    Eigen::Vector2d gradientFEM = gradbarycoordinates(triangle) * values_at_vertices;
+
+    // loop over all three vertices of the triangle
+    Eigen::Vector3d diff_at_vertices;
+    for (int k = 0; k < 3; ++k) {
+      Eigen::Vector2d gradient_exact = exact(triangle.col(k));
+      diff_at_vertices(k) = (gradientFEM - gradient_exact).squaredNorm();
     }
-    localError *= (area / 3.);
-    // Sum up local error contributions
-    error += localError;
-  }  // end of main loop over triangles
+
+    // Add squared error per triangle
+    H1Serror_squared += getArea(triangle) / 3.0 * diff_at_vertices.squaredNorm();
+  }
 #else
   //====================
   // Your code goes here
   //====================
 #endif
-  return std::sqrt(error);
+
+  return std::sqrt(H1Serror_squared);
 }
 /* SAM_LISTING_END_3 */
 
