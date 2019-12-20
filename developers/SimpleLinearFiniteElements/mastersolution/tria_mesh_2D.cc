@@ -49,7 +49,7 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
 
     file.close();
   } else {
-    throw std::runtime_error("Error when opening file " + filename);
+    throw std::runtime_error("Error when opening file '" + filename + "'.");
   }
 }
 
