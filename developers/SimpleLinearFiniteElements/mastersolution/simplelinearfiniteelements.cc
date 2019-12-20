@@ -119,7 +119,6 @@ double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
   // loop over all triangles
   for (int i = 0; i < mesh.Elements.rows(); ++i) {
     Eigen::Matrix<double, 2, 3> triangle = mesh[i];
-    double area = getArea(triangle);
 
     // loop over all three vertices of the triangle
     Eigen::Vector3d error_at_vertices;
@@ -128,7 +127,7 @@ double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
     }
 
     // Add squared error per triangle
-    l2error_squared += area / 3.0 * error_at_vertices.squaredNorm();
+    l2error_squared += getArea(triangle) / 3.0 * error_at_vertices.squaredNorm();
   }
 #else
   //====================
@@ -170,14 +169,14 @@ double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
     Eigen::Vector2d gradientFEM = gradbarycoordinates(triangle) * values_at_vertices;
 
     // loop over all three vertices of the triangle
-    Eigen::Vector3d diff_at_vertices;
+    Eigen::Vector3d error_at_vertices;
     for (int k = 0; k < 3; ++k) {
       Eigen::Vector2d gradient_exact = exact(triangle.col(k));
-      diff_at_vertices(k) = (gradientFEM - gradient_exact).squaredNorm();
+      error_at_vertices(k) = (gradientFEM - gradient_exact).squaredNorm();
     }
 
     // Add squared error per triangle
-    H1Serror_squared += getArea(triangle) / 3.0 * diff_at_vertices.squaredNorm();
+    H1Serror_squared += getArea(triangle) / 3.0 * error_at_vertices.sum();
   }
 #else
   //====================
