@@ -7,57 +7,50 @@
 namespace SimpleLinearFiniteElements
 {
 
+template<typename Derived>
+std::istream& operator>> (std::istream& is, Eigen::MatrixBase<Derived>& matrix) {
+  for (int i = 0; i < matrix.rows(); ++i) {
+    for (int j = 0; j < matrix.cols(); ++j) {
+      is >> matrix(i, j);
+    }
+  }
+  return is;
+}
+
 /**
  * @brief read in mesh file into a costum data structure for this exercise
  * @param filename name of the mesh file
  */
-TriaMesh2D::TriaMesh2D(std::string filename)
-{
-  std::ifstream mesh_file(filename, std::ifstream::in);
-  std::cout << "Load mesh " << filename << std::endl;
-  if (!mesh_file.good())
-  {
-    throw std::runtime_error("Cannot open mesh file! File not found");
-    return;
-  }
+TriaMesh2D::TriaMesh2D(std::string filename) {
+  std::ifstream file(filename, std::ifstream::in);
 
-  int nVertices;
-  mesh_file >> nVertices;
-  std::cout << nVertices << " Vertices" << std::endl;
-  
-  char keyword[1024];
-  mesh_file.getline(keyword, 1024);
-  if (!strcmp(keyword, "Vertices"))
-  {
-    throw std::runtime_error("Keyword 'Vertices' not found. Wrong file format");
-    return;
+  if (file.is_open()) {
+    // read vertices
+    int n_vertices;
+    std::string vertices_label;
+    file >> n_vertices >> vertices_label;
+    if (vertices_label != "Vertices") {
+      file.close();
+      throw std::runtime_error("Keyword 'Vertices' not found. Wrong file format.");
+    }
+    Coordinates = Eigen::MatrixXd(n_vertices, 2);
+    file >> Coordinates;
+    
+    // read elements
+    int n_elements;
+    std::string elements_label;
+    file >> n_elements >> elements_label;
+    if (elements_label != "Elements") {
+      file.close();
+      throw std::runtime_error("Keyword 'Elements' not found. Wrong file format.");
+    }
+    Elements = Eigen::MatrixXi(n_elements, 3);
+    file >> Elements;
+
+    file.close();
+  } else {
+    throw std::runtime_error("Error when opening file " + filename);
   }
-  Coordinates.resize(nVertices, 2);
-  int nV = 0;
-  while (nV < nVertices)
-  {
-    mesh_file >> Coordinates(nV, 0);
-    mesh_file >> Coordinates(nV, 1);
-    nV++;
-  }
-  int nElements;
-  mesh_file >> nElements;
-  mesh_file.getline(keyword, 1024);
-  if (!strcmp(keyword, "Elements"))
-  {
-    throw std::runtime_error("Keyword 'Elements' not found. Wrong file format");
-    return;
-  }
-  Elements.resize(nElements, 3);
-  int nE = 0;
-  while (nE < nElements)
-  {
-    mesh_file >> Elements(nE, 0);
-    mesh_file >> Elements(nE, 1);
-    mesh_file >> Elements(nE, 2);
-    nE++;
-  }
-  mesh_file.close();
 }
 
 Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
@@ -90,8 +83,11 @@ void TriaMesh2D::SaveMesh3D(std::string filename, const Eigen::VectorXd &z) cons
 
     file << n_elements << " Elements" << std::endl;
     file << Elements;
+
+    file.close();
+  } else {
+    throw std::runtime_error("Error when opening file '" + filename + "'.");
   }
-  file.close();
 }
 
 } // namespace SimpleLinearFiniteElements
