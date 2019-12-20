@@ -24,7 +24,7 @@ struct TriaMesh2D {
   void SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const;
 
   // Data members describing geometry and topolgy
-  Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
+  Eigen::Matrix<double, Eigen::Dynamic, 2> vertices;
   Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
 };
 

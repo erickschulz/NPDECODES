@@ -60,30 +60,6 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(const Eigen::Matrix<double, 2, 3>& triang
 }
 /* SAM_LISTING_END_1 */
 
-/*double L2Norm_squared(const TriaMesh2D& mesh, const Eigen::VectorXd& u) {
-
-  double l2norm_squared = 0.0;
-  for (Eigen::Vector3d indices : mesh.Elements) {
-    // vertices of triangle
-    Eigen::Vector2d a = mesh.Vertices[indices(0)];
-    Eigen::Vector2d b = mesh.Vertices[indices(1)];
-    Eigen::Vector2d c = mesh.Vertices[indices(2)];
-
-    // area of triangle
-    double area = 0.5 * ((b(0) - a(0)) * (c(1) - a(1)) - (b(1) - a(1)) * (c(0) - a(0)));
-
-    // values of u on vertices
-    Eigen::Vector3d values_on_vertices(u[indices(0)], u[indices(1)], u[indices(2)]);
-
-    // (approximate) L2-norm squared on single triangle
-    l2norm_squared += area / 3.0 * values_on_vertices.squaredNorm();
-
-    // TODO: Use e.g. Kahan summation algorithm to reduce cancellation
-  }
-
-  return l2norm_squared;
-}*/
-
 /**
  * @brief L2Error Computes the L2 error between the approximate solution and
  *                the exact solution
@@ -183,7 +159,7 @@ Eigen::VectorXd assemLoad_LFE(const TriaMesh2D& mesh,
   int M = mesh.Elements.rows();
 
   // obtain the number of vertices
-  int N = mesh.Coordinates.rows();
+  int N = mesh.vertices.rows();
   Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);
 
   // loop over all triangles
@@ -212,7 +188,7 @@ Eigen::SparseMatrix<double> GalerkinAssembly(
 	const std::function<Eigen::Matrix3d(const Eigen::Matrix<double, 2, 3>&)>& getElementMatrix) {
   
   // obtain the number of vertices
-  int N = mesh.Coordinates.rows();
+  int N = mesh.vertices.rows();
   // obtain the number of elements/cells
   int M = mesh.Elements.rows();
   std::vector<Eigen::Triplet<double> > triplets;
@@ -224,7 +200,7 @@ Eigen::SparseMatrix<double> GalerkinAssembly(
     Eigen::Matrix<double, 2, 3> triangle;
     // extract vertices of current element
     for (int j = 0; j < 3; j++) {
-      triangle.col(j) = mesh.Coordinates.row(element(j)).transpose();
+      triangle.col(j) = mesh.vertices.row(element(j)).transpose();
     }
     // compute element contributions
     Eigen::Matrix3d Ak = getElementMatrix(triangle);
@@ -295,7 +271,7 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
   //====================
   // Your code goes here
   // Assigning some dummy values
-  U = Eigen::VectorXd::Zero(mesh.Coordinates.rows());
+  U = Eigen::VectorXd::Zero(mesh.vertices.rows());
   l2error = 1.0;
   h1error = 1.0;
   //====================

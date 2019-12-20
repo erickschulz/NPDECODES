@@ -33,8 +33,8 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
       file.close();
       throw std::runtime_error("Keyword 'Vertices' not found. Wrong file format.");
     }
-    Coordinates = Eigen::MatrixXd(n_vertices, 2);
-    file >> Coordinates;
+    vertices = Eigen::MatrixXd(n_vertices, 2);
+    file >> vertices;
     
     // read elements
     int n_elements;
@@ -56,7 +56,7 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
 Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
   Eigen::Matrix<double, 2, 3> triangle;
   for (int k = 0; k < 3; ++k) {
-    triangle.col(k) = Coordinates.row(Elements(i,k));
+    triangle.col(k) = vertices.row(Elements(i,k));
   }
   return triangle;
 }
@@ -69,11 +69,11 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
  */
 void TriaMesh2D::SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const {
 
-  int n_vertices = Coordinates.rows();
+  int n_vertices = vertices.rows();
   int n_elements = Elements.rows();
 
   Eigen::MatrixXd new_vertices(n_vertices, 3);
-  new_vertices.leftCols<2>() = Coordinates;
+  new_vertices.leftCols<2>() = vertices;
   new_vertices.col(2) = z;
 
   std::ofstream file(filename);

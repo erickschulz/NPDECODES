@@ -12,7 +12,7 @@ int main()
 
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(meshfile);
   std::cout << "Mesh loaded " << std::endl;
-  std::cout << "Mesh info: " << square_mesh.Coordinates.rows() << " vertices, "
+  std::cout << "Mesh info: " << square_mesh.vertices.rows() << " vertices, "
             << square_mesh.Elements.rows() << " elements" << std::endl;
 
   // print both H1 and L2 errors and plot Mesh
