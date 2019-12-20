@@ -75,13 +75,13 @@ double L2Error(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
 #if SOLUTION
 
   // loop over all triangles
-  for (int i = 0; i < mesh.Elements.rows(); ++i) {
+  for (int i = 0; i < mesh.elements.rows(); ++i) {
     Eigen::Matrix<double, 2, 3> triangle = mesh[i];
 
     // loop over all three vertices of the triangle
     Eigen::Vector3d error_at_vertices;
     for (int k = 0; k < 3; ++k) {
-      error_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.Elements(i, k));
+      error_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.elements(i, k));
     }
 
     // Add squared error per triangle
@@ -114,13 +114,13 @@ double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
 #if SOLUTION
 
   // loop over all triangles
-  for (int i = 0; i < mesh.Elements.rows(); ++i) {
+  for (int i = 0; i < mesh.elements.rows(); ++i) {
     Eigen::Matrix<double, 2, 3> triangle = mesh[i];
 
     // loop over all three vertices of the triangle
     Eigen::Vector3d values_at_vertices;
     for (int k = 0; k < 3; ++k) {
-      values_at_vertices(k) = uFEM[mesh.Elements(i, k)];
+      values_at_vertices(k) = uFEM[mesh.elements(i, k)];
     }
 
     // gradient of FEM approximation (same for all 3 vertices!)
@@ -156,7 +156,7 @@ double H1Serror(const TriaMesh2D& mesh, const Eigen::VectorXd& uFEM,
 Eigen::VectorXd assemLoad_LFE(const TriaMesh2D& mesh,
                               const std::function<double(const Eigen::Vector2d&)>& f) {
   // obtain the number of triangles
-  int M = mesh.Elements.rows();
+  int M = mesh.elements.rows();
 
   // obtain the number of vertices
   int N = mesh.vertices.rows();
@@ -170,7 +170,7 @@ Eigen::VectorXd assemLoad_LFE(const TriaMesh2D& mesh,
     double factor = getArea(triangle) / 3.0;
     for (int j = 0; j < 3; ++j) {
       // from local to global load vector
-      phi(mesh.Elements(i, j)) += factor * f(triangle.col(j));
+      phi(mesh.elements(i, j)) += factor * f(triangle.col(j));
     }
   }
 
@@ -190,13 +190,13 @@ Eigen::SparseMatrix<double> GalerkinAssembly(
   // obtain the number of vertices
   int N = mesh.vertices.rows();
   // obtain the number of elements/cells
-  int M = mesh.Elements.rows();
+  int M = mesh.elements.rows();
   std::vector<Eigen::Triplet<double> > triplets;
   // loop over elements and add local contributions
   for (int i = 0; i < M; i++) {
     // get local$\to$global index mapping for current element, \emph{cf.}
     // \lref{eq:idxdef}
-    Eigen::Vector3i element = mesh.Elements.row(i);
+    Eigen::Vector3i element = mesh.elements.row(i);
     Eigen::Matrix<double, 2, 3> triangle;
     // extract vertices of current element
     for (int j = 0; j < 3; j++) {

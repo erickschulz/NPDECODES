@@ -25,7 +25,7 @@ struct TriaMesh2D {
 
   // Data members describing geometry and topolgy
   Eigen::Matrix<double, Eigen::Dynamic, 2> vertices;
-  Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
+  Eigen::Matrix<int, Eigen::Dynamic, 3> elements;
 };
 
 } // namespace SimpleLinearFiniteElements

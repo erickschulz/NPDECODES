@@ -13,7 +13,7 @@ int main()
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(meshfile);
   std::cout << "Mesh loaded " << std::endl;
   std::cout << "Mesh info: " << square_mesh.vertices.rows() << " vertices, "
-            << square_mesh.Elements.rows() << " elements" << std::endl;
+            << square_mesh.elements.rows() << " elements" << std::endl;
 
   // print both H1 and L2 errors and plot Mesh
   std::tuple<Eigen::VectorXd, double, double> solution = solve(square_mesh);
