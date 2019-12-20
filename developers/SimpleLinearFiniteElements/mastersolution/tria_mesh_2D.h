@@ -21,7 +21,7 @@ struct TriaMesh2D {
 
   Eigen::Matrix<double, 2, 3> operator[] (int i) const;
 
-  static void addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z);
+  void SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const;
 
   // Data members describing geometry and topolgy
   Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;

@@ -31,7 +31,7 @@ int main()
   std::string meshplot_solution = CURRENT_BINARY_DIR "/" MESH "_solution.png";
 
   // generate 3d mesh file from solution
-  SimpleLinearFiniteElements::TriaMesh2D::addZComponent(meshfile, meshfile_solution, std::get<0>(solution));
+  square_mesh.SaveMesh3D(meshfile_solution, std::get<0>(solution));
   std::cout << "Generated " + meshfile_solution << std::endl;
 
   // plot the 3d mesh file

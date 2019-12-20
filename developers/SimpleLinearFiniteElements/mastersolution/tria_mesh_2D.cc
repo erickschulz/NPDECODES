@@ -69,49 +69,29 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
 }
 
 /**
- * @brief Adds a z component to the mesh file
- * @param input_file Filename of the mesh to read from
- * @param input_file Filename of the new mesh with z component
- * @param z vector of z-values, in correct order
+ * @brief Saves a 3D mesh file for plotting function on the 2D mesh.
+ * The new z component contains the values of the function on the 2D mesh.
+ * @param filename Output file name of the new 3D mesh
+ * @param z vector of z values, in correct order
  */
-void TriaMesh2D::addZComponent(std::string input_file, std::string output_file, const Eigen::VectorXd &z) {
-  std::ifstream input;
-  input.open(input_file);
+void TriaMesh2D::SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const {
 
-  std::ofstream output;
-  output.open(output_file);
+  int n_vertices = Coordinates.rows();
+  int n_elements = Elements.rows();
 
-  int n_vertices;
-  std::string dummy1;
-  input >> n_vertices >> dummy1;
-  if (n_vertices != z.size()) {
-    std::cout << "Error: Number of vertices of input file and z need to agree!" << std::endl;
-    output.close();
-    input.close();
-    assert(false);
+  Eigen::MatrixXd new_vertices(n_vertices, 3);
+  new_vertices.leftCols<2>() = Coordinates;
+  new_vertices.col(2) = z;
+
+  std::ofstream file(filename);
+  if (file.is_open()) {
+    file << n_vertices << " Vertices" << std::endl;
+    file << new_vertices << std::endl;
+
+    file << n_elements << " Elements" << std::endl;
+    file << Elements;
   }
-
-  output << n_vertices << " " << dummy1 << std::endl;
-  
-  for (int i = 0; i < n_vertices; ++i) {
-    double x, y;
-    input >> x >> y;
-    output << x << " " << y << " " << z(i) << std::endl;
-  }
-
-  int n_elements;
-  std::string dummy2;
-  input >> n_elements >> dummy2;
-  output << n_elements << " " << dummy2 << std::endl;
-
-  for (int i = 0; i < n_elements; ++i) {
-    int a, b, c;
-    input >> a >> b >> c;
-    output << a << " " << b << " " << c << std::endl;
-  }
-
-  output.close();
-  input.close();
+  file.close();
 }
 
 } // namespace SimpleLinearFiniteElements
