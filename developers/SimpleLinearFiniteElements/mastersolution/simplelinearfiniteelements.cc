@@ -254,9 +254,8 @@ std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElemen
   const double pi = 3.1415926535897;
 
   // define the source function f
-  std::function<double(const Eigen::Vector2d&)> f = [pi](const Eigen::Vector2d &x) {
-	return (8.0 * pi * pi + 1) * std::cos(2 * pi * x(0)) *
-           std::cos(2 * pi * x(1));
+  auto f = [pi](const Eigen::Vector2d &x) {
+	  return (1.0 + 8.0 * pi * pi) * std::cos(2.0 * pi * x(0)) * std::cos(2.0 * pi * x(1));
   };
 
   // the exact solution of the linear variational problem
