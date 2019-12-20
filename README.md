@@ -49,7 +49,6 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 * `BoundaryWave`: mysolution has core dump
 * `CoupledSecondOrderBVP`: needs solution tags
-* `IncidenceMatrices`: bad file names and mysolution has core dump, includes need to be fixed
 * `LaxWendroffScheme`: unit test of mastersolution takes too long
 * `PointEvaluationRhs`: bad includes
 * `ProjectionOntoGradients`: completely messed up
