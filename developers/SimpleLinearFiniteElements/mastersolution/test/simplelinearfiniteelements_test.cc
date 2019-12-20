@@ -44,8 +44,7 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
   // assemble galerkin matrix and load vector
   Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
       square_mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(
-      square_mesh, SimpleLinearFiniteElements::localLoadLFE, f);
+  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(square_mesh, f);
 
   // solve linear system of equations
   Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >
@@ -80,8 +79,7 @@ TEST(SimpleLinearFiniteElements, TestH1Serror) {
   // compute galerkin matrix and load vector
   Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
       square_mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(
-      square_mesh, SimpleLinearFiniteElements::localLoadLFE, f);
+  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(square_mesh, f);
 
   // solve linear system of equations
   Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >
