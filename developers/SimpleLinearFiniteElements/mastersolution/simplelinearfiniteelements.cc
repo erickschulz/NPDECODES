@@ -34,6 +34,7 @@ Eigen::Matrix3d ElementMatrix_Lapl_LFE(const Eigen::Matrix<double, 2, 3>& triang
   // compute inner products of gradients through matrix multiplication
   return getArea(triangle) * X.transpose() * X;
 }
+
 /**
  *  @brief Computation of full Galerkin Matrix
  */
