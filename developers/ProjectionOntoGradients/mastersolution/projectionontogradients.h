@@ -1,42 +1,39 @@
-#ifndef __GRADPROJECTION_H
-#define __GRADPROJECTION_H
+#ifndef PROJECTIONSONTOGRADIENTS_H
+#define PROJECTIONSONTOGRADIENTS_H
 
-#include <iostream>
-#include <memory>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
-#include "lf/mesh/test_utils/test_meshes.h"
 
 namespace ProjectionOntoGradients {
 
-// Start of sub-problem e)
 /* SAM_LISTING_BEGIN_1 */
 class ElementMatrixProvider {
- private:
-  using coord_t = Eigen::Vector2d;
-
- public:
+public:
   Eigen::Matrix3d Eval(const lf::mesh::Entity &entity);
-  bool isActive(const lf::mesh::Entity &entity) const { return true; }
+  bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
 };
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
 Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
+  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
+                "Function only defined for triangular cells");
+
   const lf::geometry::Geometry *geo_ptr = entity.Geometry();
   Eigen::Matrix3d loc_mat;
 
-  /* BEGIN_SOLUTION */
+#if SOLUTION
   // get area of the entity
   const double area = lf::geometry::Volume(*geo_ptr);
-
-  LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
-                "Function only defined for triangular cells");
 
   const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
   // calculate the gradients of the basis functions.
@@ -48,46 +45,45 @@ Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
   const Eigen::MatrixXd grad_basis = grad_helper.inverse().block(1, 0, 2, 3);
 
   loc_mat = area * (grad_basis.transpose() * grad_basis);
-  /* END_SOLUTION */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return loc_mat;
 }
 /* SAM_LISTING_END_2 */
-// End of sub-problem e)
 
-// Start of sub-problem g)
 /* SAM_LISTING_BEGIN_3 */
-template <typename FUNCTOR>
-class GradProjRhsProvider {
- private:
-  FUNCTOR f_;
-  using coord_t = Eigen::Vector2d;
-
- public:
+template <typename FUNCTOR> class GradProjRhsProvider {
+public:
   explicit GradProjRhsProvider(FUNCTOR f) : f_(f) {}
-  Eigen::Vector3d Eval(const lf::mesh::Entity &entity);
-  bool isActive(const lf::mesh::Entity &entity) const { return true; }
-};
 
+  Eigen::Vector3d Eval(const lf::mesh::Entity &entity);
+  bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
+
+private:
+  FUNCTOR f_;
+};
 /* SAM_LISTING_END_3 */
 
 /* SAM_LISTING_BEGIN_4 */
 template <typename FUNCTOR>
-Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
-    const lf::mesh::Entity &entity) {
-  Eigen::Vector3d loc_vec;
-
-  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
-
-  /* BEGIN_SOLUTION */
-  // get area of the entity
-  const double area = lf::geometry::Volume(*geo_ptr);
-
+Eigen::Vector3d
+GradProjRhsProvider<FUNCTOR>::Eval(const lf::mesh::Entity &entity) {
   LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                 "Function only defined for triangular cells");
 
+  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
+  Eigen::Vector3d loc_vec;
+
+#if SOLUTION
+  // get area of the entity
+  const double area = lf::geometry::Volume(*geo_ptr);
+
   // calculate center of mass
   const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
-  const coord_t c = corners.rowwise().sum() / 3.;
+  const Eigen::Vector2d c = corners.rowwise().sum() / 3.;
 
   // value of the functor f at center of mass of the entity
   const Eigen::Vector2d func_value = f_(c);
@@ -100,38 +96,47 @@ Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
   const Eigen::MatrixXd grad_basis = grad_helper.inverse().block(1, 0, 2, 3);
 
   loc_vec = area * (grad_basis.transpose() * func_value);
-  /* END_SOLUTION */
-
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return loc_vec;
 }
 /* SAM_LISTING_END_4 */
-// End of sub-problem e)
 
-// Start of sub-problem h)
+/* SAM_LISTING_BEGIN_5 */
 template <typename FUNCTOR>
 Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
                                      FUNCTOR f) {
-  const std::size_t N_dofs = dofh.NumDofs();
+  const lf::assemble::size_type N_dofs = dofh.NumDofs();
   Eigen::VectorXd sol_vec;
 
-  /* SAM_LISTING_BEGIN_5 */
-  // ASSEMBLE GLOBAL MATRIX
-  /* BEGIN_SOLUTION */
+  // I. Build the (full) Galerkin matrix for the linear system.
+#if SOLUTION
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   ProjectionOntoGradients::ElementMatrixProvider my_mat_provider;
   // co-dimension 0 because we locally assemble on cells
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, my_mat_provider, A);
-  /* END_SOLUTION */
-  // ASSEMBLE GLOBAL RHS VECOR
-  /* BEGIN_SOLUTION */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  // II. Build the (full) right hand side vector
+#if SOLUTION
   Eigen::VectorXd phi(N_dofs);
   phi.setZero();
   ProjectionOntoGradients::GradProjRhsProvider my_vec_provider(f);
   // co-dimension 0 because we locally assemble on cells
   lf::assemble::AssembleVectorLocally(0, dofh, my_vec_provider, phi);
-  /* END_SOLUTION */
-  // ENFORCE HOMOGENEOUS DIRICHLET BOUNDARY CONDITIONS
-  /* BEGIN_SOLUTION */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  // III. Enforce homogeneous dirichlet boundary conditions
+#if SOLUTION
   // We do this by selecting the DOFs on the boundary and setting the
   // values to zero. Note, that we could also use this to set the boundary
   // to any other value (if bc were not homogeneous)
@@ -152,24 +157,32 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
   // Since we know the values on the boundary we know the solution on these
   // DOFs and we can write the Galerkin LSE in block format and solve only
   // for the unknown coefficients. This modification is done by the following
-  // function fix\_flagged\_solution\_components(). We use the selector we have
+  // function FixFlaggedSolutionComponents(). We use the selector we have
   // defined above.
   // See \lref{sec:essbdc} for explanations.
   lf::assemble::FixFlaggedSolutionComponents<double>(my_selector, A, phi);
-  /* END_SOLUTION */
-  /* SAM_LISTING_END_5 */
-  // CALCULATE THE SOLUTION
-  /* BEGIN_SOLUTION */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+
+  // IV. Solve the LSE using an Eigen solver
+#if SOLUTION
   // Convert from triplet to CRS format
   const Eigen::SparseMatrix<double> A_crs = A.makeSparse();
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_crs);
   sol_vec = solver.solve(phi);
-  /* END_SOLUTION */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return sol_vec;
 }
-// End of sub-problem h)
+/* SAM_LISTING_END_5 */
 
 }  // namespace ProjectionOntoGradients
 
-#endif  // define __GRADPROJECTION_H
+#endif

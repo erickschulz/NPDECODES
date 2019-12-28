@@ -1,20 +1,18 @@
+#include "projectionontogradients.h"
+
 #include <iostream>
 #include <memory>
 
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/geometry/geometry.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <Eigen/Core>
 
-#include "projectionontogradients.h"
+#include <lf/assemble/assemble.h>
+#include <lf/mesh/test_utils/test_meshes.h>
+#include <lf/uscalfe/uscalfe.h>
 
 int main() {
   // for this exercise a main file is not required
   // but feel free to use it to call some of your functions for debugging
   // purposes
-  // BEGIN_SOLUTION
   const auto f = [](Eigen::Vector2d x) -> Eigen::Vector2d {
     return Eigen::Vector2d(-x(1), x(0));
   };
@@ -24,12 +22,11 @@ int main() {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // Compute solution
-  const Eigen::VectorXd sol_vec = ProjectionOntoGradients::projectOntoGradients(dofh, f);
+  const Eigen::VectorXd sol_vec =
+      ProjectionOntoGradients::projectOntoGradients(dofh, f);
   std::cout << sol_vec << std::endl;
 
-  // END_SOLUTION
-
   std::cout << "You may use this main file to call your function "
-               "ProjectionOntoGradients::ProjectionOntoGradients"
+               "ProjectionOntoGradients::projectOntoGradients"
             << std::endl;
 }
