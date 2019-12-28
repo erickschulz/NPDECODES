@@ -1,5 +1,10 @@
-#ifndef PROJECTIONSONTOGRADIENTS_H
-#define PROJECTIONSONTOGRADIENTS_H
+/**
+ * @file
+ * @brief NPDE homework ProjectionOntoGradients code
+ * @author ?, Philippe PEter
+ * @date December 2019
+ * @copyright Developed at ETH Zurich
+ */
 
 #include <utility>
 
@@ -183,6 +188,4 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_5 */
 
-}  // namespace ProjectionOntoGradients
-
-#endif
+} // namespace ProjectionOntoGradients

@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief NPDE homework ProjectionOntoGradients code
+ * @author ?, Philippe PEter
+ * @date December 2019
+ * @copyright Developed at ETH Zurich
+ */
+
 #include "projectionontogradients.h"
 
 #include <iostream>

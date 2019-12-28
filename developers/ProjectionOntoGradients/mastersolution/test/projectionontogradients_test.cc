@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief NPDE homework ProjectionOntoGradients code
+ * @author ?, Philippe PEter
+ * @date December 2019
+ * @copyright Developed at ETH Zurich
+ */
+
 #include "../projectionontogradients.h"
 
 #include <memory>
@@ -133,6 +141,8 @@ TEST(ProjectionOntoGradients, div_free_test) {
 /* SAM_LISTING_END_1 */
 
 TEST(ProjectionOntoGradients, exact_sol_test) {
+  // I. Construct the test mesh
+#if SOLUTION
   // mesh builder in a world of dimension 2
   lf::mesh::hybrid2d::TPTriagMeshBuilder my_builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
@@ -144,198 +154,139 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
       .setNumYCells(10);
 
   auto mesh_p = my_builder.Build();
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
+  // II. Construct a linear finite element space on the test mesh
 #if SOLUTION
-  // Here we assign one degree of freedom to each node of our mesh
-  // We assign no dofs to edges and triangles
-  // This corresponds to using the 'tent' basis functions of each node
-  lf::assemble::UniformFEDofHandler dofh(mesh_p,
-                                         {{lf::base::RefEl::kPoint(), 1},
-                                          {lf::base::RefEl::kSegment(), 0},
-                                          {lf::base::RefEl::kTria(), 0}});
+  lf::uscalfe::FeSpaceLagrangeO1<double> fe_space(mesh_p);
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
-  // define the function f
-  const auto f = [](Eigen::Vector2d x) {
-    int triang_idx;
-    // first determine of which triangle the coordinate is part of
+  // III. Define a function which computes the index of the triangle in which
+  // the coorindates
+  // of a given point are
+#if SOLUTION
+  const auto triangleIndex = [](Eigen::Vector2d x) {
     if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.0 && x(1) <= 0.5) {
       if (x(0) < x(1))
-        triang_idx = 0;
+        return 0;
       else
-        triang_idx = 1;
+        return 1;
     } else if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.5 && x(1) <= 1.0) {
       if (x(0) + 0.5 < x(1))
-        triang_idx = 2;
+        return 2;
       else
-        triang_idx = 3;
+        return 3;
     } else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.0 && x(1) <= 0.5) {
       if (x(0) < 0.5 + x(1))
-        triang_idx = 4;
+        return 4;
       else
-        triang_idx = 5;
+        return 5;
     } else if (x(0) >= 0.5 && x(0) <= 1.0 && x(1) >= 0.5 && x(1) <= 1.0) {
       if (x(0) < x(1))
-        triang_idx = 6;
+        return 6;
       else
-        triang_idx = 7;
+        return 7;
+    } else {
+      std::cout << x << std::endl;
+      LF_ASSERT_MSG(false, "Coordinates outside of unit square");
     }
-    // then return the function value according to the definition in the
+  };
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+
+  // IV. Define the function f
+#if SOLUTION
+  const auto f = [&triangleIndex](Eigen::Vector2d x) {
+    int triang_idx = triangleIndex(x);
+    // return the function value according to the definition in the
     // exercise
     switch (triang_idx) {
     case 0:
       return Eigen::Vector2d(2, 0);
-      break;
     case 1:
       return Eigen::Vector2d(0, 2);
-      break;
     case 3:
       return Eigen::Vector2d(2, -2);
-      break;
     case 4:
       return Eigen::Vector2d(-2, 2);
-      break;
     case 6:
       return Eigen::Vector2d(0, -2);
-      break;
     case 7:
       return Eigen::Vector2d(-2, 0);
-      break;
     default:
       return Eigen::Vector2d(0, 0);
-      break;
     }
   };
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
-  // call the function you have written to test it
+  // V. Define the tent function associated with the central node
+#if SOLUTION
+  const auto tentFunction = [&triangleIndex](Eigen::Vector2d x) {
+    int triang_idx = triangleIndex(x);
+    // Observe that the restriction of the tent function on
+    // any adjecant triangle is by definition a linear function a*x + b*y + c.
+    // The gradients of these linear functions are given in the exercise
+    // so we can read of the values of a and b. We then compute the
+    // value of c to ensure that the linear function evaluates to
+    // one at the central node.
+    switch (triang_idx) {
+    case 0:
+      return 2.0 * x(0);
+    case 1:
+      return 2.0 * x(1);
+    case 3:
+      return 2.0 * x(0) - 2.0 * x(1) + 1.0;
+    case 4:
+      return -2.0 * x(0) + 2.0 * x(1) + 1.0;
+    case 6:
+      return -2.0 * x(1) + 2.0;
+    case 7:
+      return -2.0 * x(0) + 2.0;
+    default:
+      return 0.0;
+    }
+  };
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+
+  // VI.Determine the coefficient vector of the tent function in
+  // the FE space (perform a Nodal projection)
+#if SOLUTION
+  // The Function lf::uscalfe::NodalProjection requires a mesh function as its
+  // second argument, so we first construct a meshFunction object which
+  // describes the tent function.
+  auto tentFunction_mf = lf::uscalfe::MeshFunctionGlobal(tentFunction);
+  auto ref_vec =
+      lf::uscalfe::NodalProjection<double>(fe_space, tentFunction_mf);
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+
+  // VII. Test your implementation
+#if SOLUTION
   const Eigen::VectorXd sol_vec =
-      ProjectionOntoGradients::projectOntoGradients(dofh, f);
-
-  // this is the residual we will accept as still correct
-  const double eps = 1e-15;
-
-  // hard-coded solution vector
-  EXPECT_NEAR(sol_vec[0], 0, eps);
-  EXPECT_NEAR(sol_vec[1], 0, eps);
-  EXPECT_NEAR(sol_vec[2], 0, eps);
-  EXPECT_NEAR(sol_vec[3], 0, eps);
-  EXPECT_NEAR(sol_vec[4], 0, eps);
-  EXPECT_NEAR(sol_vec[5], 0, eps);
-  EXPECT_NEAR(sol_vec[6], 0, eps);
-  EXPECT_NEAR(sol_vec[7], 0, eps);
-  EXPECT_NEAR(sol_vec[8], 0, eps);
-  EXPECT_NEAR(sol_vec[9], 0, eps);
-  EXPECT_NEAR(sol_vec[10], 0, eps);
-  EXPECT_NEAR(sol_vec[11], 0, eps);
-  EXPECT_NEAR(sol_vec[12], 0.2, eps);
-  EXPECT_NEAR(sol_vec[13], 0.2, eps);
-  EXPECT_NEAR(sol_vec[14], 0.2, eps);
-  EXPECT_NEAR(sol_vec[15], 0.2, eps);
-  EXPECT_NEAR(sol_vec[16], 0.2, eps);
-  EXPECT_NEAR(sol_vec[17], 0, eps);
-  EXPECT_NEAR(sol_vec[18], 0, eps);
-  EXPECT_NEAR(sol_vec[19], 0, eps);
-  EXPECT_NEAR(sol_vec[20], 0, eps);
-  EXPECT_NEAR(sol_vec[21], 0, eps);
-  EXPECT_NEAR(sol_vec[22], 0, eps);
-  EXPECT_NEAR(sol_vec[23], 0.2, eps);
-  EXPECT_NEAR(sol_vec[24], 0.4, eps);
-  EXPECT_NEAR(sol_vec[25], 0.4, eps);
-  EXPECT_NEAR(sol_vec[26], 0.4, eps);
-  EXPECT_NEAR(sol_vec[27], 0.4, eps);
-  EXPECT_NEAR(sol_vec[28], 0.2, eps);
-  EXPECT_NEAR(sol_vec[29], 0, eps);
-  EXPECT_NEAR(sol_vec[30], 0, eps);
-  EXPECT_NEAR(sol_vec[31], 0, eps);
-  EXPECT_NEAR(sol_vec[32], 0, eps);
-  EXPECT_NEAR(sol_vec[33], 0, eps);
-  EXPECT_NEAR(sol_vec[34], 0.2, eps);
-  EXPECT_NEAR(sol_vec[35], 0.4, eps);
-  EXPECT_NEAR(sol_vec[36], 0.6, eps);
-  EXPECT_NEAR(sol_vec[37], 0.6, eps);
-  EXPECT_NEAR(sol_vec[38], 0.6, eps);
-  EXPECT_NEAR(sol_vec[39], 0.4, eps);
-  EXPECT_NEAR(sol_vec[40], 0.2, eps);
-  EXPECT_NEAR(sol_vec[41], 0, eps);
-  EXPECT_NEAR(sol_vec[42], 0, eps);
-  EXPECT_NEAR(sol_vec[43], 0, eps);
-  EXPECT_NEAR(sol_vec[44], 0, eps);
-  EXPECT_NEAR(sol_vec[45], 0.2, eps);
-  EXPECT_NEAR(sol_vec[46], 0.4, eps);
-  EXPECT_NEAR(sol_vec[47], 0.6, eps);
-  EXPECT_NEAR(sol_vec[48], 0.8, eps);
-  EXPECT_NEAR(sol_vec[49], 0.8, eps);
-  EXPECT_NEAR(sol_vec[50], 0.6, eps);
-  EXPECT_NEAR(sol_vec[51], 0.4, eps);
-  EXPECT_NEAR(sol_vec[52], 0.2, eps);
-  EXPECT_NEAR(sol_vec[53], 0, eps);
-  EXPECT_NEAR(sol_vec[54], 0, eps);
-  EXPECT_NEAR(sol_vec[55], 0, eps);
-  EXPECT_NEAR(sol_vec[56], 0.2, eps);
-  EXPECT_NEAR(sol_vec[57], 0.4, eps);
-  EXPECT_NEAR(sol_vec[58], 0.6, eps);
-  EXPECT_NEAR(sol_vec[59], 0.8, eps);
-  EXPECT_NEAR(sol_vec[60], 1, eps);
-  EXPECT_NEAR(sol_vec[61], 0.8, eps);
-  EXPECT_NEAR(sol_vec[62], 0.6, eps);
-  EXPECT_NEAR(sol_vec[63], 0.4, eps);
-  EXPECT_NEAR(sol_vec[64], 0.2, eps);
-  EXPECT_NEAR(sol_vec[65], 0, eps);
-  EXPECT_NEAR(sol_vec[66], 0, eps);
-  EXPECT_NEAR(sol_vec[67], 0, eps);
-  EXPECT_NEAR(sol_vec[68], 0.2, eps);
-  EXPECT_NEAR(sol_vec[69], 0.4, eps);
-  EXPECT_NEAR(sol_vec[70], 0.6, eps);
-  EXPECT_NEAR(sol_vec[71], 0.8, eps);
-  EXPECT_NEAR(sol_vec[72], 0.8, eps);
-  EXPECT_NEAR(sol_vec[73], 0.6, eps);
-  EXPECT_NEAR(sol_vec[74], 0.4, eps);
-  EXPECT_NEAR(sol_vec[75], 0.2, eps);
-  EXPECT_NEAR(sol_vec[76], 0, eps);
-  EXPECT_NEAR(sol_vec[77], 0, eps);
-  EXPECT_NEAR(sol_vec[78], 0, eps);
-  EXPECT_NEAR(sol_vec[79], 0, eps);
-  EXPECT_NEAR(sol_vec[80], 0.2, eps);
-  EXPECT_NEAR(sol_vec[81], 0.4, eps);
-  EXPECT_NEAR(sol_vec[82], 0.6, eps);
-  EXPECT_NEAR(sol_vec[83], 0.6, eps);
-  EXPECT_NEAR(sol_vec[84], 0.6, eps);
-  EXPECT_NEAR(sol_vec[85], 0.4, eps);
-  EXPECT_NEAR(sol_vec[86], 0.2, eps);
-  EXPECT_NEAR(sol_vec[87], 0, eps);
-  EXPECT_NEAR(sol_vec[88], 0, eps);
-  EXPECT_NEAR(sol_vec[89], 0, eps);
-  EXPECT_NEAR(sol_vec[90], 0, eps);
-  EXPECT_NEAR(sol_vec[91], 0, eps);
-  EXPECT_NEAR(sol_vec[92], 0.2, eps);
-  EXPECT_NEAR(sol_vec[93], 0.4, eps);
-  EXPECT_NEAR(sol_vec[94], 0.4, eps);
-  EXPECT_NEAR(sol_vec[95], 0.4, eps);
-  EXPECT_NEAR(sol_vec[96], 0.4, eps);
-  EXPECT_NEAR(sol_vec[97], 0.2, eps);
-  EXPECT_NEAR(sol_vec[98], 0, eps);
-  EXPECT_NEAR(sol_vec[99], 0, eps);
-  EXPECT_NEAR(sol_vec[100], 0, eps);
-  EXPECT_NEAR(sol_vec[101], 0, eps);
-  EXPECT_NEAR(sol_vec[102], 0, eps);
-  EXPECT_NEAR(sol_vec[103], 0, eps);
-  EXPECT_NEAR(sol_vec[104], 0.2, eps);
-  EXPECT_NEAR(sol_vec[105], 0.2, eps);
-  EXPECT_NEAR(sol_vec[106], 0.2, eps);
-  EXPECT_NEAR(sol_vec[107], 0.2, eps);
-  EXPECT_NEAR(sol_vec[108], 0.2, eps);
-  EXPECT_NEAR(sol_vec[109], 0, eps);
-  EXPECT_NEAR(sol_vec[110], 0, eps);
-  EXPECT_NEAR(sol_vec[111], 0, eps);
-  EXPECT_NEAR(sol_vec[112], 0, eps);
-  EXPECT_NEAR(sol_vec[113], 0, eps);
-  EXPECT_NEAR(sol_vec[114], 0, eps);
-  EXPECT_NEAR(sol_vec[115], 0, eps);
-  EXPECT_NEAR(sol_vec[116], 0, eps);
-  EXPECT_NEAR(sol_vec[117], 0, eps);
-  EXPECT_NEAR(sol_vec[118], 0, eps);
-  EXPECT_NEAR(sol_vec[119], 0, eps);
-  EXPECT_NEAR(sol_vec[120], 0, eps);
-
+      projectOntoGradients(fe_space.LocGlobMap(), f);
+  EXPECT_NEAR((sol_vec - ref_vec).norm(), 0.0, 1e-12);
 #else
   //====================
   // Your code goes here
@@ -343,4 +294,4 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
 #endif
 }
 
-}  // namespace ProjectionOntoGradients::test
+} // namespace ProjectionOntoGradients::test
