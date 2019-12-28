@@ -128,6 +128,7 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
   // Your code goes here
   //====================
 #endif
+
   // II. Build the (full) right hand side vector
 #if SOLUTION
   Eigen::VectorXd phi(N_dofs);
@@ -140,6 +141,7 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
   // Your code goes here
   //====================
 #endif
+
   // III. Enforce homogeneous dirichlet boundary conditions
 #if SOLUTION
   // We do this by selecting the DOFs on the boundary and setting the
