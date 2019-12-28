@@ -170,8 +170,7 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
 #endif
 
   // III. Define a function which computes the index of the triangle in which
-  // the coorindates
-  // of a given point are
+  // the coorindates of a given point are
 #if SOLUTION
   const auto triangleIndex = [](Eigen::Vector2d x) {
     if (x(0) >= 0.0 && x(0) <= 0.5 && x(1) >= 0.0 && x(1) <= 0.5) {
