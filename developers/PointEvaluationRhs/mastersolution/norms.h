@@ -10,15 +10,9 @@
  */
 
 #include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/refinement/mesh_hierarchy.h>
-#include <lf/refinement/refutils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace PointEvaluationRhs{
 
