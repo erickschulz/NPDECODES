@@ -44,10 +44,10 @@ Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
   // calculate the gradients of the basis functions.
   // See \lref{cpp:gradbarycoords}, \lref{mc:ElementMatrixLaplLFE} for details.
   Eigen::Matrix3d grad_helper;
-  grad_helper.block(0, 0, 3, 1) = Eigen::Vector3d::Ones();
-  grad_helper.block(0, 1, 3, 2) = corners.transpose();
+  grad_helper.col(0) = Eigen::Vector3d::Ones();
+  grad_helper.rightCols(2) = corners.transpose();
   // Matrix with gradients of the local shape functions in its columns
-  const Eigen::MatrixXd grad_basis = grad_helper.inverse().block(1, 0, 2, 3);
+  const Eigen::MatrixXd grad_basis = grad_helper.inverse().bottomRows(2);
 
   loc_mat = area * (grad_basis.transpose() * grad_basis);
 #else
@@ -95,10 +95,10 @@ GradProjRhsProvider<FUNCTOR>::Eval(const lf::mesh::Entity &entity) {
 
   // calculate the gradients of the basis functions
   Eigen::Matrix3d grad_helper;
-  grad_helper.block(0, 0, 3, 1) = Eigen::Vector3d::Ones();
-  grad_helper.block(0, 1, 3, 2) = corners.transpose();
+  grad_helper.col(0) = Eigen::Vector3d::Ones();
+  grad_helper.rightCols(2) = corners.transpose();
   // vector of the gradients of the basis function evaluated at c
-  const Eigen::MatrixXd grad_basis = grad_helper.inverse().block(1, 0, 2, 3);
+  const Eigen::MatrixXd grad_basis = grad_helper.inverse().bottomRows(2);
 
   loc_vec = area * (grad_basis.transpose() * func_value);
 #else

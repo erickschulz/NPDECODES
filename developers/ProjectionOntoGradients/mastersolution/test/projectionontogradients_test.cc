@@ -41,7 +41,7 @@ TEST(ProjectionOntoGradients, ElementMatrixProvider) {
         lfe_elem_mat_provider.Eval(*cell)};
 
     // compare element matrices:
-    EXPECT_NEAR((lfe_mat.block<3,3>(0, 0) - my_mat).norm(), 0.0, 1E-3);
+    EXPECT_NEAR((lfe_mat.block<3, 3>(0, 0) - my_mat).norm(), 0.0, 1E-3);
   }
 }
 
