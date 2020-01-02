@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief NPDE homework ProjectionOntoGradients code
- * @author ?, Philippe PEter
+ * @author ?, Philippe Peter
  * @date December 2019
  * @copyright Developed at ETH Zurich
  */
@@ -41,7 +41,7 @@ TEST(ProjectionOntoGradients, ElementMatrixProvider) {
         lfe_elem_mat_provider.Eval(*cell)};
 
     // compare element matrices:
-    EXPECT_NEAR((lfe_mat.block(0, 0, 3, 3) - my_mat).norm(), 0.0, 1E-3);
+    EXPECT_NEAR((lfe_mat.block<3,3>(0, 0) - my_mat).norm(), 0.0, 1E-3);
   }
 }
 
@@ -194,7 +194,6 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
       else
         return 7;
     } else {
-      std::cout << x << std::endl;
       LF_ASSERT_MSG(false, "Coordinates outside of unit square");
     }
   };
