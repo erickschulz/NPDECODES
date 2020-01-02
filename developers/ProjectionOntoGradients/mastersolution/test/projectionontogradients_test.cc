@@ -9,7 +9,6 @@
 #include "../projectionontogradients.h"
 
 #include <memory>
-#include <utility>
 
 #include <Eigen/Core>
 
