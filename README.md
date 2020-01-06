@@ -49,18 +49,17 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 * `BoundaryWave`: mysolution has core dump
 * `CoupledSecondOrderBVP`: needs solution tags
-* `LaxWendroffScheme`: unit test of mastersolution takes too long
-* `PointEvaluationRhs`: bad includes
-* `ProjectionOntoGradients`: completely messed up
+* `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
+* `PointEvaluationRhs`: bad includes **(Liaowang)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
-* `SimpleLinearFiniteElements`: bad names of files and classes
+* `SimpleLinearFiniteElements`: bad includes **(Amélie)**
 
 ## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 4.1: Finite Volumes with Robin Boundary Conditions
+* Problem 4.1: Finite Volumes with Robin Boundary Conditions **(Philippe)**
 * Problem 5.6: Parametric Finite Elements
 * Problem 5.7: Stable Evaluation at a Point
 * Problem 5.8: Trace Error Estimates **(done already?)**
