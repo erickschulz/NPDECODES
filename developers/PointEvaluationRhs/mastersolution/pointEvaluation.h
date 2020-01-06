@@ -3,16 +3,17 @@
 /**
  * @ file pointEvaluation.h
  * @ brief NPDE homework PointEvaluationRhs code
- * @ author Christian Mitsch
- * @ date 22.03.2019
+ * @ author Christian Mitsch, Liaowang Huang (refactoring)
+ * @ date 22/03/2019, 06/01/2020 (refactoring)
  * @ copyright Developed at ETH Zurich
  */
 
-#include <lf/assemble/assemble.h>
-#include <lf/mesh/mesh.h>
+#include <utility>
 
 #include <Eigen/Core>
-#include <utility>
+
+#include <lf/assemble/assemble.h>
+#include <lf/mesh/mesh.h>
 
 namespace PointEvaluationRhs{
 

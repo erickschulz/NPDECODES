@@ -1,12 +1,18 @@
 /**
  * @ file pointEvaluation.cc
  * @ brief NPDE homework PointEvaluationRhs code
- * @ author Christian Mitsch
- * @ date 22.03.2019
+ * @ author Christian Mitsch, Liaowang Huang (refactoring)
+ * @ date 22/03/2019, 06/01/2020 (refactoring)
  * @ copyright Developed at ETH Zurich
  */
 
 #include "pointEvaluation.h"
+
+#include <cmath>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
@@ -14,10 +20,6 @@
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
-
-#include <cmath>
-#include <Eigen/Core>
-#include <iostream>
 
 #include "norms.h"
 
