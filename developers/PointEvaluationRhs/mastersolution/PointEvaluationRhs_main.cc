@@ -20,7 +20,7 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/refinement/mesh_hierarchy.h>
+#include <lf/refinement/refinement.h>
 
 #include "pointEvaluation.h"
 
