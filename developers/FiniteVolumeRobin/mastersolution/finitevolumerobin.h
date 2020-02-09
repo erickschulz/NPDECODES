@@ -1,8 +1,8 @@
 /**
- * @file
+ * @file finitevolumerobin.h
  * @brief NPDE homework FiniteVolumeRobin code
- * @author Oliver Rietmann, Erick Schulz, Philippe Peter
- * @date January 2020
+ * @author Philippe Peter
+ * @date February 2020
  * @copyright Developed at ETH Zurich
  */
 
