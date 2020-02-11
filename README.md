@@ -7,24 +7,27 @@ This repository contains the codes for the homework problems of the recurring co
 Open a terminal and type
 ```
 git clone git@github.com:OliverRietmann/NPDECODES.git
-cd NPDECODES
+cd NPDECODES/
 mkdir build
-cd build
+cd build/
 cmake ..
 ```
-This will install LehrFEM++ and its dependencies into a folder `~.hunter/`.
-To build a specific problem, say `BurgersEquation`, proceed as follows:
+This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `BurgersEquation`, proceed as follows:
 ```
-cd homeworks/BurgersEquation
+cd homeworks/BurgersEquation/
 make
 ```
-This will build from the source files in `NPDECODES/homeworks/BurgersEquation`, where the subfolder `mysolution` contains templates to be changed by the students. Recompilation is done by invoking `make` again.
+This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
+* `./BurgersEquation_mastersolution`: Runs the mastersolution.
+* `./BurgersEquation_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
+* `./BurgersEquation_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
+* `./BurgersEquation_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
 Some remarks on building the codes:
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
-
 * LehrFEM is already installed on the student compters in the ETH main building. To access this installation, you have to set the environment variable `HUNTER_ROOT` correctly: Right after opening the terminal, type
 ```
 export HUNTER_ROOT=/opt/libs/NumPDE
 ```
 and then proceed as above.
+* There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`.

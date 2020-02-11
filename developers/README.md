@@ -49,11 +49,14 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 * `BoundaryWave`: mysolution has core dump
 * `CoupledSecondOrderBVP`: needs solution tags
+* `ElectrostaticForce`: unit test fails for mastersolution
+* `ElementMatrixComputation`: Replace console output in unit test by actual test
 * `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
 * `PointEvaluationRhs`: bad includes **(Liaowang)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
 * `SimpleLinearFiniteElements`: bad includes **(Amélie)**
+* `TestQuadratureRules`: Replace console output in unit test by actual test
 
 ## New Problems
 
