@@ -5,6 +5,14 @@ This repository contains the codes for the homework problems of the recurring co
 
 Moreover, enrolled students can access the [moodle](https://moodle-app2.let.ethz.ch/course/view.php?id=12060) page of the course.
 
+## Requirements
+Currently, only UNIX based operating systems are supported. Moreover, you need to have the following installed on your machine:
+* C++17 compiler (e.g. gcc, clang)
+* CMake (at least VERSION 3.10)
+* python3
+* A reader for .vtk files (e.g. paraview)
+* git (not strictly needed, you could also download the repo as .zip file)
+
 ## Getting started
 Open a terminal and type
 ```
@@ -29,11 +37,3 @@ Some remarks on building the codes:
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
 * LehrFEM++ is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
 * There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`. Students should only change the files in `NPDECODES/homeworks/<ProblemName>/mysolution`.
-
-## Requirements
-Currently, only UNIX based operating systems are supported. Moreover, you need to have the following installed on your machine:
-* C++17 compiler (e.g. gcc, clang)
-* CMake (at least VERSION 3.10)
-* python3
-* A reader for .vtk files (e.g. paraview)
-* git (not strictly needed, you could also download the repo as .zip file)
