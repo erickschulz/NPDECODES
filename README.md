@@ -31,7 +31,7 @@ Some remarks on building the codes:
 * There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`. Students should only change the files in `NPDECODES/homeworks/<ProblemName>/mysolution`.
 
 ## Requirements
-Currently, only UNIX based operating systems are supported. Moreover, you need to have the following installed on your machine
+Currently, only UNIX based operating systems are supported. Moreover, you need to have the following installed on your machine:
 * C++17 compiler (e.g. gcc, clang)
 * CMake (at least VERSION 3.10)
 * python3
