@@ -17,6 +17,7 @@
     "ElementMatrixComputation/",
     "EngquistOsherNumericalFlux/",
     "ErrorEstimatesForTraces/",
+    "FiniteVolumeRobin/",
     "FiniteVolumeSineConsLaw/",
     "HandlingDOFs/",
     "IPDGFEM/",
