@@ -1,3 +1,7 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(homeworks)
+
 # Add custom targets
 include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
