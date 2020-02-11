@@ -4,24 +4,17 @@
 /**
  * @ file norms.h
  * @ brief NPDE homework PointEvaluationRhs code
- * @ author Christian Mitsch
- * @ date 22.03.2019
+ * @ author Christian Mitsch, Liaowang Huang (refactoring)
+ * @ date 22/03/2019, 06/01/2020 (refactoring)
  * @ copyright Developed at ETH Zurich
  */
 
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/refinement/mesh_hierarchy.h>
-#include <lf/refinement/refutils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <Eigen/Core>
 
-namespace PointEvaluationRhs
-{
+#include <lf/assemble/assemble.h>
+#include <lf/mesh/mesh.h>
+
+namespace PointEvaluationRhs {
 
 double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
                                  const Eigen::VectorXd &mu);
@@ -29,8 +22,7 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
                              const Eigen::VectorXd &mu);
 
-class MassLocalMatrixAssembler
-{
+class MassLocalMatrixAssembler{
 private:
 public:
   explicit MassLocalMatrixAssembler() = default;

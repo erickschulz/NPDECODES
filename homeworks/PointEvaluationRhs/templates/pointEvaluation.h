@@ -3,24 +3,19 @@
 /**
  * @ file pointEvaluation.h
  * @ brief NPDE homework PointEvaluationRhs code
- * @ author Christian Mitsch
- * @ date 22.03.2019
+ * @ author Christian Mitsch, Liaowang Huang (refactoring)
+ * @ date 22/03/2019, 06/01/2020 (refactoring)
  * @ copyright Developed at ETH Zurich
  */
 
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/refinement/mesh_hierarchy.h>
-#include <lf/refinement/refutils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <utility>
 
-namespace PointEvaluationRhs
-{
+#include <Eigen/Core>
+
+#include <lf/assemble/assemble.h>
+#include <lf/mesh/mesh.h>
+
+namespace PointEvaluationRhs{
 
 std::pair<double, double> normsSolutionPointLoadDirichletBVP(
     const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
@@ -37,8 +32,7 @@ inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
 
 std::pair<double, double> solveQuadraticEquation(double a, double b, double c);
 
-class DeltaLocalVectorAssembler
-{
+class DeltaLocalVectorAssembler{
 private:
   Eigen::Vector2d x_0;
   bool already_found;
@@ -46,8 +40,7 @@ private:
 public:
   explicit DeltaLocalVectorAssembler(Eigen::Vector2d x)
       : x_0(x), already_found(false) {}
-  bool isActive(const lf::mesh::Entity &entity) const
-  {
+  bool isActive(const lf::mesh::Entity &entity) const{
     return (!already_found);
   }
   Eigen::VectorXd Eval(const lf::mesh::Entity &entity);

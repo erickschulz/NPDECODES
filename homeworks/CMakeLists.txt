@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(homeworks)
-
 # Add custom targets
 include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
@@ -18,6 +14,7 @@ add_subdirectory(ElectrostaticForce)
 add_subdirectory(ElementMatrixComputation)
 add_subdirectory(EngquistOsherNumericalFlux)
 add_subdirectory(ErrorEstimatesForTraces)
+add_subdirectory(FiniteVolumeRobin)
 add_subdirectory(FiniteVolumeSineConsLaw)
 add_subdirectory(HandlingDOFs)
 add_subdirectory(IPDGFEM)
@@ -31,6 +28,7 @@ add_subdirectory(NonConformingCrouzeixRaviartFiniteElements)
 add_subdirectory(OutputImpedanceBVP)
 add_subdirectory(ParametricElementMatrices)
 add_subdirectory(PointEvaluationRhs)
+add_subdirectory(ProjectionOntoGradients) # under construction
 add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumann)
 add_subdirectory(SDIRKMethodOfLines)
