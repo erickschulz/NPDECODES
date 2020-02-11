@@ -25,9 +25,5 @@ This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`,
 
 Some remarks on building the codes:
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
-* LehrFEM is already installed on the student compters in the ETH main building. To access this installation, you have to set the environment variable `HUNTER_ROOT` correctly: Right after opening the terminal, type
-```
-export HUNTER_ROOT=/opt/libs/NumPDE
-```
-and then proceed as above.
+* LehrFEM is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
 * There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`.
