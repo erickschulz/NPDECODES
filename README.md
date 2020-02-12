@@ -33,6 +33,26 @@ This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`,
 * `./BurgersEquation_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
 * `./BurgersEquation_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
+The folder structure then looks as follows:
+.
++-- homeworks
++-- developers
+|   +-- begin-with-the-crazy-ideas.textile
+|   +-- on-simplicity-in-technology.markdown
++-- _includes
+|   +-- footer.html
+|   +-- header.html
++-- _layouts
+|   +-- default.html
+|   +-- post.html
++-- _posts
+|   +-- 2007-10-29-why-every-programmer-should-play-nethack.textile
+|   +-- 2009-04-26-barcamp-boston-4-roundup.textile
++-- _data
+|   +-- members.yml
++-- _site
++-- index.html
+
 Some remarks on building the codes:
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
 * LehrFEM++ is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
