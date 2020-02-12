@@ -22,7 +22,7 @@ mkdir build
 cd build/
 cmake ..
 ```
-This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `BurgersEquation`, proceed as follows:
+This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `TestQuadratureRules`, proceed as follows:
 ```
 cd homeworks/TestQuadratureRules/
 make
@@ -33,10 +33,10 @@ This will build from the source files in `NPDECODES/homeworks/TestQuadratureRule
 * `./TestQuadratureRules_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
 * `./TestQuadratureRules_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
-Note that there are two homeworks folders. One contains the source files and one contains the executables:
+There is two folders called `homeworks/`. One contains the source files and one contains the executables:
 ```
 .
-├── build
+├── build (was created by you)
 │   ├── homeworks
 │   :   ├── TestQuadratureRules
 │       :   ├── TestQuadratureRules_mastersolution      (executable)
@@ -48,12 +48,11 @@ Note that there are two homeworks folders. One contains the source files and one
 ├── homeworks
 :   ├── TestQuadratureRules
     :   ├── mastersolution (contains source files)
-        ├── mysolution     (contains source files)
+        ├── mysolution     (contains source files, to be modified by you)
         ├── templates      (contains source files)
         :
 ```
 
-Some remarks on building the codes:
+## Further remarks
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
 * LehrFEM++ is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
-* There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`. Students should only change the files in `NPDECODES/homeworks/<ProblemName>/mysolution`.
