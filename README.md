@@ -34,6 +34,7 @@ This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`,
 * `./BurgersEquation_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
 The folder structure then looks as follows:
+```bash
 .
 +-- homeworks
 +-- developers
@@ -52,6 +53,7 @@ The folder structure then looks as follows:
 |   +-- members.yml
 +-- _site
 +-- index.html
+```
 
 Some remarks on building the codes:
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
