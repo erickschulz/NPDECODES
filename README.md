@@ -16,7 +16,7 @@ Currently, only UNIX based operating systems are supported. Moreover, you need t
 ## Getting started
 Open a terminal and type
 ```
-git clone git@github.com:OliverRietmann/NPDECODES.git
+git clone git@github.com:erickschulz/NPDECODES.git
 cd NPDECODES/
 mkdir build
 cd build/
@@ -24,35 +24,33 @@ cmake ..
 ```
 This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `BurgersEquation`, proceed as follows:
 ```
-cd homeworks/BurgersEquation/
+cd homeworks/TestQuadratureRules/
 make
 ```
-This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
-* `./BurgersEquation_mastersolution`: Runs the mastersolution.
-* `./BurgersEquation_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
-* `./BurgersEquation_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
-* `./BurgersEquation_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
+This will build from the source files in `NPDECODES/homeworks/TestQuadratureRules/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
+* `./TestQuadratureRules_mastersolution`: Runs the mastersolution.
+* `./TestQuadratureRules_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
+* `./TestQuadratureRules_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
+* `./TestQuadratureRules_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
-The folder structure then looks as follows:
-```bash
+Note that there are two homeworks folders. One contains the source files and one contains the executables:
+```
 .
-+-- homeworks
-+-- developers
-|   +-- begin-with-the-crazy-ideas.textile
-|   +-- on-simplicity-in-technology.markdown
-+-- _includes
-|   +-- footer.html
-|   +-- header.html
-+-- _layouts
-|   +-- default.html
-|   +-- post.html
-+-- _posts
-|   +-- 2007-10-29-why-every-programmer-should-play-nethack.textile
-|   +-- 2009-04-26-barcamp-boston-4-roundup.textile
-+-- _data
-|   +-- members.yml
-+-- _site
-+-- index.html
+├── build
+│   ├── homeworks
+│   :   ├── TestQuadratureRules
+│       :   ├── TestQuadratureRules_mastersolution      (executable)
+│           ├── TestQuadratureRules_mysolution          (executable)
+│           ├── TestQuadratureRules_test_mastersolution (executable)
+│           ├── TestQuadratureRules_test_mysolution     (executable)
+│           :
+│
+├── homeworks
+:   ├── TestQuadratureRules
+    :   ├── mastersolution (contains source files)
+        ├── mysolution     (contains source files)
+        ├── templates      (contains source files)
+        :
 ```
 
 Some remarks on building the codes:
