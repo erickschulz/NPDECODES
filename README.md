@@ -47,9 +47,9 @@ There is two folders called `homeworks/`. One contains the source files and one 
 │
 ├── homeworks
 :   ├── TestQuadratureRules
-    :   ├── mastersolution (contains source files)
-        ├── mysolution     (contains source files, to be modified by you)
-        ├── templates      (contains source files)
+    :   ├── mastersolution (folder containing source files)
+        ├── mysolution     (folder containing source files, to be modified by you)
+        ├── templates      (folder containing source files)
         :
 ```
 
