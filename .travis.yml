@@ -10,19 +10,34 @@ cache:
   - "$TRAVIS_BUILD_DIR/hunter"
 branches:
 stages:
-- clang-format
+# - clang-format
+- compile
 jobs:
   include:
-  - stage: clang-format
+  # - stage: clang-format
+    # os: linux
+    # addons:
+      # apt:
+        # update: true
+        # sources:
+        # - llvm-toolchain-xenial-8
+        # - ubuntu-toolchain-r-test
+        # packages:
+        # - clang-format-8
+    # script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
+      # --color always ./developers/"
+  - stage: compile
     os: linux
+    compiler: gcc
+    env:
+    - COMPILER=g++-7
+    - BUILD_TYPE='Debug'
     addons:
       apt:
         update: true
         sources:
-        - llvm-toolchain-xenial-8
         - ubuntu-toolchain-r-test
         packages:
-        - clang-format-8
-    script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
-      --color always ./developers/"
+        - g++-7
+    script: "./ci/compile.sh"
   
