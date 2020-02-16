@@ -11,7 +11,7 @@ cache:
 branches:
 stages:
 # - clang-format
-- compile
+- compile_test
 jobs:
   include:
   # - stage: clang-format
@@ -26,18 +26,19 @@ jobs:
         # - clang-format-8
     # script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
       # --color always ./developers/"
-  - stage: compile
+  - stage: compile_test
     os: linux
-    compiler: gcc
+    compiler: clang
     env:
-    - COMPILER=g++-7
+    - COMPILER='clang++-8'
     - BUILD_TYPE='Debug'
     addons:
       apt:
-        update: true
         sources:
+        - llvm-toolchain-xenial-8
         - ubuntu-toolchain-r-test
         packages:
+        - clang-8
         - g++-7
-    script: "./ci/compile.sh"
+    script: "./travis/compile_test.sh"
   
