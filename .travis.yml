@@ -40,5 +40,5 @@ jobs:
         packages:
         - clang-8
         - g++-7
-    script: "./travis/compile_test.sh"
+    script: "./ci/compile.sh"
   
