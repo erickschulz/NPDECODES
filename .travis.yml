@@ -31,7 +31,7 @@ jobs:
     compiler: clang
     env:
     - COMPILER='clang++-8'
-    - BUILD_TYPE='Debug'
+    - BUILD_TYPE='Release'
     addons:
       apt:
         sources:
