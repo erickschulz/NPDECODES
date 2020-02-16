@@ -53,8 +53,8 @@ TEST(Solve, test) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
   const lf::base::size_type N_dofs(dofh.NumDofs());
 
-  lf::uscalfe::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
-  lf::uscalfe::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
 
   // Galerkin matrix
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
@@ -66,7 +66,7 @@ TEST(Solve, test) {
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
 
   // Right hand side
-  lf::uscalfe::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
 
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)> elvec_builder(
       mf_f);
@@ -91,7 +91,7 @@ TEST(Solve, test) {
 // Test SolvePoissonBVP
 //////////////////////
 TEST(SolvePoissonBVP, test) {
-  lf::uscalfe::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
 
   lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder;
   lf::uscalfe::LinearFELocalLoadVector<double, decltype(mf_f)> elvec_builder(
@@ -120,7 +120,7 @@ TEST(MyLinearLoadVector, testTriangles)
   std::shared_ptr<lf::mesh::Mesh> mesh_p =
       lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
 
-  lf::uscalfe::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
 
   ElementMatrixComputation::MyLinearLoadVector elvec_builder(
       ElementMatrixComputation::f);
@@ -141,7 +141,7 @@ TEST(MyLinearLoadVector, testQuads)
 {
   auto mesh_p = Generate2DTestMesh();
 
-  lf::uscalfe::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
 
   ElementMatrixComputation::MyLinearLoadVector elvec_builder(
       ElementMatrixComputation::f);
@@ -169,8 +169,8 @@ TEST(MyLinearFEElementMatrix, testTriangles)
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
 
-  lf::uscalfe::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
-  lf::uscalfe::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
 
   ElementMatrixComputation::MyLinearFEElementMatrix elmat_builder;
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
@@ -196,8 +196,8 @@ TEST(MyLinearFEElementMatrix, testQuads)
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
 
-  lf::uscalfe::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
-  lf::uscalfe::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{identityMatrixFunctor};
+  lf::mesh::utils::MeshFunctionGlobal mf_gamma{identityScalarFunctor};
 
   ElementMatrixComputation::MyLinearFEElementMatrix elmat_builder;
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<

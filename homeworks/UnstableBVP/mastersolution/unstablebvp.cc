@@ -53,7 +53,7 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
 
   // Initialize triangle
   mesh_factory_ptr->AddEntity(lf::base::RefEl::kTria(),
-                              nonstd::span<const lf::base::size_type>({0, 1, 2}),
+                              std::vector<lf::base::size_type>({0, 1, 2}),
                               std::unique_ptr<lf::geometry::Geometry>(nullptr));
 
   // Get a pointer to the mesh

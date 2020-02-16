@@ -36,7 +36,7 @@ std::shared_ptr<const lf::mesh::Mesh> singleTriagMesh()
   nodesOfTria << 0, 1, 0, 0, 0, 1;
   mesh_factory_ptr->AddEntity(
       lf::base::RefEl::kTria(),
-      nonstd::span<const size_type>({0, 1, 2}),
+      std::vector<size_type>({0, 1, 2}),
       std::unique_ptr<lf::geometry::Geometry>(nullptr)); // node coords
 
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = mesh_factory_ptr->Build();
