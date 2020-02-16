@@ -48,6 +48,8 @@ gcc_release/
 doc/doxygen/html
 Build/
 build/
+build_clang8/
+build_msvc/
 .idea/
 .vscode/
 venv/
@@ -57,3 +59,4 @@ cmake-build-release
 
 #OSX
 .DS_Store
+

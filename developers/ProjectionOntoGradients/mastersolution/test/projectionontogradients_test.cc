@@ -51,7 +51,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_1) {
   // initialize functions f and v for which the linear form is evaluated
   auto f = [](Eigen::Vector2d x) { return Eigen::Vector2d(1.0, 2.0); };
   auto v = [](Eigen::Vector2d x) { return 2 * x(0) + x(1); };
-  auto v_mf = lf::uscalfe::MeshFunctionGlobal(v);
+  auto v_mf = lf::mesh::utils::MeshFunctionGlobal(v);
 
   // set up finite elements
   std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space =
@@ -81,7 +81,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_2) {
   // initialize functions f and v for which the linear form is evaluated
   auto f = [](Eigen::Vector2d x) { return Eigen::Vector2d(x(1), x(0)); };
   auto v = [](Eigen::Vector2d x) { return 2 * x(0) + x(1); };
-  auto v_mf = lf::uscalfe::MeshFunctionGlobal(v);
+  auto v_mf = lf::mesh::utils::MeshFunctionGlobal(v);
 
   // set up finite elements
   std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space =
@@ -270,7 +270,7 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
   // The Function lf::uscalfe::NodalProjection requires a mesh function as its
   // second argument, so we first construct a meshFunction object which
   // describes the tent function.
-  auto tentFunction_mf = lf::uscalfe::MeshFunctionGlobal(tentFunction);
+  auto tentFunction_mf = lf::mesh::utils::MeshFunctionGlobal(tentFunction);
   auto ref_vec =
       lf::uscalfe::NodalProjection<double>(fe_space, tentFunction_mf);
 #else

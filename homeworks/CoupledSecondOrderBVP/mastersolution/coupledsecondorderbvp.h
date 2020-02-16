@@ -108,9 +108,9 @@ Eigen::VectorXd solveCoupledBVP(
   /* I : Creating coefficients as Lehrfem++ mesh functions */
   // Coefficients used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
-  auto const_one = lf::uscalfe::MeshFunctionGlobal(
+  auto const_one = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  auto const_zero = lf::uscalfe::MeshFunctionGlobal(
+  auto const_zero = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 0.0; });
 
   /* II: Instantiating finite element matrices and right hand side vector*/
@@ -151,7 +151,7 @@ Eigen::VectorXd solveCoupledBVP(
   dropMatrixRows(bd_selector, M);
   // IV : Computing the element vector phi (associated to source f)
   // Wrap the lambda source function f in a Lehrfem++ MeshFunction
-  auto mf_f = lf::uscalfe::MeshFunctionGlobal(f);
+  auto mf_f = lf::mesh::utils::MeshFunctionGlobal(f);
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
       elvec_builder(fe_space, mf_f);
   // Invoke assembly on cells (codim == 0)

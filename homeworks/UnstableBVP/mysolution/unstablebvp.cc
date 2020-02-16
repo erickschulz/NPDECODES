@@ -82,7 +82,7 @@ double solveTemperatureDistribution(
     return x[1] <= 0 ? 1 - x[1] : 0;
   };
   // Wrap into a MeshFunction
-  lf::uscalfe::MeshFunctionGlobal mf_bc{bc};
+  lf::mesh::utils::MeshFunctionGlobal mf_bc{bc};
 
   // We use lowest-order (p.w. linear Lagrangian finite elements), for which
   // LehrFEM++ provides a built-in description according to the paradigm of
@@ -175,7 +175,7 @@ double solveTemperatureDistribution(
   // We use this trick to avoid the manual computation and make use of the
   // LehrFEM facilities :)
   lf::uscalfe::MeshFunctionL2GradientDifference loc_comp(
-      fe_space, lf::uscalfe::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)),
+      fe_space, lf::mesh::utils::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)),
       2);
 
   // Compute the norm of the ``difference'' (i.e. the norm of the gradient of

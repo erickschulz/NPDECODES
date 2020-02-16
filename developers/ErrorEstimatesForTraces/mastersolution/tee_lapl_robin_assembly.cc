@@ -18,15 +18,15 @@ Eigen::VectorXd solveBVP(
   // Coefficients used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
   auto alpha =
-      lf::uscalfe::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
   auto gamma =
-      lf::uscalfe::MeshFunctionGlobal([](coord_t x) -> double { return 0.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 0.0; });
   // Coefficients used in the class template
   // MassEdgeMatrixProvider< SCALAR, COEFF, EDGESELECTOR >
   auto eta =
-      lf::uscalfe::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
   // Right-hand side source function f
-  auto f = lf::uscalfe::MeshFunctionGlobal(
+  auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](coord_t x) -> double { return std::cos(x.norm()); });
 
   // pointer to current mesh

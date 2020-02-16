@@ -34,7 +34,7 @@ int main() {
   /* GENERATE BVP DATA */
   // Interpolate variable coefficient function w(x) = sin(|x|)
   auto w_func = [](Eigen::Vector2d x) -> double { return std::sin(x.norm()); };
-  lf::uscalfe::MeshFunctionGlobal mf_w_func{w_func};
+  lf::mesh::utils::MeshFunctionGlobal mf_w_func{w_func};
   auto w = lf::uscalfe::NodalProjection<double>(*fe_space, mf_w_func);
   // Create direction vector entering the anisotropic diffusion tensor
   auto d = [](Eigen::Vector2d x) -> Eigen::Vector2d { return x; };

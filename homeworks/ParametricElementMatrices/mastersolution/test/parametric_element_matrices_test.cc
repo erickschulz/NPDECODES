@@ -30,9 +30,9 @@ TEST(ParametricElementMatrices, TestGalerkin)
     const Eigen::Vector2d d_x{d(x)};
     return Eigen::Matrix2d::Identity(2, 2) + d_x * d_x.transpose();
   };
-  lf::uscalfe::MeshFunctionGlobal mf_alpha{alpha};
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{alpha};
   auto zero = [](Eigen::Vector2d x) -> double { return 0.; };
-  lf::uscalfe::MeshFunctionGlobal mf_zero{zero};
+  lf::mesh::utils::MeshFunctionGlobal mf_zero{zero};
   // set up quadrature rule to be able to compare
   std::map<lf::base::RefEl, lf::quad::QuadRule> quad_rules{
       {lf::base::RefEl::kTria(), lf::quad::make_TriaQR_EdgeMidpointRule()},
@@ -68,12 +68,12 @@ TEST(ParametricElementMatrices, TestLoad)
   // An affine linear function that can be represented exactly
   // in the space of p.w. linear Lagrangian finite element functions
   auto w_func = [](Eigen::Vector2d x) -> double { return (3.0 * x[0] - x[1]); };
-  lf::uscalfe::MeshFunctionGlobal mf_w_func{w_func};
+  lf::mesh::utils::MeshFunctionGlobal mf_w_func{w_func};
   // function f(x) = 1/(1 + w(x)^2)
   auto f = [&w_func](Eigen::Vector2d x) -> double {
     return 1. / (1. + std::pow(w_func(x), 2));
   };
-  lf::uscalfe::MeshFunctionGlobal mf_f{f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{f};
 
   // interpolation of w on fe space: reproduces function
   auto w = lf::uscalfe::NodalProjection<double>(*fe_space, mf_w_func);

@@ -26,10 +26,10 @@ Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
     const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
     const size_type num_dofs = dof_handler.NumDofs();
     // Prepare coefficient and source functions as MeshFunction
-    lf::uscalfe::MeshFunctionGlobal mf_one{
+    lf::mesh::utils::MeshFunctionGlobal mf_one{
         [](Eigen::Vector2d x) -> double { return 1.; }};
-    lf::uscalfe::MeshFunctionGlobal mf_gamma{gamma};
-    lf::uscalfe::MeshFunctionGlobal mf_f{f};
+    lf::mesh::utils::MeshFunctionGlobal mf_gamma{gamma};
+    lf::mesh::utils::MeshFunctionGlobal mf_f{f};
     // Sparse Galerkin matrix in triplet format
     lf::assemble::COOMatrix<scalar_type> A(num_dofs, num_dofs);
     // Initialize ELEMENT_MATRIX_PROVIDER object
