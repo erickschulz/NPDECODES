@@ -29,7 +29,7 @@ TEST(FiniteVolumeRobin, EdgeMatrixProvider) {
   // initialize functors gamma and v
   auto gamma = [](Eigen::Vector2d x) { return 2.0; };
   auto v = [](Eigen::Vector2d x) { return 2 * x(0) + x(1); };
-  auto v_mf = lf::uscalfe::MeshFunctionGlobal(v);
+  auto v_mf = lf::mesh::utils::MeshFunctionGlobal(v);
 
   // set up finite element space and dofhandler
   auto fe_space =

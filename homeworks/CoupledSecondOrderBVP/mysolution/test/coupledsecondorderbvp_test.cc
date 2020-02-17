@@ -58,9 +58,9 @@ TEST(CoupledSecondOrderBVP, dropMatrixRowsAndColumns) {
     }
   };
   // Coefficients 
-  auto const_one = lf::uscalfe::MeshFunctionGlobal(
+  auto const_one = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  auto const_zero = lf::uscalfe::MeshFunctionGlobal(
+  auto const_zero = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 0.0; });
 
   lf::assemble::COOMatrix<double> A0(N_dofs, N_dofs);
@@ -133,9 +133,9 @@ TEST(CoupledSecondOrderBVP, dropMatrixRows) {
   };
   
   // Coefficients
-  auto const_one = lf::uscalfe::MeshFunctionGlobal(
+  auto const_one = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  auto const_zero = lf::uscalfe::MeshFunctionGlobal(
+  auto const_zero = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 0.0; });
 
   lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);   // off-diag blocks
@@ -191,7 +191,7 @@ TEST(CoupledSecondOrderBVP, solveCoupledBVP) {
   // reaction coefficient
   double gamma = 1.0;
   // Right-hand side source function f
-  auto f = lf::uscalfe::MeshFunctionGlobal(
+  auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return std::cos(x.norm()); });
 
   // Solution Vector 

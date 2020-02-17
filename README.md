@@ -16,24 +16,43 @@ Currently, only UNIX based operating systems are supported. Moreover, you need t
 ## Getting started
 Open a terminal and type
 ```
-git clone git@github.com:OliverRietmann/NPDECODES.git
+git clone git@github.com:erickschulz/NPDECODES.git
 cd NPDECODES/
 mkdir build
 cd build/
 cmake ..
 ```
-This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `BurgersEquation`, proceed as follows:
+This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `TestQuadratureRules`, proceed as follows:
 ```
-cd homeworks/BurgersEquation/
+cd homeworks/TestQuadratureRules/
 make
 ```
-This will build from the source files in `NPDECODES/homeworks/BurgersEquation/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
-* `./BurgersEquation_mastersolution`: Runs the mastersolution.
-* `./BurgersEquation_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
-* `./BurgersEquation_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
-* `./BurgersEquation_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
+This will build from the source files in `NPDECODES/homeworks/TestQuadratureRules/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
+* `./TestQuadratureRules_mastersolution`: Runs the mastersolution.
+* `./TestQuadratureRules_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
+* `./TestQuadratureRules_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
+* `./TestQuadratureRules_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
 
-Some remarks on building the codes:
+There is two folders called `homeworks/`. One contains the source files and one contains the executables:
+```
+.
+├── build (was created by you)
+│   ├── homeworks
+│   :   ├── TestQuadratureRules
+│       :   ├── TestQuadratureRules_mastersolution      (executable)
+│           ├── TestQuadratureRules_mysolution          (executable)
+│           ├── TestQuadratureRules_test_mastersolution (executable)
+│           ├── TestQuadratureRules_test_mysolution     (executable)
+│           :
+│
+├── homeworks
+:   ├── TestQuadratureRules
+    :   ├── mastersolution (folder containing source files)
+        ├── mysolution     (folder containing source files, to be modified by you)
+        ├── templates      (folder containing source files)
+        :
+```
+
+## Further remarks
 * If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
 * LehrFEM++ is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
-* There is two folders called `homeworks`. The source files are located in `NPDECODES/homeworks/<ProblemName>` and the binaries get created in `NPDECODES/build/homeworks/<ProblemName>`. Students should only change the files in `NPDECODES/homeworks/<ProblemName>/mysolution`.

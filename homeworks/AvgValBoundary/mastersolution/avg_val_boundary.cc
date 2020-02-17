@@ -22,9 +22,9 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
 {
   double result = 0.;
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
   // constant zero mesh function
-  lf::uscalfe::MeshFunctionConstant mf_zero{0.};
+  lf::mesh::utils::MeshFunctionConstant mf_zero{0.};
 
   // compute Stiffness matrix
   // alpha := 1, beta, gamma := 0
@@ -45,7 +45,7 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
 {
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
 
   // obtain Galerkin matrix for alpha = beta = gamma := 1.
   auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
@@ -96,13 +96,13 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
     // Obtain local->global index mapping for current finite element space
     const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
     const lf::base::size_type N_dofs(dofh.NumDofs());
-    lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+    lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
     // compute galerkin matrix
     auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
                                                 mf_identity);
     // compute load vector for f(x) = x.norm()
     auto f = [](Eigen::Vector2d x) -> double { return x.norm(); };
-    lf::uscalfe::MeshFunctionGlobal mf_f{f};
+    lf::mesh::utils::MeshFunctionGlobal mf_f{f};
     Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
     phi.setZero();
     lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_identity)>
@@ -116,7 +116,7 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
 
     // set up weight function
     auto w = [](Eigen::Vector2d x) -> double { return 1.; };
-    lf::uscalfe::MeshFunctionGlobal mf_w{w};
+    lf::mesh::utils::MeshFunctionGlobal mf_w{w};
     double functional_value = compBoundaryFunctional(dofh, u, mf_w);
 
     result.push_back({N_dofs, functional_value});

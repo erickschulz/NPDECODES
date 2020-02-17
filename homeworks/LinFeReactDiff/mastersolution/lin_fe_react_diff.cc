@@ -39,15 +39,15 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh)
     // with Dirichlet boundary conditions fixed to 0.
     // used for the boundary conditions
     auto zero = [](Eigen::Vector2d x) -> double { return 0.; };
-    lf::uscalfe::MeshFunctionGlobal mf_zero{zero};
+    lf::mesh::utils::MeshFunctionGlobal mf_zero{zero};
 
     // used for the Galerkin Matrix
     auto identity = [](Eigen::Vector2d x) -> double { return 1.; };
-    lf::uscalfe::MeshFunctionGlobal mf_identity{identity};
+    lf::mesh::utils::MeshFunctionGlobal mf_identity{identity};
 
     // used for the load vector
     auto c = [](Eigen::Vector2d x) -> double { return x[0] * x[1]; };
-    lf::uscalfe::MeshFunctionGlobal mf_c{c};
+    lf::mesh::utils::MeshFunctionGlobal mf_c{c};
 
     auto fe_space =
         std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
@@ -119,10 +119,10 @@ double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
     const lf::base::size_type N_dofs(dofh.NumDofs());
 
     auto identity = [](Eigen::Vector2d x) -> double { return 1.; };
-    lf::uscalfe::MeshFunctionGlobal mf_identity{identity};
+    lf::mesh::utils::MeshFunctionGlobal mf_identity{identity};
 
     auto zero = [](Eigen::Vector2d x) -> double { return 0.; };
-    lf::uscalfe::MeshFunctionGlobal mf_zero{zero};
+    lf::mesh::utils::MeshFunctionGlobal mf_zero{zero};
 
     // Matrix in triplet format holding Stiffness matrix.
     lf::assemble::COOMatrix<double> Stiffness(N_dofs, N_dofs);

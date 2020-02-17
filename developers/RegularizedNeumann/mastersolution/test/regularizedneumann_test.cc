@@ -50,9 +50,9 @@ TEST(RegularizedNeumann, solution_test_dropDof_const) {
   std::remove("test.msh");
 
   // source and boundary functions for testing
-  const auto f = lf::uscalfe::MeshFunctionGlobal(
+  const auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  const auto h = lf::uscalfe::MeshFunctionGlobal(
+  const auto h = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
 
   auto fe_space =
@@ -121,9 +121,9 @@ TEST(RegularizedNeumann, solution_test_dropDof_gen) {
   std::remove("test.msh");
 
   // source and boundary functions for testing
-  const auto f = lf::uscalfe::MeshFunctionGlobal(
+  const auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return x(0) + x(1); });
-  const auto h = lf::uscalfe::MeshFunctionGlobal(
+  const auto h = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return x(0) + x(1); });
 
   auto fe_space =
@@ -192,9 +192,9 @@ TEST(RegularizedNeumann, solution_test_augment_const) {
   std::remove("test.msh");
 
   // source and boundary functions for testing
-  const auto f = lf::uscalfe::MeshFunctionGlobal(
+  const auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  const auto h = lf::uscalfe::MeshFunctionGlobal(
+  const auto h = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
 
   auto fe_space =
@@ -266,9 +266,9 @@ TEST(RegularizedNeumann, solution_test_augment_gen) {
   std::remove("test.msh");
 
   // source and boundary functions for testing
-  const auto f = lf::uscalfe::MeshFunctionGlobal(
+  const auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return x(0) + x(1); });
-  const auto h = lf::uscalfe::MeshFunctionGlobal(
+  const auto h = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return x(0) + x(1); });
 
   auto fe_space =

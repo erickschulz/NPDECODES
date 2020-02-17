@@ -88,7 +88,7 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh_lfe,
 {
     double result = 0.;
     // constant zero mesh function
-    lf::uscalfe::MeshFunctionConstant mf_zero{0.};
+    lf::mesh::utils::MeshFunctionConstant mf_zero{0.};
     auto A = compGalerkinMatrix(dofh_lfe, mf_zero, mf_zero, w);
     const lf::base::size_type N_dofs(dofh_lfe.NumDofs());
     Eigen::VectorXd ones = Eigen::VectorXd::Ones(N_dofs);

@@ -47,11 +47,11 @@ Eigen::SparseMatrix<double> assembleGalerkinMatrix(
   /* Creating coefficient-functions as Lehrfem++ mesh functions */
   // Coefficient-functions used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
-  auto alpha_mf = lf::uscalfe::MeshFunctionGlobal(alpha);
-  auto gamma_mf = lf::uscalfe::MeshFunctionGlobal(gamma);
+  auto alpha_mf = lf::mesh::utils::MeshFunctionGlobal(alpha);
+  auto gamma_mf = lf::mesh::utils::MeshFunctionGlobal(gamma);
   // Coefficient-function used in the class template
   // MassEdgeMatrixProvider< SCALAR, COEFF, EDGESELECTOR >
-  auto beta_mf = lf::uscalfe::MeshFunctionGlobal(beta);
+  auto beta_mf = lf::mesh::utils::MeshFunctionGlobal(beta);
 
   /* Retrieving FE data */
   // pointer to current mesh
