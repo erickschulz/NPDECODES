@@ -35,7 +35,7 @@ int main() {
   auto uExact = [&a, &b](Eigen::VectorXd x) -> double {
     return (log((x - a).norm()) - log((x - b).norm())) / log(2) - 1;
   };
-  lf::uscalfe::MeshFunctionGlobal mf_uExact{uExact};
+  lf::mesh::utils::MeshFunctionGlobal mf_uExact{uExact};
   // Compute "exact" force using overkill quadrature
   Eigen::Vector2d exact_force = computeExactForce();
 

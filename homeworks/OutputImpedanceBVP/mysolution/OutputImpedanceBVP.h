@@ -42,7 +42,7 @@ Eigen::VectorXd interpolateData(
     FUNCTOR_U &&u) {
 
   // Generate Lehrfem++ mesh functions out of the functors
-  auto mf_u = lf::uscalfe::MeshFunctionGlobal(
+  auto mf_u = lf::mesh::utils::MeshFunctionGlobal(
       [&u](coord_t x) -> double { return u(x); });
 
   Eigen::VectorXd dof_vector_u = lf::uscalfe::NodalProjection(*fe_space_p, mf_u);

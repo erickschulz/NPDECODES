@@ -111,7 +111,7 @@ Eigen::VectorXd solvePoissonBVP(
   // II. IMPOSING ESSENTIAL BOUNDARY CONDITIONS
   // II.i Producing Dirichlet data
   auto mf_bd_values =
-      lf::uscalfe::MeshFunctionGlobal([](Eigen::Vector2d x) -> double {
+      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double {
         if (x.norm() < 0.27) {
           return 1.0;
         }

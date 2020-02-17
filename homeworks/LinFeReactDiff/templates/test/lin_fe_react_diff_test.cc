@@ -33,11 +33,11 @@ TEST(LinFeReactDiff, TestEnergy)
 
   // Implementation from solution to not depend on the first task
   auto zero = [](Eigen::Vector2d x) -> double { return 0.; };
-  lf::uscalfe::MeshFunctionGlobal mf_zero{zero};
+  lf::mesh::utils::MeshFunctionGlobal mf_zero{zero};
   auto identity = [](Eigen::Vector2d x) -> double { return 1.; };
-  lf::uscalfe::MeshFunctionGlobal mf_identity{identity};
+  lf::mesh::utils::MeshFunctionGlobal mf_identity{identity};
   auto c = [](Eigen::Vector2d x) -> double { return x[0] * x[1]; };
-  lf::uscalfe::MeshFunctionGlobal mf_c{c};
+  lf::mesh::utils::MeshFunctionGlobal mf_c{c};
 
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);

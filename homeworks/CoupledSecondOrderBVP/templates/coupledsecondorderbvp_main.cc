@@ -37,7 +37,7 @@ int main(int /*argc*/, const char** /*argv*/) {
   /* Solve the coupled boundary value problem */
   double gamma = 1.0;  // reaction coefficientS
   // Right-hand side source function f
-  auto f = lf::uscalfe::MeshFunctionGlobal(
+  auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return std::cos(x.norm()); });
   Eigen::VectorXd sol_vec = solveCoupledBVP(fe_space, gamma, f);
 

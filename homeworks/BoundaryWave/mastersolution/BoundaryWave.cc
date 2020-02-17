@@ -33,7 +33,7 @@ lf::assemble::COOMatrix<double> buildM(
   };
   // Coefficient function used in the class template MassEdgeMatrixProvider
   auto eta =
-      lf::uscalfe::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 1.0; });
   lf::uscalfe::MassEdgeMatrixProvider<double, decltype(eta),
                                       decltype(edges_predicate)>
       edgemat_builder(fe_space_p, eta, edges_predicate);
@@ -58,10 +58,10 @@ lf::assemble::COOMatrix<double> buildA(
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Coefficient functions used in class ReactionDiffusionElementMatrixProvider
-  auto alpha = lf::uscalfe::MeshFunctionGlobal(
+  auto alpha = lf::mesh::utils::MeshFunctionGlobal(
       [](coord_t x) -> double { return 1.0 + x.dot(x); });
   auto gamma =
-      lf::uscalfe::MeshFunctionGlobal([](coord_t x) -> double { return 0.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 0.0; });
   // Initialize element matrix builder
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, decltype(alpha),
                                                       decltype(gamma)>

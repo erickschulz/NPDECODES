@@ -36,7 +36,7 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
 {
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
 
   // obtain Galerkin matrix for alpha = beta = gamma := 1.
   auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
