@@ -182,6 +182,7 @@ None yet.
 ## Missing unitests 
 
 ### Not in NPDEFL_Problems
+- BoundaryWave
 
 ### Chapter 6
 - RadauThreeTimestepping
