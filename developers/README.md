@@ -72,11 +72,11 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.5: Transport Problem
 * Problem 7.6: Upwind Finite Volume Method 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Problems missing in NPDFL_Problems %%%
+# TO DO LIST
+## Problems missing in NPDFL_Problems 
 
-Already ported 
---------------------------------
+### Already ported 
+
 - BoundaryWave
 - CoupledSecondOrderBVP
 - CLEmpiricFlux
@@ -85,16 +85,14 @@ Already ported
 - LinFeRactDiff
 - OutputImpedanceBVP
 
-Need to be ported from NPDEORG
---------------------------------
+### Need to be ported from NPDEORG
 - WaveABC2D
 - ZienkiewiczZhuEstimator
 - ExtendedMUSCL
 
-%%%%%%%%%%%%%%% Polished %%%%%%%%%%%%%%%%
+## Polished 
 
-Chapter 2
------------------------------------------
+### Chapter 2
 - TransformationOfGalerkinMatrices
 - LinearFE1D
 - LengthOfBoundary
@@ -102,74 +100,52 @@ Chapter 2
 - ParametricElementMatrices
 - ErrorEstimatesForTraces
 
-Chapter 3
------------------------------------------
+### Chapter 3
 - MaximumPrinciple
 
-Chapter 6
------------------------------------------
+### Chapter 6
 - RadauThreeTimestepping
 - SDIRKMethodOfLines
 - 1DWaveAbsorbingBC
 - SymplecticTimesteppingWaves
 
-Chapter 8
------------------------------------------
+### Chapter 8
 - BurgersEquation
 - EngquistOsherNumericalFlux
 - FiniteVolumeSineConsLaw
 - LaxWendroffScheme
 - DiscontinuousGalerkin1D
 
-%%%%% Require confirmation of polished %%%%
+## Require confirmation of polished 
 
-Chapter 2
------------------------------------------
+### Chapter 2
 - SimpleLinearFiniteElements (Amélie?)
 - IncidenceMatrices (Philippe Peter?)
 - ElementMatrixComputation(Oliver?)
 - ProjectionOntoGradients (Philippe Peter?)
 
-Chapter 3
------------------------------------------
+### Chapter 3
 - PointEvaluationRhs (Liaowang?)
 - UnstableBVP (Amélie?)
 
-%%%%%%%%%%%%%% Require polishing %%%%%%%%%%%%
+## Require polishing 
 
-Chapter 2
------------------------------------------
+### Chapter 2
 - HandlingDOFs
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann 
 
-Chapter 3
------------------------------------------
+### Chapter 3
 - AvgValBoundary
 - DebuggingFEM
 
-%%%%%%%%%% Verified for consistency %%%%%%%%%%
+## Verified for consistency 
 
-Chapter 2
------------------------------------------
+None yet.
 
+## Need consistency verification 
 
-Chapter 3
------------------------------------------
-
-
-Chapter 6
------------------------------------------
-
-
-Chapter 8
------------------------------------------
-
-
-%%%%%%% Need consistency verification %%%%%%%%
-
-Chapter 2
------------------------------------------
+### Chapter 2
 - TransformationOfGalerkinMatrices (folder reference)
 - LinearFE1D
 - SimpleLinearFiniteElements
@@ -183,37 +159,31 @@ Chapter 2
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann
 
-Chapter 3
------------------------------------------
+### Chapter 3
 - AvgValBoundary
 - DebuggingFEM
 - PointEvaluationRhs
 - ErrorEstimatesForTraces (folder reference)
 - MaximumPrinciple
 
-Chapter 6
------------------------------------------
+### Chapter 6
 - RadauThreeTimestepping
 - SDIRKMethodOfLines
 - 1DWaveAbsorbingBC
 - SymplecticTimesteppingWaves
 
-Chapter 8
------------------------------------------
+### Chapter 8
 - BurgersEquation
 - EngquistOsherNumericalFlux
 - FiniteVolumeSineConsLaw
 - LaxWendroffScheme
 - DiscontinuousGalerkin1D
 
-%%%%%%%%%%%% Missing unitests %%%%%%%%%%%%%%%%%%
+## Missing unitests 
 
-Not in NPDEFL_Problems
-----------------------------------------
+### Not in NPDEFL_Problems
 
-
-Chapter 6
------------------------------------------
+### Chapter 6
 - RadauThreeTimestepping
 - SDIRKMethodOfLines
 - SymplecticTimesteppingWaves
