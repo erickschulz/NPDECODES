@@ -54,7 +54,8 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
-* `TestQuadratureRules`: Replace console output in unit test by actual test. ***(Liaowang)***
+* `TestQuadratureRules`: Replace console output in unit test by actual test. **(Liaowang)**
+* General: Only plot .eps files (no .png and so on).
 
 ## New Problems
 
@@ -67,7 +68,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.3: Upwind Quadrature
 * Problem 7.4: Exponentially fitted upwind scheme
 * Problem 7.5: Transport Problem
-* Problem 7.6: Upwind Finite Volume Method 
+* Problem 7.6: Upwind Finite Volume Method
 
 # TO DO LIST
 ## Problems missing in NPDFL_Problems 
@@ -90,39 +91,39 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Polished 
 
 ### Chapter 2
+- ErrorEstimatesForTraces
 - IncidenceMatrices
-- TransformationOfGalerkinMatrices
-- LinearFE1D
 - LengthOfBoundary
-- TestQuadratureRules
+- LinearFE1D
 - ParametricElementMatrices
 - ProjectionOntoGradients
-- ErrorEstimatesForTraces
+- SimpleLinearFiniteElements
+- TestQuadratureRules
+- TransformationOfGalerkinMatrices
 
 ### Chapter 3
 - MaximumPrinciple
 
 ### Chapter 6
+- 1DWaveAbsorbingBC
 - RadauThreeTimestepping
 - SDIRKMethodOfLines
-- 1DWaveAbsorbingBC
 - SymplecticTimesteppingWaves
 
 ### Chapter 8
 - BurgersEquation
+- DiscontinuousGalerkin1D
 - EngquistOsherNumericalFlux
 - FiniteVolumeSineConsLaw
 - LaxWendroffScheme
-- DiscontinuousGalerkin1D
 
 ## Require confirmation of polished 
 
 ### Chapter 2
-- SimpleLinearFiniteElements (Amélie?)
 - ElementMatrixComputation(Oliver?)
 
 ### Chapter 3
-- PointEvaluationRhs ***(Liaowang)***
+- PointEvaluationRhs **(Liaowang)**
 - UnstableBVP (Amélie?)
 
 ## Require polishing 
