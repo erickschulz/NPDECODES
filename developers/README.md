@@ -54,7 +54,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
-* `TestQuadratureRules`: Replace console output in unit test by actual test
+* `TestQuadratureRules`: Replace console output in unit test by actual test. ***(Liaowang)***
 
 ## New Problems
 
@@ -90,11 +90,13 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Polished 
 
 ### Chapter 2
+- IncidenceMatrices
 - TransformationOfGalerkinMatrices
 - LinearFE1D
 - LengthOfBoundary
 - TestQuadratureRules
 - ParametricElementMatrices
+- ProjectionOntoGradients
 - ErrorEstimatesForTraces
 
 ### Chapter 3
@@ -117,12 +119,10 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ### Chapter 2
 - SimpleLinearFiniteElements (Amélie?)
-- IncidenceMatrices (Philippe Peter?)
 - ElementMatrixComputation(Oliver?)
-- ProjectionOntoGradients (Philippe Peter?)
 
 ### Chapter 3
-- PointEvaluationRhs (Liaowang?)
+- PointEvaluationRhs ***(Liaowang)***
 - UnstableBVP (Amélie?)
 
 ## Require polishing 
