@@ -52,17 +52,14 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `ElectrostaticForce`: unit test fails for mastersolution
 * `ElementMatrixComputation`: Replace console output in unit test by actual test
 * `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
-* `PointEvaluationRhs`: bad includes **(Liaowang)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
-* `SimpleLinearFiniteElements`: bad includes **(Amélie)**
 * `TestQuadratureRules`: Replace console output in unit test by actual test
 
 ## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 4.1: Finite Volumes with Robin Boundary Conditions **(Philippe)**
 * Problem 5.6: Parametric Finite Elements
 * Problem 5.7: Stable Evaluation at a Point
 * Problem 5.8: Trace Error Estimates **(done already?)**
