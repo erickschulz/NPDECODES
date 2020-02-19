@@ -183,6 +183,7 @@ None yet.
 
 ### Not in NPDEFL_Problems
 - BoundaryWave
+- ZienkiewiczZhuEstimator
 
 ### Chapter 6
 - RadauThreeTimestepping
