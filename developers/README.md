@@ -84,10 +84,10 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - IPDGFEM
 - LinFeRactDiff
 - OutputImpedanceBVP
+- ZienkiewiczZhuEstimator
 
 ### Need to be ported from NPDEORG
 - WaveABC2D
-- ZienkiewiczZhuEstimator
 - ExtendedMUSCL
 
 ## Polished 
