@@ -85,9 +85,9 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - LinFeRactDiff
 - OutputImpedanceBVP
 - ZienkiewiczZhuEstimator
+- WaveABC2D
 
 ### Need to be ported from NPDEORG
-- WaveABC2D
 - ExtendedMUSCL
 
 ## Polished 
@@ -184,6 +184,7 @@ None yet.
 ### Not in NPDEFL_Problems
 - BoundaryWave
 - ZienkiewiczZhuEstimator
+- WaveABC2D
 
 ### Chapter 6
 - RadauThreeTimestepping
