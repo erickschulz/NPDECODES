@@ -26,19 +26,25 @@ jobs:
         # - clang-format-8
     # script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
       # --color always ./developers/"
-  - stage: compile_test
-    os: linux
-    compiler: clang
-    env:
-    - COMPILER='clang++-8'
-    - BUILD_TYPE='Release'
-    addons:
-      apt:
-        sources:
-        - llvm-toolchain-xenial-8
-        - ubuntu-toolchain-r-test
-        packages:
-        - clang-8
-        - g++-7
-    script: "./ci/compile.sh"
+  # - stage: compile_test
+    # os: linux
+    # compiler: clang
+    # env:
+    # - COMPILER='clang++-8'
+    # - BUILD_TYPE='Release'
+    # addons:
+      # apt:
+        # sources:
+        # - llvm-toolchain-xenial-8
+        # - ubuntu-toolchain-r-test
+        # packages:
+        # - clang-8
+        # - g++-7
+    # script: "./ci/compile.sh"
+    - stage: compile_test
+      os: osx
+      osx_image: xcode10.2
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug'
+      script: "./ci/compile.sh"
   
