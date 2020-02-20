@@ -103,6 +103,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ### Chapter 3
 - MaximumPrinciple
+- UnstableBVP 
 
 ### Chapter 6
 - 1DWaveAbsorbingBC
@@ -124,7 +125,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ### Chapter 3
 - PointEvaluationRhs **(Liaowang)**
-- UnstableBVP (Amélie?)
 
 ## Require polishing 
 
