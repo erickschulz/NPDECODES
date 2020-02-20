@@ -23,7 +23,7 @@ int main() {
   // compute H1 seminorm of the solution
   double h1s_norm = AvgValBoundary::compH1seminorm(dofh, mu);
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
   // compute boundary functional
   double boundary_functional =
       AvgValBoundary::compBoundaryFunctional(dofh, mu, mf_identity);

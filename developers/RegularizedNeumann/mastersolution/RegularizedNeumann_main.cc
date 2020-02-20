@@ -10,9 +10,9 @@
 
 int main() {
 #if SOLUTION
-  const auto f = lf::uscalfe::MeshFunctionGlobal(
+  const auto f = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
-  const auto h = lf::uscalfe::MeshFunctionGlobal(
+  const auto h = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0; });
 
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(4, 3.0);

@@ -40,9 +40,9 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolateInitialData(
   Eigen::VectorXd dof_vector_u0, dof_vector_v0;
 
   // Generate Lehrfem++ mesh functions out of the functors
-  auto mf_u0 = lf::uscalfe::MeshFunctionGlobal(
+  auto mf_u0 = lf::mesh::utils::MeshFunctionGlobal(
       [&u0](coord_t x) -> double { return u0(x); });
-  auto mf_v0 = lf::uscalfe::MeshFunctionGlobal(
+  auto mf_v0 = lf::mesh::utils::MeshFunctionGlobal(
       [&v0](coord_t x) -> double { return v0(x); });
 
   dof_vector_u0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_u0);

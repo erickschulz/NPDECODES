@@ -52,17 +52,15 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 * `ElectrostaticForce`: unit test fails for mastersolution
 * `ElementMatrixComputation`: Replace console output in unit test by actual test
 * `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
-* `PointEvaluationRhs`: bad includes **(Liaowang)**
 * `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
 * `SDIRKMethodOfLines`: mysolution has core dump
-* `SimpleLinearFiniteElements`: bad includes **(Amélie)**
-* `TestQuadratureRules`: Replace console output in unit test by actual test
+* `TestQuadratureRules`: Replace console output in unit test by actual test. **(Liaowang)**
+* General: Only plot .eps files (no .png and so on).
 
 ## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 4.1: Finite Volumes with Robin Boundary Conditions **(Philippe)**
 * Problem 5.6: Parametric Finite Elements
 * Problem 5.7: Stable Evaluation at a Point
 * Problem 5.8: Trace Error Estimates **(done already?)**
@@ -70,4 +68,123 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.3: Upwind Quadrature
 * Problem 7.4: Exponentially fitted upwind scheme
 * Problem 7.5: Transport Problem
-* Problem 7.6: Upwind Finite Volume Method 
+* Problem 7.6: Upwind Finite Volume Method
+
+# TO DO LIST
+## Problems missing in NPDFL_Problems 
+
+### Already ported 
+
+- BoundaryWave
+- CoupledSecondOrderBVP
+- CLEmpiricFlux
+- ElectrostaticForce
+- IPDGFEM
+- LinFeRactDiff
+- OutputImpedanceBVP
+- ZienkiewiczZhuEstimator
+- WaveABC2D
+
+### Need to be ported from NPDEORG
+- ExtendedMUSCL
+
+## Polished 
+
+### Chapter 2
+- ErrorEstimatesForTraces
+- IncidenceMatrices
+- LengthOfBoundary
+- LinearFE1D
+- ParametricElementMatrices
+- ProjectionOntoGradients
+- SimpleLinearFiniteElements
+- TestQuadratureRules
+- TransformationOfGalerkinMatrices
+
+### Chapter 3
+- MaximumPrinciple
+- UnstableBVP 
+
+### Chapter 6
+- 1DWaveAbsorbingBC
+- RadauThreeTimestepping
+- SDIRKMethodOfLines
+- SymplecticTimesteppingWaves
+
+### Chapter 8
+- BurgersEquation
+- DiscontinuousGalerkin1D
+- EngquistOsherNumericalFlux
+- FiniteVolumeSineConsLaw
+- LaxWendroffScheme
+
+## Require confirmation of polished 
+
+### Chapter 2
+- ElementMatrixComputation(Oliver?)
+
+### Chapter 3
+- PointEvaluationRhs **(Liaowang)**
+
+## Require polishing 
+
+### Chapter 2
+- HandlingDOFs
+- NonConformingCrouzeixRaviartFiniteElements
+- RegularizedNeumann 
+
+### Chapter 3
+- AvgValBoundary
+- DebuggingFEM
+
+## Verified for consistency 
+
+None yet.
+
+## Need consistency verification 
+
+### Chapter 2
+- TransformationOfGalerkinMatrices (folder reference)
+- LinearFE1D (Amélie)
+- SimpleLinearFiniteElements
+- LengthOfBoundary
+- IncidenceMatrices
+- ElementMatrixComputation
+- HandlingDOFs (folder reference)
+- ProjectionOntoGradients 
+- TestQuadratureRules
+- ParametricElementMatrices
+- NonConformingCrouzeixRaviartFiniteElements
+- RegularizedNeumann
+
+### Chapter 3
+- AvgValBoundary
+- DebuggingFEM
+- PointEvaluationRhs
+- ErrorEstimatesForTraces (folder reference)
+- MaximumPrinciple
+
+### Chapter 6
+- RadauThreeTimestepping
+- SDIRKMethodOfLines
+- 1DWaveAbsorbingBC
+- SymplecticTimesteppingWaves
+
+### Chapter 8
+- BurgersEquation
+- EngquistOsherNumericalFlux
+- FiniteVolumeSineConsLaw
+- LaxWendroffScheme
+- DiscontinuousGalerkin1D
+
+## Missing unitests 
+
+### Not in NPDEFL_Problems
+- BoundaryWave
+- ZienkiewiczZhuEstimator
+- WaveABC2D
+
+### Chapter 6
+- RadauThreeTimestepping
+- SDIRKMethodOfLines
+- SymplecticTimesteppingWaves

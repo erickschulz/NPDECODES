@@ -93,11 +93,11 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_builder,
   // Postprocessing: Compute and output norms of the finite element solution
   // Helper class for L2 error computation
   lf::uscalfe::MeshFunctionL2NormDifference lc_L2(
-      fe_space, lf::uscalfe::MeshFunctionConstant<double>(0.0), 2);
+      fe_space, lf::mesh::utils::MeshFunctionConstant<double>(0.0), 2);
   // Helper class for H1 semi norm
   lf::uscalfe::MeshFunctionL2GradientDifference lc_H1(
       fe_space,
-      lf::uscalfe::MeshFunctionConstant<Eigen::Vector2d>(
+      lf::mesh::utils::MeshFunctionConstant<Eigen::Vector2d>(
           Eigen::Vector2d(0.0, 0.0)),
       2);
 

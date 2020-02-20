@@ -8,7 +8,7 @@ constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../../meshes/square.msh";
 
 TEST(AvgValBoundary, TestH1SemiNorm) {
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
 
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -28,7 +28,7 @@ TEST(AvgValBoundary, TestH1SemiNorm) {
 
 TEST(AvgValBoundary, TestBoundaryFunctional) {
   // constant identity mesh function
-  lf::uscalfe::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
 
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);

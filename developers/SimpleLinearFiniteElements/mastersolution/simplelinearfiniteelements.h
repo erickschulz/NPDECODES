@@ -5,6 +5,10 @@
  * @date 11/12/2019
  * @copyright Developed at ETH Zurich
  */
+
+#ifndef SIMPLELINEARFINITEELEMENTS_H_
+#define SIMPLELINEARFINITEELEMENTS_H_
+
 #include <cmath>
 #include <functional>
 #include <string>
@@ -37,6 +41,8 @@ Eigen::SparseMatrix<double> GalerkinAssembly(
 Eigen::VectorXd assemLoad_LFE(const SimpleLinearFiniteElements::TriaMesh2D& mesh,
                               const std::function<double(const Eigen::Vector2d&)>& f);
 
-std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh);
+std::tuple<Eigen::VectorXd, double, double> Solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh);
 
-} // namespace SimpleLinearFiniteElements 
+}  // namespace SimpleLinearFiniteElements
+
+#endif  // SIMPLELINEARFINITEELEMENTS_H_

@@ -1,20 +1,29 @@
-#include <gtest/gtest.h>
+#include <cmath>
+#include <tuple>
 
+#include <Eigen/Core>
 #include <Eigen/SparseLU>
 
-#include "../simplelinearfiniteelements.h"
+#include <gtest/gtest.h>
 
-const double pi = 3.1415926535897;
+#include "../simplelinearfiniteelements.h"
+#include "../tria_mesh_2D.h"
+
+namespace SimpleLinearFiniteElements::test {
+
+constexpr double pi = 3.1415926535897;
+constexpr char meshfile1[] = CURRENT_SOURCE_DIR "/../../meshes/Square1.txt";
+constexpr char meshfile3[] = CURRENT_SOURCE_DIR "/../../meshes/Square3.txt";
 
 /**
  * @brief test ElmentMatrix_Mass_LFE implementation
  */
-TEST(SimpleLinearFiniteElements, TestElementMatrix_Mass_LFE) {
+TEST(SimpleLinearFiniteElements, ElementMatrix_Mass_LFE) {
   // check the produced matrix for a fairly standard triangle
   Eigen::Matrix<double, 2, 3> test;
   test << 0, 1, 0, 0, 0, 1;
   Eigen::Matrix3d M;
-  M = SimpleLinearFiniteElements::ElementMatrix_Mass_LFE(test);
+  M = ElementMatrix_Mass_LFE(test);
   
   Eigen::Matrix3d ref_M;
   ref_M << 0.0833333, 0.0416667, 0.0416667,
@@ -28,9 +37,9 @@ TEST(SimpleLinearFiniteElements, TestElementMatrix_Mass_LFE) {
 /**
  * @brief test L2Error implementation
  */
-TEST(SimpleLinearFiniteElements, TestL2Error) {
+TEST(SimpleLinearFiniteElements, L2Error) {
   // read coarsest mesh
-  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../../meshes/Square1.txt");
+  TriaMesh2D square_mesh(meshfile1);
   // exact solution
   auto uExact = [](const Eigen::Vector2d& x) {
     return std::cos(2 * pi * x(0)) * std::cos(2 * pi * x(1));
@@ -42,9 +51,9 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
   };
 
   // assemble galerkin matrix and load vector
-  Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
-      square_mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(square_mesh, f);
+  Eigen::SparseMatrix<double> A =  GalerkinAssembly(
+      square_mesh, ElementMatrix_LaplMass_LFE);
+  Eigen::VectorXd L = assemLoad_LFE(square_mesh, f);
 
   // solve linear system of equations
   Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >
@@ -54,16 +63,16 @@ TEST(SimpleLinearFiniteElements, TestL2Error) {
   Eigen::VectorXd U = solver.solve(L);
 
   // compare to expected error
-  double error = SimpleLinearFiniteElements::L2Error(square_mesh, U, uExact);
+  double error = L2Error(square_mesh, U, uExact);
   ASSERT_NEAR(error, 0.232547, 0.1);
 }
 
 /**
  * @brief test H1Serror implementation
  */
-TEST(SimpleLinearFiniteElements, TestH1Serror) {
+TEST(SimpleLinearFiniteElements, H1Serror) {
   // read coarsest mesh
-  SimpleLinearFiniteElements::TriaMesh2D square_mesh(CURRENT_SOURCE_DIR "/../../meshes/Square3.txt");
+  TriaMesh2D square_mesh(meshfile3);
   // exact gradient
   auto gradUExact = [](const Eigen::Vector2d& x) {
     Eigen::Vector2d gradient;
@@ -77,12 +86,12 @@ TEST(SimpleLinearFiniteElements, TestH1Serror) {
            std::cos(2 * pi * x(1));
   };
   // compute galerkin matrix and load vector
-  Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
-      square_mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(square_mesh, f);
+  Eigen::SparseMatrix<double> A = GalerkinAssembly(
+      square_mesh, ElementMatrix_LaplMass_LFE);
+  Eigen::VectorXd L = assemLoad_LFE(square_mesh, f);
 
   // solve linear system of equations
-  Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >
+  Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
       solver;
   solver.analyzePattern(A);
   solver.factorize(A);
@@ -90,7 +99,27 @@ TEST(SimpleLinearFiniteElements, TestH1Serror) {
 
   // compare to expected error
   // high tolerance as the procedure is affected by many rounding errors
-  double error =
-      SimpleLinearFiniteElements::H1Serror(square_mesh, U, gradUExact);
+  double error = H1Serror(square_mesh, U, gradUExact);
     ASSERT_NEAR(error, 1.32457, 0.1);
 }
+
+/**
+ * @brief test solve implementation
+ */
+TEST(SimpleLinearFiniteElements, Solve) {
+  TriaMesh2D square_mesh(meshfile1);
+  std::tuple<Eigen::VectorXd, double, double> solution = Solve(square_mesh);
+
+  Eigen::VectorXd solution_ref(25);
+  solution_ref << 0.625091201454706, 1.82631947928602, 0.625091201454444, 1.82631947928602, -1.25162595870465, -1.25162595870465, 1.22710538961478, -1.25162595870452, -1.25162595870452, -0.205607688673624, -0.205607688673623, 0.0791862852828167, 0.180931017968087, 0.18093101796835, -0.205607688673888, -0.205607688673888, 0.180931017968087, 0.079186285282817, 0.180931017968351, -0.104406878994863, -0.0124922491782952, -0.012492249178295, -0.0124922491780322, -0.0124922491780322, -0.104406878994864;
+  double L2Error_ref = 0.232547;
+  double H1Serror_ref = 4.95432;
+
+  ASSERT_EQ(std::get<0>(solution).size(), solution_ref.size());
+  double tol = 1.0e-5;
+  ASSERT_NEAR(0.0, (std::get<0>(solution) - solution_ref).lpNorm<Eigen::Infinity>(), tol);
+  ASSERT_NEAR(0.0, std::get<1>(solution) - L2Error_ref, tol);
+  ASSERT_NEAR(0.0, std::get<2>(solution) - H1Serror_ref, tol);
+}
+
+}  // SimpleLinearFiniteElements::test

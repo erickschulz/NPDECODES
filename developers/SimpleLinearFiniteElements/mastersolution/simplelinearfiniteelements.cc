@@ -226,7 +226,7 @@ Eigen::SparseMatrix<double> GalerkinAssembly(
  * @param mesh: discretisation of the computational domain
  */
 /* SAM_LISTING_BEGIN_4 */
-std::tuple<Eigen::VectorXd, double, double> solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh) {
+std::tuple<Eigen::VectorXd, double, double> Solve(const SimpleLinearFiniteElements::TriaMesh2D &mesh) {
   
   const double pi = 3.1415926535897;
 
