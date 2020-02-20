@@ -145,7 +145,7 @@ None yet.
 
 ### Chapter 2
 - TransformationOfGalerkinMatrices (folder reference)
-- LinearFE1D
+- LinearFE1D (Amélie)
 - SimpleLinearFiniteElements
 - LengthOfBoundary
 - IncidenceMatrices
