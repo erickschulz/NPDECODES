@@ -48,6 +48,6 @@ jobs:
       env: COMPILER='clang++' BUILD_TYPE='Debug'
       script: 
         - "./ci/compile.sh"
-        - cd developers
+        - cd Build/developers
         - make -j${NUM_PROC:-2}
   
