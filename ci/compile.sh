@@ -22,4 +22,4 @@ $CXX --version
 
 cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS=-g0 -Wdev
 cd Build
-make -j${NUM_PROC:-2}
+# make -j${NUM_PROC:-2}
