@@ -46,5 +46,8 @@ jobs:
       osx_image: xcode10.2
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Debug'
-      script: "./ci/compile.sh"
+      script: 
+        - "./ci/compile.sh"
+        - cd developers
+        - make -j${NUM_PROC:-2}
   
