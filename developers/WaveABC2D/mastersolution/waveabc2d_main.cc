@@ -10,8 +10,6 @@
 #include <iostream>
 #include <memory>
 #include <string>
-// Boost includes
-#include <boost/filesystem.hpp>
 // Eigen includes
 #include <Eigen/Core>
 // Lehrfem++ includes
