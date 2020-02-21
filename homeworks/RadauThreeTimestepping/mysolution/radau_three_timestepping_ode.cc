@@ -6,6 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <cmath>
+
 #include "radau_three_timestepping_ode.h"
 
 namespace RadauThreeTimestepping {
