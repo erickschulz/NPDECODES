@@ -140,14 +140,14 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Verified for consistency 
 
 - TransformationOfGalerkinMatrices (folder reference)
+- SimpleLinearFiniteElements
 
 ## Need consistency verification 
 
 ### Chapter 2
 - LinearFE1D (Amélie)
-- SimpleLinearFiniteElements **(Tobias)**
 - LengthOfBoundary (Philipp L.)
-- IncidenceMatrices
+- IncidenceMatrices (Tobias)
 - ElementMatrixComputation
 - HandlingDOFs (folder reference)
 - ProjectionOntoGradients 
