@@ -1,8 +1,8 @@
 /** @file This homework "TestQuadratureRules" consists of numerically verifying
  * the order of LehrFEM++ quadrature rules
  * @brief NPDE homework TestQuadratureRules
- * @author Erick Schulz
- * @date 08/03/2019
+ * @author Erick Schulz, Liaowang Huang (refactoring)
+ * @date 08/03/2019, 22/02/2020 (refactoring)
  * @copyright Developed at ETH Zurich
  */
 
