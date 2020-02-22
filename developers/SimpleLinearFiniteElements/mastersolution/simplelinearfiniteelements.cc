@@ -43,7 +43,7 @@ Eigen::Matrix3d ElementMatrix_LaplMass_LFE(const Eigen::Matrix<double, 2, 3>& tr
 }
 
 /**
- * 	@brief Computation of element mass matrix on planar triangle
+ *  @brief Computation of element mass matrix on planar triangle
  *  @param triangle 2x3 matrix of vertex coordinates
  */
 /* SAM_LISTING_BEGIN_1 */
@@ -179,7 +179,7 @@ Eigen::VectorXd assemLoad_LFE(const TriaMesh2D& mesh,
 }
 
 /**
- * @brief assemLoad_LFE Assembles the Load Vector
+ * @brief GalerkinAssembly Assembles the Galerkin Matrix
  * @param mesh the mesh to use
  * @param getElementMatrix Element Matrix  
  * @return Galerkin Matrix
