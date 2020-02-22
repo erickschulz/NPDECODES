@@ -139,12 +139,11 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ## Verified for consistency 
 
-None yet.
+- TransformationOfGalerkinMatrices (folder reference)
 
 ## Need consistency verification 
 
 ### Chapter 2
-- TransformationOfGalerkinMatrices (folder reference)
 - LinearFE1D (Amélie)
 - SimpleLinearFiniteElements **(Tobias)**
 - LengthOfBoundary
