@@ -6,19 +6,19 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "trans_gal_mat.h"
+#include "transformationofgalerkinmatrices.h"
 
 #include <cassert>
 
 namespace TransformationOfGalerkinMatrices {
 
-std::vector<triplet_t> transformCOOmatrix(const std::vector<triplet_t> &A) {
-  std::vector<triplet_t> A_t{};  // return value
+std::vector<Eigen::Triplet<double>> transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A) {
+  std::vector<Eigen::Triplet<double>> A_t{};  // return value
 
   // First step: find the size of the matrix by searching the maximal
   // indices. Depends on the assumption that no zero rows/columns occur.
   int rows_max_idx = 0, cols_max_idx = 0;
-  for (const triplet_t &triplet : A) {
+  for (const Eigen::Triplet<double> &triplet : A) {
     rows_max_idx =
         (triplet.row() > rows_max_idx) ? triplet.row() : rows_max_idx;
     cols_max_idx =
@@ -37,7 +37,7 @@ std::vector<triplet_t> transformCOOmatrix(const std::vector<triplet_t> &A) {
   // clang-format off
   /* SAM_LISTING_BEGIN_1 */
   // Distribute entries of "old" matrix to new matrix
-  for (const triplet_t &it : A) {
+  for (const Eigen::Triplet<double> &it : A) {
     // row and column indices of current A triplet
     const int I = it.row() + 1; // $\cob{k}$ in \prbeqref{D1}--\prbeqref{D4}
     const int J = it.col() + 1; // $\cob{\ell}$ in \prbeqref{D1}--\prbeqref{D4}
