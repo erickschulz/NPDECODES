@@ -146,7 +146,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - LinearFE1D (Amélie)
 - SimpleLinearFiniteElements **(Tobias)**
-- LengthOfBoundary
+- LengthOfBoundary (Philipp L.)
 - IncidenceMatrices
 - ElementMatrixComputation
 - HandlingDOFs (folder reference)
