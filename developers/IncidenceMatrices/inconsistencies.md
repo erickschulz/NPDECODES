@@ -1,0 +1,5 @@
+- Typo in the first sentence of the problem description: relateed -> related
+- Typo right before Definition 2.6.1: sencond -> second
+- Hint for part e: `RelativeOrientations` should return a `nonstd::span<const Orientation>`
+- Maybe also mention the function `lf::mesh::to_sign` in the hint
+- Solution PDF to part e: Call to `to_sign` is missing namespace specifier. However, it should still compile due to ADL
