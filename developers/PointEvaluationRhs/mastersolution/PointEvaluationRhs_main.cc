@@ -20,9 +20,9 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/refinement/refinement.h>
+#include <lf/refinement/mesh_hierarchy.h>
 
-#include "pointEvaluation.h"
+#include "pointevaluationrhs.h"
 
 int main(){
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(1, 1.0);

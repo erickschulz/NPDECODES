@@ -1,88 +1,159 @@
 /**
  * @file
  * @brief NPDE homework TestQuadratureRules
- * @author Erick Schulz
- * @date 08/03/2019
+ * @author Erick Schulz, Liaowang Huang (refactoring)
+ * @date 08/03/2019, 22/02/2020 (refactoring)
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
+#include "testquadraturerules.h"
+
+#include <cassert>
+#include <cmath>
+
+#include <Eigen/Core>
 
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
 
-#include "test_quad_rules.h"
+namespace TestQuadratureRules{
 
-using namespace TestQuadratureRules;
+double factorial(int i) { return std::tgamma(i + 1); }
 
-int main()
-{
-  std::cout << " " << std::endl;
-  std::cout << "********************************************" << std::endl;
-  std::cout << " NPDE Homework problem: TestQuadratureRules " << std::endl;
-  std::cout << "********************************************" << std::endl;
+/* SAM_LISTING_BEGIN_1 */
+bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
+                       unsigned int order){
+  bool order_isExact = true; // return variable
+#if SOLUTION
+  double my_epsilon = 1e-12;
+  // Retrieve the passed quadrature rule's reference element
+  const auto ref_element = quad_rule.RefEl();
+  // Check that the passed reference element is triangular
+  assert(ref_element == lf::base::RefElType::kTria);
+  // A quadrature rule involves quadrature nodes and weights defined so that
+  // the weighted sum of the value of a function at these points approximates
+  // the integral of that function.
+  const Eigen::VectorXd weights = quad_rule.Weights();
+  const Eigen::MatrixXd points = quad_rule.Points(); // (x,y) points
+  const Eigen::VectorXd x_coords = points.row(0);
+  const Eigen::VectorXd y_coords = points.row(1);
+  // A quadrature rule over a two dimensional domain is of order k if it can
+  // integrate exactly all bivariate polynomials of order k-1. The collection of
+  // such polynomials is spanned by the set of homogeneous polynomials of order
+  // strictly less than k, i.e. by the polynomials of the form
+  /* p_IJ(x,y) = (x^I)(y^J), I+J < k: */
+  auto eval_p_IJ = [&x_coords, &y_coords](int I, int J) -> Eigen::VectorXd {
+    return x_coords.array().pow(I) * y_coords.array().pow(J);
+  }; /* evaluates p_IJ at all points (x,y) as defined by quad_rule */
 
-  unsigned int max_order_tested = 30;
-  unsigned int order;
+  /* Compare analytical value and quadrature sum for all p_IJ, I+J < k */
+  double exact_integral; // analytical value of the integral
+  double quad_rule_sum;  // weighted sum used for approximating the integral
+  for (int I = 0; I < order; I++){
+    for (int J = 0; J < order - I; J++){
+      exact_integral = factorial(I) *
+                       factorial(J) /
+                       factorial(I + J + 2);
+      quad_rule_sum = eval_p_IJ(I, J).dot(weights);
 
-  std::cout << " " << std::endl;
-  std::cout << "Testing orders of LehrFEM++ quadratures."
-            << std::endl;
-  std::cout << " " << std::endl;
-  std::cout << "-------------------------------------------" << std::endl;
-  std::cout << "|                RESULTS                  |" << std::endl;
-
-  std::vector<int> max_orders_kTria;
-  std::vector<int> max_orders_kQuad;
-
-  for (order = 1; order <= max_order_tested; order++)
-  {
-    // Quadrature for reference triangle
-    const auto ref_triangle = lf::base::RefEl(lf::base::RefElType::kTria);
-    const auto quad_rule_kTria = lf::quad::make_QuadRule(ref_triangle, order - 1);
-
-    // Quadrature for reference cube
-    const auto ref_cube = lf::base::RefEl(lf::base::RefElType::kQuad);
-    const auto quad_rule_kQuad = lf::quad::make_QuadRule(ref_cube, order - 1);
-
-    // Testing for maximal order
-    unsigned int cur_maximal_order_kTria = calcQuadOrder(quad_rule_kTria);
-    max_orders_kTria.push_back(cur_maximal_order_kTria);
-    unsigned int cur_maximal_order_kQuad = calcQuadOrder(quad_rule_kQuad);
-    max_orders_kQuad.push_back(cur_maximal_order_kQuad);
-  }
-
-  std::cout << "-------------------------------------------" << std::endl;
-  std::cout << "|       |          MAXIMAL ORDER          |" << std::endl;
-  std::cout << "| ORDER |---------------------------------|" << std::endl;
-  std::cout << "|       |     kTria     |       kQuad     |" << std::endl;
-  std::cout << "-------------------------------------------" << std::endl;
-  for (order = 1; order <= max_order_tested; order++)
-  {
-
-    if (order < 9)
-    {
-      std::cout << "|     " << order << " |"
-                << "       " << max_orders_kTria[order - 1] << "    "
-                << "   |      " << max_orders_kQuad[order - 1]
-                << "          |" << std::endl;
-    }
-    else if (order == 9)
-    {
-      std::cout << "|     " << order << " |"
-                << "       " << max_orders_kTria[order - 1] << "    "
-                << "   |      " << max_orders_kQuad[order - 1]
-                << "         |" << std::endl;
-    }
-    else
-    {
-      std::cout << "|    " << order << " |"
-                << "       " << max_orders_kTria[order - 1] << "    "
-                << "  |      " << max_orders_kQuad[order - 1]
-                << "         |" << std::endl;
+      // Check if the difference bewteen the results is within tolerance
+      order_isExact = fabs(exact_integral - quad_rule_sum) <=
+                      fabs(exact_integral) * my_epsilon;
+      if (!order_isExact){
+        return order_isExact;
+      }
     }
   }
-  std::cout << "-------------------------------------------" << std::endl;
-
-  return 0;
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  return order_isExact;
 }
+/* SAM_LISTING_END_1 */
+
+/* SAM_LISTING_BEGIN_2 */
+bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
+                       unsigned int order){
+  bool order_isExact = true; // return variable
+
+#if SOLUTION
+  double my_epsilon = 1e-12;
+  // Retrieve the passed quadrature rule's reference element
+  const auto ref_element = quad_rule.RefEl();
+  // Check that the passed reference element is triangular
+  assert(ref_element == lf::base::RefElType::kQuad);
+  // A quadrature rule consists of quadrature nodes and weights defined so that
+  // the weighted sum of the value of a function at these points approximates
+  // the integral of that function.
+  const Eigen::VectorXd weights = quad_rule.Weights();
+  const Eigen::MatrixXd points = quad_rule.Points(); // (x,y) points
+  const Eigen::VectorXd x_coords = points.row(0);
+  const Eigen::VectorXd y_coords = points.row(1);
+  // A quadrature rule over a two dimensional domain is of order k if it can
+  // integrate exactly all bivariate polynomials of order k-1. The collection of
+  // such polynomials is spanned by the set of homogeneous polynomials of order
+  // strictly less than k, i.e. by the polynomials of the form
+  /* p_IJ(x,y) = (1-x)^I(y^J), I,J < k: */
+  auto eval_p_IJ = [&x_coords, &y_coords](int I, int J) -> Eigen::VectorXd {
+    return x_coords.array().pow(I) * y_coords.array().pow(J);
+  }; /* evaluates p_IJ at all points (x,y) as defined by quad_rule */
+
+  /* Compare the analytical value and the quadrature sum for all p_IJ, I+J < k
+   */
+  double exact_integral; // analytical value of the integral
+  double quad_rule_sum;  // weighted sum used for approximating the integral
+  for (int I = 0; I < order; I++){
+    for (int J = 0; J < order; J++){
+      exact_integral = 1.0 / ((I + 1.0) * (J + 1.0));
+      quad_rule_sum = eval_p_IJ(I, J).dot(weights);
+
+      // Check if the difference bewteen the results is within tolerance
+      order_isExact = fabs(exact_integral - quad_rule_sum) <=
+                      fabs(exact_integral) * my_epsilon;
+      if (!order_isExact){
+        return order_isExact;
+      }
+    }
+  }
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  return order_isExact;
+}
+/* SAM_LISTING_END_2 */
+
+/* SAM_LISTING_BEGIN_3 */
+unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule){
+  unsigned int maximal_order = quad_rule.Order();
+
+#if SOLUTION
+  // Retrieve the passed quadrature rule's reference element
+  const auto ref_element = quad_rule.RefEl();
+
+  if (ref_element == lf::base::RefElType::kTria){
+    assert(testQuadOrderTria(quad_rule, maximal_order));
+    while (testQuadOrderTria(quad_rule, maximal_order + 1)){
+      maximal_order++;
+    }
+  }
+
+  if (ref_element == lf::base::RefElType::kQuad){
+    assert(testQuadOrderQuad(quad_rule, maximal_order));
+    while (testQuadOrderQuad(quad_rule, maximal_order + 1)){
+      maximal_order++;
+    }
+  }
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  return maximal_order;
+}
+/* SAM_LISTING_END_3 */
+
+} // namespace TestQuadratureRules

@@ -18,13 +18,14 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
-#include "../norms.h"
-#include "../pointEvaluation.h"
+#include "../pointevaluationrhs.h"
+#include "../pointevaluationrhs_norms.h"
 
 /* SAM_LISTING_BEGIN_1 */
 void testGlobalInverseQuad(const lf::mesh::Entity& quad, Eigen::Vector2d xh) {
   LF_ASSERT_MSG(quad.RefEl() == lf::base::RefEl::kQuad(),
                 "Cell must be a quadrilateral");
+#if SOLUTION
   // get the coordinates of the corners of this cell
   lf::geometry::Geometry* geo_ptr = quad.Geometry();
   auto vertices = lf::geometry::Corners(*geo_ptr);
@@ -34,6 +35,11 @@ void testGlobalInverseQuad(const lf::mesh::Entity& quad, Eigen::Vector2d xh) {
   EXPECT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8)
       << "quadl " << quad << ": Mismatch xh = " << xh << ", x = " << x
       << ", xh_comp = " << xh_comp << std::endl;
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 }
 /* SAM_LISTING_END_1 */
 
@@ -74,10 +80,11 @@ TEST(PoinEvaluationRhs, mapping_test) {
       }
     }  // end switch
 
-    EXPECT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8)
-        << "cell " << *cell << ": Mismatch xh = " << xh << ", x = " << x
-        << ", xh_comp = " << xh_comp << std::endl;
+    ASSERT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8) << "Fail!" << std::endl;
+//        << "cell " << *cell << ": Mismatch xh = " << xh << ", x = " << x
+//        << ", xh_comp = " << xh_comp << std::endl;
   }  // end loop over cells
+    std::cout << "Pass!" << std::endl;
 }
 
 TEST(PoinEvaluationRhs, solution_test) {
@@ -102,6 +109,8 @@ TEST(PoinEvaluationRhs, solution_test) {
       0.10716, 0.172936, 0.152714;
 
   for (int i = 0; i < sol_vec.size(); ++i) {
-    EXPECT_NEAR(sol_vec(i), correct_sol(i), eps);
+//    EXPECT_NEAR(sol_vec(i), correct_sol(i), eps);
+      ASSERT_NEAR(sol_vec(i), correct_sol(i), eps) << "Fail!" << std::endl;
   }
+  std::cout << "Pass!" << std::endl;
 }

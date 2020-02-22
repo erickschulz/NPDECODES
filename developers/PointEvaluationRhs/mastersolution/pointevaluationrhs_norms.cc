@@ -6,7 +6,7 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include "norms.h"
+#include "pointevaluationrhs_norms.h"
 
 #include <cmath>
 

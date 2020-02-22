@@ -6,7 +6,7 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include "pointEvaluation.h"
+#include "pointevaluationrhs.h"
 
 #include <cmath>
 #include <utility>
@@ -21,7 +21,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "norms.h"
+#include "pointevaluationrhs_norms.h"
 
 namespace PointEvaluationRhs{
 
