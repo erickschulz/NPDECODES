@@ -1,23 +1,33 @@
 /**
  * @ file pointEvaluation.cc
  * @ brief NPDE homework PointEvaluationRhs code
- * @ author Christian Mitsch
- * @ date 22.03.2019
+ * @ author Christian Mitsch, Liaowang Huang (refactoring)
+ * @ date 22/03/2019, 06/01/2020 (refactoring)
  * @ copyright Developed at ETH Zurich
  */
 
 #include "pointEvaluation.h"
+
 #include <cmath>
-#include <iostream>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+
+#include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
+
 #include "norms.h"
 
-namespace PointEvaluationRhs
-{
+namespace PointEvaluationRhs{
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
-                                  Eigen::Vector2d x)
-{
+                                  Eigen::Vector2d x){
   Eigen::Vector2d x_hat;
 
   // The unique affine mapping of the unit triangle to a general triangle
@@ -37,34 +47,27 @@ Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
  * @return both zeros, NaN if complex
  */
 /* SAM_LISTING_BEGIN_4 */
-std::pair<double, double> solveQuadraticEquation(double a, double b, double c)
-{
+std::pair<double, double> solveQuadraticEquation(double a, double b, double c){
   // Implement the cases which are solvable and return their solutions
-  if (a != 0.)
-  {
+  if (a != 0.){
     b /= a;
     c /= a;
     const double D = b * b - 4 * c; // discriminant
-    if (D >= 0)
-    { // real solutions
+    if (D >= 0){ // real solutions
       const double rtD = std::sqrt(D);
       // Real solutions, cancellation-free formulas !
-      if (b < 0)
-      {
+      if (b < 0){
         const double root = 0.5 * (-b + rtD);
         return {root, c / root};
       }
-      else
-      { // b >= 0
+      else{ // b >= 0
         const double root = 0.5 * (-b - rtD);
         return {root, c / root};
       }
     }
   }
-  else
-  {
-    if (b != 0.0)
-    {
+  else{
+    if (b != 0.0){
       return {-c / b, -c / b};
     }
   }
@@ -78,8 +81,7 @@ std::pair<double, double> solveQuadraticEquation(double a, double b, double c)
  * @param a,b,c vertex coordinate vectors
  */
 inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
-                       const Eigen::Vector2d c)
-{
+                       const Eigen::Vector2d c){
   double result = 0;
   result = 0.5 * std::abs((b[0] - a[0]) * (c[1] - a[1]) -
                           (b[1] - a[1]) * (c[0] - a[0]));
@@ -87,8 +89,7 @@ inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
 }
 
 Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
-                                  Eigen::Vector2d x)
-{
+                                  Eigen::Vector2d x){
   constexpr double kEPS = 1.0E-8;
   Eigen::Vector2d x_hat;
 
@@ -98,12 +99,10 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   // middle vertex as new "vertex 0".
   unsigned int vt_zero_idx{0};
   double max_area{0.0};
-  for (int l = 0; l < 4; ++l)
-  {
+  for (int l = 0; l < 4; ++l){
     const double sub_tria_area =
         triaArea(vert.col(l), vert.col((l + 1) % 4), vert.col((l + 2) % 4));
-    if (sub_tria_area > max_area)
-    {
+    if (sub_tria_area > max_area){
       vt_zero_idx = (l + 1) % 4;
       max_area = sub_tria_area;
     }
@@ -135,22 +134,18 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   // Treat exceptional cases
   // If q vanishes
   const double ref_size = y.norm();
-  if (q.norm() < kEPS * ref_size)
-  {
+  if (q.norm() < kEPS * ref_size){
     x_hat = y;
   }
-  else if (std::abs(q(0)) < kEPS * ref_size)
-  {
+  else if (std::abs(q(0)) < kEPS * ref_size){
     x_hat(0) = y(0);
     x_hat(1) = y(1) / (1 + q(1) * x_hat(0));
   }
-  else if (std::abs(q(1)) < kEPS * ref_size)
-  {
+  else if (std::abs(q(1)) < kEPS * ref_size){
     x_hat(1) = y(1);
     x_hat(0) = y(0) / (1 + q(0) * x_hat(1));
   }
-  else
-  {
+  else{
     // Generic case; solve quadratic equation
     double a = q(0);
     double b = 1 + y.dot(q_orth);
@@ -158,19 +153,15 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
 
     auto [x_op1, x_op2] = solveQuadraticEquation(a, b, c);
     // No solution
-    if (std::isnan(x_op1) || std::isnan(x_op2))
-    {
+    if (std::isnan(x_op1) || std::isnan(x_op2)){
       x_hat(0) = NAN;
       x_hat(1) = NAN;
     }
-    else
-    {
+    else{
       // There is a solution
       // Find root in the unit interval -> x_op1
-      if ((x_op1 < 0.) || (x_op1 > 1.))
-      {
-        if ((x_op2 >= 0.) && (x_op2 <= 1.))
-        {
+      if ((x_op1 < 0.) || (x_op1 > 1.)){
+        if ((x_op2 >= 0.) && (x_op2 <= 1.)){
           x_op1 = x_op2;
         }
       }
@@ -181,25 +172,21 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   /* SAM_LISTING_END_2 */
   /* SAM_LISTING_BEGIN_3 */
   // Reverse initial permutation
-  switch (vt_zero_idx)
-  {
-  case 1:
-  {
-    x_hat = ((Eigen::Matrix2d() << 0., -1., 1., 0.)).finished() * x_hat +
-            Eigen::Vector2d(1.0, 0.0);
-    break;
-  }
-  case 2:
-  {
-    x_hat = -x_hat + Eigen::Vector2d(1.0, 1.0);
-    break;
-  }
-  case 3:
-  {
-    x_hat = ((Eigen::Matrix2d() << 0., 1., -1., 0.)).finished() * x_hat +
-            Eigen::Vector2d(0.0, 1.0);
-    break;
-  }
+  switch (vt_zero_idx){
+    case 1:{
+      x_hat = ((Eigen::Matrix2d() << 0., -1., 1., 0.)).finished() * x_hat +
+                Eigen::Vector2d(1.0, 0.0);
+      break;
+    }
+    case 2:{
+      x_hat = -x_hat + Eigen::Vector2d(1.0, 1.0);
+      break;
+    }
+    case 3:{
+      x_hat = ((Eigen::Matrix2d() << 0., 1., -1., 0.)).finished() * x_hat +
+                Eigen::Vector2d(0.0, 1.0);
+      break;
+    }
   }
   /* SAM_LISTING_END_3 */
   return x_hat;
@@ -207,8 +194,7 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
 
 std::pair<double, double> normsSolutionPointLoadDirichletBVP(
     const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
-    Eigen::VectorXd &sol_vec)
-{
+    Eigen::VectorXd &sol_vec){
   std::pair<double, double> result(0, 0);
   const unsigned int N_dofs = dofh.NumDofs();
   sol_vec.resize(N_dofs);
@@ -229,12 +215,10 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
   const double boundary_val = 0; // zero Dirichlet boundary conditions
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 2)};
   auto my_selector = [&dofh, &bd_flags, &boundary_val](unsigned int dof_idx) {
-    if (bd_flags(dofh.Entity(dof_idx)))
-    {
+    if (bd_flags(dofh.Entity(dof_idx))){
       return (std::pair<bool, double>(true, boundary_val));
     }
-    else
-    {
+    else{
       // interior node: the value we return here does not matter
       return (std::pair<bool, double>(false, 42.0));
     }
@@ -245,12 +229,10 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
   const Eigen::SparseMatrix<double> A_crs(A.makeSparse());
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_crs);
-  if (solver.info() == Eigen::Success)
-  {
+  if (solver.info() == Eigen::Success){
     sol_vec = solver.solve(rhs);
   }
-  else
-  {
+  else{
     LF_ASSERT_MSG(false, "Eigen Factorization failed")
   }
   /* SAM_LISTING_END_7 */
@@ -262,8 +244,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
 }
 
 /* SAM_LISTING_BEGIN_6 */
-Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell)
-{
+Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell){
   Eigen::VectorXd result;
   // get the coordinates of the corners of this cell
   lf::geometry::Geometry *geo_ptr = cell.Geometry();
@@ -272,15 +253,13 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell)
   // the margin we allow when we determine wether a point is inside an
   // element
   const double margin = 1e-10;
-  if (lf::base::RefEl::kTria() == cell.RefEl())
-  {
+  if (lf::base::RefEl::kTria() == cell.RefEl()){
     x_hat = PointEvaluationRhs::GlobalInverseTria(vertices, x_0);
     result.resize(3);
     result.setZero();
     if (x_hat(0) <= 1 + margin && x_hat(0) >= 0 - margin &&
         x_hat(1) <= 1 + margin && x_hat(1) >= 0 - margin &&
-        x_hat(1) + x_hat(0) <= 1 + margin)
-    {
+        x_hat(1) + x_hat(0) <= 1 + margin){
       already_found = true;
       // Barycentric coordinates on reference triangle
       result[0] = 1.0 - x_hat(0) - x_hat(1);
@@ -288,14 +267,12 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell)
       result[2] = x_hat(1);
     }
   }
-  else if (lf::base::RefEl::kQuad() == cell.RefEl())
-  {
+  else if (lf::base::RefEl::kQuad() == cell.RefEl()){
     x_hat = PointEvaluationRhs::GlobalInverseQuad(vertices, x_0);
     result.resize(4);
     result.setZero();
     if (x_hat(0) <= 1 + margin && x_hat(0) >= 0 - margin &&
-        x_hat(1) <= 1 + margin && x_hat(1) >= 0 - margin)
-    {
+        x_hat(1) <= 1 + margin && x_hat(1) >= 0 - margin){
       already_found = true;
       // Local shape functions on unit square
       result[0] = (1.0 - x_hat(0)) * (1.0 - x_hat(1));
@@ -304,8 +281,7 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell)
       result[3] = (1.0 - x_hat(0)) * x_hat(1);
     }
   }
-  else
-  {
+  else{
     LF_ASSERT_MSG(false,
                   "Function only defined for triangular or quadrilateral cells")
   }

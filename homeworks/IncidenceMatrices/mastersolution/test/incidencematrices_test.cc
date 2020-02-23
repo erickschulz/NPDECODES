@@ -60,4 +60,4 @@ TEST(Homework_2_6, CoChainComplexProperty) {
   EXPECT_TRUE(IncidenceMatrices::testZeroIncidenceMatrixProduct(*demoMesh));
 }
 
-} //namespace IncidenceMatrices::test
+}  // namespace IncidenceMatrices::test

@@ -1,7 +1,14 @@
+/**
+* @ file PointEvaluationRhs_test.cc
+* @ brief NPDE homework PointEvaluationRhs code
+* @ author ?, Liaowang Huang (refactoring)
+* @ date ?, 06/01/2020 (refactoring)
+* @ copyright Developed at ETH Zurich
+*/
+
 #include <gtest/gtest.h>
 
 #include <iostream>
-#include <memory>
 
 #include <Eigen/Core>
 
@@ -10,8 +17,6 @@
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
 
 #include "../norms.h"
 #include "../pointEvaluation.h"

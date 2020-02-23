@@ -51,13 +51,6 @@ find_package(lehrfempp CONFIG REQUIRED)
 # Get Google Test
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
-
-# Get Boost
-hunter_add_package(Boost COMPONENTS chrono timer system filesystem program_options)
-find_package(Boost CONFIG REQUIRED chrono timer system filesystem program_options)
-
-# Problem: Actually boost::math is also needed, but there is a problem
-# setting it up through hunter. 
 ###############################################################################
 
 # Add switches

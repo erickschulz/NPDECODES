@@ -22,7 +22,7 @@ namespace ElementMatrixComputation {
 /* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solvePoissonBVP() {
   // Convert tPoissonda function f to a LehrFEM++ mesh function object
-  lf::uscalfe::MeshFunctionGlobal mf_f{f};
+  lf::mesh::utils::MeshFunctionGlobal mf_f{f};
 
   // Define the solution vector
   Eigen::VectorXd solution = Eigen::VectorXd::Zero(1);
