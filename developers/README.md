@@ -144,6 +144,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - IncidenceMatrices
 - LinearFE1D
 - TestQuadratureRules
+- ProjectionOntoGradients
 
 ## Need consistency verification 
 
@@ -151,7 +152,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - LengthOfBoundary (Philipp L.)
 - ElementMatrixComputation
 - HandlingDOFs (folder reference)
-- ProjectionOntoGradients (Tobias)
 - ParametricElementMatrices
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann
