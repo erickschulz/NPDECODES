@@ -143,6 +143,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - SimpleLinearFiniteElements
 - IncidenceMatrices
 - LinearFE1D
+- TestQuadratureRules
 
 ## Need consistency verification 
 
@@ -151,7 +152,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - ElementMatrixComputation
 - HandlingDOFs (folder reference)
 - ProjectionOntoGradients 
-- TestQuadratureRules (Amélie)
 - ParametricElementMatrices
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann
