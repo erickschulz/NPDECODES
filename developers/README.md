@@ -151,7 +151,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - LengthOfBoundary (Philipp L.)
 - ElementMatrixComputation
-- HandlingDOFs (folder reference)
+- HandlingDOFs (folder reference) (Philipp L.)
 - ParametricElementMatrices (Tobias)
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann
