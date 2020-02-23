@@ -308,7 +308,6 @@ Eigen::VectorXd solveC(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   // I. Build the (full) Galerkin matrix L for the lin. sys.
 #if SOLUTION
   // I.i Compute the entries of the Laplace Galerkin matrix A
-  // (const. ceoff. func. alpha = 1.0)
   std::vector<Eigen::Triplet<double>> triplets_A =
       computeA(mesh, alpha);
   // I.ii Compute the entries of the mass matrix M
