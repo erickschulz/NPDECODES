@@ -79,14 +79,12 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - CoupledSecondOrderBVP
 - CLEmpiricFlux
 - ElectrostaticForce
+- ExtendedMUSCL
 - IPDGFEM
 - LinFeRactDiff
 - OutputImpedanceBVP
 - ZienkiewiczZhuEstimator
 - WaveABC2D
-
-### Need to be ported from NPDEORG
-- ExtendedMUSCL
 
 ## Polished 
 
