@@ -71,20 +71,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.6: Upwind Finite Volume Method
 
 # TO DO LIST
-## Problems missing in NPDFL_Problems 
-
-### Already ported 
-
-- BoundaryWave
-- CoupledSecondOrderBVP
-- CLEmpiricFlux
-- ElectrostaticForce
-- ExtendedMUSCL
-- IPDGFEM
-- LinFeRactDiff
-- OutputImpedanceBVP
-- ZienkiewiczZhuEstimator
-- WaveABC2D
 
 ## Polished 
 
