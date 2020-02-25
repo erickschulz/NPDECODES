@@ -1,0 +1,64 @@
+# IncidenceMatrices
+incidence_mat.cc | incidencematrices.cc
+incidence_mat.h | incidencematrices.h
+main.cc | incidencematrices_main.cc
+
+# LinearFE1D
+LinearFE1D.cc | linearfe1d_main.cc
+solve_LinearFE1D.h | linearfe1d_main.cc
+
+# ParametricElementMatrices
+main.cc | parametricelementmatrices_main.cc
+
+# PointEvaluationRhs
+pointEvaluation.cc | pointevaluationrhs.cc
+pointEvaluation.h |  pointevaluationrhs.h
+norms.cc | pointevaluationrhs_norms.cc
+norms.h |	pointevaluationrhs_norms.h
+
+# ProjectionOntoGradients
+main.cc | projectionontogradients_main.cc
+gradprojection.h | projectionontogradients.h
+
+# SimpleLinearFiniteElements
+simple_linear_finite_elements.cc | simplelinearfiniteelements.cc
+simple_linear_finite_elements.h | simplelinearfiniteelements.h
+main.cc | simplelinearfiniteelements_main.cc
+
+# TestQuadratureRules
+TestQuadratureRules.cc | testquadraturerules_main.cc
+test_quad_rules.cc | testquadraturerules.cc
+test_quad_rules.h | testquadraturerules.h
+
+# TransformationOfGalerkinMatrices
+TransformationOfGalerkinMatrices.cc | transformationofgalerkinmatrices_main.cc
+trans_gal_mat.cc | transformationofgalerkinmatrices.cc
+trans_gal_mat.h | transformationofgalerkinmatrices.h
+
+# UnstableBVP
+unstable_bvp.cc | unstablebvp.cc
+unstable_bvp.h | unstablebvp.h
+unstable_bvp_main.cc | unstablebvp_main.cc
+
+**Need to be adapted to naming convention**
+AvgValBoundary
+BoundaryWave
+DebuggingFEM
+ElementMatrixComputation (+ new file)
+ErrorEstimateForTraces
+HandlingDOFS
+LinFeReactDiff
+MaximumPrinciple
+NonConformingCrouzeixRaviartFiniteElements
+ParametricElementMatrices
+OutputImpedanceBVP
+PointEvaluationRhs
+RadauThreeTimestepping
+RegularizedNeumann
+SDIRKMethodOfLines
+SimpleLinearFiniteElements
+SymplecticTimesteppingWaves
+TestQuadratureRules
+ZienkiewiczZhuEstimator
+
+
