@@ -54,7 +54,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   }
 
   // Output results to vtk file
-  lf::io::VtkWriter vtk_writer(mesh_p, "BoundaryWave_solution.vtk");
+  std::string vtk_file_name = "BoundaryWave_solution.vtk";
+  lf::io::VtkWriter vtk_writer(mesh_p, vtk_file_name);
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
   for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
@@ -64,5 +65,5 @@ int main(int /*argc*/, const char ** /*argv*/) {
   vtk_writer.WritePointData("BoundaryWave_solution", *nodal_data);
 
   std::cout << "\n The BoundaryWave_solution was written to:" << std::endl;
-  std::cout << ">> BoundaryWave_solution.vtk.vtk\n" << std::endl;
+  std::cout << ">> " << vtk_file_name << std::endl;
 }

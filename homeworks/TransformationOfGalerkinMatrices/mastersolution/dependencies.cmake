@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/TransformationOfGalerkinMatrices.cc
-  ${DIR}/trans_gal_mat.h
-  ${DIR}/trans_gal_mat.cc
+  ${DIR}/transformationofgalerkinmatrices_main.cc
+  ${DIR}/transformationofgalerkinmatrices.h
+  ${DIR}/transformationofgalerkinmatrices.cc
 )
 
 set(LIBRARIES

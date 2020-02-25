@@ -1,7 +1,10 @@
-//#include <cstdlib>
+#include <cstdlib>
 #include <iostream>
+#include <string>
+#include <tuple>
 
 #include "simplelinearfiniteelements.h"
+#include "tria_mesh_2D.h"
 
 /* SAM_LISTING_BEGIN_5 */
 #define MESH "Square4"
@@ -16,7 +19,7 @@ int main()
             << square_mesh.elements.rows() << " elements" << std::endl;
 
   // print both H1 and L2 errors and plot Mesh
-  std::tuple<Eigen::VectorXd, double, double> solution = solve(square_mesh);
+  std::tuple<Eigen::VectorXd, double, double> solution = SimpleLinearFiniteElements::Solve(square_mesh);
 
   std::cout << "L2-error:  " << std::get<1>(solution) << std::endl;
   std::cout << "H1s-error: " << std::get<2>(solution) << std::endl;

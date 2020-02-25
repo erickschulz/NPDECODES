@@ -241,9 +241,8 @@ Eigen::VectorXd solveC(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
 
   // I. Build the (full) Galerkin matrix L for the lin. sys.
   // I.i Compute the entries of the Laplace Galerkin matrix A
-  // (const. ceoff. func. alpha = 1.0)
   std::vector<Eigen::Triplet<double>> triplets_A =
-      computeA(mesh, [](double) -> double { return 1.0; });
+      computeA(mesh, alpha);
   // I.ii Compute the entries of the mass matrix M
   std::vector<Eigen::Triplet<double>> triplets_M = computeM(mesh, gamma);
   // I.iii Assemble the sparse matrices

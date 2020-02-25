@@ -56,8 +56,8 @@ TEST(LinearFE1D, solution_testC) {
   mesh << 0.0, 0.12, 0.2, 0.25, 0.5, 0.7, 0.79, 0.80, 1.0;
 
   Eigen::VectorXd sol_cor(9);
-  sol_cor << 2.12211, 2.11491, 2.10414, 2.09553, 2.03461, 1.98665, 1.97017,
-      1.96861, 1.94962;
+  sol_cor << 2.42215, 2.30215, 2.23596, 2.19856, 2.04132, 1.96425, 1.94288,
+      1.941, 1.92054;
 
   Eigen::VectorXd sol = LinearFE1D::solveC(mesh, alpha, gamma);
 

@@ -6,6 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#ifndef TRIAMESH2D_H_
+#define TRIAMESH2D_H_
+
 #include <string>
 
 #include <Eigen/Core>
@@ -28,4 +31,6 @@ struct TriaMesh2D {
   Eigen::Matrix<int, Eigen::Dynamic, 3> elements;
 };
 
-} // namespace SimpleLinearFiniteElements
+}  // namespace SimpleLinearFiniteElements
+
+#endif  // TRIAMESH2D_H_

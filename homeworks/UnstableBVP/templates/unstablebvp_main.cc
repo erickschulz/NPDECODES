@@ -10,8 +10,8 @@
 #include "unstablebvp.h"
 // General includes
 #include <fstream>
-#include <memory>
 #include <iomanip>
+#include <memory>
 // Math includes
 #include <cmath>
 // Eigen
