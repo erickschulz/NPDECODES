@@ -7,7 +7,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/testquadrulestest.cc
+  ${DIR}/test/testquadrules_test.cc
 )
 
 set(LIBRARIES
