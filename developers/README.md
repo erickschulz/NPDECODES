@@ -116,6 +116,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - HandlingDOFs
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann 
+- ParametricElementMatrices (Tobias)
 
 ### Chapter 3
 - AvgValBoundary
@@ -130,7 +131,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - LinearFE1D
 - TestQuadratureRules
 - ProjectionOntoGradients
-- ParametricElementMatrices
 
 ## Need consistency verification 
 
@@ -140,6 +140,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements
 - RegularizedNeumann
+- ParametricElementMatrices
 
 ### Chapter 3
 - AvgValBoundary
