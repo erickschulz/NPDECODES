@@ -128,6 +128,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - TransformationOfGalerkinMatrices
 - SimpleLinearFiniteElements
 - IncidenceMatrices
+- LengthOfBoundary
 - LinearFE1D
 - TestQuadratureRules
 - ProjectionOntoGradients
@@ -135,7 +136,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Need consistency verification 
 
 ### Chapter 2
-- LengthOfBoundary (Philipp L.)
 - ElementMatrixComputation
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements
