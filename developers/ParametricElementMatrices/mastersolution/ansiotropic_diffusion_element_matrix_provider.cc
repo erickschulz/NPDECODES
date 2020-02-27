@@ -84,8 +84,8 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
 
 #endif
       break;
-    }
       /* SAM_LISTING_END_1 */
+    }
 
     /* QUADRILATERAL CELL */
     case lf::base::RefEl::kQuad(): {
@@ -155,8 +155,8 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
 
 #endif
       break;
+      /* SAM_LISTING_END_2 */
     }
-    /* SAM_LISTING_END_2 */
     
     /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
     default:
