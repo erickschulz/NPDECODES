@@ -33,6 +33,7 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
   switch (cell_geometry->RefEl()) {
     case lf::base::RefEl::kTria(): {
       /* SAM_LISTING_BEGIN_1 */
+#if SOLUTION
       // I. OBTAIN COORDINATES OF THE MIDPOINTS
       // I.i Hard-code the midpoints of the edges on the reference triangle
       Eigen::MatrixXd midpoints_ref(2, 3);
@@ -63,11 +64,19 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
             (0.5 / (1. + std::pow(0.5 * w(i) + 0.5 * w((i + 1) % 3), 2)));
       }
       element_vector *= 1. / 6.;
+#else
+
+      // ===================
+      // Your code goes here
+      // ===================
+
+#endif
       break;
       /* SAM_LISTING_END_1 */
     }
     case lf::base::RefEl::kQuad(): {
       /* SAM_LISTING_BEGIN_2 */
+#if SOLUTION
       // I. OBTAIN COORDINATES OF THE MIDPOINTS
       // I.i Hard-code the midpoints of the edges on the reference quadrilateral
       Eigen::Matrix<double, 2, 4> midpoints_ref(2, 4);
@@ -99,6 +108,13 @@ Eigen::VectorXd FESourceElemVecProvider::Eval(const lf::mesh::Entity &cell) {
       }
       element_vector *= 1. / 4.;
       break;
+#else
+
+      // ===================
+      // Your code goes here
+      // ===================
+
+#endif
       /* SAM_LISTING_END_2 */
     }
       /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
