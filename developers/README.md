@@ -136,9 +136,9 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Need consistency verification 
 
 ### Chapter 2
-- ElementMatrixComputation
+- ElementMatrixComputation (Erick)
 - HandlingDOFs (folder reference) (Philipp L.)
-- NonConformingCrouzeixRaviartFiniteElements
+- NonConformingCrouzeixRaviartFiniteElements 
 - RegularizedNeumann
 - ParametricElementMatrices
 
