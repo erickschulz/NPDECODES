@@ -22,7 +22,7 @@ Problem 2-12: Testing built-in quadrature rules of LEHRFEM++
     for(int J = 0; J < order; J++){
   ```
 
-  in function `testQuadOrderQuad` in file **testquadrules.cc**.
+  in function `testQuadOrderQuad` in file **testquadrules.cc**. And change corresponding pare in solution.
 
 - in **test/testquadrulestest.cc**: remove the printout that prints the whole matrix in `TEST(TestQuadratureRules, TestQuadratureTria)` and `TEST(TestQuadratureRules, TestQuadratureQuad)`. And add another unit test `TEST(TestQuadratureRules, calQuadOrder)` for the function `calcQuadOrder`.
 
