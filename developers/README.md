@@ -115,7 +115,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - HandlingDOFs
 - NonConformingCrouzeixRaviartFiniteElements (Amélie)
-- RegularizedNeumann 
+- RegularizedNeumann (Philippe)
 - ParametricElementMatrices (Tobias)
 
 ### Chapter 3
@@ -139,7 +139,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - ElementMatrixComputation (Erick)
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
-- RegularizedNeumann
+- RegularizedNeumann (Philippe)
 - ParametricElementMatrices
 
 ### Chapter 3
