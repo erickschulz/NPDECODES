@@ -31,6 +31,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
     /* TRIANGULAR CELL */
     case lf::base::RefEl::kTria(): {
       /* SAM_LISTING_BEGIN_1 */
+#if SOLUTION
       // I. OBTAIN COORDINATES OF THE MIDPOINTS
       // I.i Hard-code the midpoints of the edges on the reference triangle
       Eigen::Matrix<double, 2, 3> midpoints_ref(2, 3);
@@ -75,6 +76,13 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
         }
       }
       element_matrix *= 1. / 6.;
+#else
+      
+      // ===================
+      // Your code goes here
+      // ===================
+
+#endif
       break;
     }
       /* SAM_LISTING_END_1 */
@@ -82,6 +90,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
     /* QUADRILATERAL CELL */
     case lf::base::RefEl::kQuad(): {
       /* SAM_LISTING_BEGIN_2 */
+#if SOLUTION
       // I. OBTAIN COORDINATES OF THE MIDPOINTS
       // I.i Hard-code the midpoints of the edges on the reference quadrilateral
       Eigen::Matrix<double, 2, 4> midpoints_ref(2, 4);
@@ -138,6 +147,13 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
         }
       }
       element_matrix *= 1. / 4.;
+#else
+
+      // ===================
+      // Your code goes here
+      // ===================
+
+#endif
       break;
     }
     /* SAM_LISTING_END_2 */
