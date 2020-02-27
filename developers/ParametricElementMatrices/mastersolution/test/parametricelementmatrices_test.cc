@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../ansiotropic_diffusion_element_matrix_provider.h"
-#include "../fe_source_elem_vec_provider.h"
+#include "../ansiotropicdiffusionelementmatrixprovider.h"
+#include "../fesourceelemvecprovider.h"
 
 namespace ParametricElementMatrices::test
 {
