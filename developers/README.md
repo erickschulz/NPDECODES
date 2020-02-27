@@ -113,7 +113,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Require polishing 
 
 ### Chapter 2
-- HandlingDOFs
+- HandlingDOFs (Liaowang)
 - NonConformingCrouzeixRaviartFiniteElements (Amélie)
 - RegularizedNeumann (Philippe)
 - ParametricElementMatrices (Tobias)
@@ -140,12 +140,12 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
 - RegularizedNeumann (Philippe)
-- ParametricElementMatrices
+- ParametricElementMatrices (Liaowang)
 
 ### Chapter 3
 - AvgValBoundary
 - DebuggingFEM
-- PointEvaluationRhs
+- PointEvaluationRhs (Liaowang)
 - ErrorEstimatesForTraces (folder reference)
 - MaximumPrinciple
 
