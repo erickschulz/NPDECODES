@@ -132,11 +132,11 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - LinearFE1D
 - TestQuadratureRules
 - ProjectionOntoGradients
+- ElementMatrixComputation
 
 ## Need consistency verification 
 
 ### Chapter 2
-- ElementMatrixComputation (Erick)
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
 - RegularizedNeumann (Philippe)
