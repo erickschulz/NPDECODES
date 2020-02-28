@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "MyLinearFEElementMatrix.h"
+#include "mylinearfeelementmatrix.h"
 
 #include <Eigen/Core>
 

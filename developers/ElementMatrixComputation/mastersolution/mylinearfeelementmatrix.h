@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef MY_LINEAR_FE_ELEMENT_MATRIX_H
-#define MY_LINEAR_FE_ELEMENT_MATRIX_H
+#ifndef MYLINEARFEELEMENTMATRIX_H_
+#define MYLINEARFEELEMENTMATRIX_H_
 
 #include <Eigen/Core>
 
@@ -32,4 +32,4 @@ class MyLinearFEElementMatrix {
 
 }  // namespace ElementMatrixComputation
 
-#endif // MY_LINEAR_FE_ELEMENT_MATRIX_H
+#endif  // MYLINEARFEELEMENTMATRIX_H_
