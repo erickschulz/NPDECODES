@@ -31,11 +31,11 @@ transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A) {
 
   // Make sure we deal with a square matrix 
   assert(n_rows == n_cols);
+  // The matrix size must have even parity
   assert(n_cols % 2 == 0);
 
   int N = n_cols;     // Size of (square) matrix
   int M = n_cols / 2; // Half the size
-
   //====================
   // Your code goes here
   //====================
