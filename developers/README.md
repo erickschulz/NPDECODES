@@ -116,7 +116,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - HandlingDOFs (Liaowang)
 - NonConformingCrouzeixRaviartFiniteElements (Amélie)
 - RegularizedNeumann (Philippe)
-- ParametricElementMatrices (Tobias)
 
 ### Chapter 3
 - AvgValBoundary
