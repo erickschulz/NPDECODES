@@ -124,15 +124,16 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ## Fixed and consistent 
 
+### Chapter 2
+- TransformationOfGalerkinMatrices
+- LinearFE1D
+- SimpleLinearFiniteElements
+- IncidenceMatrices
+- LengthOfBoundary
 
 ## Verified for consistency (.txt files) 
 
 ### Chapter 2
-- TransformationOfGalerkinMatrices
-- SimpleLinearFiniteElements
-- IncidenceMatrices
-- LengthOfBoundary
-- LinearFE1D
 - TestQuadratureRules
 - ProjectionOntoGradients
 - ElementMatrixComputation
