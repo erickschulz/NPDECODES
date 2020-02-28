@@ -21,6 +21,8 @@ http://www.sam.math.ethz.ch/~ralfh/tmp/NPDEFL_Problems_full.pdf
 
 - (2-8.d) link to Gitlab
 
+- (2-8.e) ElementMatrixComputation_main.cc --> elementmatrixcomputation_main.cc
+
 - (2-8.i) still gitlab links
 
 - (2-8.j) still gitlab links
