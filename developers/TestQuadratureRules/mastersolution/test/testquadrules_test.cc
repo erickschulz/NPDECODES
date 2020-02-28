@@ -18,15 +18,6 @@ namespace TestQuadratureRules::test {
 using namespace TestQuadratureRules;
 
 TEST(TestQuadratureRules, TestQuadratureTria) {
-  std::cout << "*********************************************" << std::endl;
-  std::cout << "NPDE homework TestQuadratureRules: UNIT TESTS" << std::endl;
-  std::cout << "*********************************************" << std::endl;
-  std::cout << "" << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-  std::cout << "Testing quadratures over reference triangle." << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-
-
   constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
@@ -90,10 +81,6 @@ TEST(TestQuadratureRules, TestQuadratureTria) {
 }
 
 TEST(TestQuadratureRules, TestQuadratureQuad) {
-  std::cout << "--------------------------------------------" << std::endl;
-  std::cout << "Testing quadratures over the reference cube." << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-
   constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
@@ -156,10 +143,6 @@ TEST(TestQuadratureRules, TestQuadratureQuad) {
 }
 
 TEST(TestQuadratureRules, calcQuadOrder) {
-    std::cout << "--------------------------------------------" << std::endl;
-    std::cout << "           Testing calcQuadOrder            " << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-
     constexpr unsigned int max_test_order = 30;
     
     // the expected results to be compared.

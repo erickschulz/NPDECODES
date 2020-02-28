@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "MyLinearLoadVector.h"
+#include "mylinearloadvector.h"
 
 #include <functional>
 

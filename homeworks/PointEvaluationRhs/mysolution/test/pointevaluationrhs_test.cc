@@ -68,11 +68,8 @@ TEST(PoinEvaluationRhs, mapping_test) {
       }
     }  // end switch
 
-    ASSERT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8) << "Fail!" << std::endl;
-//        << "cell " << *cell << ": Mismatch xh = " << xh << ", x = " << x
-//        << ", xh_comp = " << xh_comp << std::endl;
+    ASSERT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8);
   }  // end loop over cells
-    std::cout << "Pass!" << std::endl;
 }
 
 TEST(PoinEvaluationRhs, solution_test) {
@@ -97,8 +94,6 @@ TEST(PoinEvaluationRhs, solution_test) {
       0.10716, 0.172936, 0.152714;
 
   for (int i = 0; i < sol_vec.size(); ++i) {
-//    EXPECT_NEAR(sol_vec(i), correct_sol(i), eps);
-      ASSERT_NEAR(sol_vec(i), correct_sol(i), eps) << "Fail!" << std::endl;
+    EXPECT_NEAR(sol_vec(i), correct_sol(i), eps);
   }
-  std::cout << "Pass!" << std::endl;
 }

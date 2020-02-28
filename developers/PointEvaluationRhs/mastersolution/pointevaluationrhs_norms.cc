@@ -20,8 +20,7 @@
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace PointEvaluationRhs
-{
+namespace PointEvaluationRhs{
 
 /* SAM_LISTING_BEGIN_1 */
 double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,

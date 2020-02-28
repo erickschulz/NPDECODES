@@ -12,8 +12,10 @@
 
 namespace TransformationOfGalerkinMatrices {
 
-std::vector<Eigen::Triplet<double>> transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A) {
-  std::vector<Eigen::Triplet<double>> A_t{};  // return value
+/* SAM_LISTING_BEGIN_1 */
+std::vector<Eigen::Triplet<double>>
+transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A) {
+  std::vector<Eigen::Triplet<double>> A_t{}; // return value
 
   // First step: find the size of the matrix by searching the maximal
   // indices. Depends on the assumption that no zero rows/columns occur.
@@ -27,16 +29,18 @@ std::vector<Eigen::Triplet<double>> transformCOOmatrix(const std::vector<Eigen::
   int n_rows = rows_max_idx + 1;
   int n_cols = cols_max_idx + 1;
 
+  // Make sure we deal with a square matrix 
   assert(n_rows == n_cols);
+  // The matrix size must have even parity
   assert(n_cols % 2 == 0);
 
-  int N = n_cols;      // Size of (square) matrix
-  int M = n_cols / 2;  // Half the size
-
+  int N = n_cols;     // Size of (square) matrix
+  int M = n_cols / 2; // Half the size
   //====================
   // Your code goes here
   //====================
   return A_t;
 }
+/* SAM_LISTING_END_1 */
 
-}  // namespace TransformationOfGalerkinMatrices
+} // namespace TransformationOfGalerkinMatrices

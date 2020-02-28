@@ -18,15 +18,6 @@ namespace TestQuadratureRules::test {
 using namespace TestQuadratureRules;
 
 TEST(TestQuadratureRules, TestQuadratureTria) {
-  std::cout << "*********************************************" << std::endl;
-  std::cout << "NPDE homework TestQuadratureRules: UNIT TESTS" << std::endl;
-  std::cout << "*********************************************" << std::endl;
-  std::cout << "" << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-  std::cout << "Testing quadratures over reference triangle." << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-
-
   constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
@@ -84,18 +75,12 @@ TEST(TestQuadratureRules, TestQuadratureTria) {
 
   for (int i = 0; i < max_test_order; i++) {
     for (int j = 0; j < max_test_order; j++) {
-      ASSERT_TRUE(result_mat_expected[i][j] == result_mat_kTria[i][j])
-        << "Fail!" << std::endl;
+        ASSERT_TRUE(result_mat_expected[i][j] == result_mat_kTria[i][j]);
     }
   }
-  std::cout << "Pass!" << std::endl;
 }
 
 TEST(TestQuadratureRules, TestQuadratureQuad) {
-  std::cout << "--------------------------------------------" << std::endl;
-  std::cout << "Testing quadratures over the reference cube." << std::endl;
-  std::cout << "--------------------------------------------" << std::endl;
-
   constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
@@ -152,24 +137,19 @@ TEST(TestQuadratureRules, TestQuadratureQuad) {
 
   for (int i = 0; i < max_test_order; i++) {
     for (int j = 0; j < max_test_order; j++) {
-      ASSERT_TRUE(result_mat_expected[i][j] == result_mat_kQuad[i][j]) << "Fail!" << std::endl;
+      ASSERT_TRUE(result_mat_expected[i][j] == result_mat_kQuad[i][j]);
     }
   }
-  std::cout << "Pass!" << std::endl;
 }
 
 TEST(TestQuadratureRules, calcQuadOrder) {
-    std::cout << "--------------------------------------------" << std::endl;
-    std::cout << "           Testing calcQuadOrder            " << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-
-    constexpr unsigned int max_test_order = 14;
+    constexpr unsigned int max_test_order = 30;
     
     // the expected results to be compared.
     int result_tria_expected[max_test_order] = {2, 2, 3, 5, 5, 6, 7, 8, 9, 10, 11, 12,
-        13, 14};
+        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
     int result_quad_expected[max_test_order] = {2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12,
-        14, 14};
+        14, 14, 16, 16, 18, 18, 20, 20, 22, 22, 25, 25, 28, 28, 32, 32, 35, 35};
     
     // test calcQuadorder for reference triangle and quad
     const auto ref_tria = lf::base::RefEl(lf::base::RefElType::kTria);
@@ -181,18 +161,15 @@ TEST(TestQuadratureRules, calcQuadOrder) {
          order_requested++) {
         quad_rule = lf::quad::make_QuadRule(ref_tria, order_requested - 1);
 
-        ASSERT_TRUE(calcQuadOrder(quad_rule) == result_tria_expected[order_requested-1])
-        << "Fail!";
+        ASSERT_TRUE(calcQuadOrder(quad_rule) == result_tria_expected[order_requested-1]);
     }
     
     for (int order_requested = 1; order_requested <= max_test_order;
          order_requested++) {
         quad_rule = lf::quad::make_QuadRule(ref_quad, order_requested - 1);
 
-        ASSERT_TRUE(calcQuadOrder(quad_rule) == result_quad_expected[order_requested-1])
-        << "Fail!" << std::endl;
+        ASSERT_TRUE(calcQuadOrder(quad_rule) == result_quad_expected[order_requested-1]);
     }
-    std::cout << "Pass!" << std::endl;
 }
 
 }  // namespace TestQuadratureRules::test

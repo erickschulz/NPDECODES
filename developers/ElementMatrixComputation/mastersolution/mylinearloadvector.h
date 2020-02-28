@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef MY_LINEAR_LOAD_VECTOR_H
-#define MY_LINEAR_LOAD_VECTOR_H
+#ifndef MYLINEARLOADVECTOR_H_
+#define MYLINEARLOADVECTOR_H_
 
 #include <functional>
 #include <utility>
@@ -44,4 +44,4 @@ class MyLinearLoadVector {
 
 }  // namespace ElementMatrixComputation
 
-#endif // MY_LINEAR_LOAD_VECTOR_H
+#endif  // MYLINEARLOADVECTOR_H_

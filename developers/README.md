@@ -75,6 +75,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Polished 
 
 ### Chapter 2
+- ElementMatrixComputation
 - ErrorEstimatesForTraces
 - IncidenceMatrices
 - LengthOfBoundary
@@ -105,7 +106,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Require confirmation of polished 
 
 ### Chapter 2
-- ElementMatrixComputation(Oliver?)
 
 ### Chapter 3
 - PointEvaluationRhs **(Liaowang)**
@@ -113,39 +113,43 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Require polishing 
 
 ### Chapter 2
-- HandlingDOFs
+- HandlingDOFs (Liaowang)
 - NonConformingCrouzeixRaviartFiniteElements (Amélie)
-- RegularizedNeumann 
+- RegularizedNeumann (Philippe)
 - ParametricElementMatrices (Tobias)
 
 ### Chapter 3
 - AvgValBoundary
 - DebuggingFEM
 
-## Verified for consistency 
+## NPDE Problems pdf fixed and consistent 
 
 ### Chapter 2
+- ElementMatrixComputation
 - TransformationOfGalerkinMatrices
+- LinearFE1D
 - SimpleLinearFiniteElements
 - IncidenceMatrices
 - LengthOfBoundary
-- LinearFE1D
-- TestQuadratureRules
+
+## Verified for consistency (.txt files) 
+
+### Chapter 2
 - ProjectionOntoGradients
+- TestQuadratureRules
 
 ## Need consistency verification 
 
 ### Chapter 2
-- ElementMatrixComputation (Erick)
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
-- RegularizedNeumann
-- ParametricElementMatrices
+- RegularizedNeumann (Philippe)
+- ParametricElementMatrices (Liaowang)
 
 ### Chapter 3
 - AvgValBoundary
 - DebuggingFEM
-- PointEvaluationRhs
+- PointEvaluationRhs (Liaowang)
 - ErrorEstimatesForTraces (folder reference)
 - MaximumPrinciple
 
