@@ -5,9 +5,9 @@
 - Solution to part a: Diffusion tensor goes over the page margins
 - Part b: Code in problem formulation is outdated
 - Hint to part b: Broken reference to lecture document
-- Part b: Template `mysolution/anisotropic_diffusion_element_matrix_provider.cc` is already completed
+- Part b: File was renamed anisotropic_diffusion_element_matrix_provider.cc -> anisotropicdiffusionelementmatrixprovider.cc
 - Solution to part b: Code in the solution PDF is outdated
-- Part c: Template `mysolution(fe_source_elem_vec_provider.cc` is already completed
+- Part c: File was renamed fe_source_elem_vec_provider.cc -> fesourceelemvecprovider.cc
 - Part c: Code in problem formulation is outdated
 - Part c: Wrong argument name in the second to last sentence of the problem formulation: `w_coeff_vec` -> `coeff_expansion`
 - Solution to part c: Code in the solution PDF is outdated

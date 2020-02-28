@@ -3,7 +3,7 @@
  * @date 13/03/2019, 19/11/2019 (refactoring)
  * @copyright Developed at ETH Zurich */
 
-#include "impedance_boundary_edge_matrix_provider.h"
+#include "impedanceboundaryedgematrixprovider.h"
 
 namespace ParametricElementMatrices {
 
