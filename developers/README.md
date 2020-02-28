@@ -131,12 +131,12 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - SimpleLinearFiniteElements
 - IncidenceMatrices
 - LengthOfBoundary
-- TestQuadratureRules (Erick - In progress)
 
 ## Verified for consistency (.txt files) 
 
 ### Chapter 2
 - ProjectionOntoGradients
+- TestQuadratureRules
 
 ## Need consistency verification 
 
