@@ -122,14 +122,18 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - AvgValBoundary
 - DebuggingFEM
 
-## Verified for consistency 
+## Fixed and consistent 
 
 ### Chapter 2
 - TransformationOfGalerkinMatrices
+- LinearFE1D
 - SimpleLinearFiniteElements
 - IncidenceMatrices
 - LengthOfBoundary
-- LinearFE1D
+
+## Verified for consistency (.txt files) 
+
+### Chapter 2
 - TestQuadratureRules
 - ProjectionOntoGradients
 - ElementMatrixComputation
