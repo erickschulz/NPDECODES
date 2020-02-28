@@ -122,7 +122,10 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - AvgValBoundary
 - DebuggingFEM
 
-## Verified for consistency 
+## Fixed and consistent 
+
+
+## Verified for consistency (.txt files) 
 
 ### Chapter 2
 - TransformationOfGalerkinMatrices
