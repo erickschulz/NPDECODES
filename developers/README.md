@@ -75,6 +75,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Polished 
 
 ### Chapter 2
+- ElementMatrixComputation
 - ErrorEstimatesForTraces
 - IncidenceMatrices
 - LengthOfBoundary
@@ -105,7 +106,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Require confirmation of polished 
 
 ### Chapter 2
-- ElementMatrixComputation(Oliver?)
 
 ### Chapter 3
 - PointEvaluationRhs **(Liaowang)**
@@ -125,6 +125,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## NPDE Problems pdf fixed and consistent 
 
 ### Chapter 2
+- ElementMatrixComputation
 - TransformationOfGalerkinMatrices
 - LinearFE1D
 - SimpleLinearFiniteElements
@@ -136,7 +137,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ### Chapter 2
 - ProjectionOntoGradients
-- ElementMatrixComputation
 
 ## Need consistency verification 
 
