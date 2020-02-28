@@ -14,7 +14,7 @@ Currently, only UNIX based operating systems are supported. Moreover, you need t
 * git (not strictly needed, you could also download the repo as .zip file)
 
 ## Getting started
-Open a terminal and type
+This section is suited only for your own computer. To build the codes on the student computers of ETH see below. Open a terminal and type
 ```
 git clone git@github.com:erickschulz/NPDECODES.git
 cd NPDECODES/
@@ -53,6 +53,16 @@ There is two folders called `homeworks/`. One contains the source files and one 
         :
 ```
 
-## Further remarks
-* If you just clone the repository in this way, you can only work locally on your computer, since you have no permission to push to this remote repository. It may thus be useful to create your own copy (fork) of this repository. GitHub offers a [tutorial](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) on how to create such a fork.
-* LehrFEM++ is already installed on the linux student computers in the ETH main building. To access this installation, you have to set the correct installation directory: In the terminal, run `export HUNTER_ROOT=/opt/libs/NumPDE` before running `cmake ..`. Then proceed as above. This sets the environment variable `HUNTER_ROOT` in the current terminal instance. If you start a new terminal, then you need to set it again. 
+## On the student computers
+LehrFEM++ is already installed on the linux student computers in the ETH main building. To set up your local repository there, open a terminal an type:
+```
+cd /tmp
+git clone git@github.com:erickschulz/NPDECODES.git
+mv NPDECODES ~
+cd ~/NPDECODES
+mkdir build
+cd build
+export HUNTER_ROOT=/opt/libs/NumPDE
+cmake ..
+```
+The first four lines are due to limited resources on the student computers. Setting the environment variable `export HUNTER_ROOT=/opt/libs/NumPDE` tells CMake where to look for the preinstalled libraries. This environment variable is local to your terminal, i.e. has to be redefined if you start a new terminal. Apart from this, you can use the folder `~/NPDECODES` in the same way you would for the approach in the previous section.
