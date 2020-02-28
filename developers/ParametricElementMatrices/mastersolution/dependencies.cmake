@@ -8,8 +8,8 @@
 
 set(SOURCES
   ${DIR}/parametricelementmatrices_main.cc
-  ${DIR}/ansiotropicdiffusionelementmatrixprovider.h
-  ${DIR}/ansiotropicdiffusionelementmatrixprovider.cc
+  ${DIR}/anisotropicdiffusionelementmatrixprovider.h
+  ${DIR}/anisotropicdiffusionelementmatrixprovider.cc
   ${DIR}/fesourceelemvecprovider.h
   ${DIR}/fesourceelemvecprovider.cc
   ${DIR}/impedanceboundaryedgematrixprovider.h

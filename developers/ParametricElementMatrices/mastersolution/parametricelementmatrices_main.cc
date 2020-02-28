@@ -6,7 +6,7 @@
 // Lehrfempp includes
 #include <lf/io/io.h>
 // ParametricElementMatrices internal includes
-#include "ansiotropicdiffusionelementmatrixprovider.h"
+#include "anisotropicdiffusionelementmatrixprovider.h"
 #include "fesourceelemvecprovider.h"
 #include "impedanceboundaryedgematrixprovider.h"
 

@@ -3,7 +3,7 @@
  * @date 13/03/2019, 19/11/2019 (refactoring)
  * @copyright Developed at ETH Zurich */
 
-#include "ansiotropicdiffusionelementmatrixprovider.h"
+#include "anisotropicdiffusionelementmatrixprovider.h"
 
 namespace ParametricElementMatrices {
 

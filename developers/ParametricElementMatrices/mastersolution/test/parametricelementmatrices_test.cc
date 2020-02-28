@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../ansiotropicdiffusionelementmatrixprovider.h"
+#include "../anisotropicdiffusionelementmatrixprovider.h"
 #include "../fesourceelemvecprovider.h"
 
 namespace ParametricElementMatrices::test
