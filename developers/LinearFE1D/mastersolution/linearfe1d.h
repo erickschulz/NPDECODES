@@ -149,7 +149,8 @@ Eigen::VectorXd computeRHS(const Eigen::VectorXd& mesh, FUNCTOR1&& f) {
 
   return rhs_vec;
 }  // computeRHS
-
+/* SAM_LISTING_END_3 */
+  
 // SOLVE THE LINEAR SYSTEM OF PROBLEM (A)
 /* SAM_LISTING_BEGIN_A */
 template <typename FUNCTOR1, typename FUNCTOR2>
@@ -291,6 +292,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   u(N) = u1;  // right boundary node
   return u;
 }  // solveB
+/* SAM_LISTING_END_B */
 
 // Build an sol!ve the LSE corresponding to (C)
 /* SAM_LISTING_BEGIN_C */

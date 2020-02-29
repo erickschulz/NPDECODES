@@ -4,12 +4,12 @@
 
 set(SOURCES
   ${DIR}/parametricelementmatrices_main.cc
-  ${DIR}/ansiotropic_diffusion_element_matrix_provider.h
-  ${DIR}/ansiotropic_diffusion_element_matrix_provider.cc
-  ${DIR}/fe_source_elem_vec_provider.h
-  ${DIR}/fe_source_elem_vec_provider.cc
-  ${DIR}/impedance_boundary_edge_matrix_provider.h
-  ${DIR}/impedance_boundary_edge_matrix_provider.cc
+  ${DIR}/anisotropicdiffusionelementmatrixprovider.h
+  ${DIR}/anisotropicdiffusionelementmatrixprovider.cc
+  ${DIR}/fesourceelemvecprovider.h
+  ${DIR}/fesourceelemvecprovider.cc
+  ${DIR}/impedanceboundaryedgematrixprovider.h
+  ${DIR}/impedanceboundaryedgematrixprovider.cc
 )
 
 set(LIBRARIES

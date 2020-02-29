@@ -14,8 +14,8 @@
 
 #include <lf/uscalfe/uscalfe.h>
 
-#include "MyLinearFEElementMatrix.h"
-#include "MyLinearLoadVector.h"
+#include "mylinearfeelementmatrix.h"
+#include "mylinearloadvector.h"
 
 namespace ElementMatrixComputation {
 

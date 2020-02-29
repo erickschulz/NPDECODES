@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef SOLVE_H
-#define SOLVE_H
+#ifndef SOLVE_H_
+#define SOLVE_H_
 
 #include <iostream>
 #include <memory>
@@ -20,8 +20,8 @@
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "MyLinearFEElementMatrix.h"
-#include "MyLinearLoadVector.h"
+#include "mylinearfeelementmatrix.h"
+#include "mylinearloadvector.h"
 #include "../meshes/mesh.h"
 
 namespace ElementMatrixComputation {
@@ -128,4 +128,4 @@ Eigen::VectorXd solveNeumannEq();
 
 }  // namespace ElementMatrixComputation
 
-#endif // SOLVE_H
+#endif // SOLVE_H_
