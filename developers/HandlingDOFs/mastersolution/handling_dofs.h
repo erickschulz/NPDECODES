@@ -15,8 +15,7 @@
 #include "lf/geometry/geometry.h"
 #include "lf/mesh/mesh.h"
 
-namespace HandlingDOFs
-{
+namespace HandlingDOFs{
 
 /**
  * @brief Compute the internal number of dofs per entity
@@ -81,22 +80,19 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
  */
 template <typename F>
 Eigen::VectorXd buildCoefVector(const F &f,
-                                const lf::assemble::UniformFEDofHandler &dofh)
-{
+                                const lf::assemble::UniformFEDofHandler &dofh){
   Eigen::VectorXd mu(dofh.NumDofs());
 #define computing_mu_version 2
 #if computing_mu_version == 1
   // Version 1: Iterate over nodes and edges, get corresponding dof then
-  for (const auto &node : mesh->Entities(2))
-  {
+  for (const auto &node : mesh->Entities(2)){
     // coordinates of nodes
     const Eigen::Vector2d coords = lf::geometry::Corners(*node.Geometry());
     // global index
     const unsigned node_idx = dofh.InteriorGlobalDofIndices(node)[0];
     mu(node_idx) = f(coords);
   }
-  for (const auto &edge : mesh->Entities(1))
-  {
+  for (const auto &edge : mesh->Entities(1)){
     // coordinates of nodes
     const Eigen::Matrix2d endpoints = lf::geometry::Corners(*edge.Geometry());
     const Eigen::Vector2d midpoint =
@@ -107,18 +103,15 @@ Eigen::VectorXd buildCoefVector(const F &f,
   }
 #else
   // Version 2: Iterate over dofs and get corresponding entity
-  for (std::size_t dofnum = 0; dofnum < dofh.NumDofs(); ++dofnum)
-  {
+  for (std::size_t dofnum = 0; dofnum < dofh.NumDofs(); ++dofnum){
     // get associated entity
-    if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kPoint())
-    {
+    if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kPoint()){
       // we're dealing with a point
       const Eigen::Vector2d coords =
           lf::geometry::Corners(*dofh.Entity(dofnum).Geometry());
       mu(dofnum) = f(coords);
     }
-    else if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kSegment())
-    {
+    else if (dofh.Entity(dofnum).RefEl() == lf::base::RefEl::kSegment()){
       // we're dealing with an edge, the dof is located in its middle
       const Eigen::Matrix2d endpoints =
           lf::geometry::Corners(*dofh.Entity(dofnum).Geometry());

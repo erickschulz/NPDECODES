@@ -9,6 +9,9 @@
 
 #include <iostream>
 
+#include "lf/assemble/assemble.h"
+#include "lf/base/base.h"
+#include "lf/mesh/mesh.h"
 #include "lf/mesh/test_utils/test_meshes.h"
 
 #include "handling_dofs.h"
