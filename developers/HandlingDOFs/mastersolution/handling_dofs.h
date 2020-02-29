@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
+#include <array>
 
 #include <Eigen/Dense>
 

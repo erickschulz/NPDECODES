@@ -6,8 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-
+#include <array>
 #include <iostream>
+#include <memory>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"

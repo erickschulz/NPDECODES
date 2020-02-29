@@ -8,13 +8,15 @@
 
 #include "handling_dofs.h"
 
-#include <iostream>
+#include <array>
+#include <memory>
 
 #include <Eigen/Dense>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"
 #include "lf/geometry/geometry.h"
+#include "lf/mesh/mesh.h"
 #include "lf/mesh/utils/utils.h"
 
 namespace HandlingDOFs{
