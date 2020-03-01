@@ -134,6 +134,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Verified for consistency (.txt files) 
 
 ### Chapter 2
+- HandlingDOFs (folder reference)
 - ProjectionOntoGradients
 - TestQuadratureRules
 
@@ -143,7 +144,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ## Need consistency verification 
 
 ### Chapter 2
-- HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
 - ParametricElementMatrices
 - RegularizedNeumann (Philippe) 
