@@ -1,7 +1,7 @@
 /**
  * @file regularizedneumann_main.cc
  * @brief NPDE homework RegularizedNeumann code
- * @author Christian Mitsch, Philippe PEter
+ * @author Christian Mitsch, Philippe Peter
  * @date March 2020
  * @copyright Developed at ETH Zurich
  */

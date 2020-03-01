@@ -94,7 +94,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 class VecHelper {
 public:
   explicit VecHelper() {}
-  bool isActive(const lf::mesh::Entity & entity) const { return true; }
+  bool isActive(const lf::mesh::Entity &entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {
     LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                   "Function only defined for triangular cells");
