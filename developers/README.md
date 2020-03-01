@@ -145,7 +145,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
-- ParametricElementMatrices (Philippe)
+- ParametricElementMatrices 
 
 ### Chapter 3
 - AvgValBoundary
