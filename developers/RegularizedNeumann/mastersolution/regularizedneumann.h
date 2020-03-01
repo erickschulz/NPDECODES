@@ -1,34 +1,35 @@
-#ifndef __REGNEUMANN_H
-#define __REGNEUMANN_H
+#ifndef __REGULARIZEDNEUMANN_H
+#define __REGULARIZEDNEUMANN_H
+
 /**
- * @ file regNeumann.h
- * @ brief NPDE homework RegularizedNeumann code
- * @ author Christian Mitsch
- * @ date 11.03.2019
- * @ copyright Developed at ETH Zurich
+ * @file regularizedneumann.h
+ * @brief NPDE homework RegularizedNeumann code
+ * @author Christian Mitsch, Philippe Peter
+ * @date March 2020
+ * @copyright Developed at ETH Zurich
  */
 
 #include <iostream>
 #include <memory>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
-#include "lf/mesh/test_utils/test_meshes.h"
 
 namespace RegularizedNeumann {
-typedef Eigen::Triplet<double> Triplet;
-
-// SUB-EXERCISE c)
 
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
     const std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>>
         fe_space,
-    const FUNCT_F f, FUNCT_H h) {
+    const FUNCT_F &f, FUNCT_H &h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs();
@@ -47,8 +48,8 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   // ASSEMBLE GLOBAL RHS VECOR
   // Volume part $v\mapsto\int_{\Omega}fv\,\mathrm{d}\Bx$ of the rhs linear
   // functional
-  lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(f)>
-      my_vec_provider(fe_space, f);
+  lf::uscalfe::ScalarLoadElementVectorProvider<double, FUNCT_F> my_vec_provider(
+      fe_space, f);
   // co-dimension 0 because we locally assemble on cells
   lf::assemble::AssembleVectorLocally(0, dofh, my_vec_provider, rhs_vec);
 
@@ -58,10 +59,9 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   // builder object through a lambda function
   auto bd_edges{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 1)};
   lf::uscalfe::ScalarLoadEdgeVectorProvider my_vec_provider_edge(
-      fe_space, h, [&bd_edges](const lf::mesh::Entity &edge) -> bool {
-        return bd_edges(edge);
-      });
-  // co-dimension 1 because we locally assemble on edges !
+      fe_space, h,
+      [&bd_edges](const lf::mesh::Entity &edge) { return bd_edges(edge); });
+  // co-dimension 1 because we locally assemble on edges!
   lf::assemble::AssembleVectorLocally(1, dofh, my_vec_provider_edge, rhs_vec);
 
   // Now fix the solution to be 0 at the node p
@@ -72,9 +72,9 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   /* SAM_LISTING_BEGIN_1 */
   auto selector = [](lf::base::glb_idx_t idx) -> std::pair<bool, double> {
     if (idx == 0) {
-      return {true, 0.0};  // fix first d.o.f. to zero
+      return {true, 0.0}; // fix first d.o.f. to zero
     } else {
-      return {false, 42.0};  // keep all others
+      return {false, 42.0}; // keep all others
     }
   };
   lf::assemble::FixFlaggedSolutionComponents(selector, A_aux, rhs_vec);
@@ -88,15 +88,13 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   return std::make_pair(A, rhs_vec);
 }
 
-// SUB-EXERCISE f)
-
-// You can use write a helper class which should implement
+// You can write a helper class which should implement
 // ENTITY_VECTOR_PROVIDER to calculate vector c using LehrFEM assembly functions
 /* SAM_LISTING_BEGIN_6 */
 class VecHelper {
- public:
+public:
   explicit VecHelper() {}
-  bool isActive(const lf::mesh::Entity &entity) const { return true; }
+  bool isActive(const lf::mesh::Entity & entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {
     LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                   "Function only defined for triangular cells");
@@ -109,9 +107,9 @@ class VecHelper {
     // Initialize element vector |K|/3*[1,1,1]^T
     result = (area / 3.0) * Eigen::Vector3d::Ones();
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
     return result;
   }
@@ -140,7 +138,7 @@ Eigen::VectorXd assembleVector_c(const lf::assemble::DofHandler &dofh) {
 template <typename FUNCT_F, typename FUNCT_H>
 std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
     const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
-    const FUNCT_F f, const FUNCT_H h) {
+    const FUNCT_F &f, const FUNCT_H &h) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   const std::size_t N_dofs = dofh.NumDofs() + 1;
@@ -157,8 +155,8 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   // ASSEMBLE GLOBAL RHS VECOR
   // Volume part $v\mapsto\int_{\Omega}fv\,\mathrm{d}\Bx$ of the rhs linear
   // functional
-  lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(f)>
-      my_vec_provider(fe_space, f);
+  lf::uscalfe::ScalarLoadElementVectorProvider<double, FUNCT_F> my_vec_provider(
+      fe_space, f);
   // co-dimension 0 because we locally assemble on cells
   lf::assemble::AssembleVectorLocally(0, dofh, my_vec_provider, rhs_vec);
 
@@ -168,9 +166,8 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   // builder object through a lambda function
   auto bd_edges{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 1)};
   lf::uscalfe::ScalarLoadEdgeVectorProvider my_vec_provider_edge(
-      fe_space, h, [&bd_edges](const lf::mesh::Entity &edge) -> bool {
-        return bd_edges(edge);
-      });
+      fe_space, h,
+      [&bd_edges](const lf::mesh::Entity &edge) { return bd_edges(edge); });
   // co-dimension 1 because we locally assemble on edges
   lf::assemble::AssembleVectorLocally(1, dofh, my_vec_provider_edge, rhs_vec);
 
@@ -196,6 +193,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   return std::make_pair(A, rhs_vec);
 }
 
-}  // namespace RegularizedNeumann
+} // namespace RegularizedNeumann
 
-#endif  // define __GRADPROJECTION_H
+#endif
