@@ -115,6 +115,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 ### Chapter 2
 - NonConformingCrouzeixRaviartFiniteElements (Amélie)
+- RegularizedNeumann (Philippe)
 
 ### Chapter 3
 - AvgValBoundary
@@ -135,7 +136,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - ProjectionOntoGradients
 - TestQuadratureRules
-- RegularizedNeumann
 
 ### Chapter 3
 - PointEvaluationRhs
@@ -145,7 +145,8 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 ### Chapter 2
 - HandlingDOFs (folder reference) (Philipp L.)
 - NonConformingCrouzeixRaviartFiniteElements 
-- ParametricElementMatrices 
+- ParametricElementMatrices
+- RegularizedNeumann (Philippe) 
 
 ### Chapter 3
 - AvgValBoundary
