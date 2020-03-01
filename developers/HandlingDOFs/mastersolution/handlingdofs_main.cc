@@ -15,7 +15,7 @@
 #include "lf/mesh/mesh.h"
 #include "lf/mesh/test_utils/test_meshes.h"
 
-#include "handling_dofs.h"
+#include "handlingdofs.h"
 
 int main() {
   // Create a triangular mesh

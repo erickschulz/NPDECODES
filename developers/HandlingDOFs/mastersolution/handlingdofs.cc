@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "handling_dofs.h"
+#include "handlingdofs.h"
 
 #include <array>
 #include <memory>

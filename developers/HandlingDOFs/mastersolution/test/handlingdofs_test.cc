@@ -11,7 +11,7 @@
 #include "lf/mesh/hybrid2d/hybrid2d.h"
 #include "lf/mesh/test_utils/test_meshes.h"
 
-#include "../handling_dofs.h"
+#include "../handlingdofs.h"
 
 using size_type = lf::base::size_type;
 
