@@ -6,29 +6,33 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "handling_dofs.h"
+#include "handlingdofs.h"
 
+#include <array>
+#include <memory>
+
+#include <Eigen/Dense>
+
+#include "lf/assemble/assemble.h"
+#include "lf/base/base.h"
+#include "lf/geometry/geometry.h"
+#include "lf/mesh/mesh.h"
 #include "lf/mesh/utils/utils.h"
 
-namespace HandlingDOFs
-{
+namespace HandlingDOFs{
 
 /* SAM_LISTING_BEGIN_1 */
 std::array<std::size_t, 3> countEntityDofs(
-    const lf::assemble::DofHandler &dofhandler)
-{
+    const lf::assemble::DofHandler &dofhandler){
   std::array<std::size_t, 3> entityDofs;
 #if SOLUTION
   // Idea: iterate over entities in the mesh and get interior number of dofs for
   // each
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
-  for (std::size_t codim = 0; codim <= 2; ++codim)
-  {
+  for (std::size_t codim = 0; codim <= 2; ++codim){
     entityDofs[codim] = 0;
-    for (const auto *el : mesh->Entities(codim))
-    {
-      if (el->RefEl() == lf::base::RefEl::kQuad())
-      {
+    for (const auto *el : mesh->Entities(codim)){
+      if (el->RefEl() == lf::base::RefEl::kQuad()){
         throw "Only triangular meshes are allowed!";
       }
       entityDofs[codim] += dofhandler.NumInteriorDofs(*el);
@@ -44,8 +48,7 @@ std::array<std::size_t, 3> countEntityDofs(
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler)
-{
+std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler){
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
   // given an entity, bd\_flags(entity) == true, if the entity is on the
   // boundary
@@ -54,17 +57,13 @@ std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler)
   std::size_t no_dofs_on_bd = 0;
 #if SOLUTION
   // Edges and nodes can be on the boundary
-  for (const auto *edge : mesh->Entities(1))
-  {
-    if (bd_flags(*edge))
-    {
+  for (const auto *edge : mesh->Entities(1)){
+    if (bd_flags(*edge)){
       no_dofs_on_bd += dofhandler.NumInteriorDofs(*edge);
     }
   }
-  for (const auto *node : mesh->Entities(2))
-  {
-    if (bd_flags(*node))
-    {
+  for (const auto *node : mesh->Entities(2)){
+    if (bd_flags(*node)){
       no_dofs_on_bd += dofhandler.NumInteriorDofs(*node);
     }
   }
@@ -114,16 +113,13 @@ double integrateLinearFEFunction(
 
 /* SAM_LISTING_BEGIN_4 */
 double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
-                                    const Eigen::VectorXd &mu)
-{
+                                    const Eigen::VectorXd &mu){
   double I = 0;
 #if SOLUTION
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
-  for (const auto *cell : mesh->Entities(0))
-  {
+  for (const auto *cell : mesh->Entities(0)){
     // check if we the FE space is really $\Cs_2^0$
-    if (dofhandler.NumLocalDofs(*cell) != 6)
-    {
+    if (dofhandler.NumLocalDofs(*cell) != 6){
       throw "Not a S_2^0 FE space!";
     }
     const double weight = 1.0 / 3.0 * lf::geometry::Volume(*(cell->Geometry()));
@@ -131,8 +127,7 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
     auto int_dofs = dofhandler.GlobalDofIndices(*cell);
     // The integrated basis functions associated with the nodes are 0:
     //  $\int_K b_K^j dx = 0$ for $j = 1,2,3$. Skip!
-    for (int l = 3; l < 6; ++l)
-    {
+    for (int l = 3; l < 6; ++l){
       // The integrated basis functions associated with the edges are:
       // $\int_K b_K^j dx = |K|/3$ for $j = 4,5,6$
       // multiply by the value at the dof to get local contribution
@@ -152,10 +147,8 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
 Eigen::VectorXd convertDOFsLinearQuadratic(
     const lf::assemble::DofHandler &dofh_Linear_FE,
     const lf::assemble::DofHandler &dofh_Quadratic_FE,
-    const Eigen::VectorXd &mu)
-{
-  if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh())
-  {
+    const Eigen::VectorXd &mu){
+  if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh()){
     throw "Underlying meshes must be the same for both DOF handlers!";
   }
   std::shared_ptr<const lf::mesh::Mesh> mesh =
@@ -165,13 +158,11 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
   // on for us this shouldn't be a problem, but just to be sure
   zeta.setZero();
 
-  for (const auto *cell : mesh->Entities(0))
-  {
+  for (const auto *cell : mesh->Entities(0)){
     // check if the spaces are actually linear and quadratic
 #if SOLUTION
     if (dofh_Linear_FE.NumLocalDofs(*cell) != 3 ||
-        dofh_Quadratic_FE.NumLocalDofs(*cell) != 6)
-    {
+        dofh_Quadratic_FE.NumLocalDofs(*cell) != 6){
       throw "dofh_Linear_FE must have 3 dofs per cell and dofh_Quadratic_FE 6!";
     }
 #else
@@ -187,8 +178,7 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
 #if SOLUTION
     auto lin_dofs = dofh_Linear_FE.GlobalDofIndices(*cell);
     auto quad_dofs = dofh_Quadratic_FE.GlobalDofIndices(*cell);
-    for (std::size_t l = 0; l <= 2; ++l)
-    {
+    for (std::size_t l = 0; l <= 2; ++l){
       // Let $p_1,p_2,p_3$ be the nodes of the triangle and $p_4,p_5,p_6$ the
       // edge midpoints. Let $\lambda_1,\lambda_2,\lambda_3$ be the local basis
       // functions of $\Cs_1^0$ and $b_1,..,b_6$ for $\Cs_2^0$. The values of

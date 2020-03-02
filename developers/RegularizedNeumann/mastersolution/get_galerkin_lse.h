@@ -1,23 +1,23 @@
-#ifndef __REGNEUMANN_H
-#define __REGNEUMANN_H
+#ifndef __GETGALERKINLSE_H
+#define __GETGALERKINLSE_H
+
 /**
- * @ file regNeumann.h
- * @ brief NPDE homework RegularizedNeumann code
- * @ author Christian Mitsch
- * @ date 11.03.2019
- * @ copyright Developed at ETH Zurich
+ * @file get_galerkin_lse.h
+ * @brief NPDE homework RegularizedNeumann code
+ * @author Christian Mitsch, Philippe peter
+ * @date March 2020
+ * @copyright Developed at ETH Zurich
  */
 
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/geometry/geometry.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_utils.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
@@ -54,9 +54,8 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE(
   // builder object through a lambda function
   auto bd_edges{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 1)};
   lf::uscalfe::ScalarLoadEdgeVectorProvider my_vec_provider_edge(
-      fe_space, h, [&bd_edges](const lf::mesh::Entity &edge) -> bool {
-        return bd_edges(edge);
-      });
+      fe_space, h,
+      [&bd_edges](const lf::mesh::Entity &edge) { return bd_edges(edge); });
   // co-dimension 1 because we locally assemble on edges !
   lf::assemble::AssembleVectorLocally(1, dofh, my_vec_provider_edge, rhs_vec);
 
@@ -64,6 +63,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE(
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace RegularizedNeumann
+} // namespace RegularizedNeumann
 
 #endif
