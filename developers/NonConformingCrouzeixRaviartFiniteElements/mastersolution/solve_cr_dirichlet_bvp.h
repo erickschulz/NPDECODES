@@ -25,7 +25,7 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
 #if SOLUTION
     // Obtain local to global index mapping for shape functions
     const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
-    const size_type num_dofs = dof_handler.NumDofs();
+    const lf::uscalfe::size_type num_dofs(dof_handler.NumDofs());
 
     // Prepare coefficient and source functions as MeshFunction
     lf::mesh::utils::MeshFunctionGlobal mf_one{
