@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/handling_dofs_main.cc
-  ${DIR}/handling_dofs.h
-  ${DIR}/handling_dofs.cc
+  ${DIR}/handlingdofs_main.cc
+  ${DIR}/handlingdofs.h
+  ${DIR}/handlingdofs.cc
 )
 
 set(LIBRARIES

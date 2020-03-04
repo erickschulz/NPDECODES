@@ -3,7 +3,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/handling_dofs_test.cc
+  ${DIR}/test/handlingdofs_test.cc
 )
 
 set(LIBRARIES

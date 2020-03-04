@@ -21,12 +21,12 @@
     "FiniteVolumeRobin/",
     "FiniteVolumeSineConsLaw/",
     "HandlingDOFs/",
-    "IPDGFEM/",
     "IncidenceMatrices/",
+    "IPDGFEM/",
     "LaxWendroffScheme/",
     "LengthOfBoundary/",
-    "LinFeReactDiff/",
     "LinearFE1D/",
+    "LinFeReactDiff/",
     "MaximumPrinciple/",
     "NonConformingCrouzeixRaviartFiniteElements/",
     "OutputImpedanceBVP/",
@@ -40,6 +40,8 @@
     "SymplecticTimesteppingWaves/",
     "TestQuadratureRules/",
     "TransformationOfGalerkinMatrices/",
-    "UnstableBVP/"
+    "UnstableBVP/",
+    "WaveABC2D/",
+    "ZienkiewiczZhuEstimator/"
   ]
 }
