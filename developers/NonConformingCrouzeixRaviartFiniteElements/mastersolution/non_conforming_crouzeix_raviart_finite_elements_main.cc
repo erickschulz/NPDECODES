@@ -5,10 +5,11 @@
  * @date   13.03.2019
  * @copyright Developed at ETH Zurich
  */
+#include <iomanip>
 
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
-#include <iomanip>
+
 #include "l2_error_cr_discretization_dirichlet_bvp.h"
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
@@ -29,7 +30,6 @@ int main() {
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
     auto mesh_ptr = reader.mesh();
 
-    // TODO: 2-14.i)
 #if SOLUTION
     // Initialize CR-DofHandler from mesh
     lf::assemble::UniformFEDofHandler dof_handler(
@@ -43,7 +43,6 @@ int main() {
   //====================
 #endif
 
-    // TODO: 2-14.y)
 #if SOLUTION
     std::cout << std::left << sep << dof_handler.NumDofs() << " | "
               << L2errorCRDiscretizationDirichletBVP(mesh_file) << std::endl;

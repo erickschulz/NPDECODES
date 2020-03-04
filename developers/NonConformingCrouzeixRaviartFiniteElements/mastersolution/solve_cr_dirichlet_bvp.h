@@ -11,6 +11,7 @@
 
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
+
 #include "cr_fe_space.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
@@ -32,10 +33,10 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
     lf::mesh::utils::MeshFunctionGlobal mf_gamma{gamma};
     lf::mesh::utils::MeshFunctionGlobal mf_f{f};
     // Sparse Galerkin matrix in triplet format
-    lf::assemble::COOMatrix<scalar_type> A(num_dofs, num_dofs);
+    lf::assemble::COOMatrix<double> A(num_dofs, num_dofs);
     // Initialize ELEMENT_MATRIX_PROVIDER object
     lf::uscalfe::ReactionDiffusionElementMatrixProvider<
-        scalar_type, decltype(mf_one), decltype(mf_gamma)>
+        double, decltype(mf_one), decltype(mf_gamma)>
         element_matrix_builder(fe_space, mf_one, mf_gamma);
     // Fill Galerkin matrix (create array of triplets)
     lf::assemble::AssembleMatrixLocally(0, dof_handler, dof_handler,
@@ -48,25 +49,23 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
         load_vector_builder(fe_space, mf_f);
     // Fill right-hand-side vector (cell oriented assembly)
     lf::assemble::AssembleVectorLocally(0, dof_handler, load_vector_builder, phi);
-    /* SAM_LISTING_BEGIN_1 */
     // Obtain an array of boundary flags for edges (codim-1 entities !)
     lf::mesh::utils::CodimMeshDataSet<bool> boundary_edges{
         lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
     // Enforce homogeneous boundary
-    lf::assemble::FixFlaggedSolutionComponents<scalar_type>(
+    lf::assemble::FixFlaggedSolutionComponents<double>(
         [&boundary_edges,
-         &dof_handler](glb_idx_t gdof_idx) -> std::pair<bool, scalar_type> {
+         &dof_handler](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
             const lf::mesh::Entity &edge{dof_handler.Entity(gdof_idx)};
             return {boundary_edges(edge), 0.0};
         },
         A, phi);
     // Set up Galerkin matrix in CRS format
-    Eigen::SparseMatrix<scalar_type> A_crs = A.makeSparse();
+    Eigen::SparseMatrix<double> A_crs = A.makeSparse();
     // ... and solve the linear system of equations by Gaussian elimination
-    Eigen::SparseLU<Eigen::SparseMatrix<scalar_type>> solver;
+    Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
     solver.compute(A_crs);
     sol = solver.solve(phi);
-    /* SAM_LISTING_END_1 */
 #else
   //====================
   // Your code goes here

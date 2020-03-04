@@ -9,10 +9,12 @@
 #ifndef NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H
 #define NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H
 
-#include <lf/io/io.h>
-#include <lf/mesh/mesh.h>
 #include <cmath>
 #include <string>
+
+#include <lf/io/io.h>
+#include <lf/mesh/mesh.h>
+
 #include "compute_cr_l2_error.h"
 #include "cr_fe_space.h"
 #include "solve_cr_dirichlet_bvp.h"
@@ -23,7 +25,6 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   double l2_error;
 
-  // TODO: task 2-14.x)
 #if SOLUTION
   // Right-hand-side source function
   auto f = [](Eigen::Vector2d x) -> double {

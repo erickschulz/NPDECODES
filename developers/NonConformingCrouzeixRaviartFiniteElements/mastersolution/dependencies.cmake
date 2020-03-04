@@ -1,4 +1,8 @@
+#if SOLUTION
 # Dependencies of mastersolution:
+#else
+# Add your custom dependencies here:
+#endif
 
 # DIR will be provided by the calling file.
 
@@ -7,7 +11,6 @@ set(SOURCES
   ${DIR}/cr_fe_space.h
   ${DIR}/cr_reference_finite_element.cc
   ${DIR}/cr_reference_finite_element.h
-  ${DIR}/cr_types.h
   ${DIR}/l2_error_cr_discretization_dirichlet_bvp.h
   ${DIR}/non_conforming_crouzeix_raviart_finite_elements_main.cc
   ${DIR}/solve_cr_dirichlet_bvp.h
@@ -17,6 +20,7 @@ set(SOURCES
 set(LIBRARIES
   Eigen3::Eigen
   LF::lf.assemble
+  LF::lf.base
   LF::lf.io
   LF::lf.mesh
   LF::lf.mesh.hybrid2d

@@ -6,29 +6,29 @@
 #ifndef CRREFERENCEFINITEELEMENT_H
 #define CRREFERENCEFINITEELEMENT_H
 
+#include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/uscalfe/uscalfe.h>
-#include "cr_types.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
 class CRReferenceFiniteElement final
-    : public lf::uscalfe::ScalarReferenceFiniteElement<scalar_type> {
+    : public lf::uscalfe::ScalarReferenceFiniteElement<double> {
  public:
   lf::base::RefEl RefEl() const override;
   unsigned int Degree() const override;
-  size_type NumRefShapeFunctions() const override;
-  size_type NumRefShapeFunctions(dim_t codim) const override;
-  size_type NumRefShapeFunctions(dim_t codim, sub_idx_t subidx) const override;
-  Eigen::Matrix<scalar_type, Eigen::Dynamic, Eigen::Dynamic>
+  lf::assemble::size_type NumRefShapeFunctions() const override;
+  lf::assemble::size_type NumRefShapeFunctions(lf::assemble::dim_t codim) const override;
+  lf::assemble::size_type NumRefShapeFunctions(lf::assemble::dim_t codim, lf::base::sub_idx_t subidx) const override;
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
   EvalReferenceShapeFunctions(const Eigen::MatrixXd& refcoords) const override;
-  Eigen::Matrix<scalar_type, Eigen::Dynamic, Eigen::Dynamic>
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
   GradientsReferenceShapeFunctions(
       const Eigen::MatrixXd& refcoords) const override;
   Eigen::MatrixXd EvaluationNodes() const override;
-  size_type NumEvaluationNodes() const override;
-  Eigen::Matrix<scalar_type, 1, Eigen::Dynamic> NodalValuesToDofs(
-      const Eigen::Matrix<scalar_type, 1, Eigen::Dynamic>& nodvals)
+  lf::assemble::size_type NumEvaluationNodes() const override;
+  Eigen::Matrix<double, 1, Eigen::Dynamic> NodalValuesToDofs(
+      const Eigen::Matrix<double, 1, Eigen::Dynamic>& nodvals)
       const override;
 };
 
