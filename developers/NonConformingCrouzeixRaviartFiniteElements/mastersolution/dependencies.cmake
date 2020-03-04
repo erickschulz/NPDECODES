@@ -12,7 +12,7 @@ set(SOURCES
   ${DIR}/cr_reference_finite_element.cc
   ${DIR}/cr_reference_finite_element.h
   ${DIR}/l2_error_cr_discretization_dirichlet_bvp.h
-  ${DIR}/non_conforming_crouzeix_raviart_finite_elements_main.cc
+  ${DIR}/nonconformingcrouzeixraviartfiniteelements_main.cc
   ${DIR}/solve_cr_dirichlet_bvp.h
   ${DIR}/solve_cr_neumann_bvp.h
 )
