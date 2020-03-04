@@ -6,9 +6,9 @@
 // Lehrfempp includes
 #include <lf/io/io.h>
 // ParametricElementMatrices internal includes
-#include "ansiotropic_diffusion_element_matrix_provider.h"
-#include "fe_source_elem_vec_provider.h"
-#include "impedance_boundary_edge_matrix_provider.h"
+#include "anisotropicdiffusionelementmatrixprovider.h"
+#include "fesourceelemvecprovider.h"
+#include "impedanceboundaryedgematrixprovider.h"
 
 int main() {
   /* PRODUCE MESH AND FE SPACE */

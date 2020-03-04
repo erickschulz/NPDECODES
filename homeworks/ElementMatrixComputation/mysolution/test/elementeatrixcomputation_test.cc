@@ -18,8 +18,8 @@
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../MyLinearFEElementMatrix.h"
-#include "../MyLinearLoadVector.h"
+#include "../mylinearfeelementmatrix.h"
+#include "../mylinearloadvector.h"
 #include "../solve.h"
 #include "../../meshes/mesh.h"
 
