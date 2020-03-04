@@ -130,10 +130,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - SimpleLinearFiniteElements
 - IncidenceMatrices
 - LengthOfBoundary
-
-## Verified for consistency (.txt files) 
-
-### Chapter 2
 - HandlingDOFs (folder reference)
 - ProjectionOntoGradients
 - TestQuadratureRules
@@ -178,3 +174,12 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - RadauThreeTimestepping
 - SDIRKMethodOfLines
 - SymplecticTimesteppingWaves
+
+### Fixed LaTeX (name --> in progress, no name --> done)
+
+- TransformationGalerkinMatrices
+- LinearFE1D
+- SimpleLinearFiniteElements
+- IncidenceMatrices
+- LengthOfBoundary
+- ElementMatrixComputation (Oliver)
