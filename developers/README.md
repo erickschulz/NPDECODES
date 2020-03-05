@@ -120,11 +120,3 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 - SDIRKMethodOfLines
 - SymplecticTimesteppingWaves
 
-### Fixed LaTeX (name --> in progress, no name --> done)
-
-- TransformationGalerkinMatrices
-- LinearFE1D
-- SimpleLinearFiniteElements
-- IncidenceMatrices
-- LengthOfBoundary
-- ElementMatrixComputation (Oliver)
