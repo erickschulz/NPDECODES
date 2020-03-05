@@ -2,7 +2,7 @@
 
 
 | # | Problem name | Polished | Verified | Latex | Assignee for current stage |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | 2-2 | `TransformationOfGalerkinMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-4 | `LinearFE1D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
