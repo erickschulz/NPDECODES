@@ -3,10 +3,10 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/compute_cr_l2_error.h
+  ${DIR}/cr_l2_error.h
   ${DIR}/cr_fe_space.h
-  ${DIR}/cr_reference_finite_element.cc
-  ${DIR}/cr_reference_finite_element.h
+  ${DIR}/nonconformingcrouzeixraviartfiniteelements.cc
+  ${DIR}/nonconformingcrouzeixraviartfiniteelements.h
   ${DIR}/l2_error_cr_discretization_dirichlet_bvp.h
   ${DIR}/nonconformingcrouzeixraviartfiniteelements_main.cc
   ${DIR}/solve_cr_dirichlet_bvp.h

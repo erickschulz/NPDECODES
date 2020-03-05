@@ -14,6 +14,7 @@
 - 2-14.s): replace **scalar_type** with **double**
 
 - 2-14.t): replace **scalar_type** with **double**
+		   Is this subexercise really necesseary ?
 
 - 2-14.u): replace **dof_handler.NoDofs()** with **dof_handler.NumDofs()**
 		   replace **lf::uscalfe::MeshFunctionGlobal** with **lf::mesh::utils::MeshFunctionGlobal**
@@ -25,3 +26,4 @@
 - 2-14.w): replace **size_type** with **lf::assemble::size_type**
 		   in NUMPDE problems text file: const **lf::base::RandomAccessRange<const gdof_idx_t> cell_dof_idx()** ; whereas in problem code: **nonstd::span<const lf::assemble::gdof_idx_t>cell_dof_idx ()**
 
+- I added in the codes all the comments **// TODO: task 2-14.xxx)** for every subexercise
