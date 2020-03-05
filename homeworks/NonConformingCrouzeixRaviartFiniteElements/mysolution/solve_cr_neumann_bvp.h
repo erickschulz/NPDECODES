@@ -11,6 +11,7 @@
 
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
+
 #include "cr_fe_space.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements

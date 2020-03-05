@@ -13,6 +13,7 @@
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
 #include "cr_fe_space.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
