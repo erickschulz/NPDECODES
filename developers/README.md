@@ -15,6 +15,13 @@
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :white_check_mark: |  | Amélie |
 | 2-15 | `RegularizedNeumann` |  |  |  |  |
+| 3-1 | `AvgValBoundary` |  |  |  |  |
+| 3-2 | `DebuggingFEM` |  |  |  |  |
+| 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 3-4 | `UnstableBVP` | :heavy_check_mark: |  |  |  |
+| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: |  |  |  |
+| 3-7 | `MaximumPrinciple` | :heavy_check_mark: |  |  |  |
+| 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: |  |  |  |
 
 
 ## General Remarks
