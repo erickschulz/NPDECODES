@@ -13,6 +13,7 @@
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
 #include "cr_fe_space.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
@@ -31,7 +32,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
   // Loop over all cells of the mesh (entities of co-dimension 0)
   for (const lf::mesh::Entity *cell : mesh_ptr->Entities(0))
   {
-    const size_type num_nodes = cell->RefEl().NumNodes();
+    const lf::assemble::size_type num_nodes = cell->RefEl().NumNodes();
     LF_ASSERT_MSG(num_nodes == 3, "Only meaningful for triangles!");
     // Obtain pointer to shape information for cell
     lf::geometry::Geometry &cell_geom{*(cell->Geometry())};
@@ -47,7 +48,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
 		     .finished()};
     // clang-format on
     // Obtain global indices of local shape functions
-    nonstd::span<const gdof_idx_t> cell_dof_idx(
+    nonstd::span<const lf::assemble::gdof_idx_t> cell_dof_idx(
         dof_handler.GlobalDofIndices(*cell));
 
     // Sum contributions of quadrature nodes
