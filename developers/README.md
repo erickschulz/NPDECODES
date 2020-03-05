@@ -1,11 +1,5 @@
 # NPDECODES
 
-test
-| # | Problem name |
-| --- | --- |
-| `git status` | List all *new or modified* files |
-| `git diff` | Show file differences that **haven't been** staged |
-
 ## General Remarks
 
 * Below, the directory `.` refers to the top level directory of the repository.
