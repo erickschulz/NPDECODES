@@ -10,7 +10,7 @@
 
 namespace SimpleLinearFiniteElements {
 
-double getArea(const Eigen::Matrix<double, 2, 3>& triangle) {
+double getArea(const Eigen::Matrix<double, 2, 3> &triangle) {
   return std::abs( 0.5 *
       ((triangle(0, 1) - triangle(0, 0)) * (triangle(1, 2) - triangle(1, 1)) -
        (triangle(0, 2) - triangle(0, 1)) * (triangle(1, 1) - triangle(1, 0))) );
