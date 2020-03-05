@@ -13,6 +13,7 @@
 
 using namespace LengthOfBoundary;
 
+/* SAM_LISTING_BEGIN_1 */
 int main(int argc, char *argv[]) {
 #if SOLUTION
   if (argc > 1) {
@@ -33,3 +34,4 @@ int main(int argc, char *argv[]) {
   //====================
 #endif
 }
+/* SAM_LISTING_END_1 */

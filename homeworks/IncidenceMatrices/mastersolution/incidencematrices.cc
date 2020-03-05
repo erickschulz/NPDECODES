@@ -23,20 +23,21 @@ std::shared_ptr<lf::mesh::Mesh> createDemoMesh() {
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
 
   // Add points
-  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0, 0});    // (0)
-  mesh_factory_ptr->AddPoint(Eigen::Vector2d{1, 0});    // (1)
-  mesh_factory_ptr->AddPoint(Eigen::Vector2d{1, 1});    // (2)
-  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0, 1});    // (3)
-  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0.5, 1});  // (4)
+  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0, 0});   // (0)
+  mesh_factory_ptr->AddPoint(Eigen::Vector2d{1, 0});   // (1)
+  mesh_factory_ptr->AddPoint(Eigen::Vector2d{1, 1});   // (2)
+  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0, 1});   // (3)
+  mesh_factory_ptr->AddPoint(Eigen::Vector2d{0.5, 1}); // (4)
 
   // Add the triangle
   // First set the coordinates of its nodes:
   Eigen::MatrixXd nodesOfTria(2, 3);
   nodesOfTria << 1, 1, 0.5, 0, 1, 1;
   mesh_factory_ptr->AddEntity(
-      lf::base::RefEl::kTria(),                                 // we want a triangle
-      std::array<lf::mesh::Mesh::size_type, 3>{{1, 2, 4}},      // indices of the nodes
-      std::make_unique<lf::geometry::TriaO1>(nodesOfTria));     // node coords
+      lf::base::RefEl::kTria(), // we want a triangle
+      std::array<lf::mesh::Mesh::size_type, 3>{
+          {1, 2, 4}}, // indices of the nodes
+      std::make_unique<lf::geometry::TriaO1>(nodesOfTria)); // node coords
 
   // Add the quadrilateral
   Eigen::MatrixXd nodesOfQuad(2, 4);
@@ -57,7 +58,8 @@ std::shared_ptr<lf::mesh::Mesh> createDemoMesh() {
  * @return The edge-vertex incidence matrix as Eigen::SparseMatrix<int>
  */
 /* SAM_LISTING_BEGIN_1 */
-Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(const lf::mesh::Mesh &mesh) {
+Eigen::SparseMatrix<int>
+computeEdgeVertexIncidenceMatrix(const lf::mesh::Mesh &mesh) {
   // Store edge-vertex incidence matrix here
   Eigen::SparseMatrix<int, Eigen::RowMajor> G;
 
@@ -100,7 +102,8 @@ Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(const lf::mesh::Mesh &
  * @return The cell-edge incidence matrix as Eigen::SparseMatrix<int>
  */
 /* SAM_LISTING_BEGIN_2 */
-Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(const lf::mesh::Mesh &mesh) {
+Eigen::SparseMatrix<int>
+computeCellEdgeIncidenceMatrix(const lf::mesh::Mesh &mesh) {
   // Store cell-edge incidence matrix here
   Eigen::SparseMatrix<int, Eigen::RowMajor> D;
 
@@ -158,9 +161,8 @@ bool testZeroIncidenceMatrixProduct(const lf::mesh::Mesh &mesh) {
   isZero = O.norm() == 0;
   // Possibility 2: But this doesn't use the fact that O is sparse.
   // isZero = Eigen::MatrixXi(O).isZero(0);
-
   return isZero;
 }
 /* SAM_LISTING_END_3 */
 
-}  // namespace IncidenceMatrices
+} // namespace IncidenceMatrices
