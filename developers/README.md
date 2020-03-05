@@ -1,10 +1,16 @@
 # NPDECODES
 
+Reviewing the problems collection has 3 stages:
+1. Polishing the code
+2. Verifying consistency with the pdf document (creating a consistency txt file)
+3. Modifying the latex associated to the pdf document to fix the inconsistencies and
+replace the old links by new ones pointing to the correct /NPDECODES/homeworks folder on github
+
 - A white check mark :white_check_mark: indicates that a stage is in progress.
 - A green check mark :heavy_check_mark: indicates that a stage is completed.
 - Under 'Assignee for current stage' is found the name of the assistant currently working on the problem.
 
-| # | Problem name | Polished | Verified | Latex | Assignee for current stage |
+| # | Problem name | Polished | Verified | Latex | Assignee (stage in progress)|
 | --- | --- | --- | --- | --- | --- |
 | 2-2 | `TransformationOfGalerkinMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-4 | `LinearFE1D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -87,18 +93,6 @@ In the files of `./developers/mastersolution/` we put the following tags
 ```
 to indicate what belongs to mastersolution and/or template. Based on these tags, the file `./scripts/deploy_npde.py` generates a directory `./homeworks/<ProblemName>/` containg the directories `mastersolution`, `mysolution`, `temaplates` with the corresponding content. The students work exclusively in `./homeworks/<ProblemName>/`.
 
-## TODO
-
-* `BoundaryWave`: mysolution has core dump
-* `CoupledSecondOrderBVP`: needs solution tags
-* `ElectrostaticForce`: unit test fails for mastersolution
-* `ElementMatrixComputation`: Replace console output in unit test by actual test
-* `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
-* `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
-* `SDIRKMethodOfLines`: mysolution has core dump
-* `TestQuadratureRules`: Replace console output in unit test by actual test. **(Liaowang)**
-* General: Only plot .eps files (no .png and so on).
-
 ## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
@@ -113,97 +107,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.6: Upwind Finite Volume Method
 
 # TO DO LIST
-
-## Polished 
-
-### Chapter 2
-- ElementMatrixComputation
-- ErrorEstimatesForTraces
-- IncidenceMatrices
-- HandlingDOFs
-- LengthOfBoundary
-- LinearFE1D
-- ParametricElementMatrices
-- ProjectionOntoGradients
-- SimpleLinearFiniteElements
-- TestQuadratureRules
-- TransformationOfGalerkinMatrices
-
-### Chapter 3
-- PointEvaluationRhs
-- MaximumPrinciple
-- UnstableBVP 
-
-### Chapter 6
-- 1DWaveAbsorbingBC
-- RadauThreeTimestepping
-- SDIRKMethodOfLines
-- SymplecticTimesteppingWaves
-
-### Chapter 8
-- BurgersEquation
-- DiscontinuousGalerkin1D
-- EngquistOsherNumericalFlux
-- FiniteVolumeSineConsLaw
-- LaxWendroffScheme
-
-## Require confirmation of polished 
-
-### Chapter 2
-
-### Chapter 3
-
-## Require polishing 
-
-### Chapter 2
-- NonConformingCrouzeixRaviartFiniteElements (Amélie)
-- RegularizedNeumann (Philippe)
-
-### Chapter 3
-- AvgValBoundary
-- DebuggingFEM
-
-## NPDE Problems pdf fixed and consistent 
-
-### Chapter 2
-- ElementMatrixComputation
-- TransformationOfGalerkinMatrices
-- LinearFE1D
-- SimpleLinearFiniteElements
-- IncidenceMatrices
-- LengthOfBoundary
-- HandlingDOFs (folder reference)
-- ProjectionOntoGradients
-- TestQuadratureRules
-
-### Chapter 3
-- PointEvaluationRhs
-
-## Need consistency verification 
-
-### Chapter 2
-- NonConformingCrouzeixRaviartFiniteElements 
-- ParametricElementMatrices
-- RegularizedNeumann (Philippe) 
-
-### Chapter 3
-- AvgValBoundary
-- DebuggingFEM
-- ErrorEstimatesForTraces (folder reference)
-- MaximumPrinciple
-
-### Chapter 6
-- RadauThreeTimestepping
-- SDIRKMethodOfLines
-- 1DWaveAbsorbingBC
-- SymplecticTimesteppingWaves
-
-### Chapter 8
-- BurgersEquation
-- EngquistOsherNumericalFlux
-- FiniteVolumeSineConsLaw
-- LaxWendroffScheme
-- DiscontinuousGalerkin1D
 
 ## Missing unitests 
 
