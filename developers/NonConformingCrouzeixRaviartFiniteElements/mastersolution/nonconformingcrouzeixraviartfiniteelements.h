@@ -1,6 +1,6 @@
 /** @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
- * @author Anian Ruoss
- * @date   16.03.2019
+ * @author Anian Ruoss, edited Amélie Loher
+ * @date   16.03.2019, 03.03.20
  * @copyright Developed at ETH Zurich */
 
 #ifndef CRREFERENCEFINITEELEMENT_H

@@ -1,16 +1,16 @@
 /** @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
- *  @author Anian Ruoss
- *  @date   16.03.2019
+ *  @author Anian Ruoss, edited Amélie Loher
+ *  @date   16.03.2019, 03.03.20
  *  @copyright Developed at ETH Zurich */
 
-#include "cr_reference_finite_element.h"
+#include "nonconformingcrouzeixraviartfiniteelements.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
-/* SAM_LISTING_BEGIN_1 */
 // Crouzeix-Raviart finite element space defined on triangular meshes only
 lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
   lf::base::RefElType ref_el_type;
+  // TODO: task 2-14.q)
   #if SOLUTION
   ref_el_type = lf::base::RefElType::kTria;
   #else
@@ -23,6 +23,7 @@ lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
 // Crouzeix-Raviart are piecewise linear polynomials
 unsigned int CRReferenceFiniteElement::Degree() const { 
 	unsigned int degree;
+	// TODO: task 2-14.q)
 	#if SOLUTION
 	degree = 1; 
 	#else
@@ -35,6 +36,7 @@ unsigned int CRReferenceFiniteElement::Degree() const {
 
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
   lf::assemble::size_type num_ref_shape_functions;
+  // TODO: task 2-14.q)
   #if SOLUTION 
   num_ref_shape_functions = 3;
   #else
@@ -47,6 +49,7 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
 
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(lf::assemble::dim_t codim) const {
   switch (codim) {
+	// TODO: task 2-14.q)
     #if SOLUTION
 	case 0:
       return 0;
@@ -68,6 +71,7 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(lf::assem
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
     lf::assemble::dim_t codim, lf::base::sub_idx_t subidx) const {
   switch (codim) {
+	// TODO: task 2-14.q)
     #if SOLUTION
 	case 0:
       LF_VERIFY_MSG((0 == subidx),
@@ -100,10 +104,9 @@ CRReferenceFiniteElement::EvalReferenceShapeFunctions(
   // Initialize a matrix that will store the values of the reference basis
   // functions evaluated at the coordinates passed as arguments
   Eigen::MatrixXd eval_ref_shape_functions(3, num_points);
-  
+  // TODO: task 2-14.q)
   #if SOLUTION
   Eigen::MatrixXd ones = Eigen::VectorXd::Ones(num_points).transpose();
-
   // Evaluate the basis functions
   eval_ref_shape_functions.row(0) = ones - 2. * refcoords.row(1);
   eval_ref_shape_functions.row(1) = 2. * refcoords.colwise().sum() - ones;
@@ -115,9 +118,7 @@ CRReferenceFiniteElement::EvalReferenceShapeFunctions(
    #endif
   return eval_ref_shape_functions;
 }
-/* SAM_LISTING_END_1 */
 
-/* SAM_LISTING_BEGIN_2 */
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
 CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
     const Eigen::MatrixXd& refcoords) const {
@@ -126,6 +127,7 @@ CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
   // Initialize a matrix that will store the gradients of the reference basis
   // functions evaluated at the coordinates passed as arguments
   Eigen::MatrixXd grad_ref_shape_functions(3, 2 * num_points);
+  // TODO: task 2-14.r)
   #if SOLUTION
   // Evaluate the gradients
   grad_ref_shape_functions.row(0) = (Eigen::Vector2d() << 0, -2)
@@ -145,11 +147,10 @@ CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
   #endif
   return grad_ref_shape_functions;
 }
-/* SAM_LISTING_END_2 */
 
-/* SAM_LISTING_BEGIN_3 */
 Eigen::MatrixXd CRReferenceFiniteElement::EvaluationNodes() const {
   Eigen::MatrixXd eval_nodes(2, 3);
+  // TODO: task 2-14.s)
   #if SOLUTION
   eval_nodes << .5, .5, 0, 0, .5, .5;
   #else
@@ -159,18 +160,19 @@ Eigen::MatrixXd CRReferenceFiniteElement::EvaluationNodes() const {
   #endif
   return eval_nodes;
 }
-/* SAM_LISTING_END_3 */
 
-lf::assemble::size_type CRReferenceFiniteElement::NumEvaluationNodes() const { return 3; }
+lf::assemble::size_type CRReferenceFiniteElement::NumEvaluationNodes() const { 
+	return 3; 
+}
 
-/* SAM_LISTING_BEGIN_4 */
 Eigen::Matrix<double, 1, Eigen::Dynamic>
 CRReferenceFiniteElement::NodalValuesToDofs(
     const Eigen::Matrix<double, 1, Eigen::Dynamic>& nodvals) const {
   LF_VERIFY_MSG(nodvals.cols() == NumEvaluationNodes(),
                 "nodvals = " << nodvals << " <-> " << NumEvaluationNodes());
 
-  Eigen::MatrixXd coeffs; 
+  Eigen::MatrixXd coeffs;
+  // TODO: task 2-14.s)
   #if SOLUTION
   // Linear mapping is identity since the set of reference shape functions 
   // forms a cardinal basis with respect to the interpolation nodes
@@ -182,6 +184,5 @@ CRReferenceFiniteElement::NodalValuesToDofs(
   #endif
   return nodvals;
 }
-/* SAM_LISTING_END_4 */
 
 }  // namespace NonConformingCrouzeixRaviartFiniteElements

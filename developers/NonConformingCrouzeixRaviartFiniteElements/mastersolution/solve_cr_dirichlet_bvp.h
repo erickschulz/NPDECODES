@@ -1,8 +1,8 @@
 /**
  * @file
  * @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
- * @author Anian Ruoss
- * @date   18.03.2019
+ * @author Anian Ruoss, edited Amélie Loher
+ * @date   18.03.2019, 03.03.20
  * @copyright Developed at ETH Zurich
  */
 
@@ -22,6 +22,7 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
                                     GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
 {
     Eigen::VectorXd sol;
+// TODO: task 2-14.v)
 #if SOLUTION
     // Obtain local to global index mapping for shape functions
     const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
