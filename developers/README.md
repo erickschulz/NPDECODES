@@ -1,5 +1,22 @@
 # NPDECODES
 
+
+| # | Problem name | Polished | Verified | Latex | Assignee for current stage |
+| --- | --- | --- | --- | --- |
+| 2-2 | `TransformationOfGalerkinMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-4 | `LinearFE1D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver|
+| 2-9 | `HandlingDOFs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :white_check_mark: |  | Amélie |
+| 2-15 | `RegularizedNeumann` |  |  |  |  |
+
+
 ## General Remarks
 
 * Below, the directory `.` refers to the top level directory of the repository.
