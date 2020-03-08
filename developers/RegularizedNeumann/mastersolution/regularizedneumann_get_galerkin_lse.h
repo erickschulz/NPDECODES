@@ -1,5 +1,5 @@
-#ifndef __REGULARIZED_NEUMANN_GET_GALERKIN_H
-#define __REGULARIZED_NEUMANN_GET_GALERKIN_H
+#ifndef __REGULARIZED_NEUMANN_GET_GALERKIN_LSE_H
+#define __REGULARIZED_NEUMANN_GET_GALERKIN_LSE_H
 
 /**
  * @file regularizedneumann_get_galerkin_lse.h
