@@ -1,5 +1,11 @@
 Problem 2-12: Testing built-in quadrature rules of LEHRFEM++
 
+## Remarks R.H.:
+
+Use `EXPECT_` instead of `ASSERT_` in unit tests, because it is desirable that several tests can be conducted instead of aborting execution prematurely.
+
+## Consistency with problem statement
+
 - In 2-12 b): Instead of **boost::math::factorial<double>(I)** we use in the mastersolution **factorial(I)**, where we define the function **factorial()** outside **testQuadOrderTria()**. **(fixed)**
 
 - In 2-12 b) and c): No typedefs in mastersolution (Replace **Vec** and **Mat** with **Eigen::VectorXd** and **Eigen::MatrixXd**, respectively.) **(fixed)**
