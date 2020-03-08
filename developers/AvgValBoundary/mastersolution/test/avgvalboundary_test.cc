@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../comp_gal_mat.h"
+#include "../avgvalboundary.h"
 
 namespace AvgValBoundary::test {
 

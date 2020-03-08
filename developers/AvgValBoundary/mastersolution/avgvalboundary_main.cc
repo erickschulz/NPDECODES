@@ -6,7 +6,7 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include "comp_gal_mat.h"
+#include "avgvalboundary.h"
 
 /* SAM_LISTING_BEGIN_1 */
 int main() {
