@@ -7,6 +7,8 @@
  */
 
 #include "avgvalboundary.h"
+#include <lf/mesh/test_utils/test_meshes.h>
+#include <lf/refinement/refinement.h>
 
 namespace AvgValBoundary
 {

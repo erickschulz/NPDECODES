@@ -8,10 +8,7 @@
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
-#include <lf/io/io.h>
-#include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
 namespace AvgValBoundary

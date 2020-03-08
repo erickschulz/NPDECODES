@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../avgvalboundary.h"
+#include <lf/io/io.h>
 
 namespace AvgValBoundary::test {
 

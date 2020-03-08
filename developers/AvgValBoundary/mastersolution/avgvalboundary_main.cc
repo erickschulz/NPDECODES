@@ -7,6 +7,7 @@
  */
 
 #include "avgvalboundary.h"
+#include <lf/io/io.h>
 
 /* SAM_LISTING_BEGIN_1 */
 int main() {
