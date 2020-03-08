@@ -1,21 +1,21 @@
-- Typo in problem description `lf::geomtry` -> `lf::geometry`
-- Solution to part a: Typo in point 2: Them -> Then
-- Solution to part a: Error in the strong form of the BVP: Missing transpose d(x)d(x) -> d(x)d(x)^T
-- Solution to part a: Error in boundary conditions. Missing A factor of 1 + d(x)d(x)^T
-- Solution to part a: Diffusion tensor goes over the page margins
-- Part b: Code in problem formulation is outdated
+- Typo in problem description `lf::geomtry` -> `lf::geometry` **(fixed)**
+- Solution to part a: Typo in point 2: Them -> Then **(fixed)**
+- Solution to part a: Error in the strong form of the BVP: Missing transpose d(x)d(x) -> d(x)d(x)^T **(fixed)**
+- Solution to part a: Error in boundary conditions. Missing A factor of 1 + d(x)d(x)^T **(fixed)**
+- Solution to part a: Diffusion tensor goes over the page margins **(???)**
+- Part b: Code in problem formulation is outdated **(fixed)**
 - Hint to part b: Broken reference to lecture document
-- Part b: File was renamed anisotropic_diffusion_element_matrix_provider.cc -> anisotropicdiffusionelementmatrixprovider.cc
-- Solution to part b: Code in the solution PDF is outdated
-- Part c: File was renamed fe_source_elem_vec_provider.cc -> fesourceelemvecprovider.cc
-- Part c: Code in problem formulation is outdated
-- Part c: Wrong argument name in the second to last sentence of the problem formulation: `w_coeff_vec` -> `coeff_expansion`
-- Solution to part c: Code in the solution PDF is outdated
-- Part e: Code in problem formulation is outdated
-- Hint 1 to part e: `lf::mesh::utils::flagEntitiesOnBoundary` is unreadable as it goes over the page margins
+- Part b: File was renamed anisotropic_diffusion_element_matrix_provider.cc -> anisotropicdiffusionelementmatrixprovider.cc **(fixed)**
+- Solution to part b: Code in the solution PDF is outdated **(fixed)**
+- Part c: File was renamed fe_source_elem_vec_provider.cc -> fesourceelemvecprovider.cc **(fixed)**
+- Part c: Code in problem formulation is outdated **(fixed)**
+- Part c: Wrong argument name in the second to last sentence of the problem formulation: `w_coeff_vec` -> `coeff_expansion` **(fixed)**
+- Solution to part c: Code in the solution PDF is outdated **(fixed)**
+- Part e: Code in problem formulation is outdated **(fixed)**
+- Hint 1 to part e: `lf::mesh::utils::flagEntitiesOnBoundary` is unreadable as it goes over the page margins **(???)**
 - Solution to part e: The implementation of the class constructior is not asked in the problem. This code can be removed from the PDF
-- Solution to part e: The code in the solution PDF is outdated
+- Solution to part e: The code in the solution PDF is outdated **(fixed)**
 - Hint 2 to part f: Broken reference to lecture document
-- Part f: Bullet point 2 in the problem description provides wrong arguments to `lf::mesh::test_utils::GenerateHybrid2DTestMesh`
-- Part f: The problem asks to implement the test by comparing element matrices. However, the code assembles the full galerkin matrices and compares them
-- Part g: Add a link to the documentation of `lf::uscalfe::NodalProjection`
+- Part f: Bullet point 2 in the problem description provides wrong arguments to `lf::mesh::test_utils::GenerateHybrid2DTestMesh` **(fixed)**
+- Part f: The problem asks to implement the test by comparing element matrices. However, the code assembles the full galerkin matrices and compares them **(TODO)**
+- Part g: Add a link to the documentation of `lf::uscalfe::NodalProjection` **(fixed)**
