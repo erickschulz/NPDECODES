@@ -17,11 +17,11 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Oliver|
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-9 | `HandlingDOFs` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Tobias |
 | 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Erick |
-| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: |  | Oliver |
+| 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: |  | Oliver |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 2-15 | `RegularizedNeumann` |  |  |  |  |
 | 3-1 | `AvgValBoundary` |  |  |  |  |
