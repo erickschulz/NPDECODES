@@ -1,8 +1,8 @@
-#ifndef __GETGALERKINLSE_H
-#define __GETGALERKINLSE_H
+#ifndef __REGULARIZED_NEUMANN_GET_GALERKIN_H
+#define __REGULARIZED_NEUMANN_GET_GALERKIN_H
 
 /**
- * @file get_galerkin_lse.h
+ * @file regularizedneumann_get_galerkin_lse.h
  * @brief NPDE homework RegularizedNeumann code
  * @author Christian Mitsch, Philippe peter
  * @date March 2020

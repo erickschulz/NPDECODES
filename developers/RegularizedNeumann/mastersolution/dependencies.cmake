@@ -8,7 +8,7 @@
 
 set(SOURCES
   ${DIR}/regularizedneumann_main.cc
-  ${DIR}/get_galerkin_lse.h
+  ${DIR}/regularizedneumann_get_galerkin_lse.h
   ${DIR}/regularizedneumann.h
 )
 
