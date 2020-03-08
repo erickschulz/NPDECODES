@@ -50,16 +50,16 @@ Eigen::SparseMatrix<double> compGalerkinMatrix(
     // Set up an empty sparse matrix to hold the Galerkin matrix
     lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
     // Initialize ELEMENT_MATRIX_PROVIDER object
-    lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, decltype(alpha),
-                                                        decltype(gamma)>
+    lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, FUNC_ALPHA,
+                                                        FUNC_GAMMA>
         elmat_builder(fe_space, alpha, gamma);
     // Cell-oriented assembly over the whole computational domain
     lf::assemble::AssembleMatrixLocally(0, lfe_dofh, lfe_dofh, elmat_builder, A);
 
     // Add contributions of boundary term in the bilinear form using
-    // a LehrFEM++ built-in high-level ENTITY\_MATRIX\_PROVIDER class
+    // a LehrFEM++ built-in high-level ENTITY_MATRIX_PROVIDER class
     auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-    lf::uscalfe::MassEdgeMatrixProvider<double, decltype(beta),
+    lf::uscalfe::MassEdgeMatrixProvider<double, FUNC_BETA,
                                         decltype(bd_flags)>
         edgemat_builder(fe_space, beta, bd_flags);
     lf::assemble::AssembleMatrixLocally(1, lfe_dofh, lfe_dofh, edgemat_builder,

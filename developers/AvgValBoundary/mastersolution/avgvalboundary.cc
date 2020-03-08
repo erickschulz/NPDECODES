@@ -78,7 +78,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
   return mu;
 }
 
-/** @brief generate sequence of nested triangular meshes with L levels */
+/** @brief generate sequence of nested triangular meshes with L+1 levels */
 std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
     unsigned int L)
 {
@@ -88,6 +88,12 @@ std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
   return meshes;
 }
 
+/**
+ * @brief Compute the boundary functional values for a sequence of `L+1` meshes
+ * @param L The number of refinements to perform to get the sequence of meshes
+ * @returns A vector of pairs containing the number of DOFs and value of the
+ *	    boundary functional for each level
+ */
 /* SAM_LISTING_BEGIN_5 */
 std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
     unsigned int L)
