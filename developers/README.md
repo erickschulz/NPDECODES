@@ -23,7 +23,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | Oliver |
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: |:white_check_mark: | Amélie  |
-| 2-15 | `RegularizedNeumann` |  |  |  | Philippe ( / Tobias) |
+| 2-15 | `RegularizedNeumann` | :white_check_mark: | :white_check_mark: |  | Philippe ( / Tobias) |
 | 3-1 | `AvgValBoundary` | :white_check_mark: |  |  | Tobias |
 | 3-2 | `DebuggingFEM` |  |  |  |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
