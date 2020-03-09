@@ -8,20 +8,19 @@
 
 #include "avgvalboundary.h"
 
-#include <vector>
-#include <utility>
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include <Eigen/SparseCore>
 
-#include <lf/mesh/utils/utils.h>
-#include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/refinement/refinement.h>
 #include <lf/assemble/assemble.h>
+#include <lf/mesh/test_utils/test_meshes.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace AvgValBoundary
-{
+namespace AvgValBoundary {
 
 /**
  * @brief computes H1 seminorm over the computational domain
@@ -30,8 +29,7 @@ namespace AvgValBoundary
  */
 /* SAM_LISTING_BEGIN_1 */
 double compH1seminorm(const lf::assemble::DofHandler &dofh,
-                      const Eigen::VectorXd &u)
-{
+                      const Eigen::VectorXd &u) {
   double result = 0.;
 #if SOLUTION
   // constant identity mesh function
@@ -60,8 +58,7 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
  *        alpha = beta = gamma := 1. and load f := 1.
  * @param dofh DofHandler of FEspace.
  */
-Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
-{
+Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
   // constant identity mesh function
   lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
 
@@ -90,8 +87,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh)
 
 /** @brief generate sequence of nested triangular meshes with L+1 levels */
 std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
-    unsigned int L)
-{
+    unsigned int L) {
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3.);
   std::shared_ptr<lf::refinement::MeshHierarchy> meshes =
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, L);
@@ -99,21 +95,19 @@ std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
 }
 
 /**
- * @brief Compute the boundary functional values for a sequence of `L+1` meshes
- * @param L The number of refinements to perform to get the sequence of meshes
+ * @brief Compute the boundary functional values for a sequence of L meshes
+ * @param L The number of meshes in the sequence
  * @returns A vector of pairs containing the number of DOFs and value of the
  *	    boundary functional for each level
  */
 /* SAM_LISTING_BEGIN_5 */
 std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
-    unsigned int L)
-{
+    unsigned int L) {
   std::vector<std::pair<unsigned int, double>> result{};
 #if SOLUTION
   auto meshes = generateTestMeshSequence(L - 1);
   int num_meshes = meshes->NumLevels();
-  for (int level = 0; level < num_meshes; ++level)
-  {
+  for (int level = 0; level < num_meshes; ++level) {
     auto mesh_p = meshes->getMesh(level);
     // Set up global FE space; lowest order Lagrangian finite elements
     auto fe_space =
@@ -155,4 +149,4 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace AvgValBoundary
+}  // namespace AvgValBoundary

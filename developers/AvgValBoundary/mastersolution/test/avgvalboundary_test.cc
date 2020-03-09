@@ -2,15 +2,15 @@
 
 #include "../avgvalboundary.h"
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #include <Eigen/Core>
 
-#include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 namespace AvgValBoundary::test {
 

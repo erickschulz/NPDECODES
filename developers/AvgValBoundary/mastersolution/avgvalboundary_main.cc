@@ -8,22 +8,23 @@
 
 #include "avgvalboundary.h"
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #include <Eigen/Core>
 
-#include <lf/mesh/utils/utils.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/uscalfe/uscalfe.h>
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 /* SAM_LISTING_BEGIN_1 */
 int main() {
   // read in mesh and set up finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square.msh");
+  lf::io::GmshReader reader(std::move(mesh_factory),
+                            CURRENT_SOURCE_DIR "/../meshes/square.msh");
   auto mesh = reader.mesh();
   // obtain dofh for lagrangian finite element space
   auto fe_space =
