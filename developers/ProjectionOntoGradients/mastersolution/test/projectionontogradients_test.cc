@@ -106,7 +106,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_2) {
 
 /* SAM_LISTING_BEGIN_1 */
 TEST(ProjectionOntoGradients, div_free_test) {
-#if solution
+#if SOLUTION
   // Building test mesh
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3);
   // Divergence-free vector field
