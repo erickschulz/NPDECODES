@@ -1,5 +1,5 @@
 /**
- * @ file main.cc
+ * @ file avgvalboundary_main.cc
  * @ brief NPDE homework AvgValBoundary code
  * @ author Simon Meierhans
  * @ date 11.03.2019
@@ -7,6 +7,16 @@
  */
 
 #include "avgvalboundary.h"
+
+#include <memory>
+#include <iostream>
+
+#include <Eigen/Core>
+
+#include <lf/mesh/utils/utils.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/uscalfe/uscalfe.h>
+#include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 
 /* SAM_LISTING_BEGIN_1 */

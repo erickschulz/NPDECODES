@@ -1,5 +1,5 @@
 /**
- * @ file avg_val_boundary.cc
+ * @ file avgvalboundary.cc
  * @ brief NPDE homework AvgValBoundary code
  * @ author Simon Meierhans
  * @ date 11.03.2019
@@ -7,8 +7,18 @@
  */
 
 #include "avgvalboundary.h"
+
+#include <vector>
+#include <utility>
+#include <memory>
+
+#include <Eigen/SparseCore>
+
+#include <lf/mesh/utils/utils.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/refinement/refinement.h>
+#include <lf/assemble/assemble.h>
+#include <lf/uscalfe/uscalfe.h>
 
 namespace AvgValBoundary
 {

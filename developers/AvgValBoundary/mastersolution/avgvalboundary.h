@@ -1,10 +1,15 @@
 /**
- * @ file comp_gal_mat.h
+ * @ file avgvalboundary.h
  * @ brief NPDE homework AvgValBoundary code
  * @ author Simon Meierhans
  * @ date 11.03.2019
  * @ copyright Developed at ETH Zurich
  */
+
+#include <memory>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
@@ -93,9 +98,9 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh_lfe,
     result = ones.transpose() * A * u;
     result = std::sqrt(result);
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
     return result;
 }
