@@ -2,6 +2,7 @@
 
 - Introduction box: Link to the code folder refers to an old eth gitlab folder.
 - Subproblem b): Code of function getGalerkinLSE was updated.
+- Subproblem b): File get_galerkin_lse.h -> normalizedneummann_get_galerkin_lse.h
 - Subproblem c): File regNeumann.h -> regularizedneumann.h
 - Hint for Subproblem c): Lehrfem++ function fix_flagged_solution_components -> FixFlaggedSolutionComponents
 - Solution for Subproblem c): Lehrfem++ function fix_flagged_solution_components -> FixFlaggedSolutionComponents

@@ -1,12 +1,18 @@
 Problem 2-12: Testing built-in quadrature rules of LEHRFEM++
 
-- In 2-12 b): Instead of **boost::math::factorial<double>(I)** we use in the mastersolution **factorial(I)**, where we define the function **factorial()** outside **testQuadOrderTria()**.
+## Remarks R.H.:
 
-- In 2-12 b) and c): No typedefs in mastersolution (Replace **Vec** and **Mat** with **Eigen::VectorXd** and **Eigen::MatrixXd**, respectively.)
+Use `EXPECT_` instead of `ASSERT_` in unit tests, because it is desirable that several tests can be conducted instead of aborting execution prematurely.
 
-- In 2-12 b), c) and d): Replace **BOOST_ASSERT** with **assert** (works with #iclude <cassert>)
+## Consistency with problem statement
 
-- in 2-12 b), c) and d) (PDF): add **in file testquadrules.cc**, and replace qr by quad_rule in function argument name. (const lf::quad::QuadRule &~~qr~~ `quad_rule`)).
+- In 2-12 b): Instead of **boost::math::factorial<double>(I)** we use in the mastersolution **factorial(I)**, where we define the function **factorial()** outside **testQuadOrderTria()**. **(fixed)**
+
+- In 2-12 b) and c): No typedefs in mastersolution (Replace **Vec** and **Mat** with **Eigen::VectorXd** and **Eigen::MatrixXd**, respectively.) **(fixed)**
+
+- In 2-12 b), c) and d): Replace **BOOST_ASSERT** with **assert** (works with #iclude <cassert>) **(fixed)**
+
+- in 2-12 b), c) and d) (PDF): add **in file testquadrules.cc**, and replace qr by quad_rule in function argument name. (const lf::quad::QuadRule &~~qr~~ `quad_rule`)). **(fixed)**
 
 - in 2-12 c): change
 
@@ -22,7 +28,7 @@ Problem 2-12: Testing built-in quadrature rules of LEHRFEM++
     for(int J = 0; J < order; J++){
   ```
 
-  in function `testQuadOrderQuad` in file **testquadrules.cc**. And change corresponding pare in solution.
+  in function `testQuadOrderQuad` in file **testquadrules.cc**. And change corresponding pare in solution.  **(fixed)**
 
-- in **test/testquadrulestest.cc**: remove the printout that prints the whole matrix in `TEST(TestQuadratureRules, TestQuadratureTria)` and `TEST(TestQuadratureRules, TestQuadratureQuad)`. And add another unit test `TEST(TestQuadratureRules, calQuadOrder)` for the function `calcQuadOrder`.
+- in **test/testquadrulestest.cc**: remove the printout that prints the whole matrix in `TEST(TestQuadratureRules, TestQuadratureTria)` and `TEST(TestQuadratureRules, TestQuadratureQuad)`. And add another unit test `TEST(TestQuadratureRules, calQuadOrder)` for the function `calcQuadOrder`. **(unit test doesn't show up in PDF anyway)**
 
