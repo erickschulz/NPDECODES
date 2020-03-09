@@ -16,17 +16,17 @@
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
 
-namespace TestQuadratureRules{
+namespace TestQuadratureRules {
 
 double factorial(int i) { return std::tgamma(i + 1); }
 
 /* SAM_LISTING_BEGIN_1 */
 bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
-                       unsigned int order){
+                       unsigned int order) {
   bool order_isExact = true; // return variable
   double my_epsilon = 1e-12;
   // Retrieve the passed quadrature rule's reference element
-  const auto ref_element = quad_rule.RefEl();
+  const lf::base::RefEl ref_element = quad_rule.RefEl();
   // Check that the passed reference element is triangular
   assert(ref_element == lf::base::RefElType::kTria);
   // A quadrature rule involves quadrature nodes and weights defined so that
@@ -48,17 +48,15 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
   /* Compare analytical value and quadrature sum for all p_IJ, I+J < k */
   double exact_integral; // analytical value of the integral
   double quad_rule_sum;  // weighted sum used for approximating the integral
-  for (int I = 0; I < order; I++){
-    for (int J = 0; J < order - I; J++){
-      exact_integral = factorial(I) *
-                       factorial(J) /
-                       factorial(I + J + 2);
+  for (int I = 0; I < order; I++) {
+    for (int J = 0; J < order - I; J++) {
+      exact_integral = factorial(I) * factorial(J) / factorial(I + J + 2);
       quad_rule_sum = eval_p_IJ(I, J).dot(weights);
 
       // Check if the difference bewteen the results is within tolerance
       order_isExact = fabs(exact_integral - quad_rule_sum) <=
                       fabs(exact_integral) * my_epsilon;
-      if (!order_isExact){
+      if (!order_isExact) {
         return order_isExact;
       }
     }
@@ -69,12 +67,12 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
 
 /* SAM_LISTING_BEGIN_2 */
 bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
-                       unsigned int order){
+                       unsigned int order) {
   bool order_isExact = true; // return variable
 
   double my_epsilon = 1e-12;
   // Retrieve the passed quadrature rule's reference element
-  const auto ref_element = quad_rule.RefEl();
+  const lf::base::RefEl ref_element = quad_rule.RefEl();
   // Check that the passed reference element is triangular
   assert(ref_element == lf::base::RefElType::kQuad);
   // A quadrature rule consists of quadrature nodes and weights defined so that
@@ -97,15 +95,15 @@ bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
    */
   double exact_integral; // analytical value of the integral
   double quad_rule_sum;  // weighted sum used for approximating the integral
-  for (int I = 0; I < order; I++){
-    for (int J = 0; J < order; J++){
+  for (int I = 0; I < order; I++) {
+    for (int J = 0; J < order; J++) {
       exact_integral = 1.0 / ((I + 1.0) * (J + 1.0));
       quad_rule_sum = eval_p_IJ(I, J).dot(weights);
 
       // Check if the difference bewteen the results is within tolerance
       order_isExact = fabs(exact_integral - quad_rule_sum) <=
                       fabs(exact_integral) * my_epsilon;
-      if (!order_isExact){
+      if (!order_isExact) {
         return order_isExact;
       }
     }
@@ -115,22 +113,22 @@ bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule){
+unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule) {
   unsigned int maximal_order = quad_rule.Order();
 
   // Retrieve the passed quadrature rule's reference element
-  const auto ref_element = quad_rule.RefEl();
+  const lf::base::RefEl ref_element = quad_rule.RefEl();
 
-  if (ref_element == lf::base::RefElType::kTria){
+  if (ref_element == lf::base::RefElType::kTria) {
     assert(testQuadOrderTria(quad_rule, maximal_order));
-    while (testQuadOrderTria(quad_rule, maximal_order + 1)){
+    while (testQuadOrderTria(quad_rule, maximal_order + 1)) {
       maximal_order++;
     }
   }
 
-  if (ref_element == lf::base::RefElType::kQuad){
+  if (ref_element == lf::base::RefElType::kQuad) {
     assert(testQuadOrderQuad(quad_rule, maximal_order));
-    while (testQuadOrderQuad(quad_rule, maximal_order + 1)){
+    while (testQuadOrderQuad(quad_rule, maximal_order + 1)) {
       maximal_order++;
     }
   }

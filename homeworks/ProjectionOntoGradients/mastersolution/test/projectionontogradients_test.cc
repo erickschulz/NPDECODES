@@ -106,7 +106,6 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_2) {
 
 /* SAM_LISTING_BEGIN_1 */
 TEST(ProjectionOntoGradients, div_free_test) {
-#if solution
   // Building test mesh
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3);
   // Divergence-free vector field
@@ -131,11 +130,6 @@ TEST(ProjectionOntoGradients, div_free_test) {
     // Try testing for equality, you'll see it will fail miserably!
     /* EXPECT_EQ(sol_vec[i], 0.0); */
   }
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 }
 /* SAM_LISTING_END_1 */
 
