@@ -9,9 +9,9 @@
 #ifndef NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
 #define NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
 
-#include "qfeinterpolator.h"
-
 #include <lf/assemble/assemble.h>
+
+#include "qfeinterpolator.h"
 
 namespace DebuggingFEM {
 

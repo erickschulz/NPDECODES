@@ -1,12 +1,10 @@
 #include <gtest/gtest.h>
-
-#include <functional>
+#include <lf/assemble/assemble.h>
+#include <lf/mesh/test_utils/test_meshes.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
-
-#include <lf/assemble/assemble.h>
-#include <lf/mesh/test_utils/test_meshes.h>
+#include <functional>
 
 #include "../locallaplaceqfe.h"
 #include "../qfeinterpolator.h"
