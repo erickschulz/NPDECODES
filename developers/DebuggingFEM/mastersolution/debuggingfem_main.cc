@@ -1,5 +1,5 @@
 /**
- * @file main.cc
+ * @file debuggingfem_main.cc
  * @brief NPDE homework ParametricElementMatrices code
  * @author Simon Meierhans
  * @date 27/03/2019
@@ -12,9 +12,9 @@
 #include <iomanip>
 #include <memory>
 
-#include "local_laplace_qfe.h"
-#include "qfe_interpolator.h"
-#include "qfe_provider_tester.h"
+#include "locallaplaceqfe.h"
+#include "qfeinterpolator.h"
+#include "qfeprovidertester.h"
 
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>

@@ -1,5 +1,5 @@
 /**
- * @file qfe_provider_tester.h
+ * @file qfeprovidertester.h
  * @brief NPDE homework DebuggingFEM code
  * @author Oliver Rietmann
  * @date 03/04/2019
@@ -9,7 +9,7 @@
 #ifndef QFE_PROV
 #define QFE_PROV
 
-#include "qfe_interpolator.h"
+#include "qfeinterpolator.h"
 
 #include <lf/assemble/assemble.h>
 

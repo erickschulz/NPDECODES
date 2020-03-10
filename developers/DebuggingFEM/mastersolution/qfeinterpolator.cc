@@ -1,12 +1,12 @@
 /**
- * @file qfe_interpolator.cc
+ * @file qfeinterpolator.cc
  * @brief NPDE homework DebuggingFEM code
  * @author Simon Meierhans
  * @date 27/03/2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "qfe_interpolator.h"
+#include "qfeinterpolator.h"
 
 namespace DebuggingFEM {
 

@@ -1,12 +1,12 @@
 /**
- * @file local_laplace_qfe.h
+ * @file locallaplaceqfe.cc
  * @brief NPDE homework ParametricElementMatrices code
  * @author Simon Meierhans
  * @date 27/03/2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "local_laplace_qfe.h"
+#include "locallaplaceqfe.h"
 
 namespace DebuggingFEM {
 

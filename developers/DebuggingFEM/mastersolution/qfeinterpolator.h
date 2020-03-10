@@ -1,5 +1,5 @@
 /**
- * @file qfe_interpolator.h
+ * @file qfeinterpolator.h
  * @brief NPDE homework DebuggingFEM code
  * @author Simon Meierhans
  * @date 27/03/2019

@@ -1,5 +1,5 @@
 /**
- * @file local_laplace_qfe.h
+ * @file locallaplaceqfe.h
  * @brief NPDE homework ParametricElementMatrices code
  * @author Simon Meierhans
  * @date 27/03/2019
