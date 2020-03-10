@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef QFE_INTP
-#define QFE_INTP
+#ifndef NPDECODES_DEBUGGINGFEM_QFEINTERPOLATOR_H_
+#define NPDECODES_DEBUGGINGFEM_QFEINTERPOLATOR_H_
 
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>

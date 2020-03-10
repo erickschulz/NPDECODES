@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef QFE_PROV
-#define QFE_PROV
+#ifndef NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
+#define NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
 
 #include "qfeinterpolator.h"
 

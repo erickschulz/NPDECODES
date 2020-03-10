@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef LOC_LAP_QFE
-#define LOC_LAP_QFE
+#ifndef NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
+#define NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
