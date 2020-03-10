@@ -21,6 +21,7 @@ using size_type = lf::base::size_type;
  * @brief get the global coordinates of a interpolation point in a cell
  * @param idx local index
  *        cell the cell to be used
+ * @returns The global coordinate of the i-th interpolation node in the given cell
  */
 Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell);
 
@@ -29,6 +30,7 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell);
  * space
  * @param dofh dof-handler
  *        f function to interpolate
+ * @returns A vector containing thebasis function coefficients
  */
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>

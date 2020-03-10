@@ -48,6 +48,7 @@ QFEProviderTester<ENTITY_MATRIX_PROVIDER>::QFEProviderTester(
     ENTITY_MATRIX_PROVIDER &element_matrix_provider)
     : dofh_(dofh), element_matrix_provider_(element_matrix_provider) {
 #if SOLUTION
+  // Assemble the Galerkin matrix and store it into A_
   const lf::base::size_type N_dofs(dofh.NumDofs());
   lf::assemble::COOMatrix<double> mat(N_dofs, N_dofs);
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, element_matrix_provider,
@@ -56,6 +57,7 @@ QFEProviderTester<ENTITY_MATRIX_PROVIDER>::QFEProviderTester(
 #else
   //====================
   // Your code goes here
+  // Assemble the Galerkin matrix into A_
   //====================
 #endif
 }
@@ -66,7 +68,7 @@ template <typename ENTITY_MATRIX_PROVIDER>
 template <typename FUNCTOR>
 double QFEProviderTester<ENTITY_MATRIX_PROVIDER>::energyOfInterpolant(
     FUNCTOR &&u) const {
-  double energy;
+  double energy = 0.0;
 #if SOLUTION
   Eigen::VectorXd eta = DebuggingFEM::interpolateOntoQuadFE(dofh_, u);
   energy = eta.dot(A_ * eta);

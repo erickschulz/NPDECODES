@@ -49,11 +49,8 @@ int main() {
   for (int level = 0; level < L; ++level) {
     // set up fespace and dof handler for the mesh at the current level
     auto mesh_p = multi_mesh.getMesh(level);
-    const lf::assemble::UniformFEDofHandler dofh(mesh_p,
-                                           {{lf::base::RefEl::kPoint(), 1},
-                                            {lf::base::RefEl::kSegment(), 1},
-                                            {lf::base::RefEl::kTria(), 0},
-                                            {lf::base::RefEl::kQuad(), 1}});
+    lf::uscalfe::FeSpaceLagrangeO2<double> fespace(mesh_p);
+    const auto &dofh = fespace.LocGlobMap();
 
     // Dimension of finite element space
     N[level] = dofh.NumDofs();
@@ -64,17 +61,17 @@ int main() {
       auto f = [](const Eigen::VectorXd &x) -> double {
         return std::exp(x(1) * x(1) + x(0) * x(0));
       };
+      double energy = 0.0;
 #if SOLUTION
       // Matrix in triplet format holding Galerkin for LocalLaplaceQFEX matrix,
       // zero initially.
       DebuggingFEM::QFEProviderTester qfe_provider_tester(dofh, *element_matrix_provider[i]);
       // compute the energy and error
-      double energy = qfe_provider_tester.energyOfInterpolant(f);
+      energy = qfe_provider_tester.energyOfInterpolant(f);
 #else
       //====================
       // Your code goes here
       // Use DebuggingFEM::QFEProviderTester to compute the energy
-      double energy = 0.0;  // dummy value
       //====================
 #endif
       H1SMerr(level, i) = std::abs(23.76088 - energy);
