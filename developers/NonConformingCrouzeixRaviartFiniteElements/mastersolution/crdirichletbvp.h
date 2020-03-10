@@ -1,4 +1,4 @@
-/*
+/**
  * @file
  * @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
  * @author Anian Ruoss, edited Amélie Loher
@@ -6,27 +6,28 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef NUMPDE_SOLVE_CR_NEUMANN_BVP_H
-#define NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#ifndef NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
+#define NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
 
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "cr_fe_space.h"
+#include "crfespace.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
 {
 
 template <typename GAMMA_COEFF, typename F_FUNCTOR>
-Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
-                                  GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
+Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
+                                    GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
 {
     Eigen::VectorXd sol;
-// TODO: task 2-14.u)
+// TODO: task 2-14.v)
 #if SOLUTION
     // Obtain local to global index mapping for shape functions
     const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
-    const size_type num_dofs = dof_handler.NumDofs();
+    const lf::uscalfe::size_type num_dofs(dof_handler.NumDofs());
+
     // Prepare coefficient and source functions as MeshFunction
     lf::mesh::utils::MeshFunctionGlobal mf_one{
         [](Eigen::Vector2d x) -> double { return 1.; }};
@@ -49,6 +50,17 @@ Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
         load_vector_builder(fe_space, mf_f);
     // Fill right-hand-side vector (cell oriented assembly)
     lf::assemble::AssembleVectorLocally(0, dof_handler, load_vector_builder, phi);
+    // Obtain an array of boundary flags for edges (codim-1 entities !)
+    lf::mesh::utils::CodimMeshDataSet<bool> boundary_edges{
+        lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
+    // Enforce homogeneous boundary
+    lf::assemble::FixFlaggedSolutionComponents<double>(
+        [&boundary_edges,
+         &dof_handler](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
+            const lf::mesh::Entity &edge{dof_handler.Entity(gdof_idx)};
+            return {boundary_edges(edge), 0.0};
+        },
+        A, phi);
     // Set up Galerkin matrix in CRS format
     Eigen::SparseMatrix<double> A_crs = A.makeSparse();
     // ... and solve the linear system of equations by Gaussian elimination
@@ -65,4 +77,4 @@ Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
 
 } // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#endif // NUMPDE_SOLVE_CR_DIRICHLET_BVP_H

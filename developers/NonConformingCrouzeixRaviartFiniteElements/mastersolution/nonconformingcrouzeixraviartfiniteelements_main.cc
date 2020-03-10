@@ -11,7 +11,7 @@
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 
-#include "l2_error_cr_discretization_dirichlet_bvp.h"
+#include "crl2errordirichletbvp.h"
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 
