@@ -25,7 +25,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Erick  |
 | 2-15 | `RegularizedNeumann` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| 3-2 | `DebuggingFEM` | :white_check_mark: |  |  | Tobias |
+| 3-2 | `DebuggingFEM` | :heavy_check_mark: | :white_check_mark: |  | Tobias |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: |  |  |  |
 | 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: |  |  |  |
