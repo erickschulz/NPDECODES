@@ -7,12 +7,12 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/main.cc
-  ${DIR}/local_laplace_qfe.h
-  ${DIR}/local_laplace_qfe.cc
-  ${DIR}/qfe_interpolator.h
-  ${DIR}/qfe_interpolator.cc
-  ${DIR}/qfe_provider_tester.h
+  ${DIR}/debuggingfem_main.cc
+  ${DIR}/locallaplaceqfe.h
+  ${DIR}/locallaplaceqfe.cc
+  ${DIR}/qfeinterpolator.h
+  ${DIR}/qfeinterpolator.cc
+  ${DIR}/qfeprovidertester.h
 )
 
 set(LIBRARIES
