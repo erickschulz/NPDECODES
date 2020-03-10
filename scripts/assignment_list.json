@@ -34,7 +34,7 @@
     "PointEvaluationRhs/",
     "ProjectionOntoGradients/",
     "RadauThreeTimestepping/",
-    "RegularizedNeumann/",
+    "RegularizedNeumannProblem/",
     "SDIRKMethodOfLines/",
     "SimpleLinearFiniteElements/",
     "SymplecticTimesteppingWaves/",
