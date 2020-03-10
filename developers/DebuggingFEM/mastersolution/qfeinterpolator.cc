@@ -8,6 +8,10 @@
 
 #include "qfeinterpolator.h"
 
+#include <Eigen/Core>
+
+#include <lf/mesh/mesh.h>
+
 namespace DebuggingFEM {
 
 Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {

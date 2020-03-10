@@ -8,6 +8,13 @@
 
 #include "locallaplaceqfe.h"
 
+#include <Eigen/Dense>
+
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
+#include <lf/uscalfe/uscalfe.h>
+
 namespace DebuggingFEM {
 
 Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(

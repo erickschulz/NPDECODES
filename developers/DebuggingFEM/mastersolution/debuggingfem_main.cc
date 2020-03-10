@@ -6,19 +6,24 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/refinement/refinement.h>
-
-#include <cstdlib>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <memory>
-
 #include "locallaplaceqfe.h"
 #include "qfeinterpolator.h"
 #include "qfeprovidertester.h"
+
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <vector>
+
+#include <Eigen/Core>
+
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/refinement/refinement.h>
+#include <lf/uscalfe/uscalfe.h>
 
 using size_type = lf::base::size_type;
 
