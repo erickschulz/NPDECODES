@@ -18,17 +18,17 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 2-9 | `HandlingDOFs` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver |
+| 2-9 | `HandlingDOFs` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 2-15 | `RegularizedNeumann` | :heavy_check_mark: | :heavy_check_mark: | | |
+| 2-15 | `RegularizedNeumann` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver |
 | 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: |  |  |  |
-| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: |  :white_check_mark:  |  | Amélie  |
+| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :white_check_mark: |  | Amélie  |
 | 3-7 | `MaximumPrinciple` | :heavy_check_mark: |  |  |  |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: |  |  |  |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: |  |  |  |
