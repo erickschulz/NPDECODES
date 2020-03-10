@@ -3,14 +3,14 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/cr_l2_error.h
-  ${DIR}/cr_fe_space.h
+  ${DIR}/crl2error.h
+  ${DIR}/crfespace.h
   ${DIR}/nonconformingcrouzeixraviartfiniteelements.cc
   ${DIR}/nonconformingcrouzeixraviartfiniteelements.h
-  ${DIR}/l2_error_cr_discretization_dirichlet_bvp.h
+  ${DIR}/crl2errordirichletbvp.h
   ${DIR}/nonconformingcrouzeixraviartfiniteelements_main.cc
-  ${DIR}/solve_cr_dirichlet_bvp.h
-  ${DIR}/solve_cr_neumann_bvp.h
+  ${DIR}/crdirichletbvp.h
+  ${DIR}/crneumannbvp.h
 )
 
 set(LIBRARIES

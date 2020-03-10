@@ -6,31 +6,29 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef NUMPDE_COMPUTE_CR_L2_ERROR_H
-#define NUMPDE_COMPUTE_CR_L2_ERROR_H
+#ifndef NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
+#define NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
 
 #include <lf/assemble/assemble.h>
-#include <lf/geometry/geometry.h>
-#include <lf/mesh/mesh.h>
+#include <lf/uscalfe/uscalfe.h>
 
-#include "cr_fe_space.h"
+#include "crfespace.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
 {
 
-template <typename FUNCTION>
-double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
-                        const Eigen::VectorXd &mu, FUNCTION &&u)
+template <typename GAMMA_COEFF, typename F_FUNCTOR>
+Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
+                                    GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
 {
-  double l2_error = 0.;
-
-// TODO: task 2-14.w)
+    Eigen::VectorXd sol;
+// TODO: task 2-14.v)
   //====================
   // Your code goes here
   //====================
-  return std::sqrt(l2_error);
+    return sol;
 }
 
 } // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_COMPUTE_CR_L2_ERROR_H
+#endif // NUMPDE_SOLVE_CR_DIRICHLET_BVP_H

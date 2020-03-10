@@ -1,4 +1,4 @@
-/*
+/**
  * @file
  * @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
  * @author Anian Ruoss, edited Amélie Loher
@@ -6,29 +6,31 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef NUMPDE_SOLVE_CR_NEUMANN_BVP_H
-#define NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#ifndef NUMPDE_COMPUTE_CR_L2_ERROR_H
+#define NUMPDE_COMPUTE_CR_L2_ERROR_H
 
 #include <lf/assemble/assemble.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
 
-#include "cr_fe_space.h"
+#include "crfespace.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
 {
 
-template <typename GAMMA_COEFF, typename F_FUNCTOR>
-Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
-                                  GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
+template <typename FUNCTION>
+double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
+                        const Eigen::VectorXd &mu, FUNCTION &&u)
 {
-    Eigen::VectorXd sol;
-// TODO: task 2-14.u)
+  double l2_error = 0.;
+
+// TODO: task 2-14.w)
   //====================
   // Your code goes here
   //====================
-    return sol;
+  return std::sqrt(l2_error);
 }
 
 } // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#endif // NUMPDE_COMPUTE_CR_L2_ERROR_H

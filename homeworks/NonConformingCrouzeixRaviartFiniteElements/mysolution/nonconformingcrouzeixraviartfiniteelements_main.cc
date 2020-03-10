@@ -11,7 +11,7 @@
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 
-#include "l2_error_cr_discretization_dirichlet_bvp.h"
+#include "crl2errordirichletbvp.h"
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 
@@ -29,7 +29,7 @@ int main() {
     // Read mesh from file
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-    auto mesh_ptr = reader.mesh();
+    auto mesh_p = reader.mesh();
 
 // TODO: task 2-14.h)
   //====================

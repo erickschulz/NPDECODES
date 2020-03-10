@@ -15,9 +15,9 @@
 #include <lf/io/io.h>
 #include <lf/mesh/mesh.h>
 
-#include "cr_fe_space.h"
-#include "cr_l2_error.h"
-#include "solve_cr_dirichlet_bvp.h"
+#include "crfespace.h"
+#include "crl2error.h"
+#include "crdirichletbvp.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 

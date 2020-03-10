@@ -11,7 +11,7 @@
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 
-#include "l2_error_cr_discretization_dirichlet_bvp.h"
+#include "crl2errordirichletbvp.h"
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 
@@ -29,12 +29,12 @@ int main() {
     // Read mesh from file
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-    auto mesh_ptr = reader.mesh();
+    auto mesh_p = reader.mesh();
 
 // TODO: task 2-14.h)
     // Initialize CR-DofHandler from mesh
     lf::assemble::UniformFEDofHandler dof_handler(
-        mesh_ptr, {{lf::base::RefEl::kPoint(), 0},
+        mesh_p, {{lf::base::RefEl::kPoint(), 0},
                    {lf::base::RefEl::kSegment(), 1},
                    {lf::base::RefEl::kTria(), 0},
                    {lf::base::RefEl::kQuad(), 0}});

@@ -1,4 +1,4 @@
-/**
+/*
  * @file
  * @brief NPDE homework NonConformingCrouzeixRaviartFiniteElements code
  * @author Anian Ruoss, edited Amélie Loher
@@ -6,23 +6,23 @@
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
-#define NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
+#ifndef NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#define NUMPDE_SOLVE_CR_NEUMANN_BVP_H
 
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "cr_fe_space.h"
+#include "crfespace.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements
 {
 
 template <typename GAMMA_COEFF, typename F_FUNCTOR>
-Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
-                                    GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
+Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
+                                  GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
 {
     Eigen::VectorXd sol;
-// TODO: task 2-14.v)
+// TODO: task 2-14.u)
   //====================
   // Your code goes here
   //====================
@@ -31,4 +31,4 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
 
 } // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
+#endif // NUMPDE_SOLVE_CR_NEUMANN_BVP_H

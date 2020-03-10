@@ -14,8 +14,8 @@
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
-#include "../cr_fe_space.h"
-#include "../l2_error_cr_discretization_dirichlet_bvp.h"
+#include "../crfespace.h"
+#include "../crl2errordirichletbvp.h"
 
 using namespace NonConformingCrouzeixRaviartFiniteElements;
 
