@@ -108,7 +108,9 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 # TO DO LIST
 
-## Missing unitests 
+## Missing unitests
+
+RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests
 
 ### Not in NPDEFL_Problems
 - BoundaryWave
