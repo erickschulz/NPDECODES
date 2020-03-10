@@ -18,6 +18,7 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 
 /** @brief Crouzeix-Raviart finite element space
  *  This class complies with Lehrfempp lf::uscalfe::ScalarUniformFESpace */
+/* SAM_LISTING_BEGIN_1 */
 class CRFeSpace : public lf::uscalfe::UniformScalarFESpace<double> {
  public:
   /** @brief no default constructors*/
@@ -38,6 +39,7 @@ class CRFeSpace : public lf::uscalfe::UniformScalarFESpace<double> {
 
   ~CRFeSpace() override = default;
 };
+/* SAM_LISTING_END_1 */
 
 }  // namespace NonConformingCrouzeixRaviartFiniteElements
 

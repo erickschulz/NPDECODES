@@ -21,6 +21,7 @@
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
+/* SAM_LISTING_BEGIN_1 */
 double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   double l2_error;
 
@@ -30,6 +31,7 @@ double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
   //====================
   return l2_error;
 }
+/* SAM_LISTING_END_1 */
 
 }  // namespace NonConformingCrouzeixRaviartFiniteElements
 

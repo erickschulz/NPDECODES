@@ -49,6 +49,8 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
         load_vector_builder(fe_space, mf_f);
     // Fill right-hand-side vector (cell oriented assembly)
     lf::assemble::AssembleVectorLocally(0, dof_handler, load_vector_builder, phi);
+
+    /* SAM_LISTING_BEGIN_1 */
     // Obtain an array of boundary flags for edges (codim-1 entities !)
     lf::mesh::utils::CodimMeshDataSet<bool> boundary_edges{
         lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
@@ -66,6 +68,7 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
     Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
     solver.compute(A_crs);
     sol = solver.solve(phi);
+    /* SAM_LISTING_END_1 */
     return sol;
 }
 

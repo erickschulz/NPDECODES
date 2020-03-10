@@ -1,19 +1,17 @@
 /**
- * @file local_laplace_qfe.h
+ * @file locallaplaceqfe.h
  * @brief NPDE homework ParametricElementMatrices code
  * @author Simon Meierhans
  * @date 27/03/2019
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef LOC_LAP_QFE
-#define LOC_LAP_QFE
+#ifndef NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
+#define NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
 
-#include <lf/assemble/assemble.h>
-#include <lf/geometry/geometry.h>
+#include <Eigen/Core>
+
 #include <lf/mesh/mesh.h>
-#include <lf/quad/quad.h>
-#include <lf/uscalfe/uscalfe.h>
 
 namespace DebuggingFEM {
 

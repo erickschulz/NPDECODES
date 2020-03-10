@@ -1,15 +1,18 @@
 /**
- * @file qfe_provider_tester.h
+ * @file qfeprovidertester.h
  * @brief NPDE homework DebuggingFEM code
  * @author Oliver Rietmann
  * @date 03/04/2019
  * @copyright Developed at ETH Zurich
  */
 
-#ifndef QFE_PROV
-#define QFE_PROV
+#ifndef NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
+#define NPDECODES_DEBUGGINGFEM_QFEPROVIDERTESTER_H_
 
-#include "qfe_interpolator.h"
+#include "qfeinterpolator.h"
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include <lf/assemble/assemble.h>
 
@@ -49,6 +52,7 @@ QFEProviderTester<ENTITY_MATRIX_PROVIDER>::QFEProviderTester(
     : dofh_(dofh), element_matrix_provider_(element_matrix_provider) {
   //====================
   // Your code goes here
+  // Assemble the Galerkin matrix into A_
   //====================
 }
 /* SAM_LISTING_END_2 */
@@ -58,7 +62,7 @@ template <typename ENTITY_MATRIX_PROVIDER>
 template <typename FUNCTOR>
 double QFEProviderTester<ENTITY_MATRIX_PROVIDER>::energyOfInterpolant(
     FUNCTOR &&u) const {
-  double energy;
+  double energy = 0.0;
   //====================
   // Your code goes here
   //====================

@@ -18,6 +18,7 @@
 namespace NonConformingCrouzeixRaviartFiniteElements
 {
 
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTION>
 double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
                         const Eigen::VectorXd &mu, FUNCTION &&u)
@@ -30,6 +31,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
   //====================
   return std::sqrt(l2_error);
 }
+/* SAM_LISTING_END_1 */
 
 } // namespace NonConformingCrouzeixRaviartFiniteElements
 

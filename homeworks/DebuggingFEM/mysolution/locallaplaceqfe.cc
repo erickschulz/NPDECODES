@@ -1,50 +1,21 @@
 /**
- * @file local_laplace_qfe.h
+ * @file locallaplaceqfe.cc
  * @brief NPDE homework ParametricElementMatrices code
  * @author Simon Meierhans
  * @date 27/03/2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "local_laplace_qfe.h"
+#include "locallaplaceqfe.h"
+
+#include <Eigen/Dense>
+
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
+#include <lf/uscalfe/uscalfe.h>
 
 namespace DebuggingFEM {
-
-Eigen::Matrix<double, 6, 6> LocalLaplaceQFE2::Eval(
-    const lf::mesh::Entity &cell) {
-  // Query (topological) type of cell/reference element
-  const lf::base::RefEl ref_el{cell.RefEl()};
-  // Verify that the cell is a triangle
-  LF_ASSERT_MSG(ref_el == lf::base::RefEl::kTria(),
-                "Implemented for triangles only not for " << ref_el);
-  // The final element matrix has size 6x6
-  Eigen::Matrix<double, 6, 6> result{};
-  // Obtain the vertex coordinates of the triangle
-  const lf::geometry::Geometry *geo_ptr = cell.Geometry();
-  LF_ASSERT_MSG(geo_ptr != nullptr, "Invalid geometry!");
-  // Matrix storing corner coordinates in its columns
-  Eigen::Matrix<double, 2, 3> vertices{geo_ptr->Global(ref_el.NodeCoords())};
-  // Comopute element matrix for negative Laplacian and lowest-order Lgrangian
-  // finite elements as in Remark 2.4.5.9. in the course notes
-  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
-  X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
-  X.block<3, 2>(0, 1) = vertices.transpose();
-  const double area = 0.5 * std::abs(X.determinant());
-  auto grad_bary_coords{X.inverse().block<2, 3>(1, 0)};
-  auto L{grad_bary_coords.transpose() * grad_bary_coords};
-
-  // See Example 2.7.5.7 in course notes for derivation of the formulas
-  result << 3. * L(0, 0), -L(0, 1), -L(0, 2), 4. * L(0, 1), 0, 4. * L(0, 2),
-      -L(0, 1), 3. * L(1, 1), -L(1, 2), 4. * L(0, 1), 4. * L(1, 2), 0, -L(0, 2),
-      -L(1, 2), 3. * L(2, 2), 0, 4. * L(2, 1), 4. * L(2, 0), 4. * L(0, 1),
-      4. * L(0, 1), 0, 8. * (L(0, 0) + L(0, 1) + L(1, 1)), 8 * L(0, 2),
-      8 * L(1, 2), 0, 4. * L(1, 2), 4. * L(2, 1), 8. * L(0, 2),
-      8. * (L(1, 1) + L(1, 2) + L(2, 2)), 8 * L(0, 1), 4 * L(0, 2), 0,
-      4. * L(2, 0), 8. * L(1, 2), 8. * L(0, 1),
-      8. * (L(0, 0) + L(0, 2) + L(2, 2));
-  result *= (area / 3.);
-  return result;
-}
 
 Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(
     const lf::mesh::Entity &cell) {
@@ -98,7 +69,43 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(
       (grad_vt_0.transpose() * grad_vt_0 + grad_vt_1.transpose() * grad_vt_1 +
        grad_vt_2.transpose() * grad_vt_2);
   return result;
-}  // end Eval()
+}
+
+Eigen::Matrix<double, 6, 6> LocalLaplaceQFE2::Eval(
+    const lf::mesh::Entity &cell) {
+  // Query (topological) type of cell/reference element
+  const lf::base::RefEl ref_el{cell.RefEl()};
+  // Verify that the cell is a triangle
+  LF_ASSERT_MSG(ref_el == lf::base::RefEl::kTria(),
+                "Implemented for triangles only not for " << ref_el);
+  // The final element matrix has size 6x6
+  Eigen::Matrix<double, 6, 6> result{};
+  // Obtain the vertex coordinates of the triangle
+  const lf::geometry::Geometry *geo_ptr = cell.Geometry();
+  LF_ASSERT_MSG(geo_ptr != nullptr, "Invalid geometry!");
+  // Matrix storing corner coordinates in its columns
+  Eigen::Matrix<double, 2, 3> vertices{geo_ptr->Global(ref_el.NodeCoords())};
+  // Comopute element matrix for negative Laplacian and lowest-order Lgrangian
+  // finite elements as in Remark 2.4.5.9. in the course notes
+  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
+  X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
+  X.block<3, 2>(0, 1) = vertices.transpose();
+  const double area = 0.5 * std::abs(X.determinant());
+  auto grad_bary_coords{X.inverse().block<2, 3>(1, 0)};
+  auto L{grad_bary_coords.transpose() * grad_bary_coords};
+
+  // See Example 2.7.5.7 in course notes for derivation of the formulas
+  result << 3. * L(0, 0), -L(0, 1), -L(0, 2), 4. * L(0, 1), 0, 4. * L(0, 2),
+      -L(0, 1), 3. * L(1, 1), -L(1, 2), 4. * L(0, 1), 4. * L(1, 2), 0, -L(0, 2),
+      -L(1, 2), 3. * L(2, 2), 0, 4. * L(2, 1), 4. * L(2, 0), 4. * L(0, 1),
+      4. * L(0, 1), 0, 8. * (L(0, 0) + L(0, 1) + L(1, 1)), 8 * L(0, 2),
+      8 * L(1, 2), 0, 4. * L(1, 2), 4. * L(2, 1), 8. * L(0, 2),
+      8. * (L(1, 1) + L(1, 2) + L(2, 2)), 8 * L(0, 1), 4 * L(0, 2), 0,
+      4. * L(2, 0), 8. * L(1, 2), 8. * L(0, 1),
+      8. * (L(0, 0) + L(0, 2) + L(2, 2));
+  result *= (area / 3.);
+  return result;
+}
 
 // implementation
 Eigen::Matrix<double, 6, 6> LocalLaplaceQFE3::Eval(

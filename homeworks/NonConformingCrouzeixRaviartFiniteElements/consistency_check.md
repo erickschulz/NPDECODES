@@ -1,3 +1,6 @@
+
+THESE INCONSISTENCIES WERE FIXED:
+
 - 2-14.h)  Tell them to actually implement lf::assemble::UniformFEDofHandler dof_handler() in the main file
 
 - 2-14.q): replace **base::RefEl** with **lf::base::RefEl::**

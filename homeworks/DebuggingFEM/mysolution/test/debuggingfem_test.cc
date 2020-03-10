@@ -1,16 +1,16 @@
 #include <gtest/gtest.h>
 
-#include <functional>
+#include "../locallaplaceqfe.h"
+#include "../qfeinterpolator.h"
+#include "../qfeprovidertester.h"
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
+#include <functional>
 
 #include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
-
-#include "../local_laplace_qfe.h"
-#include "../qfe_interpolator.h"
-#include "../qfe_provider_tester.h"
 
 namespace DebuggingFEM::test {
 

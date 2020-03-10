@@ -8,20 +8,26 @@
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
 // Crouzeix-Raviart finite element space defined on triangular meshes only
+/* SAM_LISTING_BEGIN_1 */
 lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
   lf::base::RefElType ref_el_type;
   // TODO: task 2-14.q)
   ref_el_type = lf::base::RefElType::kTria;
   return lf::base::RefEl(ref_el_type);
 }
+/* SAM_LISTING_END_1 */
+
 // Crouzeix-Raviart are piecewise linear polynomials
+/* SAM_LISTING_BEGIN_2 */
 unsigned int CRReferenceFiniteElement::Degree() const { 
 	unsigned int degree;
 	// TODO: task 2-14.q)
 	degree = 1; 
 	return degree;
 }
+/* SAM_LISTING_END_2 */
 
+/* SAM_LISTING_BEGIN_3 */
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
   lf::assemble::size_type num_ref_shape_functions;
   // TODO: task 2-14.q)
@@ -65,7 +71,9 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
       return 0;
   }
 }
+/* SAM_LISTING_END_3 */
 
+/* SAM_LISTING_BEGIN_4 */
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
 CRReferenceFiniteElement::EvalReferenceShapeFunctions(
     const Eigen::MatrixXd& refcoords) const {
@@ -82,7 +90,9 @@ CRReferenceFiniteElement::EvalReferenceShapeFunctions(
   eval_ref_shape_functions.row(2) = ones - 2. * refcoords.row(0);
   return eval_ref_shape_functions;
 }
+/* SAM_LISTING_END_4 */
 
+/* SAM_LISTING_BEGIN_5 */
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
 CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
     const Eigen::MatrixXd& refcoords) const {
@@ -105,18 +115,22 @@ CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
                                         .replicate(1, num_points);
   return grad_ref_shape_functions;
 }
+/* SAM_LISTING_END_5 */
 
+/* SAM_LISTING_BEGIN_6 */
 Eigen::MatrixXd CRReferenceFiniteElement::EvaluationNodes() const {
   Eigen::MatrixXd eval_nodes(2, 3);
   // TODO: task 2-14.s)
   eval_nodes << .5, .5, 0, 0, .5, .5;
   return eval_nodes;
 }
+/* SAM_LISTING_END_6 */
 
 lf::assemble::size_type CRReferenceFiniteElement::NumEvaluationNodes() const { 
 	return 3; 
 }
 
+/* SAM_LISTING_BEGIN_7 */
 Eigen::Matrix<double, 1, Eigen::Dynamic>
 CRReferenceFiniteElement::NodalValuesToDofs(
     const Eigen::Matrix<double, 1, Eigen::Dynamic>& nodvals) const {
@@ -130,5 +144,6 @@ CRReferenceFiniteElement::NodalValuesToDofs(
   coeffs = nodvals;
   return nodvals;
 }
+/* SAM_LISTING_END_7 */
 
 }  // namespace NonConformingCrouzeixRaviartFiniteElements
