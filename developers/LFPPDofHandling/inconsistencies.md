@@ -3,7 +3,7 @@ Problem 2-9: Handling DoFs
 - Link to GITLAB folder in introduction box is not working (new folder name)->
 "homeworks/LFPPDofHandling" did not exist on "master"->Folder is now called `HandlingDOFs` **(fixed)**
 - All other links to GITLAB also require update (due to change of filenames) **(fixed)**
-- Time hints missing for all parts except 2-9.b)
+- Time hints missing for all parts except 2-9.b) **(fixed)**
 - function signatures of `NoLocalDofs` and `NoInteriorDofs` need to be updated (now `NumLocalDofs`and `NumInteriorDofs`) **(fixed)**
 - typo after the solution of 2-9.b): Extra "The" at the beginning **(fixed)**
 - Filename in the beginning of 2-9.b) wrong: Should be `handlingdofs_main.cc` **(fixed)**
