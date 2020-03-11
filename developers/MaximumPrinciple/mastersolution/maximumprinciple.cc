@@ -1,5 +1,5 @@
 /**
- * @file  maximum_principle_main.cc
+ * @file  maximumprinciple.cc
  * @brief NPDE homework "MaximumPrinciple" code
  * @author Oliver Rietmann
  * @date 25.03.2019
