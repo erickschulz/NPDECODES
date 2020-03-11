@@ -6,5 +6,6 @@
 - Part (a): Tells to check for consistency with LF_ASSERT_MSG, but the solution code does not
 - Part (d): File was renamed: qfe_provider_tester.h -> qfeprovidertester.h
 - Part (d): Code of `QFEProviderTester` should include member `A_`, as that is used in a subsequent task
+- Part (d): Tell to also implement the constructor
 - Part (e): File was renamed: main.cpp -> debuggingfem_main.cc
 - Part (e): A png file is generated. Not an eps file
