@@ -6,6 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "maximumprinciple.h"
+
 #include <vector>
 
 #include <Eigen/Core>

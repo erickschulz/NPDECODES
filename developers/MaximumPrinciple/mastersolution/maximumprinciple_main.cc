@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "maximum_principle.h"
+#include "maximumprinciple.h"
 
 #include <functional>
 #include <iostream>

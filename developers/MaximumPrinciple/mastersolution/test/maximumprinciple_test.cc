@@ -12,7 +12,7 @@
 
 #include <Eigen/Core>
 
-#include "../maximum_principle.h"
+#include "../maximumprinciple.h"
 
 namespace MaximumPrinciple::test {
 
