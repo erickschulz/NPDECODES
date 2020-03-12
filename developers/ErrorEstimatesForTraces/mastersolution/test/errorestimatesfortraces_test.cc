@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "../tee_lapl_robin_assembly.h"
+#include "../teelaplrobinassembly.h"
 
 namespace ErrorEstimatesForTraces::test {
 

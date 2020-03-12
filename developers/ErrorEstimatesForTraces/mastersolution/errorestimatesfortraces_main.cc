@@ -11,7 +11,7 @@
 #include <fstream>
 #include <string>
 
-#include "tee_lapl_robin_assembly.h"
+#include "teelaplrobinassembly.h"
 
 using namespace ErrorEstimatesForTraces;
 
@@ -27,7 +27,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
     std::string mesh_file = CURRENT_SOURCE_DIR "/../meshes/hex" + std::to_string(i) + ".msh";
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-    auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
+    auto mesh_p = reader.mesh();  // type shared_ptr<const lf::mesh::Mesh>
 
     // Finite element space
     auto fe_space = std::make_shared<linear_lagrange>(mesh_p);

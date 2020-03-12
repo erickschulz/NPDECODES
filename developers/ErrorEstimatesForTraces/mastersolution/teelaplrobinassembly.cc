@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "tee_lapl_robin_assembly.h"
+#include "teelaplrobinassembly.h"
 
 #include <cassert>
 
