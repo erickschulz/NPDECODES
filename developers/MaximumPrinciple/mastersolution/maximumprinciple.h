@@ -9,6 +9,9 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 
+#ifndef NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_
+#define NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_
+
 namespace MaximumPrinciple {
 
 /**
@@ -78,3 +81,5 @@ Eigen::VectorXd computeLoadVector(int M, FUNCTOR &&f) {
 Eigen::SparseMatrix<double> computeGalerkinMatrixTR(int M, double c);
 
 }  // namespace MaximumPrinciple
+
+#endif // NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_
