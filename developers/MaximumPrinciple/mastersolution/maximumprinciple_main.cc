@@ -27,9 +27,9 @@ int main() {
     double dy = y - 0.25;
     ret = std::exp(-100.0 * (dx * dx + dy * dy));
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
     return ret;
   };
