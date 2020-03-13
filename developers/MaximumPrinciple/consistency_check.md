@@ -1,0 +1,2 @@
+- Part (b): Depends on Sub-problem (3-7.**a**)
+- Part (d): Typo lowesr-order -> lowest-order

@@ -1,5 +1,5 @@
 /**
- * @file  maximum_principle_main.cc
+ * @file  maximumprinciple_test.cc
  * @brief NPDE homework "MaximumPrinciple" code
  * @author Oliver Rietmann
  * @date 25.03.2019
@@ -12,7 +12,7 @@
 
 #include <Eigen/Core>
 
-#include "../maximum_principle.h"
+#include "../maximumprinciple.h"
 
 namespace MaximumPrinciple::test {
 

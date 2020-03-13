@@ -1,12 +1,12 @@
 /**
- * @file  maximum_principle_main.cc
+ * @file  maximumprinciple_main.cc
  * @brief NPDE homework "MaximumPrinciple" code
  * @author Oliver Rietmann
  * @date 25.03.2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "maximum_principle.h"
+#include "maximumprinciple.h"
 
 #include <functional>
 #include <iostream>
@@ -27,9 +27,9 @@ int main() {
     double dy = y - 0.25;
     ret = std::exp(-100.0 * (dx * dx + dy * dy));
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
     return ret;
   };

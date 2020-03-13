@@ -1,10 +1,12 @@
 /**
- * @file  maximum_principle_main.cc
+ * @file  maximumprinciple.cc
  * @brief NPDE homework "MaximumPrinciple" code
  * @author Oliver Rietmann
  * @date 25.03.2019
  * @copyright Developed at ETH Zurich
  */
+
+#include "maximumprinciple.h"
 
 #include <vector>
 
