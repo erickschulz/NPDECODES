@@ -13,15 +13,15 @@
 #include <utility>
 
 #include <Eigen/Core>
-
-namespace lf { namespace mesh { class Entity; } }
+#include <lf/uscalfe/uscalfe.h>
 
 namespace ElementMatrixComputation {
 
 class MyLinearLoadVector {
- public:
+public:
   /** @brief Constructor storing the right hand side function */
-  explicit MyLinearLoadVector(std::function<double(const Eigen::Vector2d &)> f) : f_(std::move(f)) {}
+  explicit MyLinearLoadVector(std::function<double(const Eigen::Vector2d &)> f)
+      : f_(std::move(f)) {}
 
   /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity & /*cell*/) { return true; }
@@ -36,12 +36,12 @@ class MyLinearLoadVector {
    */
   Eigen::Vector4d Eval(const lf::mesh::Entity &cell);
 
- private:
+private:
   /** `f_(x)` where `x` is a 2D vector that provides the evaluation of the
    * source function */
- std::function<double(const Eigen::Vector2d &)> f_;
+  std::function<double(const Eigen::Vector2d &)> f_;
 };
 
-}  // namespace ElementMatrixComputation
+} // namespace ElementMatrixComputation
 
-#endif  // MYLINEARLOADVECTOR_H_
+#endif // MYLINEARLOADVECTOR_H_

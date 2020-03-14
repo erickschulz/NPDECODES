@@ -12,8 +12,6 @@
 
 #include <Eigen/Core>
 
-#include <lf/uscalfe/uscalfe.h>
-
 #include "mylinearfeelementmatrix.h"
 #include "mylinearloadvector.h"
 

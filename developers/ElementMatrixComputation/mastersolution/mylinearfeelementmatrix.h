@@ -10,13 +10,12 @@
 #define MYLINEARFEELEMENTMATRIX_H_
 
 #include <Eigen/Core>
-
-namespace lf { namespace mesh { class Entity; } }
+#include <lf/uscalfe/uscalfe.h>
 
 namespace ElementMatrixComputation {
 
 class MyLinearFEElementMatrix {
- public:
+public:
   /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity & /*cell*/) { return true; }
   /*
@@ -30,6 +29,6 @@ class MyLinearFEElementMatrix {
   Eigen::Matrix<double, 4, 4> Eval(const lf::mesh::Entity &cell);
 };
 
-}  // namespace ElementMatrixComputation
+} // namespace ElementMatrixComputation
 
-#endif  // MYLINEARFEELEMENTMATRIX_H_
+#endif // MYLINEARFEELEMENTMATRIX_H_
