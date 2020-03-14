@@ -3,7 +3,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/maximum_principle_test.cc
+  ${DIR}/test/maximumprinciple_test.cc
 )
 
 set(LIBRARIES

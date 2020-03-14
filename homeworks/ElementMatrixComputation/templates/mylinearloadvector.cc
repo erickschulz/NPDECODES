@@ -21,13 +21,13 @@ namespace ElementMatrixComputation {
 namespace {
 
 /* SAM_LISTING_BEGIN_1 */
-Eigen::Vector4d computeLoadVector(
-    const Eigen::MatrixXd &vertices, std::function<double(const Eigen::Vector2d &)> f) {
+Eigen::Vector4d
+computeLoadVector(const Eigen::MatrixXd &vertices,
+                  std::function<double(const Eigen::Vector2d &)> f) {
   // Number of nodes of the element: triangles = 3, rectangles = 4
   const int num_nodes = vertices.cols();
   // Vector for returning element vector
-  Eigen::Vector4d elem_vec =
-      Eigen::Vector4d::Zero();
+  Eigen::Vector4d elem_vec = Eigen::Vector4d::Zero();
 
   //====================
   // Your code goes here
@@ -37,10 +37,9 @@ Eigen::Vector4d computeLoadVector(
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace
+} // namespace
 
-Eigen::Vector4d MyLinearLoadVector::Eval(
-    const lf::mesh::Entity &cell) {
+Eigen::Vector4d MyLinearLoadVector::Eval(const lf::mesh::Entity &cell) {
   // Topological type of the cell
   const lf::base::RefEl ref_el{cell.RefEl()};
   const lf::base::size_type num_nodes{ref_el.NumNodes()};
@@ -55,4 +54,4 @@ Eigen::Vector4d MyLinearLoadVector::Eval(
   return computeLoadVector(vertices, f_);
 }
 
-}  // namespace ElementMatrixComputation
+} // namespace ElementMatrixComputation
