@@ -29,7 +29,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :white_check_mark: |  | Philippe |
 | 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :white_check_mark: |  | Amélie |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: |  |  |  |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: |  |  |  |
