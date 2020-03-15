@@ -28,10 +28,10 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :white_check_mark: |  | Philippe |
-| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :white_check_mark: |  | Amélie |
-| 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: |  |  |  |
+| 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :white_check_mark: |  | Tobias |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: |  |  |  |
 | 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |  |  |  |
 | 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: |  |  |  |
@@ -113,9 +113,9 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests
 
 ### Not in NPDEFL_Problems
-- BoundaryWave
+- BoundaryWave (done)
 - ZienkiewiczZhuEstimator
-- WaveABC2D
+- WaveABC2D (done)
 
 ### Chapter 6
 - RadauThreeTimestepping

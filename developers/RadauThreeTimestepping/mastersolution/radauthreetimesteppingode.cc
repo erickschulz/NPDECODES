@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "radau_three_timestepping_ode.h"
+#include "radauthreetimesteppingode.h"
 
 namespace RadauThreeTimestepping {
 
