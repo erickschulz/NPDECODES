@@ -8,10 +8,10 @@
 
 set(SOURCES
   ${DIR}/radauthreetimestepping_main.cc
-  ${DIR}/radau_three_timestepping.h
-  ${DIR}/radau_three_timestepping.cc
-  ${DIR}/radau_three_timestepping_ode.h
-  ${DIR}/radau_three_timestepping_ode.cc
+  ${DIR}/radauthreetimestepping.h
+  ${DIR}/radauthreetimestepping.cc
+  ${DIR}/radauthreetimesteppingode.h
+  ${DIR}/radauthreetimesteppingode.cc
 )
 
 set(LIBRARIES
