@@ -23,8 +23,6 @@
 
 namespace OutputImpedanceBVP {
 
-// Simplification of lenghty type names
-using coord_t = Eigen::Vector2d;
 
 // Library functions
 Eigen::VectorXd solveImpedanceBVP(
@@ -43,7 +41,7 @@ Eigen::VectorXd interpolateData(
 
   // Generate Lehrfem++ mesh functions out of the functors
   auto mf_u = lf::mesh::utils::MeshFunctionGlobal(
-      [&u](coord_t x) -> double { return u(x); });
+      [&u](Eigen::Vector2d x) -> double { return u(x); });
 
   Eigen::VectorXd dof_vector_u = lf::uscalfe::NodalProjection(*fe_space_p, mf_u);
 
