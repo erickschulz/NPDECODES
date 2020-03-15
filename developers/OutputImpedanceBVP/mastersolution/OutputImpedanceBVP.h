@@ -11,7 +11,6 @@
 #include <iostream>
 // Eigen includes
 #include <Eigen/Core>
-#include <Eigen/Dense>
 #include <Eigen/Sparse>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>

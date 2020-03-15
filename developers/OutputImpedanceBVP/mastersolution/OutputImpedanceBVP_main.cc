@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "outputimpedancebvp.h"
 #include "evalclass.h"
+#include "outputimpedancebvp.h"
 
 using namespace OutputImpedanceBVP;
 

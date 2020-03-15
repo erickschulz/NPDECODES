@@ -17,8 +17,8 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../outputimpedancebvp.h"
 #include "../evalclass.h"
+#include "../outputimpedancebvp.h"
 
 namespace OutputImpedanceBVP::test
 {
