@@ -113,7 +113,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests
 
 ### Not in NPDEFL_Problems
-- BoundaryWave
+- BoundaryWave (done)
 - ZienkiewiczZhuEstimator
 - WaveABC2D (done)
 
