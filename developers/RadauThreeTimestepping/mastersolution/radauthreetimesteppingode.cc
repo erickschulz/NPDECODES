@@ -11,7 +11,7 @@
 namespace RadauThreeTimestepping {
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int m) {
+std::vector<double> twoStageRadauTimesteppingLinScalODE(unsigned int m) {
   std::vector<double> sol_vec;
 #if SOLUTION
   double step_size = 5.0 / m;  // Timestep "tau"
@@ -27,7 +27,7 @@ std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int m) {
                ((1 + step_size * 5.0 / 12.0) * (1 + step_size / 4.0) +
                 step_size * step_size / 16.0));
   // Compute discrete evolution by applying the evolution operator at each step
-  for (int i = 1; i < m + 1; i++) {
+  for (int i = 1; i < m+1; i++) {
     sol_vec.push_back(evolution_op * sol_vec.at(i - 1));
   }
 #else
@@ -63,7 +63,7 @@ void testConvergenceTwoStageRadauLinScalODE() {
       exact_sol_vec.push_back(std::exp(-i * step_size));
     }
     // Computing approximate solution
-    approx_sol_vec = twoStageRadauTimesSteppingLinScalODE(m);
+    approx_sol_vec = twoStageRadauTimesteppingLinScalODE(m);
     // Computing the error in the maximum norm
     for (int i = 0; i < m + 1; i++) {
       max_norm_errors[k] = 0;

@@ -16,7 +16,7 @@ namespace RadauThreeTimestepping {
  * @param m The number of timesteps
  * @returns A vector of solutions at every timestep
  */
-std::vector<double> twoStageRadauTimesSteppingLinScalODE(unsigned int m);
+std::vector<double> twoStageRadauTimesteppingLinScalODE(unsigned int m);
 
 /**
  * @brief Print a table of convergence rates
