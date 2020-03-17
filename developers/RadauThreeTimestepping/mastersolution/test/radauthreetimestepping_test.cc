@@ -10,8 +10,11 @@
 
 #include <Eigen/Core>
 
+#include <lf/mesh/utils/utils.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/geometry/geometry.h>
+#include <lf/uscalfe/uscalfe.h>
+#include <lf/assemble/assemble.h>
 
 #include "../radauthreetimestepping.h"
 
@@ -37,6 +40,65 @@ TEST(RadauThreeTimestepping, TrapRuleLinFEElemVecProvider) {
 	ASSERT_TRUE(ev2.isApprox(Eigen::Vector3d::Constant(lf::geometry::Volume(*geom)/3)));
 	Eigen::Vector3d e3_correct = lf::geometry::Volume(*geom)/3 * lf::geometry::Corners(*geom).row(0);
 	ASSERT_TRUE(ev3.isApprox(e3_correct));
+    }
+}
+
+
+TEST(RadauThreeTimestepping, rhsVectorheatSource) {
+    // Generate a triangular test mesh on [0,1]^2
+    const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1./3);
+    // Create a DOF handler
+    const lf::uscalfe::FeSpaceLagrangeO1<double> fespace(mesh_p);
+    const auto& dofh = fespace.LocGlobMap();
+    // Assemble the vectors for t=0 and t=0.5
+    const Eigen::VectorXd rhs0 = RadauThreeTimestepping::rhsVectorheatSource(dofh, 0);
+    const Eigen::VectorXd rhs1 = RadauThreeTimestepping::rhsVectorheatSource(dofh, 0.5);
+    // Get the DOFs on the boundary
+    const auto boundary = lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2);
+
+    // Create a functional for time t=0 and t=0.5
+    auto f0 = [](const Eigen::Vector2d &x) -> double {
+	if ((x[0]-0.5)*(x[0]-0.5) + x[1]*x[1] < 0.25) {
+	    return 1;
+	}
+	else {
+	    return 0;
+	}
+    };
+    auto f1 = [](const Eigen::Vector2d &x) -> double {
+	if (x[0]*x[0] + (x[1]-0.5)*(x[0]*0.5) < 0.25) {
+	    return 1;
+	}
+	else {
+	    return 0;
+	}
+    };
+
+    // Assume TrapRuleLinFEElemVecProvider works correctly,
+    // as it is tested above
+    RadauThreeTimestepping::TrapRuleLinFEElemVecProvider provider0(f0);
+    RadauThreeTimestepping::TrapRuleLinFEElemVecProvider provider1(f1);
+    Eigen::VectorXd rhs0_test(dofh.NumDofs());
+    Eigen::VectorXd rhs1_test(dofh.NumDofs());
+    lf::assemble::AssembleVectorLocally(0, dofh, provider0, rhs0_test);
+    lf::assemble::AssembleVectorLocally(0, dofh, provider1, rhs1_test);
+
+    // Make sure the TrapRuleLinFEElemVecProvider is indeed implemented already
+    ASSERT_TRUE(rhs0_test.norm() > 1e-10);
+    ASSERT_TRUE(rhs1_test.norm() > 1e-10);
+
+    for (int i = 0 ; i < dofh.NumDofs() ; ++i) {
+	if (boundary(dofh.Entity(i))) {
+	    // Check whether boundary DOFs are set to zero
+	    ASSERT_DOUBLE_EQ(rhs0[i], 0) << "Have you forgotten to set the boundary values to zero?";
+	    ASSERT_DOUBLE_EQ(rhs1[i], 0) << "Have you forgotten to set the boundary values to zero?";
+	}
+	else {
+	    // Check whether the value coincides with the one
+	    // computed previously
+	    ASSERT_NEAR(rhs0[i], rhs0_test[i], 1e-10);
+	    ASSERT_NEAR(rhs1[i], rhs1_test[i], 1e-10);
+	}
     }
 }
 

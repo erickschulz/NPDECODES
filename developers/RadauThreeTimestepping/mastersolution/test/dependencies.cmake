@@ -16,4 +16,6 @@ set(LIBRARIES
   GTest::gtest_main
   LF::lf.mesh.test_utils
   LF::lf.geometry
+  LF::lf.uscalfe
+  LF::lf.assemble
 )
