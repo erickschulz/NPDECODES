@@ -5,10 +5,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "OutputImpedanceBVP.h"
-#include "evalclass.h"
-
 #include <string>
+
+#include "evalclass.h"
+#include "outputimpedancebvp.h"
 
 using namespace OutputImpedanceBVP;
 

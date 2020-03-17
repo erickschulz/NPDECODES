@@ -17,8 +17,8 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../OutputImpedanceBVP.h"
 #include "../evalclass.h"
+#include "../outputimpedancebvp.h"
 
 namespace OutputImpedanceBVP::test
 {
@@ -41,7 +41,7 @@ TEST(OutputImpedanceBVP, computeApproxSolDirichlet)
   // Exact solution and Dirichlet boundary conditions
   Eigen::Vector2d g;
   g << 1.0, 3.0;
-  auto uExact = [&g](coord_t x) -> double { return g.dot(x); };
+  auto uExact = [&g](Eigen::Vector2d x) -> double { return g.dot(x); };
   auto uExact_vec = interpolateData<std::function<double(Eigen::Vector2d)>>(
       fe_space_p, std::move(uExact));
 
