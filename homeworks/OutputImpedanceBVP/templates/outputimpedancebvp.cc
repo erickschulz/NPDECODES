@@ -5,8 +5,6 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "OutputImpedanceBVP.h"
-
 #include <cassert>
 
 #include <Eigen/Dense>
@@ -16,6 +14,8 @@
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include "outputimpedancebvp.h"
 
 namespace OutputImpedanceBVP
 {
@@ -68,7 +68,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // I.iii : Computing right-hand side vector
   // Right-hand side source function f
   auto mf_f =
-      lf::mesh::utils::MeshFunctionGlobal([](coord_t x) -> double { return 0.0; });
+      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 0.0; });
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
       elvec_builder(fe_space_p, mf_f);
   // Invoke assembly on cells (codim == 0)
@@ -77,7 +77,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // I.iv : Imposing essential boundary conditions
   // Dirichlet data
   auto mf_g = lf::mesh::utils::MeshFunctionGlobal(
-      [&g](coord_t x) -> double { return g.dot(x); });
+      [&g](Eigen::Vector2d x) -> double { return g.dot(x); });
   //====================
   // Your code goes here
   //====================
