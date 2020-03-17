@@ -1,18 +1,20 @@
 /**
  * @ file avgvalboundary.cc
  * @ brief NPDE homework AvgValBoundary code
- * @ author Simon Meierhans
+ * @ author Simon Meierhans, edited by Oliver Rietmann
  * @ date 11.03.2019
  * @ copyright Developed at ETH Zurich
  */
 
 #include "avgvalboundary.h"
 
+#include <cmath>
 #include <memory>
 #include <utility>
 #include <vector>
 
-#include <Eigen/SparseCore>
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
@@ -30,12 +32,12 @@ namespace AvgValBoundary {
 /* SAM_LISTING_BEGIN_1 */
 double compH1seminorm(const lf::assemble::DofHandler &dofh,
                       const Eigen::VectorXd &u) {
-  double result = 0.;
+  double result = 0.0;
 #if SOLUTION
   // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
   // constant zero mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_zero{0.};
+  lf::mesh::utils::MeshFunctionConstant mf_zero{0.0};
 
   // compute Stiffness matrix
   // alpha := 1, beta, gamma := 0
@@ -55,14 +57,15 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
 
 /**
  * @brief solves pde for some simple test problem with
- *        alpha = beta = gamma := 1. and load f := 1.
+ *        alpha = beta = gamma := 1.0 and load f := 1.0
  * @param dofh DofHandler of FEspace.
  */
+/* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
   // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
 
-  // obtain Galerkin matrix for alpha = beta = gamma := 1.
+  // obtain Galerkin matrix for alpha = beta = gamma := 1.0
   auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
                                               mf_identity);
 
@@ -71,10 +74,10 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
   const lf::base::size_type N_dofs(dofh.NumDofs());
-  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
+  Eigen::VectorXd phi(N_dofs);
   phi.setZero();
-  lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_identity)>
-      elvec_builder(fe_space, mf_identity);
+  lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
+                                                             mf_identity);
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
   // solve system of linear equations
@@ -84,11 +87,12 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
 
   return mu;
 }
+/* SAM_LISTING_END_2 */
 
 /** @brief generate sequence of nested triangular meshes with L+1 levels */
-std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
-    unsigned int L) {
-  auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3.);
+std::shared_ptr<lf::refinement::MeshHierarchy>
+generateTestMeshSequence(unsigned int L) {
+  auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1.0 / 3.0);
   std::shared_ptr<lf::refinement::MeshHierarchy> meshes =
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, L);
   return meshes;
@@ -101,9 +105,9 @@ std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
  *	    boundary functional for each level
  */
 /* SAM_LISTING_BEGIN_5 */
-std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
-    unsigned int L) {
-  std::vector<std::pair<unsigned int, double>> result{};
+std::vector<std::pair<unsigned int, double>>
+approxBoundaryFunctionalValues(unsigned int L) {
+  std::vector<std::pair<unsigned int, double>> result;
 #if SOLUTION
   auto meshes = generateTestMeshSequence(L - 1);
   int num_meshes = meshes->NumLevels();
@@ -115,17 +119,17 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
     // Obtain local->global index mapping for current finite element space
     const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
     const lf::base::size_type N_dofs(dofh.NumDofs());
-    lf::mesh::utils::MeshFunctionConstant mf_identity{1.};
+    lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
     // compute galerkin matrix
     auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
                                                 mf_identity);
     // compute load vector for f(x) = x.norm()
     auto f = [](Eigen::Vector2d x) -> double { return x.norm(); };
     lf::mesh::utils::MeshFunctionGlobal mf_f{f};
-    Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
+    Eigen::VectorXd phi(N_dofs);
     phi.setZero();
-    lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_identity)>
-        elvec_builder(fe_space, mf_identity);
+    lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
+                                                               mf_identity);
     AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
     // solve system of equations
@@ -134,7 +138,7 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
     Eigen::VectorXd u = solver.solve(phi);
 
     // set up weight function
-    auto w = [](Eigen::Vector2d x) -> double { return 1.; };
+    auto w = [](Eigen::Vector2d x) -> double { return 1.0; };
     lf::mesh::utils::MeshFunctionGlobal mf_w{w};
     double functional_value = compBoundaryFunctional(dofh, u, mf_w);
 
@@ -149,4 +153,4 @@ std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
 }
 /* SAM_LISTING_END_5 */
 
-}  // namespace AvgValBoundary
+} // namespace AvgValBoundary

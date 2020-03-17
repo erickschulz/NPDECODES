@@ -1,12 +1,16 @@
+#ifndef AVGVALBOUNDARY_H_
+#define AVGVALBOUNDARY_H_
+
 /**
  * @ file avgvalboundary.h
  * @ brief NPDE homework AvgValBoundary code
- * @ author Simon Meierhans
+ * @ author Simon Meierhans, edited by Oliver Rietmann
  * @ date 11.03.2019
  * @ copyright Developed at ETH Zurich
  */
 
 #include <memory>
+#include <utility>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
@@ -26,7 +30,7 @@ namespace AvgValBoundary {
  * @tparam FUNC_GAMMA functor type for reaction coefficient
  * @tparam FUNC_BETA functor type for impedance coefficient
  *
- * @param lfe_dofh DofHandler object providing mesh a local-to-global
+ * @param dofh DofHandler object providing mesh a local-to-global
  *        index mapping for global shape functions.
  *
  * This function computes the finite element Galerkin matrix for the
@@ -40,32 +44,31 @@ namespace AvgValBoundary {
  */
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNC_ALPHA, typename FUNC_GAMMA, typename FUNC_BETA>
-Eigen::SparseMatrix<double> compGalerkinMatrix(
-    const lf::assemble::DofHandler &lfe_dofh, FUNC_ALPHA alpha,
-    FUNC_GAMMA gamma, FUNC_BETA beta) {
+Eigen::SparseMatrix<double>
+compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
+                   FUNC_GAMMA &&gamma, FUNC_BETA &&beta) {
   // obtain mesh and set up fe_space (p.w. linear Lagrangian FEM)
-  auto mesh = lfe_dofh.Mesh();
+  auto mesh = dofh.Mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
 
   // get the number of degrees of freedom = dimension of FE space
-  const lf::base::size_type N_dofs(lfe_dofh.NumDofs());
+  const lf::base::size_type N_dofs(dofh.NumDofs());
   // Set up an empty sparse matrix to hold the Galerkin matrix
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Initialize ELEMENT_MATRIX_PROVIDER object
-  lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, FUNC_ALPHA,
-                                                      FUNC_GAMMA>
-      elmat_builder(fe_space, alpha, gamma);
+  lf::uscalfe::ReactionDiffusionElementMatrixProvider elmat_builder(
+      fe_space, std::forward<FUNC_ALPHA>(alpha),
+      std::forward<FUNC_GAMMA>(gamma));
   // Cell-oriented assembly over the whole computational domain
-  lf::assemble::AssembleMatrixLocally(0, lfe_dofh, lfe_dofh, elmat_builder, A);
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
 
   // Add contributions of boundary term in the bilinear form using
   // a LehrFEM++ built-in high-level ENTITY_MATRIX_PROVIDER class
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-  lf::uscalfe::MassEdgeMatrixProvider<double, FUNC_BETA, decltype(bd_flags)>
-      edgemat_builder(fe_space, beta, bd_flags);
-  lf::assemble::AssembleMatrixLocally(1, lfe_dofh, lfe_dofh, edgemat_builder,
-                                      A);
+  lf::uscalfe::MassEdgeMatrixProvider edgemat_builder(
+      fe_space, std::forward<FUNC_BETA>(beta), bd_flags);
+  lf::assemble::AssembleMatrixLocally(1, dofh, dofh, edgemat_builder, A);
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
   return A_crs;
 }
@@ -82,9 +85,9 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
  */
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTION>
-double compBoundaryFunctional(const lf::assemble::DofHandler &dofh_lfe,
-                              const Eigen::VectorXd &u, const FUNCTION &w) {
-  double result = 0.;
+double compBoundaryFunctional(const lf::assemble::DofHandler &dofh,
+                              const Eigen::VectorXd &u, FUNCTION &&w) {
+  double result = 0.0;
   //====================
   // Your code goes here
   //====================
@@ -95,7 +98,9 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh_lfe,
 
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh);
 
-std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
-    unsigned int L);
+std::vector<std::pair<unsigned int, double>>
+approxBoundaryFunctionalValues(unsigned int L);
 
-}  // namespace AvgValBoundary
+} // namespace AvgValBoundary
+
+#endif // AVGVALBOUNDARY_H_
