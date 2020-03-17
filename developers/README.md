@@ -24,7 +24,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-15 | `RegularizedNeumannProblem` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Oliver |
+| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :heavy_check_mark: |  |  |
