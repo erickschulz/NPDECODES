@@ -52,9 +52,9 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 
 * Below, the directory `.` refers to the top level directory of the repository.
 * Developers only work in `./developers/<ProblemName>/`. From this, a corresponding directory `./homeworks/<ProblemName>/` for the students can be created automatically using `./scripts/deploy_npde.py`.
-* Not only the solutions, but also the corresponding templates need to compile and run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
+* Not only the solutions, but also the corresponding templates need to compile and, if possible, run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
 * The bullets below are only a selection. If you spot additional issues, e.g. ugly or too complicated code, fix it.
-* Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem_foo.cc`, `myhomeworkproblem_foo.h`, where foo is a placeholder for any name (summarized: lowercase, split words by _).
+* Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem.cc`, `myhomeworkproblem.h`, `myclass.h` (lowercase, no underlines except for the main file).
 * Only in Lehrfem exercises: Use `nostd::span` (C++20) instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
 
 ## Polishing
