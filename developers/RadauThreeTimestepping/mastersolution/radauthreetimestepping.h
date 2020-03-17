@@ -134,6 +134,10 @@ class TrapRuleLinFEElemVecProvider {
 };
 /* SAM_LISTING_END_2 */
 
+// Deduction guide for TrapRuleLinFEElemVecProvider
+template<typename FUNCTOR>
+TrapRuleLinFEElemVecProvider(FUNCTOR) -> TrapRuleLinFEElemVecProvider<FUNCTOR>;
+
 
 // TrapRuleLinFEElemVecProvider
 /* Implementing member function Eval of class TrapRuleLinFEElemVecProvider*/

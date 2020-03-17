@@ -8,9 +8,12 @@
 
 set(SOURCES
   ${DIR}/test/radauthreetimesteppingode_test.cc
+  ${DIR}/test/radauthreetimestepping_test.cc
 )
 
 set(LIBRARIES
   Eigen3::Eigen
   GTest::gtest_main
+  LF::lf.mesh.test_utils
+  LF::lf.geometry
 )
