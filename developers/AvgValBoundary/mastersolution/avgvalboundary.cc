@@ -90,6 +90,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
 /* SAM_LISTING_END_2 */
 
 /** @brief generate sequence of nested triangular meshes with L+1 levels */
+/* SAM_LISTING_BEGIN_3 */
 std::shared_ptr<lf::refinement::MeshHierarchy>
 generateTestMeshSequence(unsigned int L) {
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1.0 / 3.0);
@@ -97,6 +98,7 @@ generateTestMeshSequence(unsigned int L) {
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, L);
   return meshes;
 }
+/* SAM_LISTING_END_3 */
 
 /**
  * @brief Compute the boundary functional values for a sequence of L meshes
