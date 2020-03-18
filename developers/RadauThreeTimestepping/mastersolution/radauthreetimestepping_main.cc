@@ -9,6 +9,15 @@
 #include "radauthreetimestepping.h"
 #include "radauthreetimesteppingode.h"
 
+#include <iostream>
+#include <memory>
+
+#include <Eigen/Core>
+
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/utils/utils.h>
+
 using namespace RadauThreeTimestepping;
 
 int main(int /*argc*/, char ** /*argv*/) {

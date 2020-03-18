@@ -8,6 +8,10 @@
 
 #include "radauthreetimesteppingode.h"
 
+#include <cmath>
+#include <iostream>
+#include <vector>
+
 namespace RadauThreeTimestepping {
 
 /* SAM_LISTING_BEGIN_1 */

@@ -5,8 +5,6 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <iostream>
 #include <vector>
 
 namespace RadauThreeTimestepping {
