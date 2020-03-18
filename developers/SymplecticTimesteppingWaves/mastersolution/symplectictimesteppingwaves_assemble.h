@@ -9,11 +9,11 @@
  */
 
 // common includes
-#include <math.h>
 #include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <math.h>
 #include <ostream>
 #include <string>
 #include <thread>
