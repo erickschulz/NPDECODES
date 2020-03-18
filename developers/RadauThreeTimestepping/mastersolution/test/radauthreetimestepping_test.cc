@@ -102,4 +102,27 @@ TEST(RadauThreeTimestepping, rhsVectorheatSource) {
     }
 }
 
+
+TEST(RadauThreeTimestepping, LinFEMassMatrixProvider) {
+    // Generate a triangular test mesh on [0,1]^2
+    const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1./3);
+    // Create a DOF handler
+    const lf::uscalfe::FeSpaceLagrangeO1<double> fespace(mesh_p);
+    const auto& dofh = fespace.LocGlobMap();
+
+    // Compare the element matrices for every cell
+    RadauThreeTimestepping::LinFEMassMatrixProvider provider;
+    for (const auto cell : mesh_p->Entities(0)) {
+	const auto geom = cell->Geometry();
+	// Compute the correct element matrix
+	Eigen::Matrix3d em_correct;
+	em_correct.setConstant(lf::geometry::Volume(*geom) / 12);
+	em_correct.diagonal() *= 2;
+	// Get the element matrix from the element matrix provider
+	Eigen::Matrix3d em_prov = provider.Eval(*cell);
+	// Compare the matrices
+	ASSERT_TRUE(em_correct.isApprox(em_prov));
+    }
+}
+
 }   // end namespace RadauThreeTimestepping::test

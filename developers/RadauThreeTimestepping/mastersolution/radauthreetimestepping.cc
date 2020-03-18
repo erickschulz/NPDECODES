@@ -224,6 +224,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
 #else
   //====================
   // Your code goes here
+  // Add any additional members you need in the header file
   //====================
 #endif
 }
