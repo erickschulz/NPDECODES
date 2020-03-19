@@ -22,9 +22,6 @@
 
 namespace BoundaryWave {
 
-// Simplification of lenghty type names
-using coord_t = Eigen::Vector2d;
-
 // Library functions
 lf::assemble::COOMatrix<double> buildM(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p);
@@ -40,13 +37,9 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolateInitialData(
   Eigen::VectorXd dof_vector_u0, dof_vector_v0;
 
   // Generate Lehrfem++ mesh functions out of the functors
-  auto mf_u0 = lf::mesh::utils::MeshFunctionGlobal(
-      [&u0](coord_t x) -> double { return u0(x); });
-  auto mf_v0 = lf::mesh::utils::MeshFunctionGlobal(
-      [&v0](coord_t x) -> double { return v0(x); });
-
-  dof_vector_u0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_u0);
-  dof_vector_v0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_v0);
+  //====================
+  // Your code goes here
+  //====================
 
   std::pair<Eigen::VectorXd, Eigen::VectorXd> initialData =
       std::make_pair(dof_vector_u0, dof_vector_v0);
@@ -70,32 +63,9 @@ Eigen::VectorXd solveBoundaryWave(
   // Obtain Galerkin matrices
   lf::assemble::COOMatrix<double> M = buildM(fe_space_p);
   lf::assemble::COOMatrix<double> A = buildA(fe_space_p);
-  // Convert COO matrix M and A into CRS format using Eigen's internal
-  // conversion routines.
-  Eigen::SparseMatrix<double> M_sparse = M.makeSparse();
-  Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
-  // Compute LU decomposition of coefficient matrix of LSE to be solved in every
-  // step of Crank-Nicolson timestepping
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-  solver.compute(M_sparse + 0.25 * (step_size * step_size) * A_sparse);
-  LF_VERIFY_MSG(solver.info() == Eigen::Success,
-                "LU decomposition of M failed");
-
-  // Crank-Nicolson timestepping, first-order-system version
-  Eigen::VectorXd u_cur = initialData.first;
-  Eigen::VectorXd v_cur = initialData.second;
-  Eigen::VectorXd u_next, v_next;
-  for (int i = 1; i < N + 1; i++) {
-    // step foward
-    v_next = solver.solve(M_sparse * v_cur -
-                          0.25 * (step_size * step_size) * A_sparse * v_cur -
-                          step_size * A_sparse * u_cur);
-    u_next = u_cur + 0.5 * step_size * (v_cur + v_next);
-    // update
-    v_cur = v_next;
-    u_cur = u_next;
-  }
-  bdyWaveSol = u_cur;
+  //====================
+  // Your code goes here
+  //====================
   return bdyWaveSol;
 };
 /* SAM_LISTING_END_8 */

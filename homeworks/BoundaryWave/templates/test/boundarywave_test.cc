@@ -8,7 +8,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../BoundaryWave.h"
+#include "../boundarywave.h"
 
 #include <gtest/gtest.h>
 

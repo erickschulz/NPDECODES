@@ -22,9 +22,6 @@
 
 namespace BoundaryWave {
 
-// Simplification of lenghty type names
-using coord_t = Eigen::Vector2d;
-
 // Library functions
 lf::assemble::COOMatrix<double> buildM(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p);

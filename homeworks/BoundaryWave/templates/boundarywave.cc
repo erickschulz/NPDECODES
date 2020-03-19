@@ -5,7 +5,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "BoundaryWave.h"
+#include "boundarywave.h"
 
 namespace BoundaryWave {
 
