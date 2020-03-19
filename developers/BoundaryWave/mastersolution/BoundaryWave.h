@@ -22,9 +22,6 @@
 
 namespace BoundaryWave {
 
-// Simplification of lenghty type names
-using coord_t = Eigen::Vector2d;
-
 // Library functions
 lf::assemble::COOMatrix<double> buildM(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p);
@@ -42,9 +39,9 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolateInitialData(
   // Generate Lehrfem++ mesh functions out of the functors
 #if SOLUTION
   auto mf_u0 = lf::mesh::utils::MeshFunctionGlobal(
-      [&u0](coord_t x) -> double { return u0(x); });
+      [&u0](Eigen::Vector2d x) -> double { return u0(x); });
   auto mf_v0 = lf::mesh::utils::MeshFunctionGlobal(
-      [&v0](coord_t x) -> double { return v0(x); });
+      [&v0](Eigen::Vector2d x) -> double { return v0(x); });
 
   dof_vector_u0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_u0);
   dof_vector_v0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_v0);

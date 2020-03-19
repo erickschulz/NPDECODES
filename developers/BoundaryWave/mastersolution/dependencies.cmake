@@ -7,9 +7,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/BoundaryWave_main.cc
-  ${DIR}/BoundaryWave.h
-  ${DIR}/BoundaryWave.cc
+  ${DIR}/boundarywave_main.cc
+  ${DIR}/boundarywave.h
+  ${DIR}/boundarywave.cc
 )
 
 set(LIBRARIES
