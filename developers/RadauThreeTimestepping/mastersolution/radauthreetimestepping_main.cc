@@ -39,6 +39,7 @@ int main(int /*argc*/, char ** /*argv*/) {
   auto mesh_p = builder.Build();
 
   /* SAM_LISTING_BEGIN_1 */
+#if SOLUTION
   // Generate the linear lagrange FE data
   // Finite element space
   auto fe_space =
@@ -69,6 +70,11 @@ int main(int /*argc*/, char ** /*argv*/) {
   /* SAM_LISTING_END_1 */
   std::cout << "\n The discrete_heat_solution was written to:" << std::endl;
   std::cout << ">> discrete_heat_solution.vtk\n" << std::endl;
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return 0;
 }
