@@ -114,7 +114,7 @@ RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests
 
 ### Not in NPDEFL_Problems
 - BoundaryWave (done)
-- ZienkiewiczZhuEstimator
+- ZienkiewiczZhuEstimator (done)
 - WaveABC2D (done)
 
 ### Chapter 6
