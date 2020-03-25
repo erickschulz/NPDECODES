@@ -5,7 +5,20 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "ZienkiewiczZhuEstimator.h"
+#include "zienkiewiczzhuestimator.h"
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <iomanip>
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+// Lehrfem++ includes
+#include <lf/assemble/assemble.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 namespace ZienkiewiczZhuEstimator {
 

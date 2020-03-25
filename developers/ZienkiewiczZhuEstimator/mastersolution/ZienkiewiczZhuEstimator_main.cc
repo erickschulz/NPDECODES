@@ -5,7 +5,22 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "ZienkiewiczZhuEstimator.h"
+#include "zienkiewiczzhuestimator.h"
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+// Lehrfem++ includes
+#include <lf/assemble/assemble.h>
+#include <lf/geometry/geometry.h>
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 using namespace ZienkiewiczZhuEstimator;
 

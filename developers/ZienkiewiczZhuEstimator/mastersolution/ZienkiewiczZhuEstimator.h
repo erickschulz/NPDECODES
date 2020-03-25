@@ -8,20 +8,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include <iomanip>
 #include <iostream>
-#include <math.h>
 // Eigen includes
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
