@@ -32,12 +32,12 @@ Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
 
 #if SOLUTION
   // The unique affine mapping of the unit triangle to a general triangle
-  // is given by the formula x = A*x_hat + s.
+  // is given by the formula $\cob{\Bx = \VA_K*\wh{\Bx} + \Bs}$, 
   // Use the vertex coordinates to calculate matrix A and translation vector s
   Eigen::Matrix2d A(2, 2);
   A.col(0) = mycorners.col(1) - mycorners.col(0);
   A.col(1) = mycorners.col(2) - mycorners.col(0);
-  // The inverse mapping: x_hat = A^{-1} * (x - a_0)
+  // The inverse mapping: $\cob{\wh{\Bx} = \VA_K^{-1} * (\Bx - \Ba_0)}$
   x_hat = A.partialPivLu().solve(x - mycorners.col(0));
 #else
   //====================
