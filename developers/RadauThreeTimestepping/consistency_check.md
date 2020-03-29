@@ -22,3 +22,4 @@
 - Part (k): Signature of `solveHeatEvolution` is wrong. The argument `double final_time` is missing
 - Part (l): Also tell that the argument `final_time` should be 1
 - Part (l): The final temperature distribution is written to discrete_heat_solution.vtk and not heat.vtk
+- Solution to part (l): Visualized heat distribution is wrong
