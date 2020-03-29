@@ -41,7 +41,8 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
   auto A = compGalerkinMatrix(dofh, const_one, const_zero, const_zero);
 
   // Compute seminorm using the Stiffness matrix
-  result = std::sqrt(u.transpose() * A * u);
+  result = u.transpose() * A * u;
+  result = std::sqrt(result);
 #else
   //====================
   // Your code goes here
@@ -69,6 +70,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
   lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
                                                              mf_identity);
   Eigen::VectorXd phi(dofh.NumDofs());
+  phi.setZero();
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
   // Solve system of linear equations
@@ -126,6 +128,7 @@ approxBoundaryFunctionalValues(unsigned int L) {
     lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
                                                                mf_f);
     Eigen::VectorXd phi(N_dofs);
+    phi.setZero();
     AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
     // solve system of equations
