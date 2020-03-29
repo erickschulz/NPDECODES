@@ -126,4 +126,43 @@ TEST(RadauThreeTimestepping, LinFEMassMatrixProvider) {
   }
 }
 
+TEST(RadauThreeTimestepping, discreteEvolutionOperator) {
+  // Generate a triangular test mesh on [0,1]^2
+  const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3);
+  // Create a DOF handler
+  const lf::uscalfe::FeSpaceLagrangeO1<double> fespace(mesh_p);
+  const auto &dofh = fespace.LocGlobMap();
+
+  // Compute A and M
+  lf::uscalfe::LinearFELaplaceElementMatrix A_provider;
+  RadauThreeTimestepping::LinFEMassMatrixProvider M_provider;
+  lf::assemble::COOMatrix<double> A_COO(dofh.NumDofs(), dofh.NumDofs());
+  lf::assemble::COOMatrix<double> M_COO(dofh.NumDofs(), dofh.NumDofs());
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, A_provider, A_COO);
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, M_provider, M_COO);
+  const auto bd_flags = lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2);
+  const auto selector = [&](unsigned idx) { return bd_flags(dofh.Entity(idx)); };
+  RadauThreeTimestepping::dropMatrixRowsColumns(selector, A_COO);
+  RadauThreeTimestepping::dropMatrixRowsColumns(selector, M_COO);
+  Eigen::SparseMatrix<double> A = A_COO.makeSparse();
+  Eigen::SparseMatrix<double> M = M_COO.makeSparse();
+
+  const double dt = 0.0001;
+  const Eigen::VectorXd phi = RadauThreeTimestepping::rhsVectorheatSource(dofh, dt);
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver(M + dt*A);
+  RadauThreeTimestepping::Radau3MOLTimestepper timestepper(dofh);
+  // Test for different mu
+  for (unsigned i = 0 ; i < dofh.NumDofs() ; ++i) {
+      Eigen::VectorXd mu0(dofh.NumDofs());
+      mu0.setZero();
+      mu0[i] = 1;
+      // Compute mu at the next timestep using discreteEvolutionOperator
+      const Eigen::VectorXd mu_dEO = timestepper.discreteEvolutionOperator(0, dt, mu0);
+      // Compute mu at the next timestep using implicit euler
+      const Eigen::VectorXd mu_iE = solver.solve(M*mu0 + dt*phi);
+      // Compare the two mu
+      ASSERT_TRUE((mu_dEO-mu_iE).array().abs().maxCoeff() < 1e-4);
+  }
+}
+
 }  // end namespace RadauThreeTimestepping::test
