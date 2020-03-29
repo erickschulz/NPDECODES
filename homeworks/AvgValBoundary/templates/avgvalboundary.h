@@ -57,8 +57,8 @@ compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
   // Set up an empty sparse matrix to hold the Galerkin matrix
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Initialize ELEMENT_MATRIX_PROVIDER object
-  lf::mesh::utils::MeshFunctionGlobal mf_alpha{std::forward<FUNC_ALPHA>(alpha)};
-  lf::mesh::utils::MeshFunctionGlobal mf_gamma{std::forward<FUNC_GAMMA>(gamma)};
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{alpha};
+  lf::mesh::utils::MeshFunctionGlobal mf_gamma{gamma};
   lf::uscalfe::ReactionDiffusionElementMatrixProvider elmat_builder(
       fe_space, std::move(mf_alpha), std::move(mf_gamma));
   // Cell-oriented assembly over the whole computational domain
@@ -67,7 +67,7 @@ compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
   // Add contributions of boundary term in the bilinear form using
   // a LehrFEM++ built-in high-level ENTITY_MATRIX_PROVIDER class
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-  lf::mesh::utils::MeshFunctionGlobal mf_beta{std::forward<FUNC_BETA>(beta)};
+  lf::mesh::utils::MeshFunctionGlobal mf_beta{beta};
   lf::uscalfe::MassEdgeMatrixProvider edgemat_builder(
       fe_space, std::move(mf_beta), bd_flags);
   lf::assemble::AssembleMatrixLocally(1, dofh, dofh, edgemat_builder, A);
