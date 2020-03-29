@@ -14,33 +14,40 @@
 
 namespace DebuggingFEM {
 
+/* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {
-  auto geom = cell.Geometry();
+  // Consistency check for arguments
+  LF_ASSERT_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
+                "Implemented for triangles only");
+  // Fetch pointer to asscoiated geometry object
+  lf::geometry::Geometry *geom = cell.Geometry();
+  // For returning the global coordinates of the interpolation node
   Eigen::Vector2d result;
-  Eigen::MatrixXd corners(2, 3);
+  // Reference coordinates of the vertices of the triangle
+  Eigen::Matrix<double, 2, 3> corners(2, 3);
   corners << 0., 1., 0., 0., 0., 1.;
 #if SOLUTION
   switch (idx) {
-    case (0):
-      result = geom->Global(corners.col(0));
-      break;
-    case (1):
-      result = geom->Global(corners.col(1));
-      break;
-    case (2):
-      result = geom->Global(corners.col(2));
-      break;
-    case (3):
-      result = geom->Global((corners.col(0) + corners.col(1)) / 2.);
-      break;
-    case (4):
-      result = geom->Global((corners.col(1) + corners.col(2)) / 2.);
-      break;
-    case (5):
-      result = geom->Global((corners.col(2) + corners.col(0)) / 2.);
-      break;
-    default:
-      throw std::invalid_argument("idx needs to be in range [0,5]");
+  case (0):
+    result = geom->Global(corners.col(0));
+    break;
+  case (1):
+    result = geom->Global(corners.col(1));
+    break;
+  case (2):
+    result = geom->Global(corners.col(2));
+    break;
+  case (3):
+    result = geom->Global((corners.col(0) + corners.col(1)) / 2.);
+    break;
+  case (4):
+    result = geom->Global((corners.col(1) + corners.col(2)) / 2.);
+    break;
+  case (5):
+    result = geom->Global((corners.col(2) + corners.col(0)) / 2.);
+    break;
+  default:
+    throw std::invalid_argument("idx needs to be in range [0,5]");
   }
 #else
   //====================
@@ -49,5 +56,6 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {
 #endif
   return result;
 }
+/* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingFEM
+} // namespace DebuggingFEM

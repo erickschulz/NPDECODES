@@ -53,6 +53,6 @@ Eigen::VectorXd interpolateOntoQuadFE(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingFEM
+} // namespace DebuggingFEM
 
 #endif

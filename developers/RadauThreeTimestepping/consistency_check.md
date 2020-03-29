@@ -17,7 +17,9 @@
 - Part (j): Move the description of what `discreteEvolutionOperator` should do in front of this subtask
 - Hint to part (j): There is an unresolved reference to the script
 - Hint to part (j): Typo: ... you **could** already **have** initialized ...
+- Hint to part (j): Missing an equal sign at the definition of A_\oplus
 - Part (k): File was renamed: radau_three_timestepping.cc -> radauthreetimestepping.cc
 - Part (k): Signature of `solveHeatEvolution` is wrong. The argument `double final_time` is missing
 - Part (l): Also tell that the argument `final_time` should be 1
 - Part (l): The final temperature distribution is written to discrete_heat_solution.vtk and not heat.vtk
+- Solution to part (l): Visualized heat distribution is wrong
