@@ -74,6 +74,7 @@ double QFEProviderTester<ENTITY_MATRIX_PROVIDER>::energyOfInterpolant(
   double energy = 0.0;
 #if SOLUTION
   Eigen::VectorXd eta = DebuggingFEM::interpolateOntoQuadFE(dofh_, u);
+  // Compute $\cob{\vec{\etabf}^{\top}\VA\vec{\etabf}}$
   energy = eta.dot(A_ * eta);
 #else
   //====================

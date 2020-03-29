@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/ZienkiewiczZhuEstimator_main.cc
-  ${DIR}/ZienkiewiczZhuEstimator.h
-  ${DIR}/ZienkiewiczZhuEstimator.cc
+  ${DIR}/zienkiewiczzhuestimator_main.cc
+  ${DIR}/zienkiewiczzhuestimator.h
+  ${DIR}/zienkiewiczzhuestimator.cc
 )
 
 set(LIBRARIES
