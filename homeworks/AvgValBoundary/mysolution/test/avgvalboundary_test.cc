@@ -24,10 +24,9 @@ namespace AvgValBoundary::test {
 
 constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../../meshes/square.msh";
 
-TEST(AvgValBoundary, TestH1SemiNorm) {
-  // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
+constexpr auto const_one = [](Eigen::Vector2d x) -> double { return 1.0; };
 
+TEST(AvgValBoundary, TestH1SemiNorm) {
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
@@ -37,17 +36,14 @@ TEST(AvgValBoundary, TestH1SemiNorm) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // get solution of test problem
-  Eigen::VectorXd mu = AvgValBoundary::solveTestProblem(dofh);
+  Eigen::VectorXd mu = solveTestProblem(dofh);
   // compute H1 seminorm
-  double h1s_norm = AvgValBoundary::compH1seminorm(dofh, mu);
+  double h1s_norm = compH1seminorm(dofh, mu);
 
   ASSERT_NEAR(h1s_norm, 0.151178, 0.00001);
 }
 
 TEST(AvgValBoundary, TestBoundaryFunctional) {
-  // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
-
   // obtain dofh for lagrangian finite element space
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
@@ -57,10 +53,9 @@ TEST(AvgValBoundary, TestBoundaryFunctional) {
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
   // get solution of test problem
-  Eigen::VectorXd mu = AvgValBoundary::solveTestProblem(dofh);
+  Eigen::VectorXd mu = solveTestProblem(dofh);
   // compute boundary functional
-  double boundary_functional =
-      AvgValBoundary::compBoundaryFunctional(dofh, mu, mf_identity);
+  double boundary_functional = compBoundaryFunctional(dofh, mu, const_one);
   ASSERT_NEAR(boundary_functional, 0.880602, 0.00001);
 }
 } // namespace AvgValBoundary::test

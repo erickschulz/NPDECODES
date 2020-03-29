@@ -47,25 +47,21 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
  */
 /* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
-  // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
-
-  // obtain Galerkin matrix for alpha = beta = gamma := 1.0
-  auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
-                                              mf_identity);
+  // Obtain Galerkin matrix for alpha = beta = gamma := 1.0
+  auto const_one = [](Eigen::Vector2d x) -> double { return 1.0; };
+  auto A = compGalerkinMatrix(dofh, const_one, const_one, const_one);
 
   // Set up load vector
-  auto mesh = dofh.Mesh();
   auto fe_space =
-      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
-  const lf::base::size_type N_dofs(dofh.NumDofs());
-  Eigen::VectorXd phi(N_dofs);
-  phi.setZero();
+      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(dofh.Mesh());
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
   lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
                                                              mf_identity);
+  Eigen::VectorXd phi(dofh.NumDofs());
+  phi.setZero();
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
-  // solve system of linear equations
+  // Solve system of linear equations
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A);
   Eigen::VectorXd mu = solver.solve(phi);

@@ -197,10 +197,6 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
   // Creating the private Galerkin stiffness and mass matrices
   A_ = A_COO.makeSparse();
   Eigen::SparseMatrix<double> M = M_COO.makeSparse();
-  // Precomputing the kronecker products involved in the implicit linear system
-  // for the increments of the RADAU-2 method
-  M_Kp_ = Eigen::kroneckerProduct(Eigen::Matrix<double, 2, 2>::Identity(), M);
-  A_Kp_ = Eigen::kroneckerProduct(U_, A_);
 
   // Runge-Kutta matrices defining the 2-stage Radau timestepping. In the
   // Butcher tableau, this corresponds to c = (1/3 1)^T (top-left column
@@ -213,6 +209,10 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
     c_ << 1.0/3.0, 1.0;
     b_ << 0.75, 0.25;
   // clang-format on
+  // Precomputing the kronecker products involved in the implicit linear system
+  // for the increments of the RADAU-2 method
+  M_Kp_ = Eigen::kroneckerProduct(Eigen::Matrix<double, 2, 2>::Identity(), M);
+  A_Kp_ = Eigen::kroneckerProduct(U_, A_);
 }
 /* SAM_LISTING_END_4 */
 
@@ -224,7 +224,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
 /* SAM_LISTING_BEGIN_5 */
 Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
     double time, double tau, const Eigen::VectorXd &mu) const {
-  Eigen::VectorXd discrete_evolution_operator;
+  Eigen::VectorXd discrete_evolution_operator(dofh_.NumDofs());
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh_.NumDofs());
   LF_VERIFY_MSG(N_dofs == mu.size(),

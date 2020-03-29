@@ -35,9 +35,9 @@ int main() {
   // compute H1 seminorm of the solution
   double h1s_norm = AvgValBoundary::compH1seminorm(dofh, mu);
   // compute boundary functional
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
+  auto w = [](Eigen::Vector2d x) -> double { return 1.0; };
   double boundary_functional =
-      AvgValBoundary::compBoundaryFunctional(dofh, mu, mf_identity);
+      AvgValBoundary::compBoundaryFunctional(dofh, mu, w);
 
   std::cout << "H1s-norm: " << h1s_norm << "\n";
   std::cout << "F: " << boundary_functional << "\n";

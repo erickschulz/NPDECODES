@@ -1,0 +1,9 @@
+- Tablet notes do not exist
+- Constructor of `UniformCubicSpline` takes `const` vectors
+- Part (c): Argument `initsupp` is taken by const reference
+- Part (d): The solution code does not depend on (8-6.c)
+- Hint to part (d): Hint tells to use `findSupport`. However, this function is not used in the solution code
+- Part (h): The function `solveCauchyProblem` is found in the source file and is not templated on a type `FUNCTOR`
+- Part (h): `mu0` is passed via const reference
+- Solution to part (h): First bullet point: Some typo in latex command to format GodunovFlux
+- Maybe also tell students to implement `semiDiscreteRhs`

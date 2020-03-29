@@ -94,7 +94,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
 /* SAM_LISTING_BEGIN_5 */
 Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
     double time, double tau, const Eigen::VectorXd &mu) const {
-  Eigen::VectorXd discrete_evolution_operator;
+  Eigen::VectorXd discrete_evolution_operator(dofh_.NumDofs());
   //====================
   // Your code goes here
   //====================
