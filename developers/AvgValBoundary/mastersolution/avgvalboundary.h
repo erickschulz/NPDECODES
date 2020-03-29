@@ -57,17 +57,19 @@ compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
   // Set up an empty sparse matrix to hold the Galerkin matrix
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Initialize ELEMENT_MATRIX_PROVIDER object
+  lf::mesh::utils::MeshFunctionGlobal mf_alpha{std::forward<FUNC_ALPHA>(alpha)};
+  lf::mesh::utils::MeshFunctionGlobal mf_gamma{std::forward<FUNC_GAMMA>(gamma)};
   lf::uscalfe::ReactionDiffusionElementMatrixProvider elmat_builder(
-      fe_space, std::forward<FUNC_ALPHA>(alpha),
-      std::forward<FUNC_GAMMA>(gamma));
+      fe_space, std::move(mf_alpha), std::move(mf_gamma));
   // Cell-oriented assembly over the whole computational domain
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
 
   // Add contributions of boundary term in the bilinear form using
   // a LehrFEM++ built-in high-level ENTITY_MATRIX_PROVIDER class
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
+  lf::mesh::utils::MeshFunctionGlobal mf_beta{std::forward<FUNC_BETA>(beta)};
   lf::uscalfe::MassEdgeMatrixProvider edgemat_builder(
-      fe_space, std::forward<FUNC_BETA>(beta), bd_flags);
+      fe_space, std::move(mf_beta), bd_flags);
   lf::assemble::AssembleMatrixLocally(1, dofh, dofh, edgemat_builder, A);
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
   return A_crs;
@@ -89,14 +91,12 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh,
                               const Eigen::VectorXd &u, FUNCTION &&w) {
   double result = 0.0;
 #if SOLUTION
-  // constant zero mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_zero{0.0};
+  // constant zero function
+  auto const_zero = [](Eigen::Vector2d x) -> double { return 0.0; };
   auto A =
-      compGalerkinMatrix(dofh, mf_zero, mf_zero, std::forward<FUNCTION>(w));
-  const lf::base::size_type N_dofs(dofh.NumDofs());
-  Eigen::VectorXd ones = Eigen::VectorXd::Ones(N_dofs);
-  result = ones.transpose() * A * u;
-  result = std::sqrt(result);
+      compGalerkinMatrix(dofh, const_zero, const_zero, std::forward<FUNCTION>(w));
+  Eigen::VectorXd ones = Eigen::VectorXd::Ones(dofh.NumDofs());
+  result = std::sqrt(ones.transpose() * A * u);
 #else
   //====================
   // Your code goes here

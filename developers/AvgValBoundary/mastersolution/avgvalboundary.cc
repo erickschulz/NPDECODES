@@ -34,18 +34,14 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
                       const Eigen::VectorXd &u) {
   double result = 0.0;
 #if SOLUTION
-  // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
-  // constant zero mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_zero{0.0};
 
-  // compute Stiffness matrix
-  // alpha := 1, beta, gamma := 0
-  auto A = compGalerkinMatrix(dofh, mf_identity, mf_zero, mf_zero);
+  // Compute Stiffness matrix with alpha := 1, beta := 0, gamma := 0
+  auto const_one = [](Eigen::Vector2d x) -> double { return 1.0; };
+  auto const_zero = [](Eigen::Vector2d x) -> double { return 0.0; };
+  auto A = compGalerkinMatrix(dofh, const_one, const_zero, const_zero);
 
-  // compute seminorm using the Stiffness matrix
-  result = u.transpose() * A * u;
-  result = std::sqrt(result);
+  // Compute seminorm using the Stiffness matrix
+  result = std::sqrt(u.transpose() * A * u);
 #else
   //====================
   // Your code goes here
@@ -62,25 +58,20 @@ double compH1seminorm(const lf::assemble::DofHandler &dofh,
  */
 /* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
-  // constant identity mesh function
-  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
-
-  // obtain Galerkin matrix for alpha = beta = gamma := 1.0
-  auto A = compGalerkinMatrix(dofh, mf_identity, mf_identity,
-                                              mf_identity);
+  // Obtain Galerkin matrix for alpha = beta = gamma := 1.0
+  auto const_one = [](Eigen::Vector2d x) -> double { return 1.0; };
+  auto A = compGalerkinMatrix(dofh, const_one, const_one, const_one);
 
   // Set up load vector
-  auto mesh = dofh.Mesh();
   auto fe_space =
-      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
-  const lf::base::size_type N_dofs(dofh.NumDofs());
-  Eigen::VectorXd phi(N_dofs);
-  phi.setZero();
+      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(dofh.Mesh());
+  lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
   lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
                                                              mf_identity);
+  Eigen::VectorXd phi(dofh.NumDofs());
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
-  // solve system of linear equations
+  // Solve system of linear equations
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A);
   Eigen::VectorXd mu = solver.solve(phi);
@@ -124,10 +115,10 @@ approxBoundaryFunctionalValues(unsigned int L) {
     const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
     const lf::base::size_type N_dofs(dofh.NumDofs());
 
-    // compute galerkin matrix
-    lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
-    lf::mesh::utils::MeshFunctionConstant mf_zero{0.0};
-    auto A = compGalerkinMatrix(dofh, mf_identity, mf_identity, mf_zero);
+    // compute galerkin matrix with alpha = 1.0, gamma = 1.0, beta = 0.0
+    auto const_one = [](Eigen::Vector2d x) -> double { return 1.0; };
+    auto const_zero = [](Eigen::Vector2d x) -> double { return 0.0; };
+    auto A = compGalerkinMatrix(dofh, const_one, const_one, const_zero);
 
     // compute load vector for f(x) = x.norm()
     auto f = [](Eigen::Vector2d x) -> double { return x.norm(); };
@@ -144,8 +135,7 @@ approxBoundaryFunctionalValues(unsigned int L) {
 
     // set up weight function
     auto w = [](Eigen::Vector2d x) -> double { return 1.0; };
-    lf::mesh::utils::MeshFunctionGlobal mf_w{w};
-    double functional_value = compBoundaryFunctional(dofh, u, mf_w);
+    double functional_value = compBoundaryFunctional(dofh, u, w);
 
     result.push_back({N_dofs, functional_value});
   }
