@@ -66,7 +66,7 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
   lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
 
   // obtain Galerkin matrix for alpha = beta = gamma := 1.0
-  auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
+  auto A = compGalerkinMatrix(dofh, mf_identity, mf_identity,
                                               mf_identity);
 
   // Set up load vector
@@ -115,23 +115,26 @@ approxBoundaryFunctionalValues(unsigned int L) {
   int num_meshes = meshes->NumLevels();
   for (int level = 0; level < num_meshes; ++level) {
     auto mesh_p = meshes->getMesh(level);
+
     // Set up global FE space; lowest order Lagrangian finite elements
     auto fe_space =
         std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+
     // Obtain local->global index mapping for current finite element space
     const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
     const lf::base::size_type N_dofs(dofh.NumDofs());
-    lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
+
     // compute galerkin matrix
-    auto A = AvgValBoundary::compGalerkinMatrix(dofh, mf_identity, mf_identity,
-                                                mf_identity);
+    lf::mesh::utils::MeshFunctionConstant mf_identity{1.0};
+    lf::mesh::utils::MeshFunctionConstant mf_zero{0.0};
+    auto A = compGalerkinMatrix(dofh, mf_identity, mf_identity, mf_zero);
+
     // compute load vector for f(x) = x.norm()
     auto f = [](Eigen::Vector2d x) -> double { return x.norm(); };
     lf::mesh::utils::MeshFunctionGlobal mf_f{f};
-    Eigen::VectorXd phi(N_dofs);
-    phi.setZero();
     lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
-                                                               mf_identity);
+                                                               mf_f);
+    Eigen::VectorXd phi(N_dofs);
     AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
     // solve system of equations
