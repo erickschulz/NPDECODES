@@ -32,8 +32,8 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
                     entity.RefEl() == lf::base::RefEl::kQuad(),
                 "Unsupported cell type " << entity.RefEl());
 
-  // For TRIANGULAR CELLS
   if (entity.RefEl() == lf::base::RefEl::kTria()) {
+    // For TRIANGULAR CELLS
     // Compute the area of the triangle cell
     const double area = lf::geometry::Volume(*(entity.Geometry()));
     // Assemble the mass element matrix over the cell
@@ -46,10 +46,12 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 	       0.0, 1.0, 0.0, 1.0, 0.0, 2.0;
     // clang-format on
     elMat *= area / 12.0;
+  } else {
+// for QUADRILATERAL CELLS
+
   }
   return elMat; // return the local mass element matrix
 } //
-
 /* SAM_LISTING_END_1 */
 
 /* Implementing member function Eval of class GradientProjectionVectorProvider*/
@@ -129,7 +131,7 @@ computeLumpedProjection(const lf::assemble::DofHandler &scal_dofh,
     const Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
     // Obtain area of the triangular cell
     const double area = lf::geometry::Volume(*(cell->Geometry()));
-    // Compute the gradient of the passed coefficient vector
+// Compute the gradient of the passed coefficient vector
     const Eigen::Vector2d grad_mu =
         elgrad_Mat.col(0) * mu(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * mu(scal_dof_idx_vec[1]) +
@@ -178,7 +180,7 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
     auto scal_dof_idx_vec = scal_dofh.GlobalDofIndices(*cell);
     // Obtain the gradients of the barycentric coordinates functions
     Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
-    // Compute the gradient of the passed coefficient vector eta
+// Compute the gradient of the passed coefficient vector eta
     const Eigen::Vector2d grad_eta =
         elgrad_Mat.col(0) * eta(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * eta(scal_dof_idx_vec[1]) +
