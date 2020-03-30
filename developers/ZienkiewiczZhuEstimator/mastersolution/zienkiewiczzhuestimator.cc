@@ -32,11 +32,11 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
                     entity.RefEl() == lf::base::RefEl::kQuad(),
                 "Unsupported cell type " << entity.RefEl());
 
-  // For TRIANGULAR CELLS
   if (entity.RefEl() == lf::base::RefEl::kTria()) {
+    // For TRIANGULAR CELLS
     // Compute the area of the triangle cell
     const double area = lf::geometry::Volume(*(entity.Geometry()));
-    # if SOLUTION
+#if SOLUTION
     // Assemble the mass element matrix over the cell
     // clang-format off
       elMat << 2.0, 0.0, 1.0, 0.0, 1.0, 0.0,
@@ -47,15 +47,23 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 	       0.0, 1.0, 0.0, 1.0, 0.0, 2.0;
     // clang-format on
     elMat *= area / 12.0;
-    #else
+#else
     //====================
     // Your code goes here
     //====================
-    #endif
+#endif
+  } else {
+// for QUADRILATERAL CELLS
+#if SOLUTION
+
+#else
+    //====================
+    // Your code goes here
+    //====================
+#endif
   }
   return elMat; // return the local mass element matrix
 } //
-
 /* SAM_LISTING_END_1 */
 
 /* Implementing member function Eval of class GradientProjectionVectorProvider*/
@@ -74,19 +82,19 @@ GradientProjectionVectorProvider::Eval(const lf::mesh::Entity &entity) {
   Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(entity);
   // Compute the local constant gradient of the finite element solution
   Eigen::Vector2d grad_vec(0.0, 0.0);
-  #if SOLUTION
+#if SOLUTION
   for (int i = 0; i < 3; i++) {
     grad_vec = grad_vec + elgrad_Mat.col(i) * _mu(dof_idx_vec[i]);
   }
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   // Assemble local element vector
   // Compute the area of the triangle cell
   const double area = lf::geometry::Volume(*(entity.Geometry()));
-  #if SOLUTION
+#if SOLUTION
   // clang-format off
     elVec << grad_vec(0),
              grad_vec(1),
@@ -96,11 +104,11 @@ GradientProjectionVectorProvider::Eval(const lf::mesh::Entity &entity) {
              grad_vec(1);
   // clang-format on
   elVec *= area / 3.0;
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   return elVec;
 } // GradientProjectionVectorProvider::Eval
 /* SAM_LISTING_END_2 */
@@ -147,8 +155,8 @@ computeLumpedProjection(const lf::assemble::DofHandler &scal_dofh,
     const Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
     // Obtain area of the triangular cell
     const double area = lf::geometry::Volume(*(cell->Geometry()));
-    // Compute the gradient of the passed coefficient vector
-    #if SOLUTION
+// Compute the gradient of the passed coefficient vector
+#if SOLUTION
     const Eigen::Vector2d grad_mu =
         elgrad_Mat.col(0) * mu(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * mu(scal_dof_idx_vec[1]) +
@@ -162,27 +170,27 @@ computeLumpedProjection(const lf::assemble::DofHandler &scal_dofh,
       proj_vec[vec_dofh_idx[1]] += area * grad_mu[1];
       nodal_sum_of_areas(*node) = nodal_sum_of_areas(*node) + area;
     }
-    #else
-    //====================
-    // Your code goes here
-    //====================
-    #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   }
 
   // Scaling of components of vector of dofs
   for (const lf::mesh::Entity *node : mesh_p->Entities(2)) {
     LF_VERIFY_MSG(node->RefEl() == lf::base::RefEl::kPoint(),
                   "Expected kPoint type!" << node->RefEl());
-    #if SOLUTION
+#if SOLUTION
     const double area_scal_fac = 1.0 / nodal_sum_of_areas(*node);
     auto vec_dofh_idx = vec_dofh.GlobalDofIndices(*node);
     proj_vec[vec_dofh_idx[0]] *= area_scal_fac;
     proj_vec[vec_dofh_idx[1]] *= area_scal_fac;
-    #else
-    //====================
-    // Your code goes here
-    //====================
-    #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   }
   return proj_vec;
 }; // computeLumpedProjection
@@ -208,8 +216,8 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
     auto scal_dof_idx_vec = scal_dofh.GlobalDofIndices(*cell);
     // Obtain the gradients of the barycentric coordinates functions
     Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
-    // Compute the gradient of the passed coefficient vector eta
-    #if SOLUTION
+// Compute the gradient of the passed coefficient vector eta
+#if SOLUTION
     const Eigen::Vector2d grad_eta =
         elgrad_Mat.col(0) * eta(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * eta(scal_dof_idx_vec[1]) +
@@ -239,11 +247,11 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
 
     // Adding local contribution to the value of the deviation norm
     deviation_norm_value += local_norm_value;
-    #else
-    //====================
-    // Your code goes here
-    //====================
-    #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   }
   return std::sqrt(deviation_norm_value);
 }; // computeL2Deviation
