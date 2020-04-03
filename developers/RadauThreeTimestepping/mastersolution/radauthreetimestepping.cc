@@ -212,7 +212,7 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
   dropMatrixRowsColumns(bdy_vertices_selector, A_COO);
   dropMatrixRowsColumns(bdy_vertices_selector, M_COO);
 
-  std::cout << "> Converting to triplets to sparse matrices" << std::endl;
+  std::cout << "> Converting triplets to sparse matrices" << std::endl;
   // Creating the private Galerkin stiffness and mass matrices
   A_ = A_COO.makeSparse();
   Eigen::SparseMatrix<double> M = M_COO.makeSparse();
