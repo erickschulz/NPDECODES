@@ -7,6 +7,7 @@
 # PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
+  ${DIR}/test/getgalerkinlse_test.cc 
   ${DIR}/test/regularizedneumannproblem_test.cc
 )
 
