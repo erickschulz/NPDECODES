@@ -47,7 +47,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
-| ? | `LinFeReactDiff` | |  |  |  |
+| ? | `LinFeReactDiff` | :white_check_mark: |  |  | Philipp Egg |
 
 ## General Remarks
 
