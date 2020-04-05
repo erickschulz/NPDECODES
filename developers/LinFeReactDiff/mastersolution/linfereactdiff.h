@@ -18,8 +18,6 @@
 
 namespace LinFeReactDiff {
 
-using glb_idx_t = lf::assemble::glb_idx_t;
-
 std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
     const lf::base::size_type levels);
 

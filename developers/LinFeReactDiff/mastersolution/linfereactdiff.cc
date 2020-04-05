@@ -94,7 +94,7 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh)
 
     // Eliminate Dirichlet dofs from linear system
     lf::assemble::FixFlaggedSolutionComponents<double>(
-        [&ess_bdc_flags_values_findest](glb_idx_t gdof_idx) {
+        [&ess_bdc_flags_values_findest](lf::assemble::glb_idx_t gdof_idx) {
             return ess_bdc_flags_values_findest[gdof_idx];
         },
         A, phi);
