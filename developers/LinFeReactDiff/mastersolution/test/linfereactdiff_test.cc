@@ -9,7 +9,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../lin_fe_react_diff.h"
+#include "../linfereactdiff.h"
 
 namespace LinFeReactDiff::test {
 
