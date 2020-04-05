@@ -1,3 +1,5 @@
+#ifndef __LINFEREACTDIFF_H
+#define __LINFEREACTDIFF_H
 /**
  This homework problem consists of reading a simple, gmesh generated, mesh on
  the unit square and solving a simple reaction diffusion system using LehrFEM++
@@ -26,3 +28,4 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh);
 double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
                      Eigen::VectorXd mu);
 }  // namespace LinFeReactDiff
+#endif // define __LINFEREACTDIFF_H
