@@ -42,7 +42,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `WaveABC2d` | :heavy_check_mark: | :white_check_mark:  |  | Amélie |
-| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: |  |  |  |
+| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
