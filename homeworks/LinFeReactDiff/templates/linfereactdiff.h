@@ -1,3 +1,5 @@
+#ifndef __LINFEREACTDIFF_H
+#define __LINFEREACTDIFF_H
 /**
  This homework problem consists of reading a simple, gmesh generated, mesh on
  the unit square and solving a simple reaction diffusion system using LehrFEM++
@@ -16,8 +18,6 @@
 
 namespace LinFeReactDiff {
 
-using glb_idx_t = lf::assemble::glb_idx_t;
-
 std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
     const lf::base::size_type levels);
 
@@ -26,3 +26,4 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh);
 double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
                      Eigen::VectorXd mu);
 }  // namespace LinFeReactDiff
+#endif // define __LINFEREACTDIFF_H

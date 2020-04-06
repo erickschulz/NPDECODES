@@ -9,7 +9,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../lin_fe_react_diff.h"
+#include "../linfereactdiff.h"
 
 namespace LinFeReactDiff::test {
 
@@ -71,7 +71,7 @@ TEST(LinFeReactDiff, TestEnergy)
           mf_zero)};
 
   lf::assemble::FixFlaggedSolutionComponents<double>(
-      [&ess_bdc_flags_values_findest](glb_idx_t gdof_idx) {
+      [&ess_bdc_flags_values_findest](lf::assemble::glb_idx_t gdof_idx) {
         return ess_bdc_flags_values_findest[gdof_idx];
       },
       A, phi);

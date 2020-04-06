@@ -3,7 +3,7 @@
  the unit square and solving a simple reaction diffusion system using LehrFEM++
  */
 
-#include "lin_fe_react_diff.h"
+#include "linfereactdiff.h"
 
 namespace LinFeReactDiff
 {
@@ -94,17 +94,16 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh)
 
     // Eliminate Dirichlet dofs from linear system
     lf::assemble::FixFlaggedSolutionComponents<double>(
-        [&ess_bdc_flags_values_findest](glb_idx_t gdof_idx) {
+        [&ess_bdc_flags_values_findest](lf::assemble::glb_idx_t gdof_idx) {
             return ess_bdc_flags_values_findest[gdof_idx];
         },
         A, phi);
 
     // Solve System
     Eigen::VectorXd mu;
-    Eigen::SparseMatrix<double> A_crs = A.makeSparse();
-    Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-    solver.compute(A_crs);
-    mu = solver.solve(phi);
+  //====================
+  // Your code goes here
+  //====================
     return mu;
 }
 
@@ -127,31 +126,26 @@ double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
     // Matrix in triplet format holding Stiffness matrix.
     lf::assemble::COOMatrix<double> Stiffness(N_dofs, N_dofs);
     // Assemble Stiffness matrix for \int_{\Omega} uv dx
-    lf::uscalfe::ReactionDiffusionElementMatrixProvider<
-        double, decltype(mf_identity), decltype(mf_zero)>
-        stiffness_mat_builder(fe_space, mf_identity, mf_zero);
-    lf::assemble::AssembleMatrixLocally(0, dofh, dofh, stiffness_mat_builder,
-                                        Stiffness);
+  //====================
+  // Your code goes here
+  //====================
 
     Eigen::SparseMatrix<double> Stiffness_crs = Stiffness.makeSparse();
 
     // Matrix in triplet format holding Mass matrix.
     lf::assemble::COOMatrix<double> Mass(N_dofs, N_dofs);
     // Assemble Mass matrix for \int_{\Omega} uv dx
-    lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, decltype(mf_zero),
-                                                        decltype(mf_identity)>
-        mass_mat_builder(fe_space, mf_zero, mf_identity);
-    lf::assemble::AssembleMatrixLocally(0, dofh, dofh, mass_mat_builder, Mass);
-    Eigen::SparseMatrix<double> Mass_crs = Mass.makeSparse();
+  //====================
+  // Your code goes here
+  //====================
     double energy_stiffness_sq;
     double energy_mass_sq;
     // energy_stiffness_sq = 1' A 1
     // energy_mass_sq = \mu' M \mu
 
-    energy_stiffness_sq =
-        Eigen::VectorXd::Constant(N_dofs, 1.0).transpose() *
-        (Stiffness_crs * Eigen::VectorXd::Constant(N_dofs, 1.0));
-    energy_mass_sq = mu.transpose() * Mass_crs * mu;
+  //====================
+  // Your code goes here
+  //====================
 
     return std::sqrt(energy_stiffness_sq + energy_mass_sq);
 }
