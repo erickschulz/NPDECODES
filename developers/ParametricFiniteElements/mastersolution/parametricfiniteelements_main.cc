@@ -1,8 +1,8 @@
 /**
- * @file parametricfiniteelements.cc
+ * @file parametricfiniteelements_main.cc
  * @brief NPDE homework ParametricFiniteElements code
  * @author Amélie Loher
- * @date 04.04.2019
+ * @date 04.04.2020
  * @copyright Developed at ETH Zurich
  */
 
@@ -20,37 +20,27 @@ using namespace ParametricFiniteElements;
 
 int main() {
 
-  // Creating a 2D mesh on the interval [0,1] x [0,Psi(x(0))]
-  // nb. of cells
-  
-  /*unsigned int n = 100;                   
-  Eigen::MatrixXd mesh(n+1, 2); 
-  
-  // Topography function
-  auto Psi = [] (double x) {
-	  return x * x + 1.0;
-  };
+  unsigned int n = 3;
+  Eigen::VectorXd mu((n+1)*(n+1));
 
-  // Nodes are equally spaced in each direction
-  for (int i = 0; i <  + 1; i++) {
-    mesh[i, 0] = i * (1.0 / n);
-	mesh[i, 1] = i * (1.0 / Psi(mesh[i, 0]));
-  }
-*/
-  unsigned int n = 100;
+  // Psi \in C^1([0,1]), Psi > 0
   auto Psi = [](double x) -> double {
 	  return x * x + 1.0;
   };
-
+  
+  // 1 <= alpha(x) <= 2
   auto alpha = [](Eigen::Vector2d x) -> double {
 	  return 3.0/2.0;
   };
 
-  Eigen::VectorXd mu((n+1)*(n+1));
-
   mu = geoThermSolve(n, alpha, Psi);
-
+  
+  // Surface Integral over Gamma_S of expansion coefficient vector mu
   double val = geoThermSurfInt(n, Psi, mu);
+  
+  std::cout << "Basis Expansion Coefficient vector of solution of (5.6.1): " << mu << std::endl;
+  std::cout << "Value of expansion coefficient vector mu integrated over Surface Gamma_S : " 
+  			<< val << std::endl;
 
   return 0;
 }

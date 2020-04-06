@@ -14,4 +14,3 @@ set(SOURCES
 set(LIBRARIES
   Eigen3::Eigen
 )
-

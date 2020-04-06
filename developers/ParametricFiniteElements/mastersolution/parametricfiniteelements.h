@@ -4,7 +4,7 @@
  * @file parametricfiniteelements.h
  * @brief NPDE homework ParametricFiniteElements code
  * @author Amélie Loher
- * @date 04.04.2019
+ * @date 04.04.2020
  * @copyright Developed at ETH Zurich
  */
 
@@ -29,11 +29,19 @@ double integrationElement(unsigned int n, unsigned int j, unsigned int l,
 
   // Mesh width
   double h = 1.0/n;
+  double detJ = 0.0;
 
-  double detJ = h*h * (Psi(j*h) + Psi((j+1)*h) - Psi(j*h)) * xhat(0);
+  #if SOLUTION
+  detJ = h*h*Psi(j*h) + h*h* (Psi((j+1)*h) - Psi(j*h)) * xhat(0);
   detJ = std::abs(detJ);
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
+  
   return detJ;
+
 }
 
 /* Computes the inverse Jacobian transposed
@@ -50,15 +58,23 @@ Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
   double h = 1.0/n;
   // Inverse Jacobian transposed
   Eigen::Matrix2d invJT;
+  
+  #if SOLUTION
   invJT(0,0) = h * Psi(j*h) + h * (Psi((j+1)*h) - Psi(j*h)) * xhat(0);
   invJT(0,1) = -h * (Psi((j+1)*h) - Psi(j*h)) * (l + xhat(1));
   invJT(1,0) = 0.0;
   invJT(1,1) = h;
 
   double detJ = integrationElement(n, j, l, Psi, xhat);
-  invJT = (1./detJ) * invJT;
-
+  invJT /= detJ;
+  
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return invJT;
+
 }
 
 /* Returns the basis functions on the Reference Element at node xhat */
@@ -72,6 +88,7 @@ Eigen::Vector4d bhats(Eigen::Vector2d xhat) {
   res(3) = (1 - xhat(0)) * xhat(1);
 
   return res;
+
 }
 
 /* Returns the gradients of the basis functions on Reference Element at node xhat */
@@ -89,6 +106,7 @@ Eigen::MatrixXd bhats_grad(Eigen::Vector2d xhat) {
   res(1, 3) = 1 - xhat(0);
 
   return res;
+
 }
 
 /* Computes the volume contributions to the element matrix for K_j,l
@@ -98,9 +116,9 @@ Eigen::MatrixXd bhats_grad(Eigen::Vector2d xhat) {
  * Psi: topography function
  * alpha: material function
  */
-template <typename FUNCTOR1, typename FUNCTOR>
+template <typename FUNCTOR1, typename FUNCTOR2>
 Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
-                        FUNCTOR1 &&alpha, FUNCTOR &&Psi) {
+                        FUNCTOR1 &&alpha, FUNCTOR2 &&Psi) {
   // Mesh width
   double h = 1.0/n;
 
@@ -113,17 +131,18 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
 
   // Volume contributions to element matrix A
   Eigen::MatrixXd A = Eigen::MatrixXd::Zero(4,4);
-
+  
+  #if SOLUTION
   for(int iq = 0; iq < 4; iq++) {
 
     // iq-th quadrature node from xq
     Eigen::Vector2d xq_iq = xq.col(iq);
-    // Inverse Jacobian transposed at iq-th quadrature node
+	// Inverse Jacobian transposed at iq-th quadrature node
     Eigen::Matrix2d invJT_iq = jacobianInverseTransposed(n, j, l, Psi, xq_iq);
     // determinant at iq-th quadrature node
     double detJ_iq = integrationElement(n, j, l, Psi, xq_iq);
-
-    // Reference element gradients of basis functions at iq-th node
+    
+	// Reference element gradients of basis functions at iq-th node
     Eigen::MatrixXd bhat_grad_iq(2,4);
     bhat_grad_iq = bhats_grad(xq_iq);
 
@@ -133,7 +152,7 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
     g_iq.row(1) = bhat_grad_iq.col(1).transpose()*invJT_iq.transpose();
     g_iq.row(2) = bhat_grad_iq.col(2).transpose()*invJT_iq.transpose();
     g_iq.row(3) = bhat_grad_iq.col(3).transpose()*invJT_iq.transpose();
-
+    
     // Global coordinates of iq-th quadrature node for alpha
     Eigen::Vector2d xq_gl;
     xq_gl << (j+xq_iq(0)) * h,
@@ -157,7 +176,12 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
     A(3,2) += 0.5 * dl * (bhat2(3)*bhat2(2) + bhat3(3)*bhat3(2));
     A(3,3) += 0.5 * dl * (bhat2(3)*bhat2(3) + bhat3(3)*bhat3(3));
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
+  
   return A;
 
 }
@@ -169,31 +193,38 @@ int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
   // Map local indices of basis functions to global indices
   int global_dof;
 
+  #if SOLUTION
   switch(local_dof) {
-    case 0 : global_dof = j + (n+1) * l;
+    case 0 : global_dof = j + (n+1) * l; break;
 
-    case 1 : global_dof = j+1 +(n+1) * l;
+    case 1 : global_dof = j+1 +(n+1) * l; break;
 
-    case 2 : global_dof = j+1 + (n+1) * (l+1);
+    case 2 : global_dof = j+1 + (n+1) * (l+1); break;
 
-    case 3 : global_dof = j + (n+1) * (l+1);
+    case 3 : global_dof = j + (n+1) * (l+1); break;
 
-    default : global_dof  = 0;
-              break;
+	default: global_dof = 66; break;
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
+  
   return global_dof;
+
 }
 
 /* Computes the Galerkin matrix in triplet format based on Element matrix */
-template <typename FUNCTOR1, typename FUNCTOR>
+template <typename FUNCTOR1, typename FUNCTOR2>
 std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n, FUNCTOR1 &&alpha,
-                        FUNCTOR &&Psi) {
+                        FUNCTOR2 &&Psi) {
 
   // Reserve triplets for Galerkin Matrix A
   std::vector<Eigen::Triplet<double>> triplets;
   triplets.reserve(4*4*n*n);
-
+  
+  #if SOLUTION
   // Loop over elements
   for(int j = 0; j < n; j++) {
     for(int l = 0; l < n; l++) {
@@ -212,7 +243,12 @@ std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n, FUNCTOR1 &&
       }
     }
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
+  
   return triplets;
 
 }
@@ -221,7 +257,8 @@ std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n, FUNCTOR1 &&
  * on the Dirichlet Boundary Gamma_D with the m-th unit vector 
  */
 void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
-
+   
+  #if SOLUTION
   // Identify Triplets on Boundary with Dirichlet Condition
   for(auto &a : A) {
       if(a.row() < n+1) {
@@ -233,15 +270,19 @@ void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
   for(int i = 0; i < n+1; i++) {
       A.push_back(Eigen::Triplet(i, i, 1.0));
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
 }
   
 /* Compute the basis expansion coefficient vector mu of the
  * finite element solution u_N of (5.6.1) in S_1^0(M).
  */
-template <typename FUNCTOR1, typename FUNCTOR>
+template <typename FUNCTOR1, typename FUNCTOR2>
 Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
-                        FUNCTOR &&Psi) {
+                        FUNCTOR2 &&Psi) {
   
   // Total Number of dofs
   int N_dofs = (n+1) * (n+1);
@@ -286,9 +327,11 @@ double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
 
   // Mesh width
   double h = 1.0/n;
-
+  
   // Surface integral of geothermal problem
   double SurfInt = 0.0;
+  
+  #if SOLUTION
   for(int j = 0; j < n; j++) {
     // Compute length of edfe
     double dl2 = h*h + (Psi((j+1)*h) - Psi(j*h)) * (Psi((j+1)*h) - Psi(j*h));
@@ -299,6 +342,11 @@ double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
     int ip = j+1 + (n+1) * n;
     SurfInt += 0.5 * dl * (mu(i) + mu(ip));
   }
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
 
   return SurfInt;
 
