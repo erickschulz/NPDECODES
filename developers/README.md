@@ -43,6 +43,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `WaveABC2d` | :heavy_check_mark: | :white_check_mark:  |  | Amélie |
 | 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
+| 3-10 | 'ParametricFiniteElements' | :heavy_check_mark: | :heavy_check_mark: | | |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
@@ -98,7 +99,6 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 5.6: Parametric Finite Elements **(Amélie)**
 * Problem 5.7: Stable Evaluation at a Point
 * Problem 5.8: Trace Error Estimates **(done already?)**
 * Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
