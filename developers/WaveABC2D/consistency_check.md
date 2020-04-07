@@ -40,9 +40,14 @@
   		    
 		   Also remove description of **u0** and add description for **mu0** and **nu0**.
 
-- (6-7.l) NOT SOLVED!!! There is no member function energies in class WaveABC2DTimestepper!
-		  Shall I add one ?
+- (6-7.l)        Add that they should implement 
 
+**template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
+Eigen::VectorXd
+    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies(
+    FUNC_RHO rho, FUNC_MU0 mu0, FUNC_NU0 nu0)**;
+    
+    in the file waveabc2d.h.
 
 I again assume that the codes will be updated accordingly in the solution files of LaTeX, for I added minor changes in the code.
 

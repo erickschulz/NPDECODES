@@ -49,6 +49,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   WaveABC2DTimestepper<decltype(rho), decltype(mu0), decltype(nu0)> stepper(
       fe_space_p, rho, 250, 1.0);
   Eigen::VectorXd discrete_solution = stepper.solveWaveABC2D(mu0, nu0);
+  
+  Eigen::VectorXd discrete_energy = stepper.energies(rho, mu0, nu0);
 
   // Output results to vtk file
   lf::io::VtkWriter vtk_writer(mesh_p, "WaveABC2D_solution.vtk");
@@ -62,6 +64,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
 
   std::cout << "\nThe WaveABC2D_solution was written to:" << std::endl;
   std::cout << "WaveABC2D_solution.vtk\n" << std::endl;
-
+  
+  std::cout << "The discrete energies E^(k) : " << discrete_energy << std::endl;
   return 0;
 } // main
