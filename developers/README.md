@@ -43,7 +43,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| ? | `WaveABC2d` | :heavy_check_mark: | :white_check_mark:  |  | Amélie |
+| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  |  |  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
