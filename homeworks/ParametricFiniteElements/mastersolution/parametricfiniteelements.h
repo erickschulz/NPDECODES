@@ -275,7 +275,7 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
   // Obtain Sparse Galerkin matrix
   Eigen::SparseMatrix<double> A(N_dofs, N_dofs);
   A.setFromTriplets(triplets.begin(), triplets.end());
-
+  
   // Set the right-hand side vector to zero
   Eigen::VectorXd b = Eigen::VectorXd::Zero(N_dofs);
   // Set the right-hand side vector to one accounting for the Dirichlet boundary

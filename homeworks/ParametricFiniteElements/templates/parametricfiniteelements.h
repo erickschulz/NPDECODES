@@ -192,28 +192,9 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
   // Basis expansion coefficient vector mu
   Eigen::VectorXd mu = Eigen::VectorXd::Zero(N_dofs);
 
-  // Get the assembled Galerkin matrix A in triplets format
-  std::vector<Eigen::Triplet<double>> triplets = assembleGeoTherm(n, alpha, Psi);
-  // Eliminate Dirichlet boundary conditions in Galerkin matrix A
-  geoThermBdElim(n, triplets);
-
-  // Obtain Sparse Galerkin matrix
-  Eigen::SparseMatrix<double> A(N_dofs, N_dofs);
-  A.setFromTriplets(triplets.begin(), triplets.end());
-
-  // Set the right-hand side vector to zero
-  Eigen::VectorXd b = Eigen::VectorXd::Zero(N_dofs);
-  // Set the right-hand side vector to one accounting for the Dirichlet boundary
-  for (int j = 0; j < n + 1; j++) {
-    b(j) = 1.0;
-  }
-
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-  solver.compute(A);
-  if (solver.info() != Eigen::Success) {
-    throw std::runtime_error("Could not decompose the matrix");
-  }
-  mu = solver.solve(b);
+  //====================
+  // Your code goes here
+  //====================
 
   return mu;
 

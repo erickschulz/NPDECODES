@@ -4,7 +4,7 @@
  * @date 12/04/2019
  * @copyright Developed at ETH Zurich
  */
-#include <math.h>
+#include <cmath>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>

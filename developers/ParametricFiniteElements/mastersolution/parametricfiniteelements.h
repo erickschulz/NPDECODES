@@ -303,6 +303,7 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
   // Basis expansion coefficient vector mu
   Eigen::VectorXd mu = Eigen::VectorXd::Zero(N_dofs);
 
+  #if SOLUTION
   // Get the assembled Galerkin matrix A in triplets format
   std::vector<Eigen::Triplet<double>> triplets = assembleGeoTherm(n, alpha, Psi);
   // Eliminate Dirichlet boundary conditions in Galerkin matrix A
@@ -325,6 +326,11 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
     throw std::runtime_error("Could not decompose the matrix");
   }
   mu = solver.solve(b);
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
 
   return mu;
 

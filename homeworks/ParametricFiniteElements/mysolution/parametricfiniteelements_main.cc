@@ -38,7 +38,7 @@ int main() {
   // Surface Integral over Gamma_S of expansion coefficient vector mu
   double val = geoThermSurfInt(n, Psi, mu);
   
-  std::cout << "Basis Expansion Coefficient vector of solution of (5.6.1): " << mu << std::endl;
+  std::cout << "Basis Expansion Coefficient vector of solution Variational Problem: " << mu << std::endl;
   std::cout << "Value of expansion coefficient vector mu integrated over Surface Gamma_S : " 
   			<< val << std::endl;
 
