@@ -23,6 +23,7 @@ namespace ParametricFiniteElements {
  * Psi: topography function
  * xhat: reference element
  */
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
 double integrationElement(unsigned int n, unsigned int j, unsigned int l,
                         FUNCTOR &&Psi, Eigen::Vector2d xhat) {
@@ -37,6 +38,7 @@ double integrationElement(unsigned int n, unsigned int j, unsigned int l,
   return detJ;
 
 }
+/* SAM_LISTING_END_1 */
 
 /* Computes the inverse Jacobian transposed
  * n: mesh discretization parameter
@@ -44,6 +46,7 @@ double integrationElement(unsigned int n, unsigned int j, unsigned int l,
  * Psi: topography function
  * xhat: reference element
  */
+/* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
 Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
                         unsigned int l, FUNCTOR &&Psi, Eigen::Vector2d xhat) {
@@ -64,6 +67,7 @@ Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
   return invJT;
 
 }
+/* SAM_LISTING_END_2 */
 
 /* Returns the basis functions on the Reference Element at node xhat */
 Eigen::Vector4d bhats(Eigen::Vector2d xhat) {
@@ -104,6 +108,7 @@ Eigen::MatrixXd bhats_grad(Eigen::Vector2d xhat) {
  * Psi: topography function
  * alpha: material function
  */
+/* SAM_LISTING_BEGIN_3 */
 template <typename FUNCTOR1, typename FUNCTOR2>
 Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
                         FUNCTOR1 &&alpha, FUNCTOR2 &&Psi) {
@@ -167,8 +172,10 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
   return A;
 
 }
+/* SAM_LISTING_END_3 */
 
 /* Returns the global index of the local shape function local_dof on element K_jl */
+/* SAM_LISTING_BEGIN_4 */
 int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
                         unsigned int local_dof) {
 
@@ -190,8 +197,10 @@ int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
   return global_dof;
 
 }
+/* SAM_LISTING_END_4 */
 
 /* Computes the Galerkin matrix in triplet format based on Element matrix */
+/* SAM_LISTING_BEGIN_5 */
 template <typename FUNCTOR1, typename FUNCTOR2>
 std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n, FUNCTOR1 &&alpha,
                         FUNCTOR2 &&Psi) {
@@ -222,10 +231,12 @@ std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n, FUNCTOR1 &&
   return triplets;
 
 }
+/* SAM_LISTING_END_5 */
 
 /* Replace the m-th row of Galerkin matrix A belonging to any node 
  * on the Dirichlet Boundary Gamma_D with the m-th unit vector 
  */
+/* SAM_LISTING_BEGIN_6 */
 void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
    
   // Identify Triplets on Boundary with Dirichlet Condition
@@ -235,15 +246,17 @@ void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
       }
   }
 
-  // Set to identity on Dirchlet Boundary Gamma_D
+  // Set to identity on Dirchlet Boundary part of the boundary Gamma
   for(int i = 0; i < n+1; i++) {
       A.push_back(Eigen::Triplet(i, i, 1.0));
   }
 }
+/* SAM_LISTING_END_6 */
   
 /* Compute the basis expansion coefficient vector mu of the
  * finite element solution u_N of (5.6.1) in S_1^0(M).
  */
+/* SAM_LISTING_BEGIN_7 */
 template <typename FUNCTOR1, typename FUNCTOR2>
 Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
                         FUNCTOR2 &&Psi) {
@@ -279,12 +292,14 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
 
   return mu;
 
-}  
+}
+/* SAM_LISTING_END_7 */  
 
 /* Computes approximation of the surface integral of u_N over Gamma_S
  * mu: basis expansion coefficients
  * Psi: topography function
  */
+/* SAM_LISTING_BEGIN_8 */ 
 template <typename FUNCTOR>
 double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
                         const Eigen::VectorXd &mu) {
@@ -309,6 +324,7 @@ double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
   return SurfInt;
 
 }
+/* SAM_LISTING_END_8 */ 
   
 
 } /* namespace ParametricFiniteElements */
