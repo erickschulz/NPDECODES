@@ -31,6 +31,8 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
+| 3-10 | 'ParametricFiniteElements' | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |:heavy_check_mark: |  |  |
@@ -42,8 +44,6 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `WaveABC2d` | :heavy_check_mark: | :white_check_mark:  |  | Amélie |
-| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
-| 3-10 | 'ParametricFiniteElements' | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
