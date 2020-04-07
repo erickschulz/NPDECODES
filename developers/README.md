@@ -43,7 +43,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `WaveABC2d` | :heavy_check_mark: | :white_check_mark:  |  | Amélie |
 | 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
-| 3-10 | 'ParametricFiniteElements' | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: | Erick |
+| 3-10 | 'ParametricFiniteElements' | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
