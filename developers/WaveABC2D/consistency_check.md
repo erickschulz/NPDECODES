@@ -43,9 +43,8 @@
 - (6-7.l)        Add that they should implement 
 
 **template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
-Eigen::VectorXd
-    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies(
-    FUNC_RHO rho, FUNC_MU0 mu0, FUNC_NU0 nu0)**;
+double
+    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies()**;
     
     in the file waveabc2d.h.
 

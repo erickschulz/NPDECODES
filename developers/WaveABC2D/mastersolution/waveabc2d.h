@@ -121,18 +121,22 @@ public:
   
   // Public member functions
   Eigen::VectorXd solveWaveABC2D(FUNC_MU0 mu0, FUNC_NU0 nu0);
-  Eigen::VectorXd energies(FUNC_RHO rho, FUNC_MU0 mu0, FUNC_NU0 nu0);
+  double energies();
 
 private:
-  double T_;         // final time
-  unsigned int M_;         // nb of steps
-  double step_size_; // time inverval
+  double T_;         		// final time
+  unsigned int M_;         	// nb of steps
+  double step_size_; 		// time inverval
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p_;
   #if SOLUTION
-  int N_dofs_; // nb of degrees of freedom
+  lf::uscalfe::size_type N_dofs_;					    // nb of degrees of freedom
+  bool timestepping_performed_;							// bool to assert that energies are computed only after timestepping
   // Precomputed objects
+  std::vector<Eigen::Triplet<double>> A_triplets_vec_;	// stiffness matrix	
+  std::vector<Eigen::Triplet<double>> M_triplets_vec_;	// mass matrix
   Eigen::SparseMatrix<double> R_;                       // rhs evaluation matrix
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_; // linear solver
+  Eigen::VectorXd full_sol_; 							// Vector for discrete solution and discrete velocity 
   #else
   //====================
   // Your code goes here
@@ -148,7 +152,7 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
     FUNC_RHO rho, unsigned int M, double T)
     
 	: fe_space_p_(fe_space_p), M_(M), T_(T), step_size_(T / M) {
-
+  
   /* Creating coefficient-functions as Lehrfem++ mesh functions */
   // Coefficient-functions used in the class template
   // ReactionDiffusionElementMatrixProvider and MassEdgeMatrixProvider
@@ -159,6 +163,9 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
       [](Eigen::Vector2d) -> double { return 1.0; });
 
   #if SOLUTION
+ // On construction no timestepping was yet performed
+  timestepping_performed_ = false;
+
   std::cout << "Assembling Galerkin matrices..." << std::endl;
   lf::assemble::COOMatrix<double> A_COO = computeGalerkinMat(
       fe_space_p, one_mf, zero_mf, zero_mf); // stiffness matrix
@@ -167,8 +174,9 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   lf::assemble::COOMatrix<double> B_COO =
       computeGalerkinMat(fe_space_p, zero_mf, zero_mf,
                          one_mf); // Boundary mass matrix
-
-  N_dofs_ = A_COO.cols(); // nb degrees of freedom
+  
+  const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
+  N_dofs_ = dofh.NumDofs();
   std::cout << "Number of degrees of freedom : " << N_dofs_ << std::endl;
 
   std::cout << "Assembling the evolution matrix..." << std::endl;
@@ -178,11 +186,11 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   //             |_  -(1/2)*tau*I          I     _|
   //                                                        */
   lf::assemble::COOMatrix<double> L_COO(2 * N_dofs_, 2 * N_dofs_);
-  const std::vector<Eigen::Triplet<double>> A_triplets_vec = A_COO.triplets();
-  const std::vector<Eigen::Triplet<double>> M_triplets_vec = M_COO.triplets();
+  A_triplets_vec_ = A_COO.triplets();
+  M_triplets_vec_ = M_COO.triplets();
   const std::vector<Eigen::Triplet<double>> B_triplets_vec = B_COO.triplets();
   // Inserting M in L
-  for (auto &triplet : M_triplets_vec) {
+  for (auto &triplet : M_triplets_vec_) {
     L_COO.AddToEntry(triplet.row(), triplet.col(), triplet.value());
   }
   // Inserting B in L
@@ -191,7 +199,7 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
                      0.5 * step_size_ * triplet.value());
   }
   // Inserting A in L
-  for (auto &triplet : A_triplets_vec) {
+  for (auto &triplet : A_triplets_vec_) {
     L_COO.AddToEntry(triplet.row(), triplet.col() + N_dofs_,
                      0.5 * step_size_ * triplet.value());
   }
@@ -216,7 +224,7 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   //                                                         */
   lf::assemble::COOMatrix<double> R_COO(2 * N_dofs_, 2 * N_dofs_);
   // Inserting M in R
-  for (auto &triplet : M_triplets_vec) {
+  for (auto &triplet : M_triplets_vec_) {
     R_COO.AddToEntry(triplet.row(), triplet.col(), triplet.value());
   }
   // Inserting B in R
@@ -225,7 +233,7 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
                      -0.5 * step_size_ * triplet.value());
   }
   // Inserting A in R
-  for (auto &triplet : A_triplets_vec) {
+  for (auto &triplet : A_triplets_vec_) {
     R_COO.AddToEntry(triplet.row(), triplet.col() + N_dofs_,
                      -0.5 * step_size_ * triplet.value());
   }
@@ -251,7 +259,7 @@ Eigen::VectorXd
     FUNC_MU0 mu0, FUNC_NU0 nu0) {
   
   std::cout << "\nSolving variational problem of WaveABC2D." << std::endl;
-  Eigen::VectorXd discrete_solution;
+  Eigen::VectorXd sol;
 
   // Initial conditions
   auto mf_mu0 = lf::mesh::utils::MeshFunctionGlobal(mu0);
@@ -272,7 +280,7 @@ Eigen::VectorXd
   double progress_pourcentage;
 
   // Performing timesteps
-  for (int i = 0; i < M_; i++) {
+  for (int i = 1; i < M_; i++) {
     next_step_vec = solver_.solve(R_ * cur_step_vec);
     cur_step_vec = next_step_vec;
 
@@ -280,82 +288,50 @@ Eigen::VectorXd
     progress_pourcentage = ((double)i + 1.0) / M_ * 100.0;
     progress.write(progress_pourcentage / 100.0);
   }
-  discrete_solution = cur_step_vec.tail(N_dofs_);
+
+  full_sol_ = cur_step_vec;
+  sol = full_sol_.tail(N_dofs_);
+  // Full solution is computed
+  timestepping_performed_ = true;
   #else
   //====================
   // Your code goes here
   //====================
   #endif
 
-  return discrete_solution;
+  return sol;
 } // solveWaveABC2D
 /* SAM_LISTING_END_2 */
 
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
-Eigen::VectorXd
-    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies(
-    FUNC_RHO rho, FUNC_MU0 mu0, FUNC_NU0 nu0) {
-
-  Eigen::VectorXd energies(M_+1);
-  #if SOLUTION 
-  auto rho_mf = lf::mesh::utils::MeshFunctionGlobal(rho);
-  auto zero_mf = lf::mesh::utils::MeshFunctionGlobal(
-      [](Eigen::Vector2d) -> double { return 0.0; });
-  auto one_mf = lf::mesh::utils::MeshFunctionGlobal(
-      [](Eigen::Vector2d) -> double { return 1.0; });
-
-  lf::assemble::COOMatrix<double> A_COO = computeGalerkinMat(
-      fe_space_p_, one_mf, zero_mf, zero_mf); // stiffness matrix
-  lf::assemble::COOMatrix<double> M_COO =
-      computeGalerkinMat(fe_space_p_, zero_mf, rho_mf, zero_mf); // Mass matrix
+double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() { 
   
-  Eigen::SparseMatrix<double> A_sps = A_COO.makeSparse();
-  Eigen::SparseMatrix<double> M_sps = M_COO.makeSparse();
+  double energy;
+  #if SOLUTION 
+  Eigen::SparseMatrix<double> A_sps(N_dofs_, N_dofs_);
+  A_sps.setFromTriplets(A_triplets_vec_.begin(), A_triplets_vec_.end());
+  Eigen::SparseMatrix<double> M_sps(N_dofs_, N_dofs_);
+  M_sps.setFromTriplets(M_triplets_vec_.begin(), M_triplets_vec_.end());
+  
   Eigen::MatrixXd A(A_sps);
   Eigen::MatrixXd M(M_sps);
-
-  // Initial conditions
-  auto mf_mu0 = lf::mesh::utils::MeshFunctionGlobal(mu0);
-  auto mf_nu0 = lf::mesh::utils::MeshFunctionGlobal(nu0);
-  Eigen::VectorXd nu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_nu0);
-  Eigen::VectorXd mu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_mu0);
   
-  Eigen::VectorXd tmp1(M_+1);
-  Eigen::VectorXd tmp2(M_+1);
-  
-  tmp1(0) = (mu0_nodal.transpose() * A * mu0_nodal);
-  tmp2(0) = (nu0_nodal.transpose() * M * nu0_nodal);
-  energies(0) = tmp1(0) + tmp2(0);
-
-  Eigen::VectorXd cur_step_vec(2 * N_dofs_);
-  Eigen::VectorXd next_step_vec(2 * N_dofs_);
-  cur_step_vec.head(N_dofs_) = nu0_nodal;
-  cur_step_vec.tail(N_dofs_) = mu0_nodal; 
-  
-  // Performing timesteps
-  for (int i = 1; i < M_; i++) {
-    next_step_vec = solver_.solve(R_ * cur_step_vec);
-    
-	tmp1(i) = cur_step_vec.tail(N_dofs_).transpose() * A *  cur_step_vec.tail(N_dofs_);
-	tmp2(i) = cur_step_vec.head(N_dofs_).transpose() * M * cur_step_vec.head(N_dofs_);
-    energies(i) = tmp1(i) + tmp2(i);
-
-	cur_step_vec = next_step_vec;
-  
+  double tmp1, tmp2;
+  if(timestepping_performed_) {
+  	tmp1 = full_sol_.tail(N_dofs_).transpose() * A *  full_sol_.tail(N_dofs_);
+  	tmp2 = full_sol_.head(N_dofs_).transpose() * M * full_sol_.head(N_dofs_);
+  	energy = tmp1 + tmp2;
+  } else {
+	energy = 0.0;
+	std::cout << "You have not computed the solution and its velocity yet!"
+			  << std::endl;
   }
-  
-  tmp1(M_) = cur_step_vec.tail(N_dofs_).transpose() * A *  cur_step_vec.tail(N_dofs_);
-  tmp2(M_) = cur_step_vec.head(N_dofs_).transpose() * M * cur_step_vec.head(N_dofs_);
-  energies(M_) = tmp1(M_) + tmp2(M_); 
- 
   #else
   //====================
   // Your code goes here
   //====================
   #endif
-  return energies;
+  return energy;
 }
 
 
