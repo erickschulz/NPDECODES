@@ -7,6 +7,12 @@
 			 ...
 		   **
 		   instead of having **template <typename FUNC_*>** inside class
+		   
+		   also remove comment **// The only public member function** 
+		   add instead the additional member function
+		   ** double energies();**
+
+		   change in private members **double M_** to ** unsigned int M_** 
 
 		   also remove any **FUNC_RHO &&rho** with **FUNC_RHO rho** 
 		   (in constructor of WaveABC2DTIMESTEPPER)
