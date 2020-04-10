@@ -120,5 +120,4 @@ RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests (done)
 
 ### Chapter 6
 - RadauThreeTimestepping
-- SymplecticTimesteppingWaves
 
