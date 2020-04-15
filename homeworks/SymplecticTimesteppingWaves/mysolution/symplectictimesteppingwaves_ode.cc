@@ -29,12 +29,12 @@ Eigen::Vector2d sympTimesteppingHarmonicOscillatorODE(unsigned int m) {
 }
 
 /* SAM_LISTING_BEGIN_2 */
-  void sympTimesteppingODETest() {
+void sympTimesteppingODETest() {
   //====================
   // Your code goes here
   //====================
-  }
+}
 
-  /* SAM_LISTING_END_2 */
+/* SAM_LISTING_END_2 */
 
 }  // namespace SymplecticTimesteppingWaves

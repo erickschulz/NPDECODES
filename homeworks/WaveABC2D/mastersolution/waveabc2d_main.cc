@@ -46,11 +46,12 @@ int main(int /*argc*/, const char ** /*argv*/) {
   };
   auto nu0 = [](const Eigen::Vector2d &x) -> double { return std::cos(x(1)); };
   auto rho = [](Eigen::Vector2d) -> double { return 1.0; };
+  
   WaveABC2DTimestepper<decltype(rho), decltype(mu0), decltype(nu0)> stepper(
       fe_space_p, rho, 250, 1.0);
   Eigen::VectorXd discrete_solution = stepper.solveWaveABC2D(mu0, nu0);
   
-  Eigen::VectorXd discrete_energy = stepper.energies(rho, mu0, nu0);
+  double discrete_energy = stepper.energies();
 
   // Output results to vtk file
   lf::io::VtkWriter vtk_writer(mesh_p, "WaveABC2D_solution.vtk");

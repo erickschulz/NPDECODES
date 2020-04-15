@@ -9,10 +9,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <Eigen/Dense>
+#include <cmath>
 #include <iostream>
+
+#include <Eigen/Dense>
 
 namespace SymplecticTimesteppingWaves {
 

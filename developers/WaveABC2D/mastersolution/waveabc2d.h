@@ -111,6 +111,7 @@ public:
 
 
 /** @brief class providing timestepping for WaveABC2D */
+/* SAM_LISTING_BEGIN_9 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 class WaveABC2DTimestepper {
 public:
@@ -129,20 +130,21 @@ private:
   double step_size_; 		// time inverval
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p_;
   #if SOLUTION
-  lf::uscalfe::size_type N_dofs_;					    // nb of degrees of freedom
-  bool timestepping_performed_;							// bool to assert that energies are computed only after timestepping
+  lf::uscalfe::size_type N_dofs_; // nb of degrees of freedom
+  bool timestepping_performed_;	 // bool to assert that energies are computed only after timestepping
   // Precomputed objects
   std::vector<Eigen::Triplet<double>> A_triplets_vec_;	// stiffness matrix	
   std::vector<Eigen::Triplet<double>> M_triplets_vec_;	// mass matrix
   Eigen::SparseMatrix<double> R_;                       // rhs evaluation matrix
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_; // linear solver
-  Eigen::VectorXd full_sol_; 							// Vector for discrete solution and discrete velocity 
+  Eigen::VectorXd full_sol_; // Vector for discrete solution and discrete velocity 
   #else
   //====================
   // Your code goes here
   //====================
   #endif
 }; // class WaveABC2DTimestepper
+/* SAM_LISTING_END_9 */
 
 /* Implementing constructor of class WaveABC2DTimestepper */
 /* SAM_LISTING_BEGIN_1 */
@@ -303,6 +305,7 @@ Eigen::VectorXd
 } // solveWaveABC2D
 /* SAM_LISTING_END_2 */
 
+/* SAM_LISTING_BEGIN_10 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() { 
   
@@ -333,6 +336,7 @@ double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() {
   #endif
   return energy;
 }
+/* SAM_LISTING_END_10 */
 
 
 } // namespace WaveABC2D
