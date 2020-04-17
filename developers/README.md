@@ -99,7 +99,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 5.7: Stable Evaluation at a Point
+* Problem 5.7: Stable Evaluation at a Point **(Amélie)**
 * Problem 5.8: Trace Error Estimates **(done already?)**
 * Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
 * Problem 7.3: Upwind Quadrature
