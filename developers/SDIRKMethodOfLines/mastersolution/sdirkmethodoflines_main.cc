@@ -15,6 +15,7 @@ using namespace SDIRKMethodOfLines;
 
 int main(int /*argc*/, char ** /*argv*/)
 {
+ 
   /* SDIRK-2 ODE convergence */
   sdirk2ScalarODECvTest();
 
@@ -34,7 +35,9 @@ int main(int /*argc*/, char ** /*argv*/)
        .setNoYCells(100);
    std::shared_ptr<lf::mesh::Mesh> mesh_p{builder.Build()}; */
 
+  #if SOLUTION
   /* SAM_LISTING_BEGIN_1 */
+
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square64_bnd.msh");
@@ -86,7 +89,13 @@ int main(int /*argc*/, char ** /*argv*/)
   // Plot from .csv file using python
   std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
   /* SAM_LISTING_END_1 */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
+  #if SOLUTION
   /* SAM_LISTING_BEGIN_2 */
   // Output results for the temperature function to vtk file
   lf::io::VtkWriter vtk_writer(mesh_p, "discrete_temperature_sol.vtk");
@@ -102,5 +111,10 @@ int main(int /*argc*/, char ** /*argv*/)
   std::cout << "\n>>The discrete_heat_solution was written to:" << std::endl;
   std::cout << "\t discrete_temperature_sol.vtk\n"
             << std::endl;
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return 0;
 }

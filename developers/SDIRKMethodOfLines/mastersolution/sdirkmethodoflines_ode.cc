@@ -20,6 +20,7 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
   // function depending on the step_size. Since we take equidistant step sizes
   // in this example, the action of the evolution operator is simply
   // multiplication by a constant double
+  #if SOLUTION
   double lambda = 1.0 - 0.5 * sqrt(2.0);
   double evolution_op = 1.0 - step_size *
                                   (1.0 + step_size * std::pow(lambda, 2)) /
@@ -28,6 +29,14 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
   for (int i = 1; i < m + 1; i++) {
     sol_vec.push_back(evolution_op * sol_vec.at(i - 1));
   }
+  #else
+  //=============================================
+  // Your task is to modify the follow loop:
+  for (int i = 1; i < m + 1; i++) {
+    sol_vec.push_back(0.0);
+  }
+  //=============================================
+  #endif
   return sol_vec;
 }
 /* SAM_LISTING_END_1 */
