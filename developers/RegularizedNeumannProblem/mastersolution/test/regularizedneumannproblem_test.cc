@@ -22,7 +22,7 @@
 #include "../getgalerkinlse.h"
 #include "../regularizedneumannproblem.h"
 
-namespace RegularizedNeumann::test {
+namespace RegularizedNeumannProblem::test {
 
 // Test for getGalerkinLSE method (not used in problem, but example code in PDF)
 TEST(RegularizedNeumannProblem, getGalerkinLSE) {
@@ -251,4 +251,4 @@ TEST(RegularizedNeumannProblem, solution_test_augment_gen) {
   EXPECT_NEAR((solution_vec_f - result_f.second).norm(), 0.0, eps);
 }
 
-}  // namespace RegularizedNeumann::test
+}  // namespace RegularizedNeumannProblem::test
