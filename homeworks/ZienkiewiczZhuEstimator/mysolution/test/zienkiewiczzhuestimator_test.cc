@@ -6,11 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <gtest/gtest.h>
-
+#include <memory>
+// Eigen includes
 #include <Eigen/Core>
 #include <unsupported/Eigen/KroneckerProduct>
 
+#include <gtest/gtest.h>
+// Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
