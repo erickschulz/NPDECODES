@@ -6,19 +6,21 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <cmath>
+#include <memory>
+
 // Eigen includes
 #include <Eigen/Core>
-#include <Eigen/SparseLU>
+
+#include <gtest/gtest.h>
 // Lehrfem++ includes
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
 #include "../waveabc2d.h"
 
-#include <gtest/gtest.h>
-
 namespace WaveABC2D::test {
+
 TEST(WaveABC2D, scalarImplicitTimestepping) {
   double eps = 1.0e-5;
   double epsilon = 0.5;

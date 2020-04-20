@@ -10,6 +10,8 @@
 #include <utility>
 // Eigen includes
 #include <Eigen/Core>
+
+#include <gtest/gtest.h>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
@@ -18,14 +20,13 @@
 
 #include "../boundarywave.h"
 
-#include <gtest/gtest.h>
+namespace BoundaryWave::test {
 
 auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
 const lf::io::GmshReader reader(std::move(mesh_factory),
-                                CURRENT_SOURCE_DIR "/meshes/simple.msh");
+                                CURRENT_SOURCE_DIR "/../../meshes/simple.msh");
 auto mesh_p = reader.mesh();
 
-namespace BoundaryWave::test {
 TEST(BoundaryWave, buildM) {
   auto fe_space_p =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);

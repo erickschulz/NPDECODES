@@ -20,13 +20,14 @@ public:
   /** @brief default constructor */
   explicit LinFEMassMatrixProvider() = default;
   /** @brief Default implement: all cells are active */
-  virtual bool isActive(const lf::mesh::Entity & /*cell*/) { return true; }
+  virtual bool isActive(const lf::mesh::Entity &/*cell*/) { return true; }
   /** @brief Main method for computing the element vector
    * @param cell refers to current cell for which the element vector is desired
    * The implementation uses an analytic formula defined over triangular cells*/
   Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
 }; // class LinFEMassMatrixProvider
 /** Implementing member function Eval of class LinFEMassMatrixProvider*/
+/* SAM_LISTING_BEGIN_8 */
 Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
     const lf::mesh::Entity &tria)
 {
@@ -37,6 +38,7 @@ Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
 
   return elMat; // return the local mass element matrix
 } // LinFEMassMatrixProvider::Eval
+/* SAM_LISTING_END_8 */
 
 /** @brief This class implements a Lehrfem++ matrix provider defining a
 LinearMassEdgeMatrixProvider<FUNCTOR>::Eval function returning the local EDGE
@@ -64,6 +66,7 @@ private:
   double cool_coeff_;
 }; // class LinearMassEdgeMatrixProvider
 /* Implementing member function Eval of class LinearMassEdgeMatrixProvider */
+/* SAM_LISTING_BEGIN_9 */
 template <typename FUNCTOR>
 Eigen::Matrix<double, 2, 2> LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(
     const lf::mesh::Entity &edge)
@@ -74,6 +77,7 @@ Eigen::Matrix<double, 2, 2> LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(
   //====================
   return (Eigen::Matrix<double, 2, 2>::Zero());
 } // LinearMassEdgeMatrixProvider<FUNCTOR>::Eval
+/* SAM_LISTING_END_9 */
 
 /* SAM_LISTING_BEGIN_1 */
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
