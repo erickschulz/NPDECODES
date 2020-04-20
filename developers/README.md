@@ -38,12 +38,12 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |:heavy_check_mark: |  |  |
 | 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
 | 7-1 | `ExpFittedUpwind` | | | | |
 | 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   |
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
 | ? | `ExtendedMUSCL` |  |  |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
