@@ -74,7 +74,6 @@ compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
   return A_crs;
 }
-
 /* SAM_LISTING_END_1 */
 
 double compH1seminorm(const lf::assemble::DofHandler &dofh,
@@ -93,10 +92,15 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh,
 #if SOLUTION
   // constant zero function
   auto const_zero = [](Eigen::Vector2d x) -> double { return 0.0; };
-  auto A =
-      compGalerkinMatrix(dofh, const_zero, const_zero, std::forward<FUNCTION>(w));
+  // Generate Galerkin matrix for boundary term alone, unsing the weight
+  // function as coefficient. Note the use of std::forward to preserve rvalue
+  // types.
+  auto A = compGalerkinMatrix(dofh, const_zero, const_zero,
+                              std::forward<FUNCTION>(w));
+  // A vector with all components set to one
   Eigen::VectorXd ones = Eigen::VectorXd::Ones(dofh.NumDofs());
-  result = std::sqrt(ones.transpose() * A * u);
+  // The trick: evaluate the functional as 1^T*A*u
+  result = ones.transpose() * A * u;
 #else
   //====================
   // Your code goes here
@@ -104,7 +108,6 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh,
 #endif
   return result;
 }
-
 /* SAM_LISTING_END_2 */
 
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh);
