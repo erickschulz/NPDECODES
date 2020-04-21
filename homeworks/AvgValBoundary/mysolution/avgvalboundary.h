@@ -74,7 +74,6 @@ compGalerkinMatrix(const lf::assemble::DofHandler &dofh, FUNC_ALPHA &&alpha,
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
   return A_crs;
 }
-
 /* SAM_LISTING_END_1 */
 
 double compH1seminorm(const lf::assemble::DofHandler &dofh,
@@ -95,7 +94,6 @@ double compBoundaryFunctional(const lf::assemble::DofHandler &dofh,
   //====================
   return result;
 }
-
 /* SAM_LISTING_END_2 */
 
 Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh);
