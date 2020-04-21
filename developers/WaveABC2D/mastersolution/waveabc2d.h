@@ -316,13 +316,10 @@ double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() {
   Eigen::SparseMatrix<double> M_sps(N_dofs_, N_dofs_);
   M_sps.setFromTriplets(M_triplets_vec_.begin(), M_triplets_vec_.end());
   
-  Eigen::MatrixXd A(A_sps);
-  Eigen::MatrixXd M(M_sps);
-  
   double tmp1, tmp2;
   if(timestepping_performed_) {
-  	tmp1 = full_sol_.tail(N_dofs_).transpose() * A *  full_sol_.tail(N_dofs_);
-  	tmp2 = full_sol_.head(N_dofs_).transpose() * M * full_sol_.head(N_dofs_);
+  	tmp1 = full_sol_.tail(N_dofs_).transpose() * A_sps * full_sol_.tail(N_dofs_);
+  	tmp2 = full_sol_.head(N_dofs_).transpose() * M_sps * full_sol_.head(N_dofs_);
   	energy = tmp1 + tmp2;
   } else {
 	energy = 0.0;
