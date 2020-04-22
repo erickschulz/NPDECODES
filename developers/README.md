@@ -109,15 +109,5 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 # TO DO LIST
 
-## Missing unitests
-
-RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests (done)
-
-### Not in NPDEFL_Problems
-- BoundaryWave (done)
-- ZienkiewiczZhuEstimator (done)
-- WaveABC2D (done)
-
-### Chapter 6
-- RadauThreeTimestepping
-
+- ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.
+- RadauThreeTimestepping: Some unit tests are missing.
