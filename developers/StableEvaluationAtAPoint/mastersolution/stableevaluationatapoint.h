@@ -145,7 +145,7 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
       }
 
       // Compute and add the elemental contribution
-      PDLval += v(midpoint) * n.dot(gradG(x, midpoint)) * lf::geometry::Volume(*geo_ptr);
+      PDLval += v(midpoint) * (gradG(x, midpoint)).dot(n) * lf::geometry::Volume(*geo_ptr);
     }
   }
 
@@ -168,7 +168,7 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 
   const auto gradu = [] (Eigen::Vector2d x) -> Eigen::Vector2d {
     Eigen::Vector2d one(1.0, 0.0);
-    return (1.0/ (x + one).norm() ) * (x + one);
+    return (1.0 / (x + one).norm() ) * (x + one);
   };
 
   // Define a Functor for the dot product of grad u(x) * n(x)
@@ -233,7 +233,7 @@ double Psi(const Eigen::Vector2d y, Eigen::Vector2d gradPsi, double laplPsi) {
     
 	double dot = (y - half).transpose() * (y - half);
     laplPsi = 2 * constant * constant * (1.0 / ((y - half).norm() * (y - half).norm()))
-                * dot * 
+                * (y-half).dot(y-half) * 
 				( std::sin( constant * ((y - half).norm() - 0.5) )
                   * std::sin( constant * ((y - half).norm() - 0.5) )
                   - std::cos( constant * ((y - half).norm() - 0.5) )
@@ -272,7 +272,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
 
   // Loop over all cells
   for(const lf::mesh::Entity *entity : mesh->Entities(0)) {
-    //LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kQuad(), "Not on Square!");
+    LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(), "Not on triangular mesh!");
 
     const lf::geometry::Geometry &geo{*entity->Geometry()};
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
@@ -283,7 +283,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
       Eigen::VectorXd laplPsi(P);
 
 	  Psi( zeta.col(l), gradPsi, laplPsi(l) );
-      std::cout << "lapl" << laplPsi(l) << std::endl;
+      //std::cout << "lapl" << laplPsi(l) << std::endl;
 	  val -= w_ref[l] * u(zeta.col(l)) *
                       ( 2 * (gradG(x, zeta.col(l))).dot(gradPsi)
                         + G(x, zeta.col(l)) * laplPsi(l)

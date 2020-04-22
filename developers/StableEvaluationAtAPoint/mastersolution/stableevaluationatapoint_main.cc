@@ -78,8 +78,7 @@ int main(int /*argc*/, const char** /*argv*/) {
   std::cout << "       ERRORS FOR STABLEEVALUATIONATAPOINT				 " << std::endl;
   std::cout << "*********************************************************" << std::endl;
   
-
-  std::cout << "\n" << std::endl;
+  std::cout << "---------------------------------------------------------" << std::endl;
   std::cout << "mesh size"
   			<< "\t| error pointEval"
 			<< "\t\t| error stab_pointEval" << std::endl;
@@ -90,7 +89,17 @@ int main(int /*argc*/, const char** /*argv*/) {
 			  << "          " << errors_Eval(i) << "\t \t"
     		  << "          " << errors_stabEval(i) << std::endl;
   }
+  std::cout << "---------------------------------------------------------" << std::endl;
+ 
+  // Define output file format
+  const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
+                                         Eigen::DontAlignCols, ", ", "\n");
 
+  std::ofstream file;
+  file.open("errors_Eval.csv");
+  file << errors_Eval.format(CSVFormat);
+  file.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/errors_Eval.csv" << std::endl;
 
 
   return 0;
