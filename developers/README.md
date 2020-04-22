@@ -31,7 +31,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
-| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :white_check_mark: |  | Philippe  |
+| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -109,15 +109,5 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 
 # TO DO LIST
 
-## Missing unitests
-
-RegularizedNeumannProblem: getGalerkinLSE(...) has no unit tests (done)
-
-### Not in NPDEFL_Problems
-- BoundaryWave (done)
-- ZienkiewiczZhuEstimator (done)
-- WaveABC2D (done)
-
-### Chapter 6
-- RadauThreeTimestepping
-
+- ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.
+- RadauThreeTimestepping: Some unit tests are missing.
