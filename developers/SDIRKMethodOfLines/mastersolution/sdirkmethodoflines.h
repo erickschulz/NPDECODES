@@ -23,8 +23,9 @@
 namespace SDIRKMethodOfLines {
 
 /** @brief class providing timestepping for convective cooling problem */
+/* SAM_LISTING_BEGIN_1 */
 class SDIRK2Timestepper {
- public:
+public:
   // Disabled constructor
   SDIRK2Timestepper() = delete;
   SDIRK2Timestepper(const SDIRK2Timestepper &) = delete;
@@ -41,12 +42,12 @@ class SDIRK2Timestepper {
   // Discrete evolution operator for SDIRK-2
   Eigen::VectorXd discreteEvolutionOperator(const Eigen::VectorXd &mu) const;
 
- private:
-  double tau_;  // step size (in time)
+private:
+  double tau_; // step size (in time)
 #if SOLUTION
   // Sparses matrices holding Galerkin matrices
-  Eigen::SparseMatrix<double> A_;  // Element matrix (Laplace + bdy mass)
-  double lambda_;                  // coefficient for SDIRK-2 Butcher tableau
+  Eigen::SparseMatrix<double> A_; // Element matrix (Laplace + bdy mass)
+  double lambda_;                 // coefficient for SDIRK-2 Butcher tableau
   // For fixed step-size in time, the linear system of equations implicitely
   // defining the Runge-Kutta increments are independent of time. We can thus
   // precompute the LU decompositions for more efficiency. SDIRK-2 is diagonally
@@ -59,15 +60,17 @@ class SDIRK2Timestepper {
   //====================
 #endif
 };
+/* SAM_LISTING_END_1 */
 
 /* Declaration of the functions of the library sdirkmethodoflines.h */
 double thermalEnergy(const lf::assemble::DofHandler &, const Eigen::VectorXd &);
 
-std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
-    const lf::assemble::DofHandler &, unsigned int, double, Eigen::VectorXd);
+std::pair<Eigen::VectorXd, Eigen::VectorXd>
+solveTemperatureEvolution(const lf::assemble::DofHandler &, unsigned int,
+                          double, Eigen::VectorXd);
 
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh,
                          double cool_coeff);
 
-}  // namespace SDIRKMethodOfLines
+} // namespace SDIRKMethodOfLines
