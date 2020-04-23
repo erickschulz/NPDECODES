@@ -6,6 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <complex>
+
 #include <Eigen/Core>
 
 #include <lf/mesh/mesh.h>

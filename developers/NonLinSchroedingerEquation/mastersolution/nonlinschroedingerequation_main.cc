@@ -6,12 +6,14 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <cmath>
+#include <complex>
 #include <iostream>
 #include <memory>
 #include <utility>
 
 #include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include <Eigen/SparseCholesky>
 
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
@@ -19,6 +21,8 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include "nonlinschroedingerequation.h"
+
+using namespace std::literals::complex_literals;
 
 int main() {
 
@@ -34,7 +38,9 @@ int main() {
   NonLinSchroedingerEquation::MassElementMatrixProvider mass_emp;
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, mass_emp, D_COO);
   Eigen::SparseMatrix<double> D = D_COO.makeSparse();
-  //std::cout << Eigen::MatrixXd(D) << std::endl;
+  auto inv = [] (double x) { return x == 0.0 ? 0.0 : 1.0 / x; };
+  Eigen::SparseMatrix<std::complex<double>> Minv = -1i * D.unaryExpr(inv);
+  //std::cout << Eigen::MatrixXcd(Minv) << std::endl;
 
   lf::assemble::COOMatrix<double> A_COO(N_dofs, N_dofs);
   NonLinSchroedingerEquation::StiffnessElementMatrixProvider stiffness_emp;
@@ -42,5 +48,23 @@ int main() {
   Eigen::SparseMatrix<double> A = A_COO.makeSparse();
   //std::cout << Eigen::MatrixXd(A) << std::endl;
 
+  int M = 100;
+  double T = 1.0;
+  double tau = T / M;
+
+  Eigen::SparseMatrix<std::complex<double>> I(N_dofs, N_dofs);
+  I.setIdentity();
+  Eigen::SparseMatrix<std::complex<double>> temp = tau * Minv * A.cast<std::complex<double>>();
+  Eigen::SparseMatrix<std::complex<double>> B_plus = I + temp;
+  Eigen::SparseMatrix<std::complex<double>> B_minus = I - temp;
+/*
+  auto f = [tau] (std::complex<double> z) { return -1i * z * std::norm(z) * tau; }
+
+  SimplicialLDLT<Eigen::SparseMatrix<std::complex<double>>> solver;
+  Eigen::VectorXcd mu;
+  for (int i = 0; i < M; ++i) {
+    mu = mu.unaryExpr(f)
+  }
+*/
   return 0;
 }

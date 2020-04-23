@@ -30,7 +30,9 @@ Eigen::Matrix3d MassElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
 #endif
   return element_matrix;
 }
+/* SAM_LISTING_END_1 */
 
+/* SAM_LISTING_BEGIN_2 */
 Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
   LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
   Eigen::Matrix3d element_matrix;
@@ -50,7 +52,7 @@ Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cel
 #endif
   return element_matrix;
 }
-/* SAM_LISTING_END_1 */
+/* SAM_LISTING_END_2 */
 
 /*
   Eigen::Matrix3d S33;
