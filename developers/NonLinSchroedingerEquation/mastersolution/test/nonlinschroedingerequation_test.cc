@@ -14,16 +14,11 @@
 
 namespace NonLinSchroedingerEquation::test {
 
-TEST(NonLinSchroedingerEquation, dummyFunction) {
-  double x = 0.0;
-  int n = 0;
-
-  Eigen::Vector2d v = NonLinSchroedingerEquation::dummyFunction(x, n);
-
-  Eigen::Vector2d v_ref = {1.0, 1.0};
-
+TEST(NonLinSchroedingerEquation, MassElementMatrixProvider) {
+  Eigen::Matrix3d D = Eigen::Matrix3d::Identity();
+  Eigen::Matrix3d D_ref = Eigen::Matrix3d::Identity();
   double tol = 1.0e-8;
-  ASSERT_NEAR(0.0, (v - v_ref).lpNorm<Eigen::Infinity>(), tol);
+  ASSERT_NEAR(0.0, (D - D_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
 }  // namespace NonLinSchroedingerEquation::test
