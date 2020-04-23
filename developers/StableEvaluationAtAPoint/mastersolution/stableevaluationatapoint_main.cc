@@ -90,7 +90,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
     std::cout << "u(x)" << u(x) << ", ux" << ux(k) << std::endl;
   }
 
-  // Computing rates of convergence of approx solutions to BVP and gradient VP
+  // Computing rates of convergence 
   double ratesEval[N_meshes - 1];
   double ratesStabEval[N_meshes - 1];
   double log_denum;

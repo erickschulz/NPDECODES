@@ -56,7 +56,6 @@ Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
 
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
 
-  double Gconst = 1.0 / (2.0 * M_PI);
   res = (x - y) / (2.0 * M_PI * (x - y).squaredNorm());
 
   return res;
