@@ -259,7 +259,7 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-
+/*
     laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
                 * (y-half).dot(y-half) * 
 				( std::pow(std::sin( constant * (dist - 0.5) ), 2)
@@ -268,15 +268,15 @@ double laplPsi(const Eigen::Vector2d y) {
                 * std::cos( constant * (dist - 0.5) )
                 * std::sin( constant * (dist - 0.5) );
 
-/*
+*/
     laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
 				* (y-half).dot(y-half) * 
 				( std::pow(std::sin( constant * (dist - 0.5) ), 2) 
 				- std::pow(std::cos( constant * (dist - 0.5) ), 2) )
 				- (2 * constant * std::cos( constant * (dist - 0.5) )
 				* std::sin( constant * (dist - 0.5) ) / dist )
-				* ( 1.0 -  (y-half).dot(y-half)/ (y - half).squaredNorm() );
-*/
+				* ( 1.0 -  (y-half).dot(y-half) / (y - half).squaredNorm() );
+
 /* MY FAILED ATTEMPT AT COMPUTING THE GRADIENT  
     double diff11 = constant*(1.0 - pow(y(0)-0.5,2))/pow(dist,3);
     double diff21 = constant*(1.0 - pow(y(1)-0.5,2))/pow(dist,3);
@@ -335,7 +335,16 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
              gram_dets[l];
     }
   }
+  
+  
+  auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y) {
 
+	return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y) ));
+  }
+  );
+
+  double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 2);
+  
   return val;
 }
 
