@@ -45,7 +45,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `ElectrostaticForce` | :heavy_check_mark: |  |  |  |
-| ? | `ExtendedMUSCL` |  |  |  |  |
+| ? | `ExtendedMUSCL` | :white_check_mark: |  |  | Philipp L. |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` | :white_check_mark: |  |  | Philipp Egg |
