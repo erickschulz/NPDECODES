@@ -19,6 +19,7 @@
 
 namespace StableEvaluationAtAPoint {
 
+
 /* Returns the mesh size for the given mesh. */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
 
@@ -192,55 +193,7 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   return error;
 }
 
-// I HAVE COMMENTED THIS OUT BUT ALSO ADDED THE PASSING BY REFERENCE SO THAT
-// THE FUNCTION ACTUALLY DO SOMETHING
-/* Computes Psi_x(y), grad(Psi_x(y)), and its laplacian.
- * Returns Psi_x(y).
- */
-/*double Psi(const Eigen::Vector2d y, Eigen::Vector2d &gradPsi, double &laplPsi) {
-
-  double Psi_xy;
-  
-  Eigen::Vector2d half(0.5, 0.5);
-  double constant = M_PI/(0.5*std::sqrt(2) - 1.0);
-
-  if( (y - half).norm() <= 0.25*std::sqrt(2) ) {
-    Psi_xy = 0.0;
-    gradPsi(0) = 0.0;
-    gradPsi(1) = 0.0;
-    laplPsi = 0.0;
-
-  } else if( (y - half).norm() >= 0.5 ) {
-    Psi_xy = 1.0;
-    gradPsi(0) = 0.0;
-    gradPsi(1) = 0.0;
-    laplPsi = 0.0;
-
-  } else {
-    Psi_xy = std::cos( constant * ((y - half).norm() - 0.5) )
-            * std::cos( constant * ((y - half).norm() - 0.5) );
-
-    gradPsi = 2 * std::cos( constant * ((y - half).norm() - 0.5) )
-                * (-1.0) * std::sin( constant * ((y - half).norm() - 0.5) )
-                * constant * (1.0 / (y - half).norm()) * (y - half);
-    
-	double dot = (y - half).transpose() * (y - half);
-    laplPsi = 2 * constant * constant * (1.0 / ((y - half).norm() * (y - half).norm()))
-                * (y-half).dot(y-half) * 
-				( std::sin( constant * ((y - half).norm() - 0.5) )
-                  * std::sin( constant * ((y - half).norm() - 0.5) )
-                  - std::cos( constant * ((y - half).norm() - 0.5) )
-                  * std::cos( constant * ((y - half).norm() - 0.5) )
-                )
-              - 2 * constant * (1.0 / (y - half).norm())
-              * std::cos( constant * ((y - half).norm() - 0.5) )
-              * std::sin( constant * ((y - half).norm() - 0.5) );
-  }
-
-  return Psi_xy;
-
-}*/
-
+/* Computes Psi_x(y). */
 double Psi(const Eigen::Vector2d y) {
 
   double Psi_xy;
@@ -256,14 +209,14 @@ double Psi(const Eigen::Vector2d y) {
     Psi_xy = 1.0;
 
   } else {
-    Psi_xy = pow(std::cos(constant * (dist - 0.5)), 2);
+    Psi_xy = std::pow(std::cos(constant * (dist - 0.5)), 2);
 
   }
 
   return Psi_xy;
 }
 
-
+/* Computes grad(Psi_x(y)). */
 Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
 
   Eigen::Vector2d gradPsi_xy;
@@ -290,7 +243,7 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
   return gradPsi_xy;
 }
 
-
+/* Computes Laplacian of Psi_x(y). */
 double laplPsi(const Eigen::Vector2d y) {
 
   double laplPsi_xy;
@@ -307,18 +260,23 @@ double laplPsi(const Eigen::Vector2d y) {
 
   } else {
 
-    laplPsi_xy = 2 * constant * constant * (1.0 / ((y - half).norm() * (y - half).norm()))
+    laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
                 * (y-half).dot(y-half) * 
-				( std::sin( constant * ((y - half).norm() - 0.5) )
-                  * std::sin( constant * ((y - half).norm() - 0.5) )
-                  - std::cos( constant * ((y - half).norm() - 0.5) )
-                  * std::cos( constant * ((y - half).norm() - 0.5) )
-                )
-              - 2 * constant * (1.0 / (y - half).norm())
-              * std::cos( constant * ((y - half).norm() - 0.5) )
-              * std::sin( constant * ((y - half).norm() - 0.5) );
+				( std::pow(std::sin( constant * (dist - 0.5) ), 2)
+                - std::pow(std::cos( constant * (dist - 0.5) ), 2) )
+                - (2 * constant / dist)
+                * std::cos( constant * (dist - 0.5) )
+                * std::sin( constant * (dist - 0.5) );
 
-
+/*
+    laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
+				* (y-half).dot(y-half) * 
+				( std::pow(std::sin( constant * (dist - 0.5) ), 2) 
+				- std::pow(std::cos( constant * (dist - 0.5) ), 2) )
+				- (2 * constant * std::cos( constant * (dist - 0.5) )
+				* std::sin( constant * (dist - 0.5) ) / dist )
+				* ( 1.0 -  (y-half).dot(y-half)/ (y - half).squaredNorm() );
+*/
 /* MY FAILED ATTEMPT AT COMPUTING THE GRADIENT  
     double diff11 = constant*(1.0 - pow(y(0)-0.5,2))/pow(dist,3);
     double diff21 = constant*(1.0 - pow(y(1)-0.5,2))/pow(dist,3);
@@ -370,12 +328,10 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
 
-  // I LIKE THIS BETTER CALLING THE FOLLOWING LIKE THIS INSTEAD OF PASSING
-  // BY REFERENCE A DOUBLE FOR THE LAPLACIAN AND VECTOR OF GRADIENT
     for (int l = 0; l < P; l++) {
       val -= w_ref[l] * u(zeta.col(l)) *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
-              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
+             G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
              gram_dets[l];
     }
   }
@@ -404,5 +360,6 @@ double stab_pointEval(
 
   return res;
 }
+
 
 } /* namespace StableEvaluationAtAPoint */
