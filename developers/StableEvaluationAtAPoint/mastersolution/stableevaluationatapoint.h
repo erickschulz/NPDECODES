@@ -19,7 +19,6 @@
 
 namespace StableEvaluationAtAPoint {
 
-
 /* Returns the mesh size for the given mesh. */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
 
@@ -37,7 +36,6 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   }
 
   return mesh_size;
-
 }
 
 /* Returns G(x,y). */
@@ -46,10 +44,9 @@ double G(Eigen::Vector2d x, Eigen::Vector2d y) {
   double res;
 
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-  res = (-1.0/(2*M_PI)) * std::log( (x-y).norm() );
+  res = (-1.0 / (2.0 * M_PI)) * std::log((x - y).norm());
 
   return res;
-
 }
 
 /* Returns the gradient of G(x,y). */
@@ -59,10 +56,10 @@ Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
 
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
 
-  res = (-1.0/(2*M_PI * (x-y).norm())) * (x - y);
+  double Gconst = 1.0 / (2.0 * M_PI);
+  res = (x - y) / (2.0 * M_PI * (x - y).squaredNorm());
 
   return res;
-
 }
 
 /* Evaluates the Integral P_SL using the local midpoint rule
@@ -77,21 +74,18 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
 
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-  auto edge_pred = [&bd_flags_edge] (const lf::mesh::Entity &edge) ->bool {
-      return bd_flags_edge(edge);
-  };
 
   // Loop over boundary edges
-  for(const lf::mesh::Entity *e: mesh->Entities(1)) {
-    if(edge_pred(*e)) {
+  for (const lf::mesh::Entity *e : mesh->Entities(1)) {
+    if (bd_flags_edge(*e)) {
       const lf::geometry::Geometry *geo_ptr = e->Geometry();
-      LF_ASSERT_MSG(geo_ptr != nullptr , "Missing geometry!") ;
+      LF_ASSERT_MSG(geo_ptr != nullptr, "Missing geometry!");
       // Fetch coordinates of corner points
       Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
       // Determine midpoints of edges
       Eigen::Vector2d midpoint;
-      midpoint(0) = 0.5 * (corners(0,0) + corners(0,1));
-      midpoint(1) = 0.5 * (corners(1,0) + corners(1,1));
+      midpoint(0) = 0.5 * (corners(0, 0) + corners(0, 1));
+      midpoint(1) = 0.5 * (corners(1, 0) + corners(1, 1));
 
       // Compute and add the elemental contribution
       PSLval += v(midpoint) * G(x, midpoint) * lf::geometry::Volume(*geo_ptr);
@@ -99,7 +93,6 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
   }
 
   return PSLval;
-
 }
 
 /* Evaluates the Integral P_DL using the local midpoint rule
@@ -108,36 +101,35 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
  */
 template <typename FUNCTOR>
 double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
-            const Eigen::Vector2d x) {
+           const Eigen::Vector2d x) {
 
   double PDLval = 0.0;
 
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-  auto edge_pred = [&bd_flags_edge] (const lf::mesh::Entity &edge) -> bool {
-      return bd_flags_edge(edge);
-  };
 
   // Loop over boundary edges
-  for(const lf::mesh::Entity *e: mesh->Entities(1)) {
-    if(edge_pred(*e)) {
+  for (const lf::mesh::Entity *e : mesh->Entities(1)) {
+    if (bd_flags_edge(*e)) {
       const lf::geometry::Geometry *geo_ptr = e->Geometry();
-      LF_ASSERT_MSG(geo_ptr != nullptr , "Missing geometry!") ;
+      LF_ASSERT_MSG(geo_ptr != nullptr, "Missing geometry!");
       // Fetch coordinates of corner points
       Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
       // Determine midpoints of edges
       Eigen::Vector2d midpoint;
-      midpoint(0) = 0.5 * (corners(0,0) + corners(0,1));
-      midpoint(1) = 0.5 * (corners(1,0) + corners(1,1));
+      midpoint(0) = 0.5 * (corners(0, 0) + corners(0, 1));
+      midpoint(1) = 0.5 * (corners(1, 0) + corners(1, 1));
       // Determine the normal vector n on the unit square
       Eigen::Vector2d n;
-      if( (midpoint(0) > midpoint(1)) && (midpoint(0) < 1.0 - midpoint(1)) ) {
+      if ((midpoint(0) > midpoint(1)) && (midpoint(0) < 1.0 - midpoint(1))) {
         n << 0.0, -1.0;
 
-      } else if ( (midpoint(0) > midpoint(1)) && (midpoint(0) > 1.0 - midpoint(1)) ) {
+      } else if ((midpoint(0) > midpoint(1)) &&
+                 (midpoint(0) > 1.0 - midpoint(1))) {
         n << 1.0, 0.0;
 
-      } else if ( (midpoint(0) < midpoint(1)) && (midpoint(0) > 1.0 - midpoint(1)) ) {
+      } else if ((midpoint(0) < midpoint(1)) &&
+                 (midpoint(0) > 1.0 - midpoint(1))) {
         n << 0.0, 1.0;
 
       } else {
@@ -145,7 +137,8 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
       }
 
       // Compute and add the elemental contribution
-      PDLval += v(midpoint) * (gradG(x, midpoint)).dot(n) * lf::geometry::Volume(*geo_ptr);
+      PDLval += v(midpoint) * (gradG(x, midpoint)).dot(n) *
+                lf::geometry::Volume(*geo_ptr);
     }
   }
 
@@ -153,7 +146,7 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
 }
 
 /* This function computes u(x) = P_SL(grad u * n) - P_DL(u).
- * For u(x) = std::log( (x + one).norm() ) and x = (0.3; 0.4),
+ * For u(x) = log( (x + (1, 0)^T).norm() ) and x = (0.3, 0.4)^T,
  * it computes the difference between the analytical and numerical
  * evaluation of u. The mesh is supposed to be the unit square.
  */
@@ -161,27 +154,27 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 
   double error = 0.0;
 
-  const auto u = [] (Eigen::Vector2d x) -> double {
+  const auto u = [](Eigen::Vector2d x) -> double {
     Eigen::Vector2d one(1.0, 0.0);
-    return std::log( (x + one).norm() );
+    return std::log((x + one).norm());
   };
 
-  const auto gradu = [] (Eigen::Vector2d x) -> Eigen::Vector2d {
+  const auto gradu = [](Eigen::Vector2d x) -> Eigen::Vector2d {
     Eigen::Vector2d one(1.0, 0.0);
-    return (1.0 / (x + one).norm() ) * (x + one);
+    return (x + one) / (x + one).squaredNorm();
   };
 
   // Define a Functor for the dot product of grad u(x) * n(x)
-  const auto dotgradu_n = [gradu] (const Eigen::Vector2d x) -> double {
+  const auto dotgradu_n = [gradu](const Eigen::Vector2d x) -> double {
     // Determine the normal vector n on the unit square
     Eigen::Vector2d n;
-    if( (x(0) > x(1)) && (x(0) < 1.0 - x(1)) ) {
-       n << 0.0, -1.0;
+    if ((x(0) > x(1)) && (x(0) < 1.0 - x(1))) {
+      n << 0.0, -1.0;
 
-    } else if( (x(0) > x(1)) && (x(0) > 1.0 - x(1)) ) {
+    } else if ((x(0) > x(1)) && (x(0) > 1.0 - x(1))) {
       n << 1.0, 0.0;
 
-    } else if( (x(0) < x(1)) &&  (x(0) > 1.0 - x(1)) ) {
+    } else if ((x(0) < x(1)) && (x(0) > 1.0 - x(1))) {
       n << 0.0, 1.0;
 
     } else {
@@ -198,13 +191,14 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   error = std::abs(u(x) - rhs);
 
   return error;
-
 }
 
+// I HAVE COMMENTED THIS OUT BUT ALSO ADDED THE PASSING BY REFERENCE SO THAT
+// THE FUNCTION ACTUALLY DO SOMETHING
 /* Computes Psi_x(y), grad(Psi_x(y)), and its laplacian.
  * Returns Psi_x(y).
  */
-double Psi(const Eigen::Vector2d y, Eigen::Vector2d gradPsi, double laplPsi) {
+/*double Psi(const Eigen::Vector2d y, Eigen::Vector2d &gradPsi, double &laplPsi) {
 
   double Psi_xy;
   
@@ -246,15 +240,113 @@ double Psi(const Eigen::Vector2d y, Eigen::Vector2d gradPsi, double laplPsi) {
 
   return Psi_xy;
 
+}*/
+
+double Psi(const Eigen::Vector2d y) {
+
+  double Psi_xy;
+
+  Eigen::Vector2d half(0.5, 0.5);
+  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  double dist = (y - half).norm();
+
+  if (dist <= 0.25 * std::sqrt(2)) {
+    Psi_xy = 0.0;
+
+  } else if (dist >= 0.5) {
+    Psi_xy = 1.0;
+
+  } else {
+    Psi_xy = pow(std::cos(constant * (dist - 0.5)), 2);
+
+  }
+
+  return Psi_xy;
+}
+
+
+Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
+
+  Eigen::Vector2d gradPsi_xy;
+
+  Eigen::Vector2d half(0.5, 0.5);
+  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  double dist = (y - half).norm();
+
+  if (dist <= 0.25 * std::sqrt(2)) {
+    gradPsi_xy(0) = 0.0;
+    gradPsi_xy(1) = 0.0;
+
+  } else if (dist >= 0.5) {
+    gradPsi_xy(0) = 0.0;
+    gradPsi_xy(1) = 0.0;
+
+  } else {
+
+    gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
+                 std::sin(constant * (dist - 0.5)) * (constant / dist) *
+                 (y - half);
+  }
+
+  return gradPsi_xy;
+}
+
+
+double laplPsi(const Eigen::Vector2d y) {
+
+  double laplPsi_xy;
+
+  Eigen::Vector2d half(0.5, 0.5);
+  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  double dist = (y - half).norm();
+
+  if (dist <= 0.25 * std::sqrt(2)) {
+    laplPsi_xy = 0.0;
+
+  } else if (dist >= 0.5) {
+    laplPsi_xy = 0.0;
+
+  } else {
+
+    laplPsi_xy = 2 * constant * constant * (1.0 / ((y - half).norm() * (y - half).norm()))
+                * (y-half).dot(y-half) * 
+				( std::sin( constant * ((y - half).norm() - 0.5) )
+                  * std::sin( constant * ((y - half).norm() - 0.5) )
+                  - std::cos( constant * ((y - half).norm() - 0.5) )
+                  * std::cos( constant * ((y - half).norm() - 0.5) )
+                )
+              - 2 * constant * (1.0 / (y - half).norm())
+              * std::cos( constant * ((y - half).norm() - 0.5) )
+              * std::sin( constant * ((y - half).norm() - 0.5) );
+
+
+/* MY FAILED ATTEMPT AT COMPUTING THE GRADIENT  
+    double diff11 = constant*(1.0 - pow(y(0)-0.5,2))/pow(dist,3);
+    double diff21 = constant*(1.0 - pow(y(1)-0.5,2))/pow(dist,3);
+
+    double diff12 = 2.0 * pow(std::sin(constant * (dist- 0.5)),2) * constant * (y(0)-0.5)/dist
+                     -2.0*pow(std::cos(constant * (dist- 0.5)),2) * constant * (y(0)-0.5)/dist;
+    double diff22 = 2.0 * pow(std::sin(constant * (dist- 0.5)),2) * constant * (y(1)-0.5)/dist
+                     -2.0*pow(std::cos(constant * (dist- 0.5)),2) * constant * (y(1)-0.5)/dist;
+
+    double div1 = diff11 * -2.0 * std::cos(constant * (dist - 0.5)) * std::sin(constant * (dist - 0.5))
+			+ (constant*(y(0)-0.5)/dist)*diff12;
+    double div2 = diff21 * -2.0 * std::cos(constant * (dist - 0.5)) * std::sin(constant * (dist - 0.5))
+			+ (constant*(y(1)-0.5)/dist)*diff22;
+
+   laplPsi_xy = div1 + div1;
+*/
+  }
+
+  return laplPsi_xy;
 }
 
 /* Computes Jstar
- * fe_space: finite element space defined on a triangular mesh of the square domain 
- * u: Function handle for u
- * x: Coordinate vector for x
+ * fe_space: finite element space defined on a triangular mesh of the square
+ * domain u: Function handle for u x: Coordinate vector for x
  */
 template <typename FUNCTOR>
-double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
+double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
              FUNCTOR &&u, const Eigen::Vector2d x) {
 
   double val = 0.0;
@@ -271,30 +363,25 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
   const lf::base::size_type P = qr.NumPoints();
 
   // Loop over all cells
-  for(const lf::mesh::Entity *entity : mesh->Entities(0)) {
-    LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(), "Not on triangular mesh!");
+  for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
+    LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(),
+                  "Not on triangular mesh!");
 
     const lf::geometry::Geometry &geo{*entity->Geometry()};
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
 
-    for(int l = 0; l < P; l++) {
-      Eigen::Vector2d gradPsi;
-      Eigen::VectorXd laplPsi(P);
-
-	  Psi( zeta.col(l), gradPsi, laplPsi(l) );
-      //std::cout << "lapl" << laplPsi(l) << std::endl;
-	  val -= w_ref[l] * u(zeta.col(l)) *
-                      ( 2 * (gradG(x, zeta.col(l))).dot(gradPsi)
-                        + G(x, zeta.col(l)) * laplPsi(l)
-                      )
-            * gram_dets[l];
+  // I LIKE THIS BETTER CALLING THE FOLLOWING LIKE THIS INSTEAD OF PASSING
+  // BY REFERENCE A DOUBLE FOR THE LAPLACIAN AND VECTOR OF GRADIENT
+    for (int l = 0; l < P; l++) {
+      val -= w_ref[l] * u(zeta.col(l)) *
+             (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
+              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
+             gram_dets[l];
     }
-
   }
 
   return val;
-
 }
 
 /* Evaluates u(x) according to (3.11.14).
@@ -302,13 +389,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
  * x: Coordinate vector for x
  */
 template <typename FUNCTOR>
-double stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& fe_space,
-                      FUNCTOR &&u, const Eigen::Vector2d x) {
+double stab_pointEval(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
+    FUNCTOR &&u, const Eigen::Vector2d x) {
 
   double res = 0.0;
 
   Eigen::Vector2d half(0.5, 0.5);
-  if( (x - half).norm() <= 0.25) {
+  if ((x - half).norm() <= 0.25) {
     res = Jstar(fe_space, u, x);
 
   } else {
@@ -316,7 +404,6 @@ double stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>& f
   }
 
   return res;
-
 }
 
 } /* namespace StableEvaluationAtAPoint */
