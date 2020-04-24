@@ -87,7 +87,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
 
     ux(k) = stab_pointEval(fe_space, u, x);
     errors_stabEval(k) = std::abs(u(x) - ux(k));
-    std::cout << "u(x)" << u(x) << ", ux" << ux(k) << std::endl;
+    std::cout << "u(x)=" << u(x) << ", ux=" << ux(k) << std::endl;
   }
 
   // Computing rates of convergence 

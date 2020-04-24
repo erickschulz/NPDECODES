@@ -259,13 +259,23 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-    laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
+  /*  laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
 				* (y-half).dot(y-half) * 
 				( std::pow(std::sin( constant * (dist - 0.5) ), 2) 
 				- std::pow(std::cos( constant * (dist - 0.5) ), 2) )
 				- (2 * constant * std::cos( constant * (dist - 0.5) )
 				* std::sin( constant * (dist - 0.5) ) / dist )
-				* ( 1.0 -  (y-half).dot(y-half) / (y - half).squaredNorm() );
+				* ( 1.0 -  (y-half).dot(y-half) / (y - half).squaredNorm() ); */
+
+    double pre1 = M_PI/(0.5*std::sqrt(2.0)-1.0)*(dist-0.5);
+    double pre2 = M_PI/((0.5*std::sqrt(2.0)-1.0)*dist);
+    double pre3 = M_PI/((0.5*std::sqrt(2.0)-1.0));
+    laplPsi_xy  = 2.0*std::pow(std::sin(pre1)*pre3,2);
+    laplPsi_xy -= 2.0*std::pow(std::cos(pre1)*pre3,2);
+    laplPsi_xy += 2.0*std::cos(pre1)*std::sin(pre1)*pre2;
+    laplPsi_xy -= 4.0*std::cos(pre1)*std::sin(pre1)*pre2;
+
+
   }
 
   return laplPsi_xy;
@@ -282,7 +292,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
   double val = 0.0;
 
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
-
+/*
   // Use midpoint quadrature rule
   const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
   // Quadrature points
@@ -309,16 +319,16 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     }
   }
   
-  
+  */
   auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y) {
 
 	return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y) ));
   }
   );
 
-  double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 2);
+  double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
   
-  return val;
+  return val_test;
 }
 
 /* Evaluates u(x) according to (3.11.14).
