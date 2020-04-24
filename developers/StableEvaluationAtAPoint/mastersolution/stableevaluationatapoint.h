@@ -259,16 +259,6 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-/*
-    laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
-                * (y-half).dot(y-half) * 
-				( std::pow(std::sin( constant * (dist - 0.5) ), 2)
-                - std::pow(std::cos( constant * (dist - 0.5) ), 2) )
-                - (2 * constant / dist)
-                * std::cos( constant * (dist - 0.5) )
-                * std::sin( constant * (dist - 0.5) );
-
-*/
     laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
 				* (y-half).dot(y-half) * 
 				( std::pow(std::sin( constant * (dist - 0.5) ), 2) 
@@ -276,23 +266,6 @@ double laplPsi(const Eigen::Vector2d y) {
 				- (2 * constant * std::cos( constant * (dist - 0.5) )
 				* std::sin( constant * (dist - 0.5) ) / dist )
 				* ( 1.0 -  (y-half).dot(y-half) / (y - half).squaredNorm() );
-
-/* MY FAILED ATTEMPT AT COMPUTING THE GRADIENT  
-    double diff11 = constant*(1.0 - pow(y(0)-0.5,2))/pow(dist,3);
-    double diff21 = constant*(1.0 - pow(y(1)-0.5,2))/pow(dist,3);
-
-    double diff12 = 2.0 * pow(std::sin(constant * (dist- 0.5)),2) * constant * (y(0)-0.5)/dist
-                     -2.0*pow(std::cos(constant * (dist- 0.5)),2) * constant * (y(0)-0.5)/dist;
-    double diff22 = 2.0 * pow(std::sin(constant * (dist- 0.5)),2) * constant * (y(1)-0.5)/dist
-                     -2.0*pow(std::cos(constant * (dist- 0.5)),2) * constant * (y(1)-0.5)/dist;
-
-    double div1 = diff11 * -2.0 * std::cos(constant * (dist - 0.5)) * std::sin(constant * (dist - 0.5))
-			+ (constant*(y(0)-0.5)/dist)*diff12;
-    double div2 = diff21 * -2.0 * std::cos(constant * (dist - 0.5)) * std::sin(constant * (dist - 0.5))
-			+ (constant*(y(1)-0.5)/dist)*diff22;
-
-   laplPsi_xy = div1 + div1;
-*/
   }
 
   return laplPsi_xy;
