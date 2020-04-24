@@ -259,22 +259,14 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-  /*  laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
-				* (y-half).dot(y-half) * 
-				( std::pow(std::sin( constant * (dist - 0.5) ), 2) 
-				- std::pow(std::cos( constant * (dist - 0.5) ), 2) )
-				- (2 * constant * std::cos( constant * (dist - 0.5) )
-				* std::sin( constant * (dist - 0.5) ) / dist )
-				* ( 1.0 -  (y-half).dot(y-half) / (y - half).squaredNorm() ); */
-
-    double pre1 = M_PI/(0.5*std::sqrt(2.0)-1.0)*(dist-0.5);
-    double pre2 = M_PI/((0.5*std::sqrt(2.0)-1.0)*dist);
-    double pre3 = M_PI/((0.5*std::sqrt(2.0)-1.0));
-    laplPsi_xy  = 2.0*std::pow(std::sin(pre1)*pre3,2);
-    laplPsi_xy -= 2.0*std::pow(std::cos(pre1)*pre3,2);
-    laplPsi_xy += 2.0*std::cos(pre1)*std::sin(pre1)*pre2;
-    laplPsi_xy -= 4.0*std::cos(pre1)*std::sin(pre1)*pre2;
-
+    
+laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
+                * (y-half).dot(y-half) * 
+				( std::pow(std::sin( constant * (dist - 0.5) ), 2)
+                - std::pow(std::cos( constant * (dist - 0.5) ), 2) )
+                - (2 * constant / dist)
+                * std::cos( constant * (dist - 0.5) )
+                * std::sin( constant * (dist - 0.5) );
 
   }
 
