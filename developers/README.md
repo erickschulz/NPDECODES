@@ -110,4 +110,3 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 # TO DO LIST
 
 - ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.
-- RadauThreeTimestepping: Some unit tests are missing. (Amélie)
