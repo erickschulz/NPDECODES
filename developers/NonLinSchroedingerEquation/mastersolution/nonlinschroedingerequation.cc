@@ -33,7 +33,15 @@ Eigen::Matrix3d MassElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
+double Energy::operator()(const Eigen::VectorXcd &mu) const {
+  double E_kin = 0.5 * mu.dot(_A * mu).real();
+  Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
+  double E_dispersion = 0.25 * mu_abs2.dot(_D * mu_abs2);
+  return E_kin + E_dispersion;
+}
+/* SAM_LISTING_END_2 */
+
+/*Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
   LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
   Eigen::Matrix3d element_matrix;
 #if SOLUTION
@@ -51,7 +59,7 @@ Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cel
   //====================
 #endif
   return element_matrix;
-}
+}*/
 /* SAM_LISTING_END_2 */
 
 /*
@@ -61,5 +69,19 @@ Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cel
   S22 << 0.0, -1.0, 1.0, 0.0;
   Eigen::Matrix<double, 2, 3> g = 1.0 / (2.0 * area) * S22 * a * S33;
 */
+
+/*Eigen::Vector3d TrapezoidalElementVectorProvider::Eval(const lf::mesh::Entity &cell) {
+  LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
+  Eigen::Vector3d element_vector;
+#if SOLUTION
+  double area = lf::geometry::Volume(*(cell.Geometry()));
+  element_vector = area / 3.0 * Eigen::Vector3d::Ones();
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  return element_vector;
+}*/
 
 }  // namespace NonLinSchroedingerEquation
