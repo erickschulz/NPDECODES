@@ -11,7 +11,7 @@
 
 #include <Eigen/Core>
 
-namespace extendedmuscl {
+namespace ExtendedMUSCL {
 
 /* SAM_LISTING_BEGIN_0 */
 // Function parameters:
@@ -113,6 +113,6 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace extendedmuscl
+} // namespace ExtendedMUSCL
 
-#endif  // SLOPELIMFLUXDIFF_H_
+#endif // SLOPELIMFLUXDIFF_H_
