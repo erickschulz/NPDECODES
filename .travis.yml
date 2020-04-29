@@ -40,6 +40,23 @@ jobs:
           packages:
             - g++-8
       script: "./ci/run_cmake.sh"
+    - stage: compile_test
+      os: linux
+      compiler: gcc
+      env:
+        - COMPILER='g++-8'
+        - BUILD_TYPE='Debug'
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      script: 
+        - ./ci/run_cmake.sh
+        - cd Build/developers
+        - make -j${NUM_PROC:-2}
+        - make test_developers_mastersolution
   # - stage: compile_test
     # os: linux
     # compiler: clang
@@ -71,4 +88,5 @@ jobs:
         - "./ci/run_cmake.sh"
         - cd Build/developers
         - make -j${NUM_PROC:-2}
+        - make test_developers_mastersolution
   
