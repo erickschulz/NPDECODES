@@ -27,6 +27,19 @@ jobs:
         # - clang-format-8
     # script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
       # --color always ./developers/"
+  - stage: hunter
+    os: linux
+    compiler: gcc
+    env:
+      - COMPILER='g++-8'
+      - BUILD_TYPE='Debug'
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-8
+    script: "./ci/run_cmake.sh"
   # - stage: compile_test
     # os: linux
     # compiler: clang
