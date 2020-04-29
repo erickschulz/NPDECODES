@@ -59,6 +59,10 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 * Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem.cc`, `myhomeworkproblem.h`, `myclass.h` (lowercase, no underlines except for the main file).
 * Only in Lehrfem exercises: Use `nostd::span` (C++20) instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
 
+## Continuous Integration
+* For every commit a number of checks is run:
+  1) hello 
+
 ## Polishing
 
 * Add comments if necessary.
