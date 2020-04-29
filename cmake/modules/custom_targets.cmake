@@ -3,7 +3,7 @@
 # test targets
 function(add_custom_test_target TARGET_NAME ARG)
   add_custom_target(${TARGET_NAME}
-    COMMAND shopt -s nullglob &&  ${CMAKE_SOURCE_DIR}/scripts/run_tests.sh ${ARG}
+    COMMAND bash -c \"shopt -s nullglob &&  ${CMAKE_SOURCE_DIR}/scripts/run_tests.sh ${ARG}\"
   )
 endfunction()
 
