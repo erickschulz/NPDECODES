@@ -1,0 +1,3 @@
+- Link to tablet notes: Error 403 Access forbidden
+- Part (i): Function is called `findTimesteps`
+- Part (i): Mention thet the predefined variables `ML` and `MR` are supposed to be used for the bisection algorithm

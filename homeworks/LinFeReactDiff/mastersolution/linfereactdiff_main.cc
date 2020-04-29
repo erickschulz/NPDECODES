@@ -5,6 +5,16 @@
 
 #include "linfereactdiff.h"
 
+#include <iostream>
+#include <memory>
+#include <cmath>
+
+#include <Eigen/Core>
+
+#include <lf/base/base.h>
+#include <lf/refinement/refinement.h>
+#include <lf/mesh/mesh.h>
+
 int main() {
   const lf::base::size_type num_levels = 5;
   std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =

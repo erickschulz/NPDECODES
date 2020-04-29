@@ -13,7 +13,7 @@
 
 #include <Eigen/Core>
 
-using namespace extendedmuscl;
+using namespace ExtendedMUSCL;
 
 int main() {
   // Settings for the ODE
@@ -37,12 +37,12 @@ int main() {
     error(n) = std::abs(yT_exact - y);
   }
 
-  // Print the logarithmic values
+  // Print the errors at each timestep
   Eigen::MatrixXd table(3, N);
   table.row(0) = tau;
   table.row(1) = error;
   table.row(2) = error.unaryExpr<double (*)(double)>(&std::log2);
-  Eigen::IOFormat tableFormat(2,0," ","\n"," "," "," "," ");
+  Eigen::IOFormat tableFormat(2, 0, " ", "\n", " ", " ", " ", " ");
   std::cout << "tau \t error \t log_2(error)" << std::endl;
   std::cout << table.transpose().format(tableFormat) << std::endl;
 

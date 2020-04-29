@@ -5,16 +5,13 @@
  the unit square and solving a simple reaction diffusion system using LehrFEM++
  */
 
-#include <fstream>
-#include <iomanip>
+#include <memory>
 
-#include <lf/assemble/assemble.h>
-#include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/utils/utils.h>
+#include <Eigen/Core>
+
+#include <lf/base/base.h>
+#include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
-#include <lf/uscalfe/uscalfe.h>
 
 namespace LinFeReactDiff {
 

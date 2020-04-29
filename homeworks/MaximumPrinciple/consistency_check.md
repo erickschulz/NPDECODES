@@ -1,0 +1,9 @@
+- Part (b): Depends on Sub-problem (3-7.**a**) **(fixed)**
+- Part (d): Typo lowesr-order -> lowest-order **(fixed)**
+- Part (g): Provide a description of what the function `assemble` does. Maybe even with an example usage **(there is a short description in the blue code box already)**
+- Part (g): Wrong function signature: `M` is of type `int` **(fixed)**
+- Part (h): Wrong function signature: `M` is of type `int` **(fixed)**
+- General: Somehow Fig.30 and Fig.31 link to the same figure **(I don't know what you mean)**
+- Part (h): Typo: lexikographic -> lexicographic **(fixed)**
+- Part (h): `f` is not of type `std::function<double(double,double)>` **(fixed)**
+- Part (j): Wrong function signature `M` is of type `int` **(fixed)**

@@ -12,7 +12,7 @@
 #include <cmath>
 #include <initializer_list>
 
-namespace extendedmuscl {
+namespace ExtendedMUSCL {
 
 /* SAM_LISTING_BEGIN_1 */
 double logGodunovFlux(double v, double w) {
@@ -58,4 +58,4 @@ double limiterMC(double mu_left, double mu_center, double mu_right) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace extendedmuscl
+} // namespace ExtendedMUSCL

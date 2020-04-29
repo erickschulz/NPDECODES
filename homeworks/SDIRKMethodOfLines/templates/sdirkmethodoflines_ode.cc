@@ -5,6 +5,8 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <cmath>
+
 #include "sdirkmethodoflines_ode.h"
 
 namespace SDIRKMethodOfLines {
