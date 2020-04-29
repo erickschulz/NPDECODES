@@ -28,6 +28,7 @@ if [ $EXIT_CODE -ne 0 ]; then
   for PROBLEM_NAME in ${FAILED_TESTS[@]}; do
     echo " - $PROBLEM_NAME"
   done
+  exit 1
 else
   echo " ALL TESTS HAVE PASSED"
 fi

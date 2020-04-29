@@ -39,7 +39,7 @@ jobs:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      script: "./ci/run_cmake.sh"
+      script: "./scripts/ci/run_cmake.sh"
     - stage: compile_test
       os: linux
       compiler: gcc
@@ -53,7 +53,7 @@ jobs:
           packages:
             - g++-7
       script: 
-        - ./ci/run_cmake.sh
+        - ./scripts/ci/run_cmake.sh
         - cd Build/developers
         - make -j${NUM_PROC:-2}
         - make test_developers_mastersolution
@@ -62,15 +62,14 @@ jobs:
       osx_image: xcode10.2
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Debug'
-      script:
-        - "./ci/run_cmake.sh"
+      script: "./scripts/ci/run_cmake.sh"
     - stage: compile_test
       os: osx
       osx_image: xcode10.2
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Debug'
       script: 
-        - "./ci/run_cmake.sh"
+        - "./scripts/ci/run_cmake.sh"
         - cd Build/developers
         - make -j${NUM_PROC:-2}
         - make test_developers_mastersolution
