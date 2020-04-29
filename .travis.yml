@@ -15,18 +15,18 @@ stages:
 - compile_test
 jobs:
   include:
-  - stage: clang-format
-    os: linux
-    addons:
-      apt:
-        update: true
-        sources:
-        - llvm-toolchain-xenial-8
-        - ubuntu-toolchain-r-test
-        packages:
-        - clang-format-8
-    script: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-8
-      --color always ./developers/"
+    - stage: clang-format
+      os: linux
+      addons:
+        apt:
+          update: true
+          sources:
+          - llvm-toolchain-xenial-8
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-format-8
+      script: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-8
+        --color always ./developers/"
     - stage: compile_dependencies
       os: linux
       compiler: gcc
