@@ -1,0 +1,88 @@
+#!/bin/bash
+# To be run in the AssignmentsTeX folder
+
+# String replacement in the LaTeX source file that has the same
+# name as the directory: <foldername>.tex
+# First argument: string to be replaced (must not contain | or ")
+# Second argument: replacement string (must not contain | or ")
+replace_string () {
+    texfile=$(basename `pwd`);
+    if [[ -f $texfile.tex ]]; then
+	echo "In file $texfile.tex: replace $1 with $2"
+	sed "s|$1|$2|g" -iold $texfile.tex 
+    else
+	echo "ERROR: LaTeX source files"
+	ls -al *.tex
+	echo "do not follow naming convention!"
+    fi
+}
+
+cd IncidenceMatrices
+tex
+replace_string "IncidenceMatrices/mastersolution/incidence_mat.cc" "IncidenceMatrices/mastersolution/incidencematrices.cc"
+replace_string "IncidenceMatrices/mastersolution/incidence_mat.h" "IncidenceMatrices/mastersolution/incidencematrices.h"
+replace_string "IncidenceMatrices/mastersolution/main.cc" "IncidenceMatrices/mastersolution/incidencematrices_main.cc"
+cd ..
+cd LinearFE1D
+replace_string "LinearFE1D/mastersolution/LinearFE1D.cc" "LinearFE1D/mastersolution/linearfe1d_main.cc"
+replace_string "LinearFE1D/mastersolution/solve_LinearFE1D.h" "LinearFE1D/mastersolution/linearfe1d_main.cc"
+cd ..
+cd ParametricElementMatrices
+replace_string "ParametricElementMatrices/mastersolution/main.cc" "ParametricElementMatrices/mastersolution/parametricelementmatrices_main.cc"
+cd ..
+cd PointEvaluationRhs
+replace_string "PointEvaluationRhs/mastersolution/pointEvaluation.cc" "PointEvaluationRhs/mastersolution/pointevaluationrhs.cc"
+replace_string "PointEvaluationRhs/mastersolution/pointEvaluation.h" "PointEvaluationRhs/mastersolution/ pointevaluationrhs.h"
+replace_string "PointEvaluationRhs/mastersolution/norms.cc" "PointEvaluationRhs/mastersolution/pointevaluationrhs_norms.cc"
+replace_string "PointEvaluationRhs/mastersolution/norms.h " "	PointEvaluationRhs/mastersolution/pointevaluationrhs_norms.h"
+cd ..
+cd ProjectionOntoGradients
+replace_string "ProjectionOntoGradients/mastersolution/main.cc" "ProjectionOntoGradients/mastersolution/projectionontogradients_main.cc"
+replace_string "ProjectionOntoGradients/mastersolution/gradprojection.h" "ProjectionOntoGradients/mastersolution/projectionontogradients.h"
+cd ..
+cd SimpleLinearFiniteElements
+replace_string "SimpleLinearFiniteElements/mastersolution/simple_linear_finite_elements.cc" "SimpleLinearFiniteElements/mastersolution/simplelinearfiniteelements.cc"
+replace_string "SimpleLinearFiniteElements/mastersolution/simple_linear_finite_elements.h" "SimpleLinearFiniteElements/mastersolution/simplelinearfiniteelements.h"
+replace_string "SimpleLinearFiniteElements/mastersolution/main.cc" "SimpleLinearFiniteElements/mastersolution/simplelinearfiniteelements_main.cc"
+cd ..
+cd TestQuadratureRules
+replace_string "TestQuadratureRules/mastersolution/TestQuadratureRules.cc" "TestQuadratureRules/mastersolution/testquadraturerules_main.cc"
+replace_string "TestQuadratureRules/mastersolution/test_quad_rules.cc" "TestQuadratureRules/mastersolution/testquadraturerules.cc"
+replace_string "TestQuadratureRules/mastersolution/test_quad_rules.h" "TestQuadratureRules/mastersolution/testquadraturerules.h"
+cd ..
+cd TransformationOfGalerkinMatrices
+sed
+replace_string "TransformationOfGalerkinMatrices/mastersolution/TransformationOfGalerkinMatrices.cc" "TransformationOfGalerkinMatrices/mastersolution/transformationofgalerkinmatrices_main.cc"
+replace_string "TransformationOfGalerkinMatrices/mastersolution/trans_gal_mat.cc" "TransformationOfGalerkinMatrices/mastersolution/transformationofgalerkinmatrices.cc"
+replace_string "TransformationOfGalerkinMatrices/mastersolution/trans_gal_mat.h" "TransformationOfGalerkinMatrices/mastersolution/transformationofgalerkinmatrices.h"
+cd ..
+cd UnstableBVP
+replace_string "UnstableBVP/mastersolution/unstable_bvp.cc" "UnstableBVP/mastersolution/unstablebvp.cc"
+replace_string "UnstableBVP/mastersolution/unstable_bvp.h" "UnstableBVP/mastersolution/unstablebvp.h"
+replace_string "UnstableBVP/mastersolution/unstable_bvp_main.cc" "UnstableBVP/mastersolution/unstablebvp_main.cc"
+cd ..
+
+exit;
+
+# **Need to be adapted to naming convention**
+# AvgValBoundary
+# BoundaryWave
+# DebuggingFEM
+# ElementMatrixComputation (+ new file)
+# ErrorEstimateForTraces
+# HandlingDOFS
+# LinFeReactDiff
+# MaximumPrinciple
+# NonConformingCrouzeixRaviartFiniteElements
+# ParametricElementMatrices
+# OutputImpedanceBVP
+# PointEvaluationRhs
+# RadauThreeTimestepping
+# RegularizedNeumann
+# SDIRKMethodOfLines
+# SimpleLinearFiniteElements
+# SymplecticTimesteppingWaves
+# TestQuadratureRules
+# ZienkiewiczZhuEstimator
+
+

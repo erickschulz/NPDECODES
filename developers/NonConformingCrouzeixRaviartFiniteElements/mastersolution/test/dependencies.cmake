@@ -7,7 +7,7 @@
 # PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/conforming_crouzeix_raviart_finite_elements_test.cc
+  ${DIR}/test/nonconformingcrouzeixraviartfiniteelements_test.cc
 )
 
 set(LIBRARIES

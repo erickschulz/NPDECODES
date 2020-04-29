@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/TestQuadratureRules.cc
-  ${DIR}/test_quad_rules.h
-  ${DIR}/test_quad_rules.cc
+  ${DIR}/testquadraturerules_main.cc
+  ${DIR}/testquadraturerules.h
+  ${DIR}/testquadraturerules.cc
 )
 
 set(LIBRARIES

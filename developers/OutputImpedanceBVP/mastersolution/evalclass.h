@@ -8,11 +8,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "OutputImpedanceBVP.h"
-
 #include <iostream>
 
 #include <Eigen/Core>
+
+#include "outputimpedancebvp.h"
 
 namespace OutputImpedanceBVP {
 

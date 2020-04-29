@@ -131,7 +131,8 @@ Eigen::VectorXd computeRHS(const Eigen::VectorXd& mesh, FUNCTOR1&& f) {
 
   return rhs_vec;
 }  // computeRHS
-
+/* SAM_LISTING_END_3 */
+  
 // SOLVE THE LINEAR SYSTEM OF PROBLEM (A)
 /* SAM_LISTING_BEGIN_A */
 template <typename FUNCTOR1, typename FUNCTOR2>
@@ -225,6 +226,7 @@ Eigen::VectorXd solveB(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   u(N) = u1;  // right boundary node
   return u;
 }  // solveB
+/* SAM_LISTING_END_B */
 
 // Build an sol!ve the LSE corresponding to (C)
 /* SAM_LISTING_BEGIN_C */
@@ -241,9 +243,8 @@ Eigen::VectorXd solveC(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
 
   // I. Build the (full) Galerkin matrix L for the lin. sys.
   // I.i Compute the entries of the Laplace Galerkin matrix A
-  // (const. ceoff. func. alpha = 1.0)
   std::vector<Eigen::Triplet<double>> triplets_A =
-      computeA(mesh, [](double) -> double { return 1.0; });
+      computeA(mesh, alpha);
   // I.ii Compute the entries of the mass matrix M
   std::vector<Eigen::Triplet<double>> triplets_M = computeM(mesh, gamma);
   // I.iii Assemble the sparse matrices

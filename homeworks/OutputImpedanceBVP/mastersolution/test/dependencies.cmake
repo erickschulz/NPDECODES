@@ -3,7 +3,7 @@
 # PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/OutputImpedanceBVP_test.cc
+  ${DIR}/test/outputimpedancebvp_test.cc
 )
 
 set(LIBRARIES

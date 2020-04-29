@@ -15,6 +15,7 @@ using namespace SDIRKMethodOfLines;
 
 int main(int /*argc*/, char ** /*argv*/)
 {
+ 
   /* SDIRK-2 ODE convergence */
   sdirk2ScalarODECvTest();
 
@@ -35,6 +36,7 @@ int main(int /*argc*/, char ** /*argv*/)
    std::shared_ptr<lf::mesh::Mesh> mesh_p{builder.Build()}; */
 
   /* SAM_LISTING_BEGIN_1 */
+
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square64_bnd.msh");

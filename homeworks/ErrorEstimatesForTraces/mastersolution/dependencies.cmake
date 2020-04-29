@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/trace_error_estimate_main.cc
-  ${DIR}/tee_lapl_robin_assembly.h
-  ${DIR}/tee_lapl_robin_assembly.cc
+  ${DIR}/errorestimatesfortraces_main.cc
+  ${DIR}/teelaplrobinassembly.h
+  ${DIR}/teelaplrobinassembly.cc
 )
 
 set(LIBRARIES

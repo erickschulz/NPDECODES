@@ -1,12 +1,62 @@
 # NPDECODES
 
+Reviewing the problems collection has 3 stages:
+1. Polishing the code
+2. Verifying consistency with the pdf document (creating a consistency txt file)
+3. Modifying the latex associated to the pdf document to fix the inconsistencies and
+replace the old links by new ones pointing to the correct /NPDECODES/homeworks folder on github
+
+- A white check mark :white_check_mark: indicates that a stage is in progress.
+- A green check mark :heavy_check_mark: indicates that a stage is completed.
+- Under 'Assignee for current stage' is found the name of the assistant currently working on the problem.
+
+| # | Problem name | Polished | Verified | Latex | Assignee (stage in progress)|
+| --- | --- | --- | --- | --- | --- |
+| 2-2 | `TransformationOfGalerkinMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-4 | `LinearFE1D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-9 | `LFPPDofHandling` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-15 | `RegularizedNeumannProblem` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-4 | `UnstableBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |:heavy_check_mark: |  |  |
+| 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
+| 7-1 | `ExpFittedUpwind` | | | | |
+| 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   |
+| 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| ? | `ElectrostaticForce` | bug |  |  |  |
+| ? | `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| ? | `FiniteVolumeRobin` |  |  |  |  |
+| ? | `IPDGFEM` | |  |  |  |
+| ? | `LinFeReactDiff` | :white_check_mark: |  |  | Philipp Egg |
+
 ## General Remarks
 
 * Below, the directory `.` refers to the top level directory of the repository.
 * Developers only work in `./developers/<ProblemName>/`. From this, a corresponding directory `./homeworks/<ProblemName>/` for the students can be created automatically using `./scripts/deploy_npde.py`.
-* Not only the solutions, but also the corresponding templates need to compile and run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
+* Not only the solutions, but also the corresponding templates need to compile and, if possible, run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
 * The bullets below are only a selection. If you spot additional issues, e.g. ugly or too complicated code, fix it.
-* Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem_foo.cc`, `myhomeworkproblem_foo.h`, where foo is a placeholder for any name (summarized: lowercase, split words by _).
+* Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem.cc`, `myhomeworkproblem.h`, `myclass.h` (lowercase, no underlines except for the main file).
 * Only in Lehrfem exercises: Use `nostd::span` (C++20) instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
 
 ## Polishing
@@ -45,24 +95,11 @@ In the files of `./developers/mastersolution/` we put the following tags
 ```
 to indicate what belongs to mastersolution and/or template. Based on these tags, the file `./scripts/deploy_npde.py` generates a directory `./homeworks/<ProblemName>/` containg the directories `mastersolution`, `mysolution`, `temaplates` with the corresponding content. The students work exclusively in `./homeworks/<ProblemName>/`.
 
-## TODO
-
-* `BoundaryWave`: mysolution has core dump
-* `CoupledSecondOrderBVP`: needs solution tags
-* `ElectrostaticForce`: unit test fails for mastersolution
-* `ElementMatrixComputation`: Replace console output in unit test by actual test
-* `LaxWendroffScheme`: unit test of mastersolution takes too long **(Oliver)**
-* `RadauThreeTimestepping`: mysolution has core dump and mastersolution not returning same sol anymore?
-* `SDIRKMethodOfLines`: mysolution has core dump
-* `TestQuadratureRules`: Replace console output in unit test by actual test. **(Liaowang)**
-* General: Only plot .eps files (no .png and so on).
-
 ## New Problems
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
-* Problem 5.6: Parametric Finite Elements
-* Problem 5.7: Stable Evaluation at a Point
+* Problem 5.7: Stable Evaluation at a Point **(Amélie)**
 * Problem 5.8: Trace Error Estimates **(done already?)**
 * Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
 * Problem 7.3: Upwind Quadrature
@@ -71,120 +108,5 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Problem 7.6: Upwind Finite Volume Method
 
 # TO DO LIST
-## Problems missing in NPDFL_Problems 
 
-### Already ported 
-
-- BoundaryWave
-- CoupledSecondOrderBVP
-- CLEmpiricFlux
-- ElectrostaticForce
-- IPDGFEM
-- LinFeRactDiff
-- OutputImpedanceBVP
-- ZienkiewiczZhuEstimator
-- WaveABC2D
-
-### Need to be ported from NPDEORG
-- ExtendedMUSCL
-
-## Polished 
-
-### Chapter 2
-- ErrorEstimatesForTraces
-- IncidenceMatrices
-- LengthOfBoundary
-- LinearFE1D
-- ParametricElementMatrices
-- ProjectionOntoGradients
-- SimpleLinearFiniteElements
-- TestQuadratureRules
-- TransformationOfGalerkinMatrices
-
-### Chapter 3
-- MaximumPrinciple
-- UnstableBVP 
-
-### Chapter 6
-- 1DWaveAbsorbingBC
-- RadauThreeTimestepping
-- SDIRKMethodOfLines
-- SymplecticTimesteppingWaves
-
-### Chapter 8
-- BurgersEquation
-- DiscontinuousGalerkin1D
-- EngquistOsherNumericalFlux
-- FiniteVolumeSineConsLaw
-- LaxWendroffScheme
-
-## Require confirmation of polished 
-
-### Chapter 2
-- ElementMatrixComputation(Oliver?)
-
-### Chapter 3
-- PointEvaluationRhs **(Liaowang)**
-
-## Require polishing 
-
-### Chapter 2
-- HandlingDOFs
-- NonConformingCrouzeixRaviartFiniteElements
-- RegularizedNeumann 
-
-### Chapter 3
-- AvgValBoundary
-- DebuggingFEM
-
-## Verified for consistency 
-
-None yet.
-
-## Need consistency verification 
-
-### Chapter 2
-- TransformationOfGalerkinMatrices (folder reference)
-- LinearFE1D (Amélie)
-- SimpleLinearFiniteElements **(Tobias)**
-- LengthOfBoundary
-- IncidenceMatrices
-- ElementMatrixComputation
-- HandlingDOFs (folder reference)
-- ProjectionOntoGradients 
-- TestQuadratureRules
-- ParametricElementMatrices
-- NonConformingCrouzeixRaviartFiniteElements
-- RegularizedNeumann
-
-### Chapter 3
-- AvgValBoundary
-- DebuggingFEM
-- PointEvaluationRhs
-- ErrorEstimatesForTraces (folder reference)
-- MaximumPrinciple
-
-### Chapter 6
-- RadauThreeTimestepping
-- SDIRKMethodOfLines
-- 1DWaveAbsorbingBC
-- SymplecticTimesteppingWaves
-
-### Chapter 8
-- BurgersEquation
-- EngquistOsherNumericalFlux
-- FiniteVolumeSineConsLaw
-- LaxWendroffScheme
-- DiscontinuousGalerkin1D
-
-## Missing unitests 
-
-### Not in NPDEFL_Problems
-- BoundaryWave
-- ZienkiewiczZhuEstimator
-- WaveABC2D
-
-### Chapter 6
-- RadauThreeTimestepping
-- SDIRKMethodOfLines
-- SymplecticTimesteppingWaves
+- ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.

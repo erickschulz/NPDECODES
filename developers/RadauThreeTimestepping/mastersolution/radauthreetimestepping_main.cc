@@ -1,13 +1,22 @@
 /**
- * @file
+ * @file radauthreetimestepping_main.cc
  * @brief NPDE homework RadauThreeTimestepping
  * @author Erick Schulz
  * @date 08/04/2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "radau_three_timestepping.h"
-#include "radau_three_timestepping_ode.h"
+#include "radauthreetimestepping.h"
+#include "radauthreetimesteppingode.h"
+
+#include <iostream>
+#include <memory>
+
+#include <Eigen/Core>
+
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/utils/utils.h>
 
 using namespace RadauThreeTimestepping;
 
@@ -30,6 +39,7 @@ int main(int /*argc*/, char ** /*argv*/) {
   auto mesh_p = builder.Build();
 
   /* SAM_LISTING_BEGIN_1 */
+#if SOLUTION
   // Generate the linear lagrange FE data
   // Finite element space
   auto fe_space =
@@ -60,6 +70,11 @@ int main(int /*argc*/, char ** /*argv*/) {
   /* SAM_LISTING_END_1 */
   std::cout << "\n The discrete_heat_solution was written to:" << std::endl;
   std::cout << ">> discrete_heat_solution.vtk\n" << std::endl;
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return 0;
 }

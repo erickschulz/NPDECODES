@@ -3,11 +3,11 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/PointEvaluationRhs_main.cc
-  ${DIR}/pointEvaluation.h
-  ${DIR}/pointEvaluation.cc
-  ${DIR}/norms.h
-  ${DIR}/norms.cc
+  ${DIR}/pointevaluationrhs_main.cc
+  ${DIR}/pointevaluationrhs.h
+  ${DIR}/pointevaluationrhs.cc
+  ${DIR}/pointevaluationrhs_norms.h
+  ${DIR}/pointevaluationrhs_norms.cc
 )
 
 set(LIBRARIES

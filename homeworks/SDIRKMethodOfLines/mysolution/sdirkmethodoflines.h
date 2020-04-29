@@ -4,7 +4,7 @@
  * @date 12/04/2019
  * @copyright Developed at ETH Zurich
  */
-#include <math.h>
+#include <cmath>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -23,8 +23,9 @@
 namespace SDIRKMethodOfLines {
 
 /** @brief class providing timestepping for convective cooling problem */
+/* SAM_LISTING_BEGIN_1 */
 class SDIRK2Timestepper {
- public:
+public:
   // Disabled constructor
   SDIRK2Timestepper() = delete;
   SDIRK2Timestepper(const SDIRK2Timestepper &) = delete;
@@ -41,21 +42,23 @@ class SDIRK2Timestepper {
   // Discrete evolution operator for SDIRK-2
   Eigen::VectorXd discreteEvolutionOperator(const Eigen::VectorXd &mu) const;
 
- private:
-  double tau_;  // step size (in time)
+private:
+  double tau_; // step size (in time)
   //====================
   // Your code goes here
   //====================
 };
+/* SAM_LISTING_END_1 */
 
 /* Declaration of the functions of the library sdirkmethodoflines.h */
 double thermalEnergy(const lf::assemble::DofHandler &, const Eigen::VectorXd &);
 
-std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
-    const lf::assemble::DofHandler &, unsigned int, double, Eigen::VectorXd);
+std::pair<Eigen::VectorXd, Eigen::VectorXd>
+solveTemperatureEvolution(const lf::assemble::DofHandler &, unsigned int,
+                          double, Eigen::VectorXd);
 
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh,
                          double cool_coeff);
 
-}  // namespace SDIRKMethodOfLines
+} // namespace SDIRKMethodOfLines

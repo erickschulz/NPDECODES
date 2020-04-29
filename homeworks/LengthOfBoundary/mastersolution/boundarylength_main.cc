@@ -13,6 +13,7 @@
 
 using namespace LengthOfBoundary;
 
+/* SAM_LISTING_BEGIN_1 */
 int main(int argc, char *argv[]) {
   if (argc > 1) {
     std::string file_name(argv[1]);
@@ -27,3 +28,4 @@ int main(int argc, char *argv[]) {
               << std::endl;
   }
 }
+/* SAM_LISTING_END_1 */

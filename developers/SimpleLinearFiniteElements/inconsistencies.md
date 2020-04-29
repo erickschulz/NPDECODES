@@ -6,6 +6,5 @@
 - In part e, the function signature of `H1Serror` is incorrect
 - Formatting error on the second line of the solution to part e: grad should be bold
 - Solution of part e has the wrong code in the solution PDF
-- Code error: Docstring of `GalerkinAssembly` uses the wrong function name in the brief description
 - In part f, the source file providing `assemLoad_LFE` and `GalerkinAssembly` should be `simplelinearfiniteelements.cc`
 - Solution of part f has the wrong code in the solution PDF

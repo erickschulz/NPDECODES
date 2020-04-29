@@ -7,7 +7,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/trans_gal_mat_test.cc
+  ${DIR}/test/transformationofgalerkinmatrices_test.cc
 )
 
 set(LIBRARIES

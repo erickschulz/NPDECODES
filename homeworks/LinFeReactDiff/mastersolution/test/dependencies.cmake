@@ -3,7 +3,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/lin_fe_react_diff_test.cc
+  ${DIR}/test/linfereactdiff_test.cc
 )
 
 set(LIBRARIES

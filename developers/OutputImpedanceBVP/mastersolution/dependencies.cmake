@@ -7,9 +7,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/OutputImpedanceBVP_main.cc
-  ${DIR}/OutputImpedanceBVP.h
-  ${DIR}/OutputImpedanceBVP.cc
+  ${DIR}/outputimpedancebvp_main.cc
+  ${DIR}/outputimpedancebvp.h
+  ${DIR}/outputimpedancebvp.cc
   ${DIR}/evalclass.h
   ${DIR}/evalclass.cc
 )

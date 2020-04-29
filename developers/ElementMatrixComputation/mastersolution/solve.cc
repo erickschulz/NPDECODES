@@ -12,19 +12,17 @@
 
 #include <Eigen/Core>
 
-#include <lf/uscalfe/uscalfe.h>
-
-#include "MyLinearFEElementMatrix.h"
-#include "MyLinearLoadVector.h"
+#include "mylinearfeelementmatrix.h"
+#include "mylinearloadvector.h"
 
 namespace ElementMatrixComputation {
 
 /* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd solvePoissonBVP() {
-  // Convert tPoissonda function f to a LehrFEM++ mesh function object
+  // Convert the globally defined function f to a LehrFEM++ mesh function object
   lf::mesh::utils::MeshFunctionGlobal mf_f{f};
 
-  // Define the solution vector
+  // The basis expansion coefficient vector for the finite-element solution
   Eigen::VectorXd solution = Eigen::VectorXd::Zero(1);
 
 #if SOLUTION
@@ -35,7 +33,7 @@ Eigen::VectorXd solvePoissonBVP() {
 
   std::cout << "===================" << std::endl;
   std::cout << "solvePoissonBVP" << std::endl;
-
+  // Call the function that solves the Galerkin linear system of equations
   solution = solve(elmat_builder, elvec_builder);
 #else
   //====================

@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/main.cc
-  ${DIR}/avg_val_boundary.cc
-  ${DIR}/comp_gal_mat.h
+  ${DIR}/avgvalboundary_main.cc
+  ${DIR}/avgvalboundary.cc
+  ${DIR}/avgvalboundary.h
 )
 
 set(LIBRARIES

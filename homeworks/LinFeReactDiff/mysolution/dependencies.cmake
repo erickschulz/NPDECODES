@@ -3,9 +3,9 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/main.cc
-  ${DIR}/lin_fe_react_diff.h
-  ${DIR}/lin_fe_react_diff.cc
+  ${DIR}/linfereactdiff_main.cc
+  ${DIR}/linfereactdiff.h
+  ${DIR}/linfereactdiff.cc
 )
 
 set(LIBRARIES

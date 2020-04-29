@@ -6,8 +6,8 @@
   * @copyright Developed at ETH Zurich
   */
 
-#ifndef MESH_H
-#define MESH_H
+#ifndef MESH_H_
+#define MESH_H_
 
 #include <memory>
 
@@ -15,4 +15,4 @@ namespace lf { namespace mesh { class Mesh; } }
 
 std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh();
 
-#endif // MESH_H
+#endif  // MESH_H_

@@ -1,0 +1,11 @@
+- Preliminaries in problem description: Problem **does** contain LehrFEM++
+- Location of `LocalLaplaceQFEX` was updated: local_laplace_qfe.cc -> locallaplaceqfe.cc
+- locallaplaceqfe does not contain providers for the right-hand side
+- Part (a): Write that the function to be implemented is located in qfeinterpolator.h
+- Part (a): Maybe mention `globalCoordinate` function
+- Part (a): Tells to check for consistency with LF_ASSERT_MSG, but the solution code does not
+- Part (d): File was renamed: qfe_provider_tester.h -> qfeprovidertester.h
+- Part (d): Code of `QFEProviderTester` should include member `A_`, as that is used in a subsequent task
+- Part (d): Tell to also implement the constructor
+- Part (e): File was renamed: main.cpp -> debuggingfem_main.cc
+- Part (e): A png file is generated. Not an eps file

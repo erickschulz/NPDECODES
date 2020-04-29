@@ -1,13 +1,22 @@
 /**
- * @file
+ * @file radauthreetimestepping_main.cc
  * @brief NPDE homework RadauThreeTimestepping
  * @author Erick Schulz
  * @date 08/04/2019
  * @copyright Developed at ETH Zurich
  */
 
-#include "radau_three_timestepping.h"
-#include "radau_three_timestepping_ode.h"
+#include "radauthreetimestepping.h"
+#include "radauthreetimesteppingode.h"
+
+#include <iostream>
+#include <memory>
+
+#include <Eigen/Core>
+
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/utils/utils.h>
 
 using namespace RadauThreeTimestepping;
 

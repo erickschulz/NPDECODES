@@ -7,11 +7,11 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/ElementMatrixComputation_main.cc
-  ${DIR}/MyLinearFEElementMatrix.h
-  ${DIR}/MyLinearFEElementMatrix.cc
-  ${DIR}/MyLinearLoadVector.h
-  ${DIR}/MyLinearLoadVector.cc
+  ${DIR}/elementmatrixcomputation_main.cc
+  ${DIR}/mylinearfeelementmatrix.h
+  ${DIR}/mylinearfeelementmatrix.cc
+  ${DIR}/mylinearloadvector.h
+  ${DIR}/mylinearloadvector.cc
   ${DIR}/solve.h
   ${DIR}/solve.cc
   meshes/mesh.h

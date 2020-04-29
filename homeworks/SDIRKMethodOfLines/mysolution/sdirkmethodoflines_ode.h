@@ -5,7 +5,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <vector>
 
