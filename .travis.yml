@@ -11,7 +11,7 @@ cache:
 branches:
 stages:
 # - clang-format
-- hunter # compile the hunter dependencies, i.e. configure the cmake project
+- compile_dependencies # compile the hunter dependencies, i.e. configure the cmake project
 - compile_test
 jobs:
   include:
@@ -27,52 +27,37 @@ jobs:
         # - clang-format-8
     # script: "./ci/run-clang-format.py -r --clang-format-executable clang-format-8
       # --color always ./developers/"
-    - stage: hunter
+    - stage: compile_dependencies
       os: linux
       compiler: gcc
       env:
-        - COMPILER='g++-8'
+        - COMPILER='g++-7'
         - BUILD_TYPE='Debug'
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-8
+            - g++-7
       script: "./ci/run_cmake.sh"
     - stage: compile_test
       os: linux
       compiler: gcc
       env:
-        - COMPILER='g++-8'
+        - COMPILER='g++-7'
         - BUILD_TYPE='Debug'
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-8
+            - g++-7
       script: 
         - ./ci/run_cmake.sh
         - cd Build/developers
         - make -j${NUM_PROC:-2}
         - make test_developers_mastersolution
-  # - stage: compile_test
-    # os: linux
-    # compiler: clang
-    # env:
-    # - COMPILER='clang++-8'
-    # - BUILD_TYPE='Release'
-    # addons:
-      # apt:
-        # sources:
-        # - llvm-toolchain-xenial-8
-        # - ubuntu-toolchain-r-test
-        # packages:
-        # - clang-8
-        # - g++-7
-    # script: "./ci/compile.sh"
-    - stage: hunter
+    - stage: compile_dependencies
       os: osx
       osx_image: xcode10.2
       compiler: clang
