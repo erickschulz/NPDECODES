@@ -16,7 +16,7 @@
 
 #include <Eigen/Core>
 
-namespace ExtendedMUSCL {
+namespace extendedmuscl {
 
 /**
  * @brief Computes the Godunov numerical Flux for
@@ -82,9 +82,9 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Approximate dual cell averages at t=0
   Eigen::VectorXd mu = x.unaryExpr(u0);
 
-  double alpha = mu.minCoeff(); // lower bound for initial data
-  double beta = mu.maxCoeff();  // upper bound for initial data
-  assert(alpha > 0.0 && beta > 0.0);
+  double alfa = mu.minCoeff(); // lower bound for initial data
+  double beta = mu.maxCoeff(); // upper bound for initial data
+  assert(alfa > 0.0 && beta > 0.0);
 
   //====================
   // Your code goes here
@@ -94,6 +94,6 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace ExtendedMUSCL
+} // namespace extendedmuscl
 
-#endif // EXTENDEDMUSCL_H_
+#endif  // EXTENDEDMUSCL_H_
