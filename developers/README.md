@@ -62,7 +62,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 ## Continuous Integration
 * For every commit a number of checks is run:
   1) `clang-format-8` is used to check if the formatting of all files under the `./developers` folder conforms with the [Google C++ Style guide](https://google.github.io/styleguide/cppguide.html).
-  2) All the mastersolutions under `./developer` are compiled with `g++-8` (Linux) and `clang++` (osx)
+  2) All the code under `./developer` is compiled with `g++-8` (Linux) and `clang++` (osx)
   3) All the mastersolution tests run.
 * After you have made a commit, you can check the status of the continuous integration pipeline on [travis](https://travis-ci.com/github/erickschulz/NPDECODES)
 * If the clang format step fails, just reformat all files:
