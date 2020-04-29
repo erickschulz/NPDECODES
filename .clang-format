@@ -1,0 +1,3 @@
+# We'll mostly use the Google style
+BasedOnStyle: Google
+CommentPragmas: '^ NOLINT'
