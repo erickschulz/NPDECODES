@@ -11,6 +11,7 @@ cache:
 branches:
 stages:
 # - clang-format
+- hunter # compile the hunter dependencies, i.e. configure the cmake project
 - compile_test
 jobs:
   include:
@@ -41,13 +42,20 @@ jobs:
         # - clang-8
         # - g++-7
     # script: "./ci/compile.sh"
+    - stage: hunter
+      os: osx
+      osx_image: xcode10.2
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug'
+      script:
+        - "./ci/run_cmake.sh"
     - stage: compile_test
       os: osx
       osx_image: xcode10.2
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Debug'
       script: 
-        - "./ci/compile.sh"
+        - "./ci/run_cmake.sh"
         - cd Build/developers
         - make -j${NUM_PROC:-2}
   
