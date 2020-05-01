@@ -1,4 +1,3 @@
-#include <gtest/gtest.h>
 
 #include <memory>
 #include <utility>
@@ -7,13 +6,15 @@
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
 
+#include <gtest/gtest.h>
+
+#include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
-#include <lf/mesh/mesh.h>
+#include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
-#include <lf/assemble/assemble.h>
-#include <lf/io/io.h>
 
 #include "../linfereactdiff.h"
 
