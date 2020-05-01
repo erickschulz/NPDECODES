@@ -8,6 +8,8 @@
 
 #include "nonlinschroedingerequation.h"
 
+#include <cmath>
+
 #include <Eigen/Core>
 
 #include <lf/base/base.h>
@@ -33,11 +35,17 @@ Eigen::Matrix3d MassElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double Energy::operator()(const Eigen::VectorXcd &mu) const {
-  double E_kin = 0.5 * mu.dot(_A * mu).real();
+double Norm(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D) {
+  return std::sqrt(mu.dot(D * mu).real());
+}
+
+double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &A) {
+  return 0.5 * mu.dot(A * mu).real();
+}
+
+double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D) {
   Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
-  double E_dispersion = 0.25 * mu_abs2.dot(_D * mu_abs2);
-  return E_kin + E_dispersion;
+  return 0.25 * mu_abs2.dot(D * mu_abs2);
 }
 /* SAM_LISTING_END_2 */
 

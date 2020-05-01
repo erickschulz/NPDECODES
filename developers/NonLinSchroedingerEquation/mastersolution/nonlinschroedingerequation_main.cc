@@ -37,7 +37,7 @@ int main() {
 
   //lf::io::VtkWriter vtk_writer(mesh_p, "filename.vtk");
 
-  auto fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  auto fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<std::complex<double>>>(mesh_p);
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
@@ -58,8 +58,6 @@ int main() {
   Eigen::SparseMatrix<double> A = A_COO.makeSparse();
   //std::cout << Eigen::MatrixXd(A) << std::endl;
 
-  NonLinSchroedingerEquation::Energy energy(A, D);
-
   int M = 100;
   double T = 1.0;
   double tau = T / M;
@@ -75,35 +73,52 @@ int main() {
   Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>> solver;
   solver.compute(B_minus);
 
-  auto u0 = [] (Eigen::Vector2d x) { return -4.0 * std::exp(4.0 * x.sum()) / (std::exp(2.0 * x.sum()) + 1.0); };
-  //auto u0 = [] (Eigen::Vector2d x) { return std::exp(-0.125 * x.squaredNorm()); };
+  //auto u0 = [] (Eigen::Vector2d x) -> std::complex<double> { return std::exp(1i * 3.14159265359 * x.sum()); };  
+  //auto u0 = [] (Eigen::Vector2d x) -> std::complex<double> { return -4.0 * std::exp(4.0 * x.sum()) / (std::exp(2.0 * x.sum()) + 1.0); };
+  auto u0 = [] (Eigen::Vector2d x) -> std::complex<double> { return std::exp(-x.squaredNorm()); };
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
   Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
   //std::cout << mu.transpose().format(CSVFormat) << std::endl;
-  Eigen::VectorXd E(M + 1);
   Eigen::VectorXd norm(M + 1);
+  Eigen::VectorXd E_kin(M + 1);
+  Eigen::VectorXd E_int(M + 1);
   for (int i = 0; i < M; ++i) {
-    // Compute energy and norm along the solution
-    E(i) = energy(mu);
-    norm(i) = mu.dot(D * mu).real();
+    // Compute norm and energy along the solution
+    norm(i) = NonLinSchroedingerEquation::Norm(mu, D);
+    E_kin(i) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
+    E_int(i) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
     // Timestep tau according to Strang splitting
     mu = solver.solve(B_plus * mu);
     mu = mu.unaryExpr(f);
     mu = solver.solve(B_plus * mu);
   }
-  norm(M) = mu.dot(D * mu).real();
-  E(M) = energy(mu);
+  norm(M) = NonLinSchroedingerEquation::Norm(mu, D);
+  E_kin(M) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
+  E_int(M) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
   //std::cout << mu.transpose().format(CSVFormat) << std::endl;
-  std::cout << norm.transpose().format(CSVFormat) << std::endl;
-  std::cout << E.transpose().format(CSVFormat) << std::endl;
+  //std::cout << norm.transpose().format(CSVFormat) << std::endl;
+  //std::cout << (E_kin + E_int).transpose().format(CSVFormat) << std::endl;
 
-  std::ofstream csv_file;
-  csv_file.open("energies.csv");
-  csv_file << Eigen::VectorXd::LinSpaced(E.size(), 0.0, T).transpose().format(CSVFormat) << std::endl;
-  csv_file << E.transpose().format(CSVFormat) << std::endl;
-  csv_file.close();
+  Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(M + 1, 0.0, T);
+
+  std::ofstream energies_csv;
+  energies_csv.open("energies.csv");
+  energies_csv << t.transpose().format(CSVFormat) << std::endl;
+  energies_csv << E_kin.transpose().format(CSVFormat) << std::endl;
+  energies_csv << E_int.transpose().format(CSVFormat) << std::endl;
+  energies_csv.close();
+
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+
+  std::ofstream norm_csv;
+  norm_csv.open("norm.csv");
+  norm_csv << t.transpose().format(CSVFormat) << std::endl;
+  norm_csv << norm.transpose().format(CSVFormat) << std::endl;
+  norm_csv.close();
+
+  std::cout << "Generated " CURRENT_BINARY_DIR "/norm.csv" << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_norm.py " CURRENT_BINARY_DIR "/norm.csv " CURRENT_BINARY_DIR "/norm.png");
 
   return 0;
 }

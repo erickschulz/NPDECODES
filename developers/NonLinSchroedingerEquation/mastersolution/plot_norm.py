@@ -7,16 +7,13 @@ output_file = str(argv[2])
 
 data = genfromtxt(input_file, delimiter=',')
 t = data[0]
-E_kin = data[1]
-E_int = data[2]
+norm = data[1]
 
 fig = figure()
-title('Energies Along the Approximate Solution')
-plot(t, E_kin + E_int, '-', label='total energy')
-plot(t, E_kin, '-', label='kinetic energy')
-plot(t, E_int, '-', label='interaction energy')
+title('Norm of the Approximate Solution')
+plot(t, norm, '-', label='norm')
 xlabel('t')
-ylabel('H(u(t))')
+ylabel(r"$\vert u(t)\vert_{L^2(\mathbb{R}^2;\mathbb{C})})$") #
 legend()
 savefig(output_file)
 

@@ -26,16 +26,11 @@ public:
   Eigen::Matrix3d Eval(const lf::mesh::Entity &cell);
 };
 
-class Energy {
-public:
-  Energy() { }
-  Energy(const Eigen::SparseMatrix<double> &A, const Eigen::SparseMatrix<double> &D) : _A(A), _D(D) { }
+double Norm(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D);
 
-  double operator()(const Eigen::VectorXcd &mu) const;
-private:
-  Eigen::SparseMatrix<double> _A;
-  Eigen::SparseMatrix<double> _D;
-};
+double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &A);
+
+double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D);
 
 /*class StiffnessElementMatrixProvider {
 public:
