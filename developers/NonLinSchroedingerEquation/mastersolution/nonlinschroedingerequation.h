@@ -1,3 +1,6 @@
+#ifndef NONLINSCHROEDINGEREQUATION_H_
+#define NONLINSCHROEDINGEREQUATION_H_
+
 /**
  * @file nonlinschroedingerequation.h
  * @brief NPDE homework NonLinSchroedingerEquation code
@@ -51,3 +54,5 @@ double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<doubl
 double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D);
 
 }  // namespace NonLinSchroedingerEquation
+
+#endif  // NONLINSCHROEDINGEREQUATION_H_
