@@ -6,7 +6,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "stableevaluationatapoint.h"
+#include "../stableevaluationatapoint.h"
 
 #include <cmath>
 #include <iostream>
@@ -34,7 +34,7 @@ TEST(StableEvaluationAtAPoint, PSL) {
 
   const Eigen::Vector2d x(0.3, 0.4);
 
-  const double val = StableEvaluationAtAPoint::PSL(mesh, u, x);
+  const double val = StableEvaluationAtAPoint::PSL(mesh_p, u, x);
 
   std::cout << "val " << val << std::endl;
 
@@ -58,7 +58,7 @@ TEST(StableEvaluationAtAPoint, PDL) {
 
   const Eigen::Vector2d x(0.3, 0.4);
 
-  const double val = StableEvaluationAtAPoint::PDL(mesh, u, x);
+  const double val = StableEvaluationAtAPoint::PDL(mesh_p, u, x);
   
   std::cout << "val2 " << val << std::endl;
 
@@ -76,7 +76,7 @@ TEST(StableEvaluationAtAPoint, pointEval) {
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
 
-  double error = StableEvaluationAtAPoint::pointEval(mesh);
+  double error = StableEvaluationAtAPoint::pointEval(mesh_p);
 
   std::cout << "error pointeval " << error << std::endl;
 
