@@ -24,6 +24,7 @@
 
 #include "nonlinschroedingerequation.h"
 
+// Defines imaginary unit as 1i
 using namespace std::literals::complex_literals;
 
 int main() {
