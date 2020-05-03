@@ -50,7 +50,6 @@ int main() {
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, stiffness_emp, A_COO);
   Eigen::SparseMatrix<double> A = A_COO.makeSparse();
 
-
   // Prepare timestepping
   int timesteps = 100;
   double T = 1.0;
