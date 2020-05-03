@@ -32,16 +32,4 @@ double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<doubl
 
 double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D);
 
-/*class StiffnessElementMatrixProvider {
-public:
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
-  Eigen::Matrix3d Eval(const lf::mesh::Entity &cell);
-};
-
-class TrapezoidalElementVectorProvider {
-public:
-  bool isActive(const lf::mesh::Entity &cell) { return true; }
-  Eigen::Vector3d Eval(const lf::mesh::Entity &cell);
-};*/
-
 }  // namespace NonLinSchroedingerEquation

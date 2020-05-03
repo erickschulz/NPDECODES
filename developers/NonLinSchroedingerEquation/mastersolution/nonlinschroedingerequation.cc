@@ -49,47 +49,4 @@ double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<d
 }
 /* SAM_LISTING_END_2 */
 
-/*Eigen::Matrix3d StiffnessElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
-  LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
-  Eigen::Matrix3d element_matrix;
-#if SOLUTION
-  const lf::geometry::Geometry *geo_ptr = cell.Geometry();
-  Eigen::Matrix<double, 2, 3> a = lf::geometry::Corners(*geo_ptr);
-  double area = lf::geometry::Volume(*geo_ptr);
-  Eigen::Matrix<double, 2, 3> g;
-  g << a(1, 1) - a(1, 2), a(1, 2) - a(1, 0), a(1, 0) - a(1, 1),
-       a(0, 2) - a(0, 1), a(0, 0) - a(0, 2), a(0, 1) - a(0, 0);
-  g *= 1.0 / (2.0 * area);
-  element_matrix = area * g.transpose() * g;
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
-  return element_matrix;
-}*/
-/* SAM_LISTING_END_2 */
-
-/*
-  Eigen::Matrix3d S33;
-  S33 << 0.0, 1.0, -1.0, -1.0, 0.0, 1.0, 1.0, -1.0, 0.0;
-  Eigen::Matrix2d S22;
-  S22 << 0.0, -1.0, 1.0, 0.0;
-  Eigen::Matrix<double, 2, 3> g = 1.0 / (2.0 * area) * S22 * a * S33;
-*/
-
-/*Eigen::Vector3d TrapezoidalElementVectorProvider::Eval(const lf::mesh::Entity &cell) {
-  LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
-  Eigen::Vector3d element_vector;
-#if SOLUTION
-  double area = lf::geometry::Volume(*(cell.Geometry()));
-  element_vector = area / 3.0 * Eigen::Vector3d::Ones();
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
-  return element_vector;
-}*/
-
 }  // namespace NonLinSchroedingerEquation
