@@ -36,11 +36,11 @@ TEST(StableEvaluationAtAPoint, PSL) {
 
   const double val = StableEvaluationAtAPoint::PSL(mesh_p, u, x);
 
-  std::cout << "val " << val << std::endl;
-
-  const double ref_val = 0.0;
+  const double ref_val = 0.15525;
 
   double tol = 1.e-4;
+  
+  ASSERT_NEAR(std::abs(ref_val - val), 0.0, tol);
 
 }
 
@@ -60,11 +60,11 @@ TEST(StableEvaluationAtAPoint, PDL) {
 
   const double val = StableEvaluationAtAPoint::PDL(mesh_p, u, x);
   
-  std::cout << "val2 " << val << std::endl;
-
-  const double ref_val = 0.0;
+  const double ref_val = -0.484226;
 
   double tol = 1.e-4;
+  
+  ASSERT_NEAR(std::abs(ref_val - val), 0.0, tol);
 
 }
 
@@ -78,11 +78,11 @@ TEST(StableEvaluationAtAPoint, pointEval) {
 
   double error = StableEvaluationAtAPoint::pointEval(mesh_p);
 
-  std::cout << "error pointeval " << error << std::endl;
-
-  double ref_error = 0.0;
+  double ref_error = 0.0784387;
 
   double tol = 1.e-4;
+
+  ASSERT_NEAR(std::abs(ref_error - error), 0.0, tol);
 
 }
 
@@ -102,15 +102,14 @@ TEST(StableEvaluationAtAPoint, Jstar) {
   };
 
   const Eigen::Vector2d x(0.3, 0.4);
-
-
+  
   double val = StableEvaluationAtAPoint::Jstar(fe_space, u, x);
-
-  std::cout << "val 3 " << val << std::endl;
 
   double ref_val = 0.0;
 
   double tol = 1.e-4;
+  
+  ASSERT_NEAR(std::abs(ref_val - val), 0.0, tol);
 
 }
 
@@ -133,11 +132,11 @@ TEST(StableEvaluationAtAPoint, stab_pointEval) {
   
   double val = StableEvaluationAtAPoint::stab_pointEval(fe_space, u, x);
 
-  std::cout << "val 4 " << val << std::endl;
-
   double ref_val = 0.0;
 
   double tol = 1.e-4;
+  
+  ASSERT_NEAR(std::abs(ref_val - val), 0.0, tol);
 
 }
 
