@@ -105,7 +105,7 @@ int main() {
 
   // Call python script to plot norm
   std::cout << "Generated " CURRENT_BINARY_DIR "/norm.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot_norm.py " CURRENT_BINARY_DIR "/norm.csv " CURRENT_BINARY_DIR "/norm.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_norm.py " CURRENT_BINARY_DIR "/norm.csv " CURRENT_BINARY_DIR "/norm.eps");
 
   // Write energies to file
   std::ofstream energies_csv;
@@ -117,7 +117,7 @@ int main() {
 
   // Call python script to plot energies
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
 
   return 0;
 }
