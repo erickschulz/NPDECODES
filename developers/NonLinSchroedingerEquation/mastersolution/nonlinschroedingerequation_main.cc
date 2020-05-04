@@ -15,7 +15,6 @@
 #include <utility>
 
 #include <Eigen/Core>
-#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
@@ -23,9 +22,7 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include "nonlinschroedingerequation.h"
-
-// Defines imaginary unit as 1i
-using namespace std::literals::complex_literals;
+#include "propagator.h"
 
 int main() {
 
@@ -42,7 +39,7 @@ int main() {
   NonLinSchroedingerEquation::MassElementMatrixProvider mass_emp;
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, mass_emp, D_COO);
   Eigen::SparseMatrix<double> D = D_COO.makeSparse();
-  Eigen::SparseMatrix<std::complex<double>> M = 1i * D;
+  Eigen::SparseMatrix<std::complex<double>> M = std::complex<double>(0, 1) * D;
 
   // Stiffness matrix
   lf::assemble::COOMatrix<double> A_COO(N_dofs, N_dofs);
@@ -61,14 +58,11 @@ int main() {
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
   Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
 
-  // Prepare kinetic propagator
-  Eigen::SparseMatrix<std::complex<double>> B_plus = M + 0.25 * tau * A.cast<std::complex<double>>();
-  Eigen::SparseMatrix<std::complex<double>> B_minus = M - 0.25 * tau * A.cast<std::complex<double>>();
-  Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>> solver;
-  solver.compute(B_minus);
+  // Prepare kinetic propagator for half step
+  NonLinSchroedingerEquation::KineticPropagator kineticPropagator(A, M, 0.5 * tau);
 
-  // Prepare interaction propagator
-  auto f = [tau] (std::complex<double> z) { return std::exp(-1i * tau * std::norm(z)) * z; };
+  // Prepare interaction propagator for full step
+  NonLinSchroedingerEquation::InteractionPropagator interactionPropagator(tau);
 
   // Timestepping
   Eigen::VectorXd norm(timesteps + 1);
@@ -80,9 +74,9 @@ int main() {
     E_kin(j) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
     E_int(j) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
     // Timestep tau according to Strang splitting
-    mu = solver.solve(B_plus * mu);
-    mu = mu.unaryExpr(f);
-    mu = solver.solve(B_plus * mu);
+    mu = kineticPropagator(mu);
+    mu = interactionPropagator(mu);
+    mu = kineticPropagator(mu);
   }
   norm(timesteps) = NonLinSchroedingerEquation::Norm(mu, D);
   E_kin(timesteps) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
