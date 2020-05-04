@@ -58,7 +58,7 @@ int main() {
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
   Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
 
-  // Prepare kinetic propagator for half step
+  // Prepare kinetic propagator for half step ($\Psi^{0,\frac{\tau}{2}}$)
   NonLinSchroedingerEquation::KineticPropagator kineticPropagator(A, M, 0.5 * tau);
 
   // Prepare interaction propagator for full step
