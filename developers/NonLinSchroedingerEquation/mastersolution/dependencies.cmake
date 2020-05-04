@@ -10,6 +10,8 @@ set(SOURCES
   ${DIR}/nonlinschroedingerequation_main.cc
   ${DIR}/nonlinschroedingerequation.h
   ${DIR}/nonlinschroedingerequation.cc
+  ${DIR}/propagator.h
+  ${DIR}/propagator.cc
 )
 
 set(LIBRARIES
@@ -21,7 +23,3 @@ set(LIBRARIES
   LF::lf.mesh.hybrid2d
   LF::lf.uscalfe
 )
-
-#LF::lf.mesh.test_utils
-#LF::lf.mesh.utils
-#LF::lf.refinement

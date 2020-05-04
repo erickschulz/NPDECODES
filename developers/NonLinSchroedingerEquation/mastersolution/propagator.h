@@ -9,7 +9,6 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
 #include <complex>
 
 #include <Eigen/Core>
@@ -36,15 +35,8 @@ class KineticPropagator : public Propagator {
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
 public:
-  KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau) {
-    B_plus_ = M + 0.5 * tau * A.cast<std::complex<double>>();
-    SparseMatrixXcd B_minus = M - 0.5 * tau * A.cast<std::complex<double>>();
-    solver_.compute(B_minus);
-  }
-
-  Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override {
-    return solver_.solve(B_plus_ * mu);
-  }
+  KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau);
+  Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
 private:
   SparseMatrixXcd B_plus_;
@@ -53,16 +45,8 @@ private:
 
 class InteractionPropagator : public Propagator {
 public:
-  InteractionPropagator(double tau) {
-    phase_multiplier_ = [tau] (std::complex<double> z) {
-      const std::complex<double> i(0, 1);
-      return std::exp(-i * tau * std::norm(z)) * z;
-    };
-  }
-
-  Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override {
-    return mu.unaryExpr(phase_multiplier_);
-  }
+  InteractionPropagator(double tau);
+  Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
 private:
   std::function<std::complex<double>(std::complex<double>)> phase_multiplier_;
