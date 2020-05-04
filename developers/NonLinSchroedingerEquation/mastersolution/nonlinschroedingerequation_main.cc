@@ -52,7 +52,9 @@ int main() {
 
   // Inital data
   const double PI = 3.14159265358979323846;
-  auto u0 = [PI] (Eigen::Vector2d x) -> std::complex<double> { return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1)); };
+  auto u0 = [PI] (Eigen::Vector2d x) -> std::complex<double> {
+    return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1));
+  };
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
   Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
 
