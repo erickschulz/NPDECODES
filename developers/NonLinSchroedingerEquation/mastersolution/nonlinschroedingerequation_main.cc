@@ -11,8 +11,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <memory>
-#include <utility>
 
 #include <Eigen/Core>
 
@@ -74,9 +72,17 @@ int main() {
     E_kin(j) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
     E_int(j) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
     // Timestep tau according to Strang splitting
+#if SOLUTION
     mu = kineticPropagator(mu);
     mu = interactionPropagator(mu);
     mu = kineticPropagator(mu);
+#else
+  //====================
+  // Your code goes here
+  // Implement one timestep tau by Strang splitting
+  // between kinetic and interaction propagator
+  //====================
+#endif
   }
   norm(timesteps) = NonLinSchroedingerEquation::Norm(mu, D);
   E_kin(timesteps) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
