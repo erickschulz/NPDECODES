@@ -55,8 +55,6 @@ InteractionPropagator::InteractionPropagator(double tau) {
 #else
   //====================
   // Your code goes here
-  // Replace this by the proper phase multiplier
-  return [] (std::complex<double> z) { return z; };
   //====================
 #endif
 }

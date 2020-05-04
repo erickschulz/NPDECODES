@@ -17,6 +17,8 @@
 
 namespace NonLinSchroedingerEquation {
 
+/** @brief Abstract interface for non-copyable propagator
+ */
 class Propagator {
 public:
   Propagator() = default;
@@ -30,26 +32,72 @@ private:
   Propagator & operator =(const Propagator &&) = delete;
 };
 
+/** @brief Class for propagation according to the kinetic
+ *  (i.e. Laplace) part if the NLSE 
+ */
 class KineticPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
 public:
+  /** @brief Computes and caches the data necessary to
+   *  perform a kinetic timestep of length tau using
+   *  the implicit trapezoidal rule
+   *  @param A stiffness matrix of shape $N \times N$
+   *  @param M complex mass matrix of shape $N \times N$
+   *  @param tau size of the timestep to perform
+   */
   KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau);
+  /** @brief Performs a kinetic timestep of length tau
+   *  @param mu vector of length $N$ containing nodal values
+   *  before the timestep
+   *  @return vector of length $N$ containg the nodal values
+   *  after the timestep
+   */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
 private:
+#if SOLUTION
   SparseMatrixXcd B_plus_;
   Eigen::SparseLU<SparseMatrixXcd> solver_;
+#else
+  //====================
+  // Your code goes here
+  // Add needed member variables here
+  //====================
+#endif
 };
 
+/** @brief Class for propagation according to the interaction
+ *  (i.e. non-linear) part if the NLSE 
+ */
 class InteractionPropagator : public Propagator {
 public:
+  /** @brief Computes and caches the data necessary to
+   *  perform an interaction timestep of length tau using
+   *  the analytic solution
+   *  @param tau size of the timestep to perform
+   */
   InteractionPropagator(double tau);
+  /** @brief Performs an interaction timestep of length tau
+   *  @param mu vector of length $N$ containing nodal values
+   *  before the timestep
+   *  @return vector of length $N$ containg the nodal values
+   *  after the timestep
+   */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
 private:
+#if SOLUTION
+  // Componentwise Function that performs a timestep tau
+  // when applied to mu.
   std::function<std::complex<double>(std::complex<double>)> phase_multiplier_;
+#else
+  //====================
+  // Your code goes here
+  // Add needed member variables here
+  //====================
+#endif
 };
 
 }  // namespace NonLinSchroedingerEquation

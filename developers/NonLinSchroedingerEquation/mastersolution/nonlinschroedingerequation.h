@@ -23,11 +23,10 @@ class MassElementMatrixProvider {
 public:
   /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity &cell) { return true; }
-  /*
-   * @brief routine for the computation of element matrices
-   * @param cell reference to the triangular cell for
-   *        which the element matrix should be computed.
-   * @return element matrix
+  /** @brief routine for the computation of element matrices
+   *  @param cell reference to the triangular cell for
+   *         which the element matrix should be computed.
+   *  @return element matrix
    */
   Eigen::Matrix3d Eval(const lf::mesh::Entity &cell);
 };

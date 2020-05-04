@@ -77,11 +77,11 @@ int main() {
     mu = interactionPropagator(mu);
     mu = kineticPropagator(mu);
 #else
-  //====================
-  // Your code goes here
-  // Implement one timestep tau by Strang splitting
-  // between kinetic and interaction propagator
-  //====================
+    //====================
+    // Your code goes here
+    // Implement one timestep tau by Strang splitting
+    // between kinetic and interaction propagator
+    //====================
 #endif
   }
   norm(timesteps) = NonLinSchroedingerEquation::Norm(mu, D);
