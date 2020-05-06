@@ -71,7 +71,7 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
            const Eigen::Vector2d x) {
 
   double PSLval = 0.0;
-
+  #if SOLUTION
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
 
@@ -91,7 +91,11 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
       PSLval += v(midpoint) * G(x, midpoint) * lf::geometry::Volume(*geo_ptr);
     }
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return PSLval;
 }
 
@@ -104,7 +108,7 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
            const Eigen::Vector2d x) {
 
   double PDLval = 0.0;
-
+  #if SOLUTION
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
 
@@ -141,7 +145,11 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
                 lf::geometry::Volume(*geo_ptr);
     }
   }
-
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return PDLval;
 }
 
@@ -153,7 +161,7 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
 double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 
   double error = 0.0;
-
+  #if SOLUTION
   const auto u = [](Eigen::Vector2d x) -> double {
     Eigen::Vector2d one(1.0, 0.0);
     return std::log((x + one).norm());
@@ -189,6 +197,11 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   const double rhs = PSL(mesh, dotgradu_n, x) - PDL(mesh, u, x);
   // Compute the error
   error = std::abs(u(x) - rhs);
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
 
   return error;
 }
@@ -283,7 +296,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
              FUNCTOR &&u, const Eigen::Vector2d x) {
 
   double val = 0.0;
-
+  #if SOLUTION
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
 
   // Use midpoint quadrature rule
@@ -321,6 +334,11 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
 
   double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
   */
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return val;
 }
 
@@ -334,7 +352,8 @@ double stab_pointEval(
     FUNCTOR &&u, const Eigen::Vector2d x) {
 
   double res = 0.0;
-
+  
+  #if SOLUTION
   Eigen::Vector2d half(0.5, 0.5);
   if ((x - half).norm() <= 0.25) {
     res = Jstar(fe_space, u, x);
@@ -342,7 +361,12 @@ double stab_pointEval(
   } else {
     std::cerr << "The point does not fulfill the assumptions" << std::endl;
   }
-
+  
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
   return res;
 }
 
