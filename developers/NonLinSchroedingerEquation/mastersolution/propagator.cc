@@ -19,10 +19,15 @@ namespace NonLinSchroedingerEquation {
 
 // KineticPropagator
 /* SAM_LISTING_BEGIN_1 */
-KineticPropagator::KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau) {
+KineticPropagator::KineticPropagator(const SparseMatrixXd &A,
+                                     const SparseMatrixXcd &M, double tau) {
 #if SOLUTION
+  // Defeats the rationale of expression templates, but acceptable here, because
+  // executed only once in the constructor.
   B_plus_ = M + 0.5 * tau * A.cast<std::complex<double>>();
   SparseMatrixXcd B_minus = M - 0.5 * tau * A.cast<std::complex<double>>();
+  // This is the expensive step: LU-factorization of a big sparse matrix.
+  // Precomputation is essential
   solver_.compute(B_minus);
 #else
   //====================
@@ -31,8 +36,12 @@ KineticPropagator::KineticPropagator(const SparseMatrixXd &A, const SparseMatrix
 #endif
 }
 
-Eigen::VectorXcd KineticPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd KineticPropagator::
+operator()(const Eigen::VectorXcd &mu) const {
 #if SOLUTION
+  // Cheap elimination steps operating on the LU-factors. Effort is almost O(N)
+  // thanks to sophisticated fill-in avoiding techniques employed by the sparse
+  // solvers.
   return solver_.solve(B_plus_ * mu);
 #else
   //====================
@@ -48,7 +57,11 @@ Eigen::VectorXcd KineticPropagator::operator()(const Eigen::VectorXcd &mu) const
 /* SAM_LISTING_BEGIN_2 */
 InteractionPropagator::InteractionPropagator(double tau) {
 #if SOLUTION
-  phase_multiplier_ = [tau] (std::complex<double> z) {
+  // We know that the discrete evolution operator for the non-linear part of the
+  // method-of-lines ODE boils down to componentwise multiplication of the
+  // vector with a single phase shift. Thus, this phase shift can be
+  // precomputed, here by means of a lambda function
+  phase_multiplier_ = [tau](std::complex<double> z) {
     const std::complex<double> i(0, 1);
     return std::exp(-i * tau * std::norm(z)) * z;
   };
@@ -59,8 +72,10 @@ InteractionPropagator::InteractionPropagator(double tau) {
 #endif
 }
 
-Eigen::VectorXcd InteractionPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd InteractionPropagator::
+operator()(const Eigen::VectorXcd &mu) const {
 #if SOLUTION
+  // Eigen's way of applying a function to all components of a vector.
   return mu.unaryExpr(phase_multiplier_);
 #else
   //====================
@@ -72,4 +87,9 @@ Eigen::VectorXcd InteractionPropagator::operator()(const Eigen::VectorXcd &mu) c
 }
 /* SAM_LISTING_END_2 */
 
-}  // namespace NonLinSchroedingerEquation
+/* SAM_LISTING_BEGIN_3 */
+// TODO: Implementation of SplitStepPropagator
+
+/* SAM_LISTING_END_3 */
+
+} // namespace NonLinSchroedingerEquation

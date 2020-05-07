@@ -43,6 +43,7 @@
     "TransformationOfGalerkinMatrices/",
     "UnstableBVP/",
     "WaveABC2D/",
-    "ZienkiewiczZhuEstimator/"
+    "ZienkiewiczZhuEstimator/",
+    "NonLinSchroedingerEquation/"
   ]
 }

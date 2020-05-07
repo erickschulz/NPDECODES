@@ -28,12 +28,12 @@ public:
 private:
   Propagator(const Propagator &) = delete;
   Propagator(Propagator &&) = delete;
-  Propagator & operator=(const Propagator &) = delete;
-  Propagator & operator =(const Propagator &&) = delete;
+  Propagator &operator=(const Propagator &) = delete;
+  Propagator &operator=(const Propagator &&) = delete;
 };
 
 /** @brief Class for propagation according to the kinetic
- *  (i.e. Laplace) part if the NLSE 
+ *  (i.e. Laplace) part if the NLSE
  */
 class KineticPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
@@ -47,7 +47,8 @@ public:
    *  @param M complex mass matrix of shape $N \times N$
    *  @param tau size of the timestep to perform
    */
-  KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau);
+  KineticPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M,
+                    double tau);
   /** @brief Performs a kinetic timestep of length tau
    *  @param mu vector of length $N$ containing nodal values
    *  before the timestep
@@ -69,7 +70,7 @@ private:
 };
 
 /** @brief Class for propagation according to the interaction
- *  (i.e. non-linear) part if the NLSE 
+ *  (i.e. non-linear) part if the NLSE
  */
 class InteractionPropagator : public Propagator {
 public:
@@ -100,6 +101,6 @@ private:
 #endif
 };
 
-}  // namespace NonLinSchroedingerEquation
+} // namespace NonLinSchroedingerEquation
 
-#endif  // PROPAGATOR_H_
+#endif // PROPAGATOR_H_
