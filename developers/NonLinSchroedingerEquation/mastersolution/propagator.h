@@ -10,6 +10,8 @@
  */
 
 #include <complex>
+#include <memory>
+#include <utility>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
@@ -101,6 +103,39 @@ private:
 #endif
 };
 
-} // namespace NonLinSchroedingerEquation
+/** @brief Class for propagation according Strang splitting between two
+  * propagators.
+ */
+class SplitStepPropagator : public Propagator {
+public:
+  /** @brief Assigns the member variables by forwarding the passed pointers.
+   *  @param semi_step propagator for timestep $\frac{\tau}{2}$ to be
+   *  executed as first and last step in the Strang splitting
+   *  @param full_step propagator for timestep $\tau$ to be executed
+   *  as intermediate step in the Strang splitting
+   */
+  SplitStepPropagator(std::unique_ptr<Propagator> semi_step,
+                      std::unique_ptr<Propagator> full_step);
+  /** @brief Performs the Strang splitting.
+   *  @param mu vector of length $N$ containing nodal values
+   *  before the timestep
+   *  @return vector of length $N$ containg the nodal values
+   *  after the timestep
+   */
+  Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
+
+private:
+#if SOLUTION
+  std::unique_ptr<Propagator> semi_step_;
+  std::unique_ptr<Propagator> full_step_;
+#else
+  //====================
+  // Your code goes here
+  // Add needed member variables here
+  //====================
+#endif
+};
+
+}  // namespace NonLinSchroedingerEquation
 
 #endif // PROPAGATOR_H_

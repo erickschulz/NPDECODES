@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <utility>
 
 #include <Eigen/Core>
 
@@ -69,11 +71,13 @@ int main() {
   //====================
   Eigen::VectorXcd mu;
 #endif
-  // Prepare kinetic propagator for half step ($\Psi^{0,\frac{\tau}{2}}$)
-  NonLinSchroedingerEquation::KineticPropagator kineticPropagator(A, M,
-                                                                  0.5 * tau);
-  // Prepare interaction propagator for full step
-  NonLinSchroedingerEquation::InteractionPropagator interactionPropagator(tau);
+
+  // Prepare (pointer to) kinetic propagator for semi step ($\Psi^{0,\frac{\tau}{2}}$)
+  auto kineticPropagator = std::make_unique<NonLinSchroedingerEquation::KineticPropagator>(A, M, 0.5 * tau);
+  // Prepare (pointer to) interaction propagator for full step
+  auto interactionPropagator = std::make_unique<NonLinSchroedingerEquation::InteractionPropagator>(tau);
+  // Prepare split-step propagator for full step $\tau$
+  NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(std::move(kineticPropagator), std::move(interactionPropagator));
 
   // Arrays for storing "energies" contributing to the Hamiltonian
   Eigen::VectorXd norm(timesteps + 1);
@@ -87,9 +91,7 @@ int main() {
     E_kin(j) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
     E_int(j) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
     // Timestep tau according to Strang splitting
-    mu = kineticPropagator(mu);
-    mu = interactionPropagator(mu);
-    mu = kineticPropagator(mu);
+    mu = splitStepPropagator(mu);
   }
   norm(timesteps) = NonLinSchroedingerEquation::Norm(mu, D);
   E_kin(timesteps) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
@@ -98,10 +100,10 @@ int main() {
   //====================
   // Your code goes here
   // Implement timestepping based on Strang splitting
-  // between kinetic and interaction propagator
   // Record contributions to the Hamiltonian
   //====================
 #endif
+
   // Timegrid
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(timesteps + 1, 0.0, T);
 
