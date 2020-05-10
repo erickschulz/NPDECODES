@@ -138,5 +138,16 @@ int main() {
               "/plot_energies.py " CURRENT_BINARY_DIR
               "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
 
+  // Write entry-wise squared modulus of $\mu$ to .vtk file
+  std::cout << "Generated " CURRENT_BINARY_DIR "/solution.vtk" << std::endl;
+  lf::io::VtkWriter vtk_writer(mesh_p, "solution.vtk");
+  auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
+    if (dofh.Entity(global_idx).RefEl() == lf::base::RefElType::kPoint) {
+      nodal_data->operator()(dofh.Entity(global_idx)) = std::norm(mu(global_idx));
+    }
+  };
+  vtk_writer.WritePointData("mu_abs2", *nodal_data);
+
   return 0;
 }
