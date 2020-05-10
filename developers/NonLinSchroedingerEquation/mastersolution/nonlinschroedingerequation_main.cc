@@ -69,7 +69,7 @@ int main() {
   // Initialize the vector mu with the basis expansion coefficients
   // of an interpolant of the function $u_0$.
   //====================
-  Eigen::VectorXcd mu;
+  Eigen::VectorXcd mu(N_dofs);
 #endif
 
   // Prepare (pointer to) kinetic propagator for semi step ($\Psi^{0,\frac{\tau}{2}}$)
