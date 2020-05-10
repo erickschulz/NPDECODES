@@ -15,4 +15,4 @@ project(lecturecodes)
 #add_subdirectory(EigenSparseMatrix)
 # add_subdirectory(RatesOfConvergence) # needs MathGL
 # Does not work until Boost math libraries are available
-# add_subdirectory(ConservativeFiniteVolumes)
+add_subdirectory(ConservativeFiniteVolumes)

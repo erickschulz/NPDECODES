@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-int main(int /*argc*/, char** /*argv*/) {
+int main(int /*argc*/, char **/*argv*/) {
   std::cout << "Running driver for discrete evolution in conservation form"
             << std::endl;
   // Test script for discrete evolution in conservation form

@@ -4,12 +4,12 @@ int main() {
   std::cout << "Running driver for discrete evolution in conservation form "
                "with linear reconstruction"
             << std::endl;
-  unsigned N = 60;  // Number of spatial cells
-  double T = 0.5;   // Final time
+  unsigned N = 60; // Number of spatial cells
+  double T = 0.5;  // Final time
 
   // spatial interval for simulation
-  double a = -2.5;  // left bound for computational interval
-  double b = 1.5;   // right bound
+  double a = -2.5; // left bound for computational interval
+  double b = 1.5;  // right bound 
 
   // Initial state distribution
   auto u0 = [](double x) { return std::sin(x); };
@@ -20,6 +20,6 @@ int main() {
   auto slopes = [](double a, double b, double c) {
     return std::max(0., std::min(b - a, c - b));
   };
-  // Fully discrete evolution
+  // Fully discrete evolution 
   ConsFV::highresevl(a, b, N, u0, T, F, slopes);
 }
