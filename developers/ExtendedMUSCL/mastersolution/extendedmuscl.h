@@ -16,7 +16,7 @@
 
 #include <Eigen/Core>
 
-namespace extendedmuscl {
+namespace ExtendedMUSCL {
 
 /**
  * @brief Computes the Godunov numerical Flux for
@@ -88,13 +88,14 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Approximate dual cell averages at t=0
   Eigen::VectorXd mu = x.unaryExpr(u0);
 
-  double alfa = mu.minCoeff(); // lower bound for initial data
-  double beta = mu.maxCoeff(); // upper bound for initial data
-  assert(alfa > 0.0 && beta > 0.0);
+  double alpha = mu.minCoeff(); // lower bound for initial data
+  double beta = mu.maxCoeff();  // upper bound for initial data
+  assert(alpha > 0.0 && beta > 0.0);
 
 #if SOLUTION
   // Set timestep tau according to the CFL-condition
-  double tau = h / std::max(std::abs(std::log(alfa)), std::abs(std::log(beta)));
+  double tau =
+      h / std::max(std::abs(std::log(alpha)), std::abs(std::log(beta)));
   // Semi-discretization (discretization in space)
   double h_inv = 1.0 / h;
   // Define right-hand-side for the SSP ODE solver
@@ -116,6 +117,6 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace extendedmuscl
+} // namespace ExtendedMUSCL
 
-#endif  // EXTENDEDMUSCL_H_
+#endif // EXTENDEDMUSCL_H_

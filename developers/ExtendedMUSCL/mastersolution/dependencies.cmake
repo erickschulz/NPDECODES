@@ -10,7 +10,7 @@ set(SOURCES
   ${DIR}/extendedmuscl.h
   ${DIR}/extendedmuscl.cc
   ${DIR}/slopelimfluxdiff.h
-  ${DIR}/sspdriver_main.cc
+  ${DIR}/extendedmuscl_main.cc
 )
 
 set(LIBRARIES
