@@ -72,12 +72,8 @@ int main() {
   Eigen::VectorXcd mu(N_dofs);
 #endif
 
-  // Prepare (pointer to) kinetic propagator for semi step ($\Psi^{0,\frac{\tau}{2}}$)
-  auto kineticPropagator = std::make_unique<NonLinSchroedingerEquation::KineticPropagator>(A, M, 0.5 * tau);
-  // Prepare (pointer to) interaction propagator for full step
-  auto interactionPropagator = std::make_unique<NonLinSchroedingerEquation::InteractionPropagator>(tau);
   // Prepare split-step propagator for full step $\tau$
-  NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(std::move(kineticPropagator), std::move(interactionPropagator));
+  NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(A, M, tau);
 
   // Arrays for storing "energies" contributing to the Hamiltonian
   Eigen::VectorXd norm(timesteps + 1);

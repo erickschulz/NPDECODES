@@ -10,8 +10,6 @@
 
 #include <cmath>
 #include <complex>
-#include <memory>
-#include <utility>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
@@ -91,25 +89,27 @@ operator()(const Eigen::VectorXcd &mu) const {
 
 /* SAM_LISTING_BEGIN_3 */
 #if SOLUTION
-SplitStepPropagator::SplitStepPropagator(std::unique_ptr<Propagator> semi_step,
-                                         std::unique_ptr<Propagator> full_step)
-                      : semi_step_(std::move(semi_step)),
-                        full_step_(std::move(full_step)) { }
+SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
+                                         const SparseMatrixXcd &M,
+                                         double tau) :
+                                         kineticPropagator_(A, M, 0.5 * tau),
+                                         interactionPropagator_(tau) { }
 #else
 //====================
 // Your code goes here
 // Change this dummy implementation of the constructor:
-SplitStepPropagator::SplitStepPropagator(std::unique_ptr<Propagator> semi_step,
-                                         std::unique_ptr<Propagator> full_step) { }
+SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
+                                         const SparseMatrixXcd &M,
+                                         double tau) { }
 //====================
 #endif
 
 Eigen::VectorXcd SplitStepPropagator::operator()(const Eigen::VectorXcd &mu) const {
   Eigen::VectorXcd nu(mu.size());
 #if SOLUTION
-  nu = semi_step_->operator()(mu);
-  nu = full_step_->operator()(nu);
-  nu = semi_step_->operator()(nu);
+  nu = kineticPropagator_(mu);
+  nu = interactionPropagator_(nu);
+  nu = kineticPropagator_(nu);
 #else
   //====================
   // Your code goes here

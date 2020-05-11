@@ -10,8 +10,6 @@
  */
 
 #include <complex>
-#include <memory>
-#include <utility>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
@@ -103,20 +101,24 @@ private:
 #endif
 };
 
-/** @brief Class for propagation according Strang splitting between two
-  * propagators.
+/** @brief Class for propagation according Strang splitting between the
+  * kinetic (semi-step) and interaction (full-step) propagator.
  */
 class SplitStepPropagator : public Propagator {
+  using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
+  using SparseMatrixXd = Eigen::SparseMatrix<double>;
+
 public:
-  /** @brief Assigns the member variables by forwarding the passed pointers.
-   *  @param semi_step propagator for timestep $\frac{\tau}{2}$ to be
-   *  executed as first and last step in the Strang splitting
-   *  @param full_step propagator for timestep $\tau$ to be executed
-   *  as intermediate step in the Strang splitting
+  /** @brief Forwards the arguments to the constructors of the underlying
+   *  propagators KineticPropagator (semi-step) and InteractionPropagator
+   *  (full-step).
+   *  @param A stiffness matrix of shape $N \times N$
+   *  @param M complex mass matrix of shape $N \times N$
+   *  @param tau size of the timestep to perform by Strang splitting
    */
-  SplitStepPropagator(std::unique_ptr<Propagator> semi_step,
-                      std::unique_ptr<Propagator> full_step);
-  /** @brief Performs the Strang splitting.
+  SplitStepPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau);
+  /** @brief Performs the propagation according Strang splitting between the
+   *  kinetic (semi-step) and interaction (full-step) propagator.
    *  @param mu vector of length $N$ containing nodal values
    *  before the timestep
    *  @return vector of length $N$ containg the nodal values
@@ -126,8 +128,10 @@ public:
 
 private:
 #if SOLUTION
-  std::unique_ptr<Propagator> semi_step_;
-  std::unique_ptr<Propagator> full_step_;
+  // Kinetic propagator for semi step $\Psi^{0,\frac{\tau}{2}}$
+  KineticPropagator kineticPropagator_;
+  // Interaction propagator for full step
+  InteractionPropagator interactionPropagator_;
 #else
   //====================
   // Your code goes here
