@@ -8,14 +8,14 @@
 
 #include <cmath>
 
-#include <gtest/gtest.h>
-
 #include <Eigen/Core>
+
+#include <gtest/gtest.h>
 
 #include "../extendedmuscl.h"
 #include "../slopelimfluxdiff.h"
 
-namespace extendedmuscl::test {
+namespace ExtendedMUSCL::test {
 
 constexpr double PI = 3.14159265358979323846;
 
@@ -32,10 +32,9 @@ TEST(ExtendedMUSCL, logGodunovFlux) {
   // reference
   Eigen::VectorXd F_GD_ref(13);
   F_GD_ref << 1.85610424036222, 1.29975661440261, -0.307608855395228,
-          0.124403508171646, 2.41985899607723, -0.693209059537307,
-          1.87051443063613, 0.452859591749309, -0.766516292749662,
-          -0.330258509299405, -0.661191841297781, -0.846573590279973,
-          -0.891802337837753;
+      0.124403508171646, 2.41985899607723, -0.693209059537307, 1.87051443063613,
+      0.452859591749309, -0.766516292749662, -0.330258509299405,
+      -0.661191841297781, -0.846573590279973, -0.891802337837753;
 
   // compare
   double tol = 1.0e-8;
@@ -150,4 +149,4 @@ TEST(ExtendedMUSCL, solveClaw) {
   EXPECT_NEAR(0.0, error, tol);
 }
 
-} // namespace extendedmuscl::test
+} // namespace ExtendedMUSCL::test
