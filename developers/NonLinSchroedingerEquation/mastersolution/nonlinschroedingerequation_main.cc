@@ -32,8 +32,7 @@ int main() {
                                   "/../meshes/square_64.msh");
   auto mesh_p = reader.mesh();
   auto fe_space =
-      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<std::complex<double>>>(
-          mesh_p);
+      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
@@ -58,7 +57,7 @@ int main() {
 // Prepare inital data
 #if SOLUTION
   const double PI = 3.14159265358979323846;
-  auto u0 = [PI](Eigen::Vector2d x) -> std::complex<double> {
+  auto u0 = [PI](Eigen::Vector2d x) -> double {
     return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1));
   };
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
@@ -137,13 +136,9 @@ int main() {
   // Write entry-wise squared modulus of $\mu$ to .vtk file
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.vtk" << std::endl;
   lf::io::VtkWriter vtk_writer(mesh_p, "solution.vtk");
-  auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
-    if (dofh.Entity(global_idx).RefEl() == lf::base::RefElType::kPoint) {
-      nodal_data->operator()(dofh.Entity(global_idx)) = std::norm(mu(global_idx));
-    }
-  };
-  vtk_writer.WritePointData("mu_abs2", *nodal_data);
+  Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
+  lf::uscalfe::MeshFunctionFE mu_abs2_mf(fe_space, mu_abs2);
+  vtk_writer.WritePointData("mu_abs2", mu_abs2_mf);
 
   return 0;
 }
