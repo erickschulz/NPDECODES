@@ -9,17 +9,16 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <iostream>
+#include <memory>
+#include <utility>
 
 namespace RegularizedNeumannProblem {
 

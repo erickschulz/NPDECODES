@@ -6,10 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
-
-#include <Eigen/Core>
 
 #include "laxwendroffscheme.h"
 
@@ -36,10 +35,12 @@ int main() {
   std::cout << "Generated " CURRENT_BINARY_DIR "/convergence.csv" << std::endl;
 
 #if SOLUTION
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
 #else
   // To plot from convergence.csv uncomment this:
-  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+  // "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
 #endif
 
   return 0;

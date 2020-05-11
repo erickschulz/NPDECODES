@@ -45,4 +45,4 @@ double EvalResponse::operator()(Eigen::Vector2d g, Eigen::Vector2d d) const {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace OutputImpedanceBVP
+}  // namespace OutputImpedanceBVP

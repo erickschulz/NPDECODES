@@ -22,7 +22,6 @@
 
 namespace OutputImpedanceBVP {
 
-
 // Library functions
 Eigen::VectorXd solveImpedanceBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
@@ -37,16 +36,16 @@ template <typename FUNCTOR_U>
 Eigen::VectorXd interpolateData(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
     FUNCTOR_U &&u) {
-
   // Generate Lehrfem++ mesh functions out of the functors
   auto mf_u = lf::mesh::utils::MeshFunctionGlobal(
       [&u](Eigen::Vector2d x) -> double { return u(x); });
 
-  Eigen::VectorXd dof_vector_u = lf::uscalfe::NodalProjection(*fe_space_p, mf_u);
+  Eigen::VectorXd dof_vector_u =
+      lf::uscalfe::NodalProjection(*fe_space_p, mf_u);
 
   return dof_vector_u;
 };
 
-} // namespace OutputImpedanceBVP
+}  // namespace OutputImpedanceBVP
 
 #endif

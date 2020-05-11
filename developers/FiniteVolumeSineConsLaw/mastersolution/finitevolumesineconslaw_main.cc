@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "finitevolumesineconslaw.h"
-
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "finitevolumesineconslaw.h"
 
 using namespace FiniteVolumeSineConsLaw;
 
@@ -37,14 +36,16 @@ int main() {
   file.close();
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
 #else
   //====================
   // Your code goes here
   // Use std::ofstream to write the solution to
   // the file "ufinal.csv". To plot this
   // file you may uncomment the following line:
-  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+  // "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
   //====================
 #endif
   /* SAM_LISTING_END_1 */
@@ -61,15 +62,19 @@ int main() {
   file << ufinal_reaction.transpose().format(CSVFormat) << std::endl;
   file.close();
 
-  std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal_reaction.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal_reaction.csv"
+            << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/ufinal_reaction.csv " CURRENT_BINARY_DIR
+              "/ufinal_reaction.png");
 #else
   //====================
   // Your code goes here
   // Use std::ofstream to write the solution to
   // the file "ufinal_reaction.csv". To plot this
   // file you may uncomment the following line:
-  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+  // "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
   //====================
 #endif
 

@@ -6,16 +6,15 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <memory>
 
 #include "avgvalboundary.h"
 

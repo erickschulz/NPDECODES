@@ -9,16 +9,15 @@
 #ifndef SOLVE_H_
 #define SOLVE_H_
 
-#include <iostream>
-#include <memory>
-#include <stdexcept>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
 
 #include "../meshes/mesh.h"
 #include "mylinearfeelementmatrix.h"
@@ -65,8 +64,8 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
   // Right-hand side vector; has to be set to zero initially
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
   phi.setZero();
-  // Invoke assembly on cells (codim == 0). The element vector provider is passed
-  // as an argument
+  // Invoke assembly on cells (codim == 0). The element vector provider is
+  // passed as an argument
   AssembleVectorLocally(0, dofh, elvec_provider, phi);
 
   // Define solution vector
@@ -132,6 +131,6 @@ Eigen::VectorXd solvePoissonBVP();
  */
 Eigen::VectorXd solveNeumannEq();
 
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation
 
-#endif // SOLVE_H_
+#endif  // SOLVE_H_

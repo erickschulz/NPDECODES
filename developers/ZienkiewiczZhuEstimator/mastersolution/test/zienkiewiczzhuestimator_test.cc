@@ -8,10 +8,10 @@
 
 #include <memory>
 // Eigen includes
+#include <gtest/gtest.h>
+
 #include <Eigen/Core>
 #include <unsupported/Eigen/KroneckerProduct>
-
-#include <gtest/gtest.h>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>

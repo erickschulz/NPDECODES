@@ -16,7 +16,7 @@
 #include <cmath>
 // Eigen
 #include <Eigen/Core>
-//Lehrfempp
+// Lehrfempp
 #include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
 

@@ -6,17 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "radauthreetimestepping.h"
-#include "radauthreetimesteppingode.h"
-
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <memory>
+
+#include "radauthreetimestepping.h"
+#include "radauthreetimesteppingode.h"
 
 using namespace RadauThreeTimestepping;
 
@@ -59,7 +58,8 @@ int main(int /*argc*/, char ** /*argv*/) {
       "Size of discrete solution and dimension of FE space mismatch.");
 
   // Output results to vtk file
-  lf::io::VtkWriter vtk_writer(mesh_p, CURRENT_BINARY_DIR "/discrete_heat_solution.vtk");
+  lf::io::VtkWriter vtk_writer(
+      mesh_p, CURRENT_BINARY_DIR "/discrete_heat_solution.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
   for (int global_idx = 0; global_idx < N_dofs; global_idx++) {

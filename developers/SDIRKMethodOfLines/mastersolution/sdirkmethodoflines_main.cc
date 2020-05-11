@@ -13,9 +13,7 @@
 
 using namespace SDIRKMethodOfLines;
 
-int main(int /*argc*/, char ** /*argv*/)
-{
- 
+int main(int /*argc*/, char ** /*argv*/) {
   /* SDIRK-2 ODE convergence */
   sdirk2ScalarODECvTest();
 
@@ -35,13 +33,14 @@ int main(int /*argc*/, char ** /*argv*/)
        .setNoYCells(100);
    std::shared_ptr<lf::mesh::Mesh> mesh_p{builder.Build()}; */
 
-  #if SOLUTION
+#if SOLUTION
   /* SAM_LISTING_BEGIN_1 */
 
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square64_bnd.msh");
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../meshes/square64_bnd.msh");
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Finite element space
   auto fe_space =
@@ -53,8 +52,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
   // Building initial condition vector
   Eigen::VectorXd initial_temperature_vec(N_dofs);
-  for (int idx = 0; idx < N_dofs; idx++)
-  {
+  for (int idx = 0; idx < N_dofs; idx++) {
     // Obtain coordinates of vertex at global index idx
     auto coords = lf::geometry::Corners(*(dofh.Entity(idx).Geometry()));
     LF_ASSERT_MSG(coords.cols() == 1, "Wrong no of coords in vertex");
@@ -87,7 +85,9 @@ int main(int /*argc*/, char ** /*argv*/)
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
 
   // Plot from .csv file using python
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_energies.py " CURRENT_BINARY_DIR
+              "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
   /* SAM_LISTING_END_1 */
 #else
   //====================
@@ -95,26 +95,24 @@ int main(int /*argc*/, char ** /*argv*/)
   //====================
 #endif
 
-  #if SOLUTION
+#if SOLUTION
   /* SAM_LISTING_BEGIN_2 */
   // Output results for the temperature function to vtk file
   lf::io::VtkWriter vtk_writer(mesh_p, "discrete_temperature_sol.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++)
-  {
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
     nodal_data->operator()(dofh.Entity(global_idx)) =
         discrete_temperature_sol[global_idx];
   };
   vtk_writer.WritePointData("discrete_temperature_sol", *nodal_data);
   /* SAM_LISTING_END_2 */
   std::cout << "\n>>The discrete_heat_solution was written to:" << std::endl;
-  std::cout << "\t discrete_temperature_sol.vtk\n"
-            << std::endl;
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+  std::cout << "\t discrete_temperature_sol.vtk\n" << std::endl;
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   return 0;
 }

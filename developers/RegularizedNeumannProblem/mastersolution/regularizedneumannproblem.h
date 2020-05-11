@@ -9,19 +9,18 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <iostream>
+#include <memory>
+#include <utility>
 
 namespace RegularizedNeumannProblem {
 
@@ -72,9 +71,9 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
   /* SAM_LISTING_BEGIN_1 */
   auto selector = [](lf::base::glb_idx_t idx) -> std::pair<bool, double> {
     if (idx == 0) {
-      return {true, 0.0}; // fix first d.o.f. to zero
+      return {true, 0.0};  // fix first d.o.f. to zero
     } else {
-      return {false, 42.0}; // keep all others
+      return {false, 42.0};  // keep all others
     }
   };
   lf::assemble::FixFlaggedSolutionComponents(selector, A_aux, rhs_vec);
@@ -92,7 +91,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 // ENTITY_VECTOR_PROVIDER to calculate vector c using LehrFEM assembly functions
 /* SAM_LISTING_BEGIN_6 */
 class VecHelper {
-public:
+ public:
   explicit VecHelper() {}
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {

@@ -6,9 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <utility>
-
 #include <Eigen/Core>
+#include <utility>
 
 namespace WaveAbsorbingBC1D {
 

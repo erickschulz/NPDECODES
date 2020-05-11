@@ -9,12 +9,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "slopelimfluxdiff.h"
-
+#include <Eigen/Core>
 #include <cassert>
 #include <cmath>
 
-#include <Eigen/Core>
+#include "slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL {
 
@@ -88,8 +87,8 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Approximate dual cell averages at t=0
   Eigen::VectorXd mu = x.unaryExpr(u0);
 
-  double alpha = mu.minCoeff(); // lower bound for initial data
-  double beta = mu.maxCoeff();  // upper bound for initial data
+  double alpha = mu.minCoeff();  // lower bound for initial data
+  double beta = mu.maxCoeff();   // upper bound for initial data
   assert(alpha > 0.0 && beta > 0.0);
 
 #if SOLUTION
@@ -105,8 +104,7 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   };
   // Timestepping: Solve the semi-discrete ODE
   int N = (int)(T / tau + 0.5);
-  for (int i = 0; i < N; ++i)
-    mu = sspEvolop(semi_discrete_rhs, mu, tau);
+  for (int i = 0; i < N; ++i) mu = sspEvolop(semi_discrete_rhs, mu, tau);
 #else
   //====================
   // Your code goes here
@@ -117,6 +115,6 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL
 
-#endif // EXTENDEDMUSCL_H_
+#endif  // EXTENDEDMUSCL_H_

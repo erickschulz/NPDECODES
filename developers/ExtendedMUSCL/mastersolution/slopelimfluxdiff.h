@@ -30,9 +30,9 @@ namespace ExtendedMUSCL {
 template <typename FunctionF, typename FunctionSlopes>
 Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
                                  FunctionSlopes slopes) {
-  int n = mu.size(); // Number of active dual grid cells
-  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
-  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
+  int n = mu.size();  // Number of active dual grid cells
+  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
+  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);     // Flux differences
 
   // Computation of slopes \Blue{$\sigma_j$}, uses \Blue{$\mu_0=\mu_1$},
   // \Blue{$m_{N+1}=\mu_N$}, which amounts to constant extension of states
@@ -75,18 +75,18 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
 template <typename FunctionF, typename FunctionSlopes>
 Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
                                     FunctionSlopes slopes) {
-  int n = mu.size(); // Number of active dual grid cells
-  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
-  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
+  int n = mu.size();  // Number of active dual grid cells
+  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
+  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);     // Flux differences
 
   // Computation of slopes \Blue{$\sigma_j$}, uses \Blue{$\mu_{-1}=\mu_{n-1}$},
   // \Blue{$\mu_n=\mu_0$}, which amounts to constant extension of states
   // beyond domain of influence \Blue{$[a,b]$} of non-constant intial data. Same
   // technique has been applied in \lref{cpp:fluxdiff}
-  sigma[0] = slopes(mu[n - 1], mu[0], mu[1]); // @\Label[line]{slfd:1}@
+  sigma[0] = slopes(mu[n - 1], mu[0], mu[1]);  // @\Label[line]{slfd:1}@
   for (int j = 1; j < n - 1; ++j)
     sigma[j] = slopes(mu[j - 1], mu[j], mu[j + 1]);
-  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[0]); // @\Label[line]{slfd:2}@
+  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[0]);  // @\Label[line]{slfd:2}@
 
   // Compute linear reconstruction at endpoints of dual cells \lref{eq:slopval}
   Eigen::VectorXd nup = mu + 0.5 * sigma;
@@ -94,7 +94,7 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
 
 #if SOLUTION
   // Rely on periodicity to compute numerical fluxes at interval ends
-  fd[0] = F(nup[0], num[1]) - F(nup[n - 1], num[0]); // @\Label[line]{slfd:3}@
+  fd[0] = F(nup[0], num[1]) - F(nup[n - 1], num[0]);  // @\Label[line]{slfd:3}@
 #else
   // As in \lref{cpp:consformevl}: constant continuation of data outside
   // \Blue{$[a,b]$}!
@@ -105,7 +105,7 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
     fd[j] = F(nup[j], num[j + 1]) - F(nup[j - 1], num[j]);
 #if SOLUTION
   fd[n - 1] = F(nup[n - 1], num[0]) -
-              F(nup[n - 2], num[n - 1]); // @\Label[line]{slfd:4}@
+              F(nup[n - 2], num[n - 1]);  // @\Label[line]{slfd:4}@
 #else
   fd[n - 1] = F(nup[n - 1], mu[n - 1]) - F(nup[n - 2], num[n - 1]);
 #endif
@@ -113,6 +113,6 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL
 
-#endif // SLOPELIMFLUXDIFF_H_
+#endif  // SLOPELIMFLUXDIFF_H_

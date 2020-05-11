@@ -14,7 +14,7 @@
 #include <memory>
 // Google Test
 #include <gtest/gtest.h>
-//Lehrfempp
+// Lehrfempp
 #include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
 

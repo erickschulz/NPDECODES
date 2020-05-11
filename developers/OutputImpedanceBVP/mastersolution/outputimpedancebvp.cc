@@ -5,26 +5,23 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cassert>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+#include "outputimpedancebvp.h"
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "outputimpedancebvp.h"
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <cassert>
 
-namespace OutputImpedanceBVP
-{
+namespace OutputImpedanceBVP {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd solveImpedanceBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d g)
-{
+    Eigen::Vector2d g) {
   // Related implementations:
   // Homework problem ErrorEstimatesForTraces:
   // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
@@ -74,12 +71,10 @@ Eigen::VectorXd solveImpedanceBVP(
   // only on the interior boundary edges of the mesh using the boundary flags
   auto edges_predicate_RobinBC =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge))
-    {
+    if (bd_flags(edge)) {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
-      {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
         return false;
       }
       return true;
@@ -88,8 +83,8 @@ Eigen::VectorXd solveImpedanceBVP(
   };
   // Coefficients used in the class template
   // MassEdgeMatrixProvider< SCALAR, COEFF, EDGESELECTOR >
-  auto eta =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 1.0; });
+  auto eta = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 1.0; });
   lf::uscalfe::MassEdgeMatrixProvider<double, decltype(eta),
                                       decltype(edges_predicate_RobinBC)>
       edgemat_builder(fe_space_p, eta, edges_predicate_RobinBC);
@@ -105,8 +100,8 @@ Eigen::VectorXd solveImpedanceBVP(
   /* SAM_LISTING_BEGIN_9 */
   // I.iii : Computing right-hand side vector
   // Right-hand side source function f
-  auto mf_f =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 0.0; });
+  auto mf_f = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 0.0; });
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
       elvec_builder(fe_space_p, mf_f);
   // Invoke assembly on cells (codim == 0)
@@ -124,12 +119,10 @@ Eigen::VectorXd solveImpedanceBVP(
   // only on the exterior boundary edges of the mesh using the boundary flags
   auto edges_predicate_Dirichlet =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge))
-    {
+    if (bd_flags(edge)) {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
-      {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
         return true;
       }
     }
@@ -157,8 +150,8 @@ Eigen::VectorXd solveImpedanceBVP(
   // internal conversion routines.
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
-  // II : SOLVING  THE LINEAR SYSTEM
-  #if SOLUTION
+// II : SOLVING  THE LINEAR SYSTEM
+#if SOLUTION
   // II.i : Setting up Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_sparse);
@@ -166,17 +159,17 @@ Eigen::VectorXd solveImpedanceBVP(
   // II.ii : Solving
   discrete_solution = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
-  #if SOLUTION
-  // do nothing
-  #else
+#if SOLUTION
+// do nothing
+#else
   discrete_solution.setZero();
-  #endif
+#endif
   return discrete_solution;
 };
 /* SAM_LISTING_END_9 */
@@ -185,8 +178,7 @@ Eigen::VectorXd solveImpedanceBVP(
 double computeBoundaryOutputFunctional(
     const Eigen::VectorXd eta,
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d d)
-{
+    Eigen::Vector2d d) {
   double func_val = 0.0;
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -202,12 +194,10 @@ double computeBoundaryOutputFunctional(
   // only on the interior boundary edges of the mesh using the boundary flags
   auto edges_predicate_RobinBC =
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    if (bd_flags(edge))
-    {
+    if (bd_flags(edge)) {
       auto endpoints = lf::geometry::Corners(*(edge.Geometry()));
       if (endpoints(0, 0) <= 0.05 || 0.95 <= endpoints(0, 0) ||
-          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0))
-      {
+          endpoints(1, 0) <= 0.05 || 0.95 <= endpoints(1, 0)) {
         return false;
       }
       return true;
@@ -221,11 +211,9 @@ double computeBoundaryOutputFunctional(
 #endif
 
   // Computing value of the functional
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
-  {
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
 #if SOLUTION
-    if (edges_predicate_RobinBC(*edge))
-    {
+    if (edges_predicate_RobinBC(*edge)) {
       // Find the endpoints global indices
       auto dof_idx = dofh.GlobalDofIndices(*edge);
       assert(dofh.NumLocalDofs(*edge) == 2);
@@ -242,13 +230,13 @@ double computeBoundaryOutputFunctional(
                         endpoints.col(1) * nu0 + 2 * endpoints.col(1) * nu1);
     }
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
   }
   return func_val;
 };
 /* SAM_LISTING_END_3 */
 
-} // namespace OutputImpedanceBVP
+}  // namespace OutputImpedanceBVP

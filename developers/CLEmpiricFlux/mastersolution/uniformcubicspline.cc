@@ -8,9 +8,8 @@
 
 #include "uniformcubicspline.h"
 
-#include <cassert>
-
 #include <Eigen/Core>
+#include <cassert>
 
 namespace {
 

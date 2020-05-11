@@ -8,10 +8,9 @@
 
 #include "lfppdofhandling.h"
 
+#include <Eigen/Dense>
 #include <array>
 #include <memory>
-
-#include <Eigen/Dense>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"
@@ -22,8 +21,8 @@
 namespace LFPPDofHandling {
 
 /* SAM_LISTING_BEGIN_1 */
-std::array<std::size_t, 3>
-countEntityDofs(const lf::assemble::DofHandler &dofhandler) {
+std::array<std::size_t, 3> countEntityDofs(
+    const lf::assemble::DofHandler &dofhandler) {
   std::array<std::size_t, 3> entityDofs;
 #if SOLUTION
   // Idea: iterate over entities in the mesh and get interior number of dofs for
@@ -144,16 +143,16 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
 /* SAM_LISTING_END_4 */
 
 /* SAM_LISTING_BEGIN_5 */
-Eigen::VectorXd
-convertDOFsLinearQuadratic(const lf::assemble::DofHandler &dofh_Linear_FE,
-                           const lf::assemble::DofHandler &dofh_Quadratic_FE,
-                           const Eigen::VectorXd &mu) {
+Eigen::VectorXd convertDOFsLinearQuadratic(
+    const lf::assemble::DofHandler &dofh_Linear_FE,
+    const lf::assemble::DofHandler &dofh_Quadratic_FE,
+    const Eigen::VectorXd &mu) {
   if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh()) {
     throw "Underlying meshes must be the same for both DOF handlers!";
   }
   std::shared_ptr<const lf::mesh::Mesh> mesh =
-      dofh_Linear_FE.Mesh();                         // get the mesh
-  Eigen::VectorXd zeta(dofh_Quadratic_FE.NumDofs()); // initialise empty zeta
+      dofh_Linear_FE.Mesh();                          // get the mesh
+  Eigen::VectorXd zeta(dofh_Quadratic_FE.NumDofs());  // initialise empty zeta
   // safety guard: always set zero if you're not sure to set every entry later
   // on for us this shouldn't be a problem, but just to be sure
   zeta.setZero();
@@ -207,4 +206,4 @@ convertDOFsLinearQuadratic(const lf::assemble::DofHandler &dofh_Linear_FE,
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace LFPPDofHandling
+}  // namespace LFPPDofHandling

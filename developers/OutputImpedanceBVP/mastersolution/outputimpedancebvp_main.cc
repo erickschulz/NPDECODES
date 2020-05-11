@@ -12,14 +12,14 @@
 
 using namespace OutputImpedanceBVP;
 
-int main(int /*argc*/, const char ** /*argv*/)
-{
+int main(int /*argc*/, const char ** /*argv*/) {
   std::cout << "*** OutputImpedanceBVP ****" << std::endl;
 
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/OutputImpedanceBVP.msh");
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../meshes/OutputImpedanceBVP.msh");
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Finite element space
   auto fe_space_p =
@@ -65,17 +65,16 @@ int main(int /*argc*/, const char ** /*argv*/)
                                          Eigen::DontAlignCols, ", ", "\n");
   std::string errors_file_name = "discrete_solution.csv";
   std::ofstream file(errors_file_name.c_str());
-  if (file.is_open())
-  {
+  if (file.is_open()) {
     file << discrete_solution.format(CSVFormat);
   }
 
   // Output results to vtk file
-  lf::io::VtkWriter vtk_writer(mesh_p, CURRENT_BINARY_DIR "/OutputImpedanceBVP_solution.vtk");
+  lf::io::VtkWriter vtk_writer(
+      mesh_p, CURRENT_BINARY_DIR "/OutputImpedanceBVP_solution.vtk");
   // Write nodal data taking the values of the discrete solution at the vertices
   auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
-  for (int global_idx = 0; global_idx < N_dofs; global_idx++)
-  {
+  for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
     nodal_data->operator()(dofh.Entity(global_idx)) =
         discrete_solution[global_idx];
   };
@@ -83,6 +82,5 @@ int main(int /*argc*/, const char ** /*argv*/)
   /* SAM_LISTING_END_1 */
   std::cout << "\n The OutputImpedanceBVP_solution was written to:"
             << std::endl;
-  std::cout << ">> OutputImpedanceBVP_solution.vtk.vtk\n"
-            << std::endl;
+  std::cout << ">> OutputImpedanceBVP_solution.vtk.vtk\n" << std::endl;
 }

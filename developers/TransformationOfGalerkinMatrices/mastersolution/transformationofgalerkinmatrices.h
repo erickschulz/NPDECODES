@@ -3,9 +3,8 @@ This homework "TransformationOfGalerkinMatrices" consists of matrices
 transformation (change of Galerkin bases) using the triplet format.
  */
 
-#include <vector>
-
 #include <Eigen/Sparse>
+#include <vector>
 
 namespace TransformationOfGalerkinMatrices {
 
@@ -14,6 +13,7 @@ namespace TransformationOfGalerkinMatrices {
  * @param A "Old" Galerkin matrix in COO format
  * @return triplets describing "New" Galerkin matrix
  */
-std::vector<Eigen::Triplet<double>> transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A);
+std::vector<Eigen::Triplet<double>> transformCOOmatrix(
+    const std::vector<Eigen::Triplet<double>> &A);
 
 }  // namespace TransformationOfGalerkinMatrices

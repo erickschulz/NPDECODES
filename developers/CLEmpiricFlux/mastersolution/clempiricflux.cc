@@ -8,9 +8,8 @@
 
 #include "clempiricflux.h"
 
-#include <cassert>
-
 #include <Eigen/Core>
+#include <cassert>
 
 namespace CLEmpiricFlux {
 
@@ -54,7 +53,7 @@ GodunovFlux::GodunovFlux(const UniformCubicSpline &f) : _f(f){};
 /* SAM_LISTING_BEGIN_9 */
 double GodunovFlux::operator()(double v, double w) const {
   double result;
-  #if SOLUTION
+#if SOLUTION
   if (v >= w)
     result = std::max(_f(v), _f(w));
   else {
@@ -68,7 +67,7 @@ double GodunovFlux::operator()(double v, double w) const {
       result = _f(z);
     }
   }
-  #else
+#else
   //====================
   // Your code goes here
   //====================

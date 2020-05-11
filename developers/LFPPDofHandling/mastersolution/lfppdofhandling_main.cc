@@ -14,7 +14,6 @@
 #include "lf/base/base.h"
 #include "lf/mesh/mesh.h"
 #include "lf/mesh/test_utils/test_meshes.h"
-
 #include "lfppdofhandling.h"
 
 int main() {
@@ -50,8 +49,8 @@ int main() {
 
   // Subproblem d)
   std::cout << "\n -- Subproblem (d)\n";
-  std::cout << "Dofs on boundary: " << LFPPDofHandling::countBoundaryDofs(lin_dofh)
-            << "\n";
+  std::cout << "Dofs on boundary: "
+            << LFPPDofHandling::countBoundaryDofs(lin_dofh) << "\n";
 
   // Subproblem e)
   std::cout << "\n -- Subproblem (e)\n";

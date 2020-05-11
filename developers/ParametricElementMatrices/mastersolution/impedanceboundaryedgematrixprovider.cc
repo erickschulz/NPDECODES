@@ -38,9 +38,9 @@ bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
 /* SAM_LISTING_END_1 */
 
 /**  @brief Compute the local edge element matrix for the Galerkin matrix of
- * 
+ *
  *           \int_{\boundary \Omega} w(x)^2 u(x) v(x) dx
- * 
+ *
  * @param edge current edge */
 /* SAM_LISTING_BEGIN_2 */
 Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
@@ -64,13 +64,14 @@ Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
   // II. COMPUTE LOCAL INTEGRATION DATA
   double edge_length = lf::geometry::Volume(*edge.Geometry());
   // It is assumed here that the edge is straight!
-  Eigen::MatrixXd m_1(2, 2), m_2(2,2), m_3(2,2);
+  Eigen::MatrixXd m_1(2, 2), m_2(2, 2), m_3(2, 2);
   m_1 << 24, 6, 6, 4;
   m_2 << 6, 4, 4, 6;
   m_3 << 4, 6, 6, 24;
 
   // III. PERFORM NUMERICAL QUADRATURE
-  element_matrix = (w(0)*w(0))*m_1 + (w(0)*w(1))*m_2 + (w(1) * w(1))*m_3;
+  element_matrix =
+      (w(0) * w(0)) * m_1 + (w(0) * w(1)) * m_2 + (w(1) * w(1)) * m_3;
   element_matrix *= edge_length / 120.;
 #else
   //====================

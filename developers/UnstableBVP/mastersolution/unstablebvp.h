@@ -9,7 +9,7 @@
 
 #include <memory>
 #include <string>
-//Lehrfempp
+// Lehrfempp
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 

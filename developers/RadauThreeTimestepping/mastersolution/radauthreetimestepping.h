@@ -8,16 +8,14 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
+#include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/mesh/mesh.h>
-#include <lf/geometry/geometry.h>
-
+#include <cmath>
 #include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {
@@ -64,12 +62,12 @@ void dropMatrixRowsColumns(SELECTOR &&selectvals,
   }
 }
 
-
 /**
  * @brief This class implements a Lehrfem++ matrix provider defining a
  * LinFEMassMatrixProvider::Eval function returning the local MASS matrix for
- * linear first-order lagrange FE bases over triangular mesh (only!). Integration
- * over the triangular cells is performed using the trapezoidal rule.
+ * linear first-order lagrange FE bases over triangular mesh (only!).
+ * Integration over the triangular cells is performed using the trapezoidal
+ * rule.
  */
 class LinFEMassMatrixProvider {
  public:
@@ -77,7 +75,7 @@ class LinFEMassMatrixProvider {
    * @brief default constructor
    */
   explicit LinFEMassMatrixProvider() = default;
-  
+
   /**
    * @brief Default implement: all cells are active
    */
@@ -93,13 +91,12 @@ class LinFEMassMatrixProvider {
   Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
 };
 
-
 /**
  * @brief This class implements a Lehrfem++ matrix provider defining a
  * TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval function returning the local
  * contribution to the element vectors for linear first-order lagrange FE bases
- * over triangular mesh (only!). Integration over the triangular cells is performed
- * using the trapezoidal rule.
+ * over triangular mesh (only!). Integration over the triangular cells is
+ * performed using the trapezoidal rule.
  */
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>  // lambda predicate
@@ -109,7 +106,7 @@ class TrapRuleLinFEElemVecProvider {
    * @brief Constructor storing the right hand side function
    */
   explicit TrapRuleLinFEElemVecProvider(FUNCTOR f) : f_(f) {}
-  
+
   /**
    * @brief Default implement: all cells are active
    */
@@ -132,9 +129,8 @@ class TrapRuleLinFEElemVecProvider {
 /* SAM_LISTING_END_2 */
 
 // Deduction guide for TrapRuleLinFEElemVecProvider
-template<typename FUNCTOR>
-TrapRuleLinFEElemVecProvider(FUNCTOR) -> TrapRuleLinFEElemVecProvider<FUNCTOR>;
-
+template <typename FUNCTOR>
+TrapRuleLinFEElemVecProvider(FUNCTOR)->TrapRuleLinFEElemVecProvider<FUNCTOR>;
 
 // TrapRuleLinFEElemVecProvider
 /* Implementing member function Eval of class TrapRuleLinFEElemVecProvider*/
@@ -166,7 +162,6 @@ Eigen::Vector3d TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval(
 }
 /* SAM_LISTING_END_3 */
 
-
 /**
  * @brief class providing timestepping for heat equation
  */
@@ -178,7 +173,7 @@ class Radau3MOLTimestepper {
   Radau3MOLTimestepper(Radau3MOLTimestepper &&) = delete;
   Radau3MOLTimestepper &operator=(const Radau3MOLTimestepper &) = delete;
   Radau3MOLTimestepper &operator=(const Radau3MOLTimestepper &&) = delete;
-  
+
   // Main constructor; precomputations are done here
   Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh);
 
@@ -208,9 +203,9 @@ class Radau3MOLTimestepper {
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_;
 #else
   const lf::assemble::DofHandler &dofh_;  // dangerous
-  //====================
-  // Your code goes here
-  //====================
+                                          //====================
+                                          // Your code goes here
+                                          //====================
 #endif
 };
 

@@ -33,8 +33,8 @@ lf::assemble::COOMatrix<double> buildM(
     return bd_flags(edge);
   };
   // Coefficient function used in the class template MassEdgeMatrixProvider
-  auto eta =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 1.0; });
+  auto eta = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 1.0; });
   lf::uscalfe::MassEdgeMatrixProvider<double, decltype(eta),
                                       decltype(edges_predicate)>
       edgemat_builder(fe_space_p, eta, edges_predicate);
@@ -67,8 +67,8 @@ lf::assemble::COOMatrix<double> buildA(
   // Coefficient functions used in class ReactionDiffusionElementMatrixProvider
   auto alpha = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0 + x.dot(x); });
-  auto gamma =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 0.0; });
+  auto gamma = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 0.0; });
   // Initialize element matrix builder
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, decltype(alpha),
                                                       decltype(gamma)>

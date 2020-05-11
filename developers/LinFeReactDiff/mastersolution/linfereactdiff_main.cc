@@ -3,17 +3,16 @@
  the unit square and solving a simple reaction diffusion system using LehrFEM++
  */
 
-#include "linfereactdiff.h"
-
-#include <iostream>
-#include <memory>
-#include <cmath>
+#include <lf/base/base.h>
+#include <lf/mesh/mesh.h>
+#include <lf/refinement/refinement.h>
 
 #include <Eigen/Core>
+#include <cmath>
+#include <iostream>
+#include <memory>
 
-#include <lf/base/base.h>
-#include <lf/refinement/refinement.h>
-#include <lf/mesh/mesh.h>
+#include "linfereactdiff.h"
 
 int main() {
   const lf::base::size_type num_levels = 5;

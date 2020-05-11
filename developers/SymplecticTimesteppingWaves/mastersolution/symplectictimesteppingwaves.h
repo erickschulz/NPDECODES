@@ -20,10 +20,12 @@ class progress_bar {
   std::string message;
   const std::string full_bar;
 
-public:
+ public:
   progress_bar(std::ostream &os, std::size_t line_width, std::string message_,
                const char symbol = '.')
-      : os{os}, bar_width{line_width - overhead}, message{std::move(message_)},
+      : os{os},
+        bar_width{line_width - overhead},
+        message{std::move(message_)},
         full_bar{std::string(bar_width, symbol) + std::string(bar_width, ' ')} {
     if (message.size() + 1 >= bar_width || message.find('\n') != message.npos) {
       os << message << '\n';
@@ -49,8 +51,9 @@ public:
  * based on the Cholesky decomposition (LDLT) that we use to perform symplectic
  * timestepping for the wave equaton (hyperbolic PDE) */
 /* SAM_LISTING_BEGIN_3 */
-template <typename FUNCTION> class SympTimestepWaveEq {
-public:
+template <typename FUNCTION>
+class SympTimestepWaveEq {
+ public:
   /* Constructor */
   SympTimestepWaveEq(
       std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
@@ -80,18 +83,18 @@ public:
   double computeEnergies(const Eigen::VectorXd &p,
                          const Eigen::VectorXd &q) const;
 
-private:
+ private:
 #if SOLUTION
-  Eigen::SparseMatrix<double> A_; // Galerkin matrix for volume integrals
-  Eigen::SparseMatrix<double> M_; // Galerkin Matrix for boundary integral
+  Eigen::SparseMatrix<double> A_;  // Galerkin matrix for volume integrals
+  Eigen::SparseMatrix<double> M_;  // Galerkin Matrix for boundary integral
   Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver_M_;
 #else
   //====================
   // Your code goes here
   //====================
 #endif
-}; // class SympTimestepWaveEq
-   /* SAM_LISTING_END_3 */
+};  // class SympTimestepWaveEq
+    /* SAM_LISTING_END_3 */
 
 /* Implementing member functions of class SympTimestepWaveEq */
 /* SAM_LISTING_BEGIN_9 */
@@ -118,14 +121,13 @@ void SympTimestepWaveEq<FUNCTION>::compTimestep(double tau, Eigen::VectorXd &p,
   // Your code goes here
   //====================
 #endif
-} // SympTimestepWaveEq<FUNCTION>::compTimestep
+}  // SympTimestepWaveEq<FUNCTION>::compTimestep
 /* SAM_LISTING_END_9 */
 
 /* SAM_LISTING_BEGIN_0 */
 template <typename FUNCTION>
-double
-SympTimestepWaveEq<FUNCTION>::computeEnergies(const Eigen::VectorXd &p,
-                                              const Eigen::VectorXd &q) const {
+double SympTimestepWaveEq<FUNCTION>::computeEnergies(
+    const Eigen::VectorXd &p, const Eigen::VectorXd &q) const {
   double energy;
 #if SOLUTION
   energy = 0.5 * (p.dot(M_ * p) + q.dot(A_ * q));
@@ -135,24 +137,24 @@ SympTimestepWaveEq<FUNCTION>::computeEnergies(const Eigen::VectorXd &p,
   //====================
 #endif
   return energy;
-} // SympTimestepWaveEq<FUNCTION>::computeEnergies
+}  // SympTimestepWaveEq<FUNCTION>::computeEnergies
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_7 */
 template <typename FUNCTION>
-std::pair<Eigen::VectorXd, Eigen::VectorXd>
-solvewave(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fes_p,
-          FUNCTION c, const Eigen::VectorXd &u0_vec,
-          const Eigen::VectorXd &v0_vec, double T, unsigned int m) {
+std::pair<Eigen::VectorXd, Eigen::VectorXd> solvewave(
+    std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fes_p,
+    FUNCTION c, const Eigen::VectorXd &u0_vec, const Eigen::VectorXd &v0_vec,
+    double T, unsigned int m) {
   std::pair<Eigen::VectorXd, Eigen::VectorXd> solution_pair;
 #if SOLUTION
-  double tau = T / m; // time step
+  double tau = T / m;  // time step
   std::cout << "Solving with uniform step size tau = " << tau << std::endl;
   progress_bar progress{std::clog, 70u, "Timestepping"};
   double progress_pourcentage;
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fes_p->LocGlobMap()};
-  const lf::uscalfe::size_type N_dofs(dofh.NumDofs()); // dim. of FE space size
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());  // dim. of FE space size
   LF_VERIFY_MSG(u0_vec.size() == N_dofs, "Wrong size of initial conditions u0");
   LF_VERIFY_MSG(v0_vec.size() == N_dofs, "Wrong size of initial conditions");
 
@@ -193,6 +195,6 @@ void wavePropSimulation(unsigned int m);
 
 double testStab();
 
-} // namespace SymplecticTimesteppingWaves
+}  // namespace SymplecticTimesteppingWaves
 
 #endif

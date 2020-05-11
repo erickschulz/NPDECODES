@@ -9,9 +9,9 @@
 #include <memory>
 #include <utility>
 // Eigen includes
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>

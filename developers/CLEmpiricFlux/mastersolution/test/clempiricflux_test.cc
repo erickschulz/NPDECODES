@@ -6,13 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../clempiricflux.cc"
+
 #include <gtest/gtest.h>
 
+#include <Eigen/Core>
 #include <cmath>
 
-#include <Eigen/Core>
-
-#include "../clempiricflux.cc"
 #include "../solvecauchyproblem.cc"
 #include "../uniformcubicspline.cc"
 

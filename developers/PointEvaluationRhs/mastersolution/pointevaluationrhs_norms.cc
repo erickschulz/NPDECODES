@@ -8,11 +8,6 @@
 
 #include "pointevaluationrhs_norms.h"
 
-#include <cmath>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
@@ -20,11 +15,15 @@
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace PointEvaluationRhs{
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <cmath>
+
+namespace PointEvaluationRhs {
 
 /* SAM_LISTING_BEGIN_1 */
 double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
-                             const Eigen::VectorXd &mu){
+                             const Eigen::VectorXd &mu) {
   double result = 0.0;
 #if SOLUTION
   int N_dofs = dofh.NumDofs();
@@ -45,7 +44,7 @@ double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
 
 /* SAM_LISTING_BEGIN_2 */
 double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
-                                 const Eigen::VectorXd &mu){
+                                 const Eigen::VectorXd &mu) {
   // calculate stiffness matrix by using the already existing local assembler
   // LinearFELaplaceElementMatrix
   double result = 0.0;
@@ -67,14 +66,13 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_2 */
 
-Eigen::MatrixXd MassLocalMatrixAssembler::Eval(
-    const lf::mesh::Entity &entity){
+Eigen::MatrixXd MassLocalMatrixAssembler::Eval(const lf::mesh::Entity &entity) {
   Eigen::MatrixXd result;
 #if SOLUTION
   lf::geometry::Geometry *geo_ptr = entity.Geometry();
   double volume = lf::geometry::Volume(*geo_ptr);
 
-  if (lf::base::RefEl::kTria() == entity.RefEl()){
+  if (lf::base::RefEl::kTria() == entity.RefEl()) {
     result.resize(3, 3);
     result.setZero();
     // See Lemma 2.7.5.5 for the derivation of these entries
@@ -82,8 +80,7 @@ Eigen::MatrixXd MassLocalMatrixAssembler::Eval(
     double non_diag = volume / 12.0;
     result << diag, non_diag, non_diag, non_diag, diag, non_diag, non_diag,
         non_diag, diag;
-  }
-  else if (lf::base::RefEl::kQuad() == entity.RefEl()){
+  } else if (lf::base::RefEl::kQuad() == entity.RefEl()) {
     result.resize(4, 4);
     result.setZero();
 
@@ -109,8 +106,7 @@ Eigen::MatrixXd MassLocalMatrixAssembler::Eval(
     // This product gives us the result of the quadrature rule for all
     // possible combinations of basis functions
     result = point_eval.transpose() * point_eval_weighted;
-  }
-  else{
+  } else {
     LF_ASSERT_MSG(false,
                   "Function only defined for triangular or quadrilateral cells")
   }
@@ -122,4 +118,4 @@ Eigen::MatrixXd MassLocalMatrixAssembler::Eval(
   return result;
 }
 
-} // namespace PointEvaluationRhs
+}  // namespace PointEvaluationRhs

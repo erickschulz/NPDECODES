@@ -6,12 +6,11 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include <Eigen/SparseCholesky>
 #include <cmath>
 #include <fstream>
 #include <iostream>
 #include <vector>
-
-#include <Eigen/SparseCholesky>
 
 namespace LinearFE1D {
 
@@ -150,7 +149,7 @@ Eigen::VectorXd computeRHS(const Eigen::VectorXd& mesh, FUNCTOR1&& f) {
   return rhs_vec;
 }  // computeRHS
 /* SAM_LISTING_END_3 */
-  
+
 // SOLVE THE LINEAR SYSTEM OF PROBLEM (A)
 /* SAM_LISTING_BEGIN_A */
 template <typename FUNCTOR1, typename FUNCTOR2>
@@ -310,8 +309,7 @@ Eigen::VectorXd solveC(const Eigen::VectorXd& mesh, FUNCTOR1&& alpha,
   // I. Build the (full) Galerkin matrix L for the lin. sys.
 #if SOLUTION
   // I.i Compute the entries of the Laplace Galerkin matrix A
-  std::vector<Eigen::Triplet<double>> triplets_A =
-      computeA(mesh, alpha);
+  std::vector<Eigen::Triplet<double>> triplets_A = computeA(mesh, alpha);
   // I.ii Compute the entries of the mass matrix M
   std::vector<Eigen::Triplet<double>> triplets_M = computeM(mesh, gamma);
   // I.iii Assemble the sparse matrices

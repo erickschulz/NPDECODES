@@ -1,24 +1,23 @@
 /**
-* @ file PointEvaluationRhs_test.cc
-* @ brief NPDE homework PointEvaluationRhs code
-* @ author ?, Liaowang Huang (refactoring)
-* @ date ?, 06/01/2020 (refactoring)
-* @ copyright Developed at ETH Zurich
-*/
+ * @ file PointEvaluationRhs_test.cc
+ * @ brief NPDE homework PointEvaluationRhs code
+ * @ author ?, Liaowang Huang (refactoring)
+ * @ date ?, 06/01/2020 (refactoring)
+ * @ copyright Developed at ETH Zurich
+ */
+
+#include "../pointevaluationrhs.h"
 
 #include <gtest/gtest.h>
-
-#include <iostream>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
-#include "../pointevaluationrhs.h"
+#include <Eigen/Core>
+#include <iostream>
+
 #include "../pointevaluationrhs_norms.h"
 
 /* SAM_LISTING_BEGIN_1 */
@@ -90,8 +89,8 @@ TEST(PoinEvaluationRhs, solution_test) {
   Eigen::VectorXd sol_vec;
   lf::assemble::UniformFEDofHandler dofh(mesh_p,
                                          {{lf::base::RefEl::kPoint(), 1}});
-  auto result =
-      PointEvaluationRhs::normsSolutionPointLoadDirichletBVP(dofh, Eigen::Vector2d(1.3, 1.7),sol_vec);
+  auto result = PointEvaluationRhs::normsSolutionPointLoadDirichletBVP(
+      dofh, Eigen::Vector2d(1.3, 1.7), sol_vec);
 
   double eps = 1e-6;
 

@@ -77,7 +77,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
       }
       element_matrix *= 1. / 6.;
 #else
-      
+
       // ===================
       // Your code goes here
       // ===================
@@ -157,7 +157,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
       break;
       /* SAM_LISTING_END_2 */
     }
-    
+
     /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
     default:
       LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");

@@ -31,14 +31,14 @@ namespace WaveABC2D {
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
   /* PROBLEM SETUP */
-  double step_size = 1.0 / M; // time step "tau"
+  double step_size = 1.0 / M;  // time step "tau"
   // Rows contain sequence of solutions states
   Eigen::MatrixXd x(M + 1, 2);
   // INITIAL DATA
   x(0, 0) = 1.0;
   x(0, 1) = 1.0;
 
-  #if SOLUTION
+#if SOLUTION
   Eigen::MatrixXd A(2, 2);
   Eigen::VectorXd b(2);
   // clang-format off
@@ -54,30 +54,30 @@ Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
     // Solve the linear system
     x.row(k) = A.fullPivLu().solve(b);
   }
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
   return x.col(1);
-} // scalarImplicitTimestepping
+}  // scalarImplicitTimestepping
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
 void testConvergenceScalarImplicitTimestepping() {
   std::cout << "Testing convergence of the implicit method." << std::endl;
-  int nIter = 13;   // total number of iterations
-  unsigned int M;   // number of equidistant steps
-  double step_size; // time step "tau"
+  int nIter = 13;    // total number of iterations
+  unsigned int M;    // number of equidistant steps
+  double step_size;  // time step "tau"
   double epsilon = 0.2;
 
   // Error between the approx solutions as given by the implicit method
   // and the exact solution vector computed from the anlytic formula vector
   // computed from the anlytic formula
   std::cout << "Computing approximate solutions..." << std::endl;
-  double diff; // temporary variable used to compute error at various nodes
-  double max_norm_errors[nIter]; // errors vector for all approx. sols
+  double diff;  // temporary variable used to compute error at various nodes
+  double max_norm_errors[nIter];  // errors vector for all approx. sols
   Eigen::VectorXd approx_sol_vec;
   Eigen::VectorXd exact_sol_vec(M + 1);
   unsigned int M_stored[13] = {10,  20,  30,  40,  50,  60, 80,
@@ -149,7 +149,7 @@ void testConvergenceScalarImplicitTimestepping() {
    * std::endl;
    */
 
-} // testConvergenceScalarImplicitTimestepping
+}  // testConvergenceScalarImplicitTimestepping
 /* SAM_LISTING_END_2 */
 
 /* Implementing member functions of class progress_bar */
@@ -169,4 +169,4 @@ void progress_bar::write(double fraction) {
      << std::flush;
 }
 
-} // namespace WaveABC2D
+}  // namespace WaveABC2D

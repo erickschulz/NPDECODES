@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../finitevolumesineconslaw.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../finitevolumesineconslaw.h"
 
 namespace FiniteVolumeSineConsLaw::test {
 

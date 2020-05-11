@@ -80,7 +80,7 @@ Solution solveTrafficFlow() {
   auto f = [](double u) { return u * (1.0 - u); };
   // Perform fully discrete evolution
   Eigen::VectorXd mu = dgcl(mu0, f, Feo, T, Ml, Mr, h, m);
-  // Retrieve cell averages 
+  // Retrieve cell averages
   Eigen::VectorXd u(N_half);
   for (int i = 0; i < N_half; ++i) {
     u(i) = mu(2 * i);

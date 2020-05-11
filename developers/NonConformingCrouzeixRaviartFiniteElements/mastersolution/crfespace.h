@@ -34,11 +34,11 @@ class CRFeSpace : public lf::uscalfe::UniformScalarFESpace<double> {
       : lf::uscalfe::UniformScalarFESpace<double>(
             std::move(mesh_p), std::make_shared<CRReferenceFiniteElement>(),
             nullptr, nullptr) {}
-   
-   // TODO: task 2-14.t)
-   #if SOLUTION
-   #else
-   #endif
+
+// TODO: task 2-14.t)
+#if SOLUTION
+#else
+#endif
 
   ~CRFeSpace() override = default;
 };

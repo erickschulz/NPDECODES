@@ -5,13 +5,12 @@
  the unit square and solving a simple reaction diffusion system using LehrFEM++
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
+
+#include <Eigen/Core>
+#include <memory>
 
 namespace LinFeReactDiff {
 
@@ -23,4 +22,4 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh);
 double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
                      Eigen::VectorXd mu);
 }  // namespace LinFeReactDiff
-#endif // define __LINFEREACTDIFF_H
+#endif  // define __LINFEREACTDIFF_H

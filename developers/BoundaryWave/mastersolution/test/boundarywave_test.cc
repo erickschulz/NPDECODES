@@ -9,9 +9,9 @@
 #include <memory>
 #include <utility>
 // Eigen includes
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>

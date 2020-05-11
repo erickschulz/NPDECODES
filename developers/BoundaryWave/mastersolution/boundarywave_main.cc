@@ -21,7 +21,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   /* TOOLS AND DATA */
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/BoundaryWave.msh");
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../meshes/BoundaryWave.msh");
   auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
   // Finite element space
   auto fe_space_p =

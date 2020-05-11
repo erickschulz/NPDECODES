@@ -7,6 +7,7 @@
  */
 
 #include <math.h>
+
 #include <iostream>
 // Eigen includes
 #include <Eigen/Core>
