@@ -109,3 +109,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 # TO DO LIST
 
 - ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.
+- AvgValBoundary: Fix failing unit test for mastersolution
+- ElectrostaticForce: Fix failing unit test for mastersolution
+- ElementMatrixComputation: Fix failing unit test for mastersolution
