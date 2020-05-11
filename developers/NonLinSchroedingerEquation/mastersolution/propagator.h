@@ -102,7 +102,7 @@ private:
 };
 
 /** @brief Class for propagation according Strang splitting between the
-  * kinetic (semi-step) and interaction (full-step) propagator.
+ * kinetic (semi-step) and interaction (full-step) propagator.
  */
 class SplitStepPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
@@ -116,7 +116,8 @@ public:
    *  @param M complex mass matrix of shape $N \times N$
    *  @param tau size of the timestep to perform by Strang splitting
    */
-  SplitStepPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M, double tau);
+  SplitStepPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M,
+                      double tau);
   /** @brief Performs the propagation according Strang splitting between the
    *  kinetic (semi-step) and interaction (full-step) propagator.
    *  @param mu vector of length $N$ containing nodal values
@@ -140,6 +141,6 @@ private:
 #endif
 };
 
-}  // namespace NonLinSchroedingerEquation
+} // namespace NonLinSchroedingerEquation
 
 #endif // PROPAGATOR_H_

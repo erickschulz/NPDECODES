@@ -72,7 +72,8 @@ int main() {
 #endif
 
   // Prepare split-step propagator for full step $\tau$
-  NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(A, M, tau);
+  NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(A, M,
+                                                                      tau);
 
   // Arrays for storing "energies" contributing to the Hamiltonian
   Eigen::VectorXd norm(timesteps + 1);

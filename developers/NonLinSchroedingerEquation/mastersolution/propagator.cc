@@ -36,8 +36,8 @@ KineticPropagator::KineticPropagator(const SparseMatrixXd &A,
 #endif
 }
 
-Eigen::VectorXcd KineticPropagator::
-operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd
+KineticPropagator::operator()(const Eigen::VectorXcd &mu) const {
 #if SOLUTION
   // Cheap elimination steps operating on the LU-factors. Effort is almost O(N)
   // thanks to sophisticated fill-in avoiding techniques employed by the sparse
@@ -72,8 +72,8 @@ InteractionPropagator::InteractionPropagator(double tau) {
 #endif
 }
 
-Eigen::VectorXcd InteractionPropagator::
-operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd
+InteractionPropagator::operator()(const Eigen::VectorXcd &mu) const {
 #if SOLUTION
   // Eigen's way of applying a function to all components of a vector.
   return mu.unaryExpr(phase_multiplier_);
@@ -90,21 +90,20 @@ operator()(const Eigen::VectorXcd &mu) const {
 /* SAM_LISTING_BEGIN_3 */
 #if SOLUTION
 SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
-                                         const SparseMatrixXcd &M,
-                                         double tau) :
-                                         kineticPropagator_(A, M, 0.5 * tau),
-                                         interactionPropagator_(tau) { }
+                                         const SparseMatrixXcd &M, double tau)
+    : kineticPropagator_(A, M, 0.5 * tau), interactionPropagator_(tau) {}
 #else
 //====================
 // Your code goes here
 // Change this dummy implementation of the constructor:
 SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
-                                         const SparseMatrixXcd &M,
-                                         double tau) { }
+                                         const SparseMatrixXcd &M, double tau) {
+}
 //====================
 #endif
 
-Eigen::VectorXcd SplitStepPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd
+SplitStepPropagator::operator()(const Eigen::VectorXcd &mu) const {
   Eigen::VectorXcd nu(mu.size());
 #if SOLUTION
   nu = kineticPropagator_(mu);

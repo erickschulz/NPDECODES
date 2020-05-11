@@ -20,7 +20,8 @@ namespace NonLinSchroedingerEquation {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Matrix3d MassElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
-  LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(), "Unsupported cell type " << cell.RefEl());
+  LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
+                "Unsupported cell type " << cell.RefEl());
   Eigen::Matrix3d element_matrix;
 #if SOLUTION
   double area = lf::geometry::Volume(*(cell.Geometry()));
@@ -48,7 +49,8 @@ double Norm(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D) {
 #endif
 }
 
-double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &A) {
+double KineticEnergy(const Eigen::VectorXcd &mu,
+                     const Eigen::SparseMatrix<double> &A) {
 #if SOLUTION
   return 0.5 * mu.dot(A * mu).real();
 #else
@@ -61,7 +63,8 @@ double KineticEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<doubl
 #endif
 }
 
-double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<double> &D) {
+double InteractionEnergy(const Eigen::VectorXcd &mu,
+                         const Eigen::SparseMatrix<double> &D) {
 #if SOLUTION
   Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
   return 0.25 * mu_abs2.dot(D * mu_abs2);
@@ -76,4 +79,4 @@ double InteractionEnergy(const Eigen::VectorXcd &mu, const Eigen::SparseMatrix<d
 }
 /* SAM_LISTING_END_2 */
 
-}  // namespace NonLinSchroedingerEquation
+} // namespace NonLinSchroedingerEquation
