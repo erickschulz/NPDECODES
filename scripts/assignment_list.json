@@ -29,6 +29,7 @@
     "LinFeReactDiff/",
     "MaximumPrinciple/",
     "NonConformingCrouzeixRaviartFiniteElements/",
+    "NonLinSchroedingerEquation/",
     "OutputImpedanceBVP/",
     "ParametricElementMatrices/",
     "ParametricFiniteElements",
@@ -43,7 +44,6 @@
     "TransformationOfGalerkinMatrices/",
     "UnstableBVP/",
     "WaveABC2D/",
-    "ZienkiewiczZhuEstimator/",
-    "NonLinSchroedingerEquation/"
+    "ZienkiewiczZhuEstimator/"
   ]
 }
