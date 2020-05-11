@@ -7,18 +7,19 @@ namespace ConsFV {
 
 /* SAM_LISTING_BEGIN_0 */
 // arguments:
-//   double texttt{h}: meshwidth of equidistant spatial grid
-//   Vector texttt{mu}: (finite) vector \Blue{$\vec{\mubf}$} of cell averages
-//   Functor texttt{F}: 2-point numerical flux function \Blue{$F=F(v,w)$}
-//   Functor texttt{slope}: slope reconstruction function
+//   double {h}: meshwidth of equidistant spatial grid
+//   Vector {mu}: (finite) vector \Blue{$\vec{\mubf}$} of cell averages
+//   Functor {F}: 2-point numerical flux function \Blue{$F=F(v,w)$}
+//   Functor {slope}: slope reconstruction function
 //   \Blue{$\cor{h\cdot}\sigma_j=\operatorname{slopes}(\mu_{j-1},\mu_j,\mu_{j+1})$}
 //
-// returns a vector with differences of numerical fluxes
+// returns a vector with differences of numerical fluxes,
+// which supplies the right-hand side for the FV-MOL ODE
 //
 // Function that realizes the right hand side operator \Blue{$\Cl_h$} for the
 // ODE \eqref{eq:sdev} arising from conservative finite volume
-// semidiscretization of the Cauchy problem for a 1D scalar conservation law
-// \eqref{eq:clcp}.
+// semidiscretization of the Cauchy problem for a 1D scalar
+// conservation law \eqref{eq:clcp}.
 template <typename FunctionF, typename FunctionSlopes>
 Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd& mu, FunctionF F,
                                  FunctionSlopes slopes) {
@@ -39,8 +40,8 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd& mu, FunctionF F,
   Eigen::VectorXd nup = mu + 0.5 * sigma;
   Eigen::VectorXd num = mu - 0.5 * sigma;
 
-  // As in \cref{cpp:consformevl}: constant continuation of data outside
-  // \Blue{$[a,b]$} !
+  // As in \cref{cpp:consformevl}: employ constant continuation of data
+  // outside \Blue{$[a,b]$}!
   fd[0] = F(nup[0], num[1]) - F(mu[0], num[0]);
   for (unsigned j = 1; j < n - 1; ++j)
     fd[j] =

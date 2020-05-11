@@ -66,7 +66,7 @@ VectorXd consformevl(double a, double b, unsigned N, FunctionU0 u0, double T,
   };
 
   // Method of lines approach, \emph{c.f.} Sect.~\ref{sec:pmol}: timestepping by
-  // Boost integrator (adaptive explicit Runge-Kutta method
+  // Boost integrator (adaptive explicit embedded Runge-Kutta method
   // of order 5, see also Def.~\ref{def:rk2})
   double abstol = 1E-8, reltol = 1E-6;  // integration control parameters
   VectorXd t;                           // Returns temporal grid

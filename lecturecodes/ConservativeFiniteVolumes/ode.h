@@ -4,8 +4,9 @@
 #include <Eigen/Core>
 
 // HACK BEGIN
-// Avoid compatibility issue between boost/numeric/odeint/external/eigen/eigen_algebra.hpp
-// by shaddwing it with modified header ./eigen_algebra.hpp
+// Avoid compatibility issue between
+// boost/numeric/odeint/external/eigen/eigen_algebra.hpp by shaddwing it with
+// modified header ./eigen_algebra.hpp
 #include "eigen_algebra.hpp"
 // HACK END
 
@@ -28,11 +29,11 @@ namespace ConsFV {
  * @param relerr The relative error tolerance.
  * @return
  */
-inline std::tuple<Eigen::VectorXd, Eigen::MatrixXd> ode45(
-    const std::function<void(const Eigen::VectorXd& x, Eigen::VectorXd& dxdt,
-                             const double t)>& odefun,
-    const double t0, const double tfinal, const Eigen::VectorXd& y0,
-    const double abserr, const double relerr) {
+inline std::tuple<Eigen::VectorXd, Eigen::MatrixXd>
+ode45(const std::function<void(const Eigen::VectorXd &x, Eigen::VectorXd &dxdt,
+                               const double t)> &odefun,
+      const double t0, const double tfinal, const Eigen::VectorXd &y0,
+      const double abserr = 1.0E-8, const double relerr = 1.0E-6) {
   // initialization
   Eigen::VectorXd mu0 = y0;
   Eigen::VectorXd timesteps;
@@ -45,7 +46,7 @@ inline std::tuple<Eigen::VectorXd, Eigen::MatrixXd> ode45(
   // at every step
   boost::numeric::odeint::integrate_adaptive(
       stepper, odefun, mu0, t0, tfinal, 0.01,
-      [&mus, &timesteps](const Eigen::VectorXd& x, double t) {
+      [&mus, &timesteps](const Eigen::VectorXd &x, double t) {
         mus.conservativeResize(mus.rows(), mus.cols() + 1);
         mus.col(mus.cols() - 1) = x;
         timesteps.conservativeResize(timesteps.size() + 1);
@@ -54,6 +55,6 @@ inline std::tuple<Eigen::VectorXd, Eigen::MatrixXd> ode45(
   return std::make_tuple(timesteps, mus);
 }
 
-}  // namespace ConsFV
+} // namespace ConsFV
 
 #endif
