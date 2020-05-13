@@ -90,6 +90,7 @@ private:
 /** @brief Class for propagation according Strang splitting between the
  * kinetic (semi-step) and interaction (full-step) propagator.
  */
+/* SAM_LISTING_BEGIN_3 */
 class SplitStepPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
@@ -119,6 +120,7 @@ private:
   // Interaction propagator for full step
   InteractionPropagator interactionPropagator_;
 };
+/* SAM_LISTING_END_3 */
 
 } // namespace NonLinSchroedingerEquation
 
