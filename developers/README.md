@@ -101,7 +101,7 @@ to indicate what belongs to mastersolution and/or template. Based on these tags,
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
 
 * Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
-* Problem 7.3: Upwind Quadrature
+* Problem 7.3: Upwind Quadrature **(Philippe)**
 * Problem 7.4: Exponentially fitted upwind scheme
 * Problem 7.5: Transport Problem
 * Problem 7.6: Upwind Finite Volume Method
@@ -109,3 +109,6 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 # TO DO LIST
 
 - ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.
+- AvgValBoundary: Fix failing unit test for mastersolution
+- ElectrostaticForce: Fix failing unit test for mastersolution
+- ElementMatrixComputation: Fix failing unit test for mastersolution
