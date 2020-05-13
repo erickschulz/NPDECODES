@@ -110,22 +110,22 @@ class SplitStepPropagator : public Propagator {
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
 public:
-  /** @brief Forwards the arguments to the constructors of the underlying
-   *  propagators KineticPropagator (semi-step) and InteractionPropagator
-   *  (full-step).
-   *  @param A stiffness matrix of shape $N \times N$
-   *  @param M complex mass matrix of shape $N \times N$
-   *  @param tau size of the timestep to perform by Strang splitting
-   */
+  // @brief Forwards the arguments to the constructors of the underlying
+  //  propagators KineticPropagator (semi-step) and InteractionPropagator
+  //  (full-step).
+  //  @param A stiffness matrix of shape $N \times N$
+  //  @param M complex mass matrix of shape $N \times N$
+  //  @param tau size of the timestep to perform by Strang splitting
+  //
   SplitStepPropagator(const SparseMatrixXd &A, const SparseMatrixXcd &M,
                       double tau);
-  /** @brief Performs the propagation according Strang splitting between the
-   *  kinetic (semi-step) and interaction (full-step) propagator.
-   *  @param mu vector of length $N$ containing nodal values
-   *  before the timestep
-   *  @return vector of length $N$ containg the nodal values
-   *  after the timestep
-   */
+  //* @brief Performs the propagation according Strang splitting between the
+  //*  kinetic (semi-step) and interaction (full-step) propagator.
+  //*  @param mu vector of length $N$ containing nodal values
+  //*  before the timestep
+  //*  @return vector of length $N$ containg the nodal values
+  //*  after the timestep
+  //*
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
 private:
