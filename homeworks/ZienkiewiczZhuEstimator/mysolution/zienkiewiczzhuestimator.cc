@@ -26,13 +26,14 @@ namespace ZienkiewiczZhuEstimator {
 /* SAM_LISTING_BEGIN_1 */
 Eigen::MatrixXd
 VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
-  Eigen::MatrixXd elMat(6, 6); // For returning the element matrix
+  Eigen::MatrixXd elMat_vec; // element matrix to be returned
   // Throw error in case cell is not Tria nor Quad
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria() ||
                     entity.RefEl() == lf::base::RefEl::kQuad(),
                 "Unsupported cell type " << entity.RefEl());
 
   if (entity.RefEl() == lf::base::RefEl::kTria()) {
+    elMat_vec = Eigen::MatrixXd::Zero(6, 6);
     // For TRIANGULAR CELLS
     // Compute the area of the triangle cell
     const double area = lf::geometry::Volume(*(entity.Geometry()));
@@ -40,12 +41,14 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
     // Your code goes here
     //====================
   } else {
-// for QUADRILATERAL CELLS
+    // for QUADRILATERAL CELLS
+    Eigen::MatrixXd elMat_scal =
+        Eigen::MatrixXd::Zero(4, 4); // element matrix to be returned
     //====================
     // Your code goes here
-    //====================
+     //====================
   }
-  return elMat; // return the local mass element matrix
+  return elMat_vec; // return the local mass element matrix
 } //
 /* SAM_LISTING_END_1 */
 
