@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/fisherkpp_main.cc
   ${DIR}/fisherkpp.cc
+  ${DIR}/fisherkpp.h
 )
 
 set(LIBRARIES
