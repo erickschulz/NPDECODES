@@ -55,21 +55,12 @@ int main() {
   double tau = T / timesteps;
 
 // Prepare inital data
-#if SOLUTION
-  const double PI = 3.14159265358979323846;
-  auto u0 = [PI](Eigen::Vector2d x) -> double {
-    return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1));
-  };
-  lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
-  Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
-#else
   //====================
   // Your code here
   // Initialize the vector mu with the basis expansion coefficients
   // of an interpolant of the function $u_0$.
   //====================
   Eigen::VectorXcd mu(N_dofs);
-#endif
 
   // Prepare split-step propagator for full step $\tau$
   NonLinSchroedingerEquation::SplitStepPropagator splitStepPropagator(A, M,
@@ -79,26 +70,11 @@ int main() {
   Eigen::VectorXd norm(timesteps + 1);
   Eigen::VectorXd E_kin(timesteps + 1);
   Eigen::VectorXd E_int(timesteps + 1);
-#if SOLUTION
-  // Timestepping
-  for (int j = 0; j < timesteps; ++j) {
-    // Compute norm and energy along the solution
-    norm(j) = NonLinSchroedingerEquation::Norm(mu, D);
-    E_kin(j) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
-    E_int(j) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
-    // Timestep tau according to Strang splitting
-    mu = splitStepPropagator(mu);
-  }
-  norm(timesteps) = NonLinSchroedingerEquation::Norm(mu, D);
-  E_kin(timesteps) = NonLinSchroedingerEquation::KineticEnergy(mu, A);
-  E_int(timesteps) = NonLinSchroedingerEquation::InteractionEnergy(mu, D);
-#else
   //====================
   // Your code goes here
   // Implement timestepping based on Strang splitting
   // Record contributions to the Hamiltonian
   //====================
-#endif
 
   // Timegrid
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(timesteps + 1, 0.0, T);
