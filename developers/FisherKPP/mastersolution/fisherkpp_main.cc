@@ -95,6 +95,8 @@ int main(int /*argc*/, char ** /*argv*/){
   unsigned int m = 100;
   double T = 1.;            // the timestepsize tau will equal T/m = 0.01
   
+  std::cout << "You are running the simulation on the globe." << std::endl;
+
   // First we assemble the carrying capacity maps.
   Eigen::MatrixXd car_cap(N_dofs, 16);
 

@@ -7,10 +7,12 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/fisherkpp_main.cc
+#  ${DIR}/fisherkpp_main.cc
   ${DIR}/fisherkpp.cc
   ${DIR}/fisherkpp.h
+  ${DIR}/travelingwaves_main.cc
 )
+
 
 set(LIBRARIES
   Eigen3::Eigen
