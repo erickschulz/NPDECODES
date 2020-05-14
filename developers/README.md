@@ -17,7 +17,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | check unitest |
 | 2-9 | `LFPPDofHandling` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -25,7 +25,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-15 | `RegularizedNeumannProblem` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-16 | `DegenerateFiniteElementSpace` | TO DO |  |  | |
-| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |check unitest |
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -35,7 +35,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-11 | `StableEvaluationAtAPoint` | :heavy_check_mark: | :heavy_check_mark: |  | Need checking by Ralf |
-| 3-12 | `ElectrostaticForce` | :heavy_check_mark:  |  |  |  |
+| 3-12 | `ElectrostaticForce` | :heavy_check_mark:  |  |  | check unitest |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |:heavy_check_mark: |  |  |
@@ -57,6 +57,10 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | ? | `FiniteVolumeRobin` | :white_check_mark: |  |  | Philipp L. |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` | :white_check_mark: |  |  | Philipp Egg |
+
+Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
+ * Problem 7.5: Transport Problem?
+ * Problem 7.6: Upwind Finite Volume Method ?
 
 ## General Remarks
 
@@ -102,19 +106,3 @@ In the files of `./developers/mastersolution/` we put the following tags
 #endif
 ```
 to indicate what belongs to mastersolution and/or template. Based on these tags, the file `./scripts/deploy_npde.py` generates a directory `./homeworks/<ProblemName>/` containg the directories `mastersolution`, `mysolution`, `temaplates` with the corresponding content. The students work exclusively in `./homeworks/<ProblemName>/`.
-
-## New Problems
-
-Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
-
-* Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
-* Problem 7.3: Upwind Quadrature **(Philippe)**
-* Problem 7.4: Exponentially fitted upwind scheme
-* Problem 7.5: Transport Problem
-* Problem 7.6: Upwind Finite Volume Method
-
-# TO DO LIST
-
-- AvgValBoundary: Fix failing unit test for mastersolution
-- ElectrostaticForce: Fix failing unit test for mastersolution
-- ElementMatrixComputation: Fix failing unit test for mastersolution
