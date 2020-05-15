@@ -18,7 +18,7 @@ int main() {
   std::cout << "\nPROBLEM - ElectrostaticForce\n" << std::endl;
 
   // TOOLS AND DATA
-  int N_meshes = 5;           // No. of meshes for convergence test
+  int N_meshes = 6;           // No. of meshes for convergence test
   Eigen::VectorXd approx_sol; // basis coeff expansion of approx solution
   Eigen::Vector2d approx_force_boundary_functional;
   Eigen::Vector2d approx_force_domain_functional;

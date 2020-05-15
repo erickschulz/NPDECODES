@@ -9,32 +9,35 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include <lf/io/io.h>
 
 using namespace FisherKPP;
 
-int main(int /*argc*/, char ** /*argv*/){
+int main(int /*argc*/, char ** /*argv*/) {
 
-  // Obtain mesh 
+  // Obtain mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/earth.msh");
+  const lf::io::GmshReader reader(std::move(mesh_factory),
+                                  CURRENT_SOURCE_DIR "/../meshes/earth.msh");
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = reader.mesh();
-  // Finite Element Space 
-  auto fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-  // Dofhandler 
+  // Finite Element Space
+  auto fe_space =
+      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  // Dofhandler
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
   // Initial Population: located in Eritrea
-  Eigen::VectorXd u0(N_dofs); u0.setZero();
+  Eigen::VectorXd u0(N_dofs);
+  u0.setZero();
   u0(277) = 80;
-  
-  // Taking the topography into account, we have a non-constant diffusioen Coefficient.
-  // Mountain chains impede the dispersal of the population.
+
+  // Taking the topography into account, we have a non-constant diffusioen
+  // Coefficient. Mountain chains impede the dispersal of the population.
   Eigen::Vector2d Himalaya(-280, 29);
   Eigen::Vector2d Alps(-350, 46);
   Eigen::Vector2d Karakoram(-285, 36);
@@ -42,48 +45,49 @@ int main(int /*argc*/, char ** /*argv*/){
   Eigen::Vector2d RockyMountains(-109, 44);
   Eigen::Vector2d Ural(-300, 60);
   Eigen::Vector2d Andes(-66, -21);
-  auto c = [&Himalaya, &Alps, &Karakoram, &Hindukush, &RockyMountains, &Ural, &Andes] (Eigen::Vector2d x) -> double {
+  auto c = [&Himalaya, &Alps, &Karakoram, &Hindukush, &RockyMountains, &Ural,
+            &Andes](Eigen::Vector2d x) -> double {
     double diffCoeff = 90.0;
 
-    if((x - Himalaya).norm() <= 3) {
+    if ((x - Himalaya).norm() <= 3) {
       diffCoeff = 15.0;
       std::cout << "Take Himalaya into account." << std::endl;
     }
 
-    if((x - Karakoram).norm() <= 3) {
+    if ((x - Karakoram).norm() <= 3) {
       diffCoeff = 16.0;
       std::cout << "Take Karakoram into account." << std::endl;
     }
 
-    if((x - Hindukush).norm() <= 2) {
+    if ((x - Hindukush).norm() <= 2) {
       diffCoeff = 16.0;
       std::cout << "Take Hindukush into account." << std::endl;
     }
 
-    if((x - Alps).norm() <=  3) {
+    if ((x - Alps).norm() <= 3) {
       diffCoeff = 15.0;
       std::cout << "Take Alps into account." << std::endl;
     }
 
-    if((x - Ural).norm() <= 2) {
+    if ((x - Ural).norm() <= 2) {
       diffCoeff = 18.0;
       std::cout << "Take Ural into account." << std::endl;
     }
 
-    if((x - RockyMountains).norm() <= 2) {
+    if ((x - RockyMountains).norm() <= 2) {
       diffCoeff = 20.0;
       std::cout << "Take Himalaya into account." << std::endl;
     }
 
-    if((x - Andes).norm() <= 3) {
+    if ((x - Andes).norm() <= 3) {
       diffCoeff = 19.0;
       std::cout << "Take Himalaya into account." << std::endl;
     }
 
     return diffCoeff;
   };
-  
-  // Growth Factor 
+
+  // Growth Factor
   double lambda = 4.94;
 
   /* Strang Splitting Method
@@ -91,18 +95,19 @@ int main(int /*argc*/, char ** /*argv*/){
    * Exact Evolution for nonlinear reaction term
    */
 
-  // Total number of timesteps 
+  // Total number of timesteps
   unsigned int m = 100;
-  double T = 1.;            // the timestepsize tau will equal T/m = 0.01
-  
+  double T = 1.; // the timestepsize tau will equal T/m = 0.01
+
   std::cout << "You are running the simulation on the globe." << std::endl;
 
   // First we assemble the carrying capacity maps.
   Eigen::MatrixXd car_cap(N_dofs, 16);
 
-  Eigen::VectorXd K(N_dofs); K.setZero();
+  Eigen::VectorXd K(N_dofs);
+  K.setZero();
   K = 0.2 * Eigen::VectorXd::Ones(N_dofs);
-  auto c_cap = [] (Eigen::Vector2d x) -> double { return 80.0;};
+  auto c_cap = [](Eigen::Vector2d x) -> double { return 80.0; };
   // NOTE: c = 80, lambda = 0, K does not matter.
   StrangSplit DiffusionCapacity(fe_space, T, m, 0.0, c_cap);
 
@@ -115,7 +120,7 @@ int main(int /*argc*/, char ** /*argv*/){
   car_cap.col(1) = DiffusionCapacity.Evolution(K, car_cap.col(0));
   car_cap.col(2) = DiffusionCapacity.Evolution(K, car_cap.col(1));
   car_cap.col(2) *= 10;
-  
+
   std::cout << "Carrying Capacity 200kya - 150kya!" << std::endl;
 
   // t = 150 kya - 130 kya
@@ -194,7 +199,8 @@ int main(int /*argc*/, char ** /*argv*/){
   StrangSplit StrangSplitter(fe_space, T, m, lambda, c);
 
   Eigen::MatrixXd sol(N_dofs, 20);
-  Eigen::VectorXd cap(N_dofs); cap.setZero();
+  Eigen::VectorXd cap(N_dofs);
+  cap.setZero();
   // t = 200 kya - 150 kya
   cap = car_cap.col(2);
   sol.col(0) = StrangSplitter.Evolution(cap, u0);
@@ -212,7 +218,7 @@ int main(int /*argc*/, char ** /*argv*/){
 
   std::cout << "Solution 130kya - 100kya!" << std::endl;
 
-  // t = 100 kya - 70 kya  
+  // t = 100 kya - 70 kya
   sol.col(3) = StrangSplitter.Evolution(cap, sol.col(2));
 
   std::cout << "Solution 100kya - 70kya!" << std::endl;
@@ -224,7 +230,7 @@ int main(int /*argc*/, char ** /*argv*/){
 
   std::cout << "Solution 70kya - 65kya!" << std::endl;
 
-  // t = 65 kya - 50 kya 
+  // t = 65 kya - 50 kya
   cap = cap + car_cap.col(9);
   sol.col(6) = StrangSplitter.Evolution(cap, sol.col(5));
   sol.col(7) = StrangSplitter.Evolution(cap, sol.col(6));
@@ -246,7 +252,7 @@ int main(int /*argc*/, char ** /*argv*/){
 
   std::cout << "Solution 45kya - 25kya!" << std::endl;
 
-  // t = 25 kya - 15 kya 
+  // t = 25 kya - 15 kya
   cap = cap + car_cap.col(14);
   sol.col(13) = StrangSplitter.Evolution(cap, sol.col(12));
   sol.col(14) = StrangSplitter.Evolution(cap, sol.col(13));
@@ -262,11 +268,14 @@ int main(int /*argc*/, char ** /*argv*/){
   sol.col(19) = StrangSplitter.Evolution(cap, sol.col(18));
 
   std::cout << "Solution 15kya - 1kya!" << std::endl;
-  std::cout << "Note that for sake of simplicity, we did not take into account the dispersal over sea. "
-  			<< "We shall not expect that the islands (especially Australia) will be inhabited. "
-			<< "This would have required non local boundary conditions." << std::endl;
+  std::cout << "Note that for sake of simplicity, we did not take into account "
+               "the dispersal over sea. "
+            << "We shall not expect that the islands (especially Australia) "
+               "will be inhabited. "
+            << "This would have required non local boundary conditions."
+            << std::endl;
 
-  for(int k = 1; k < 21; k++) {
+  for (int k = 1; k < 21; k++) {
 
     std::stringstream filename;
     filename << "sol" << k << ".vtk";
@@ -274,13 +283,12 @@ int main(int /*argc*/, char ** /*argv*/){
     lf::io::VtkWriter vtk_writer(mesh_p, filename.str());
     auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
     for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
-      nodal_data->operator()(dofh.Entity(global_idx)) = sol.col(k-1)[global_idx];
+      nodal_data->operator()(dofh.Entity(global_idx)) =
+          sol.col(k - 1)[global_idx];
     }
 
     vtk_writer.WritePointData("sol", *nodal_data);
   }
 
-   return 0;
-
+  return 0;
 }
-
