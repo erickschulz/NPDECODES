@@ -54,7 +54,8 @@ public:
     Eigen::VectorXd evol_op;
 
 #if SOLUTION
-    // sparse LU decomposition: done in every timestep because timestep size may vary.
+    // sparse LU decomposition: done in every timestep because timestep size may
+    // vary.
     solver.compute(M_ + tau * xi_ * A_);
     LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
     Eigen::VectorXd rhs = -A_ * mu;
@@ -79,7 +80,7 @@ public:
   /* Member Function StrangSplit
    * Computes the Evolution for m_ timesteps
    */
-/* SAM_LISTING_BEGIN_2 */
+  /* SAM_LISTING_BEGIN_2 */
   Eigen::VectorXd Evolution(const Eigen::VectorXd &cap,
                             const Eigen::VectorXd &mu) {
     // Obtain dofhandler
@@ -105,7 +106,7 @@ public:
     for (int i = 1; i < m_ - 1; i++) {
       // Reaction for next full time step
       sol_next = cap.cwiseQuotient(ones + (cap.cwiseQuotient(sol_cur) - ones) *
-				   std::exp(-lambda_ * tau));
+                                              std::exp(-lambda_ * tau));
       sol_cur = sol_next;
       // Diffusion for next full time step
       sol_next = diffusionEvolutionOperator(tau, sol_cur);
@@ -114,7 +115,7 @@ public:
 
     // Last half time step: Reaction
     sol_next = cap.cwiseQuotient(ones + (cap.cwiseQuotient(sol_cur) - ones) *
-				 std::exp(-lambda_ * tau / 2.));
+                                            std::exp(-lambda_ * tau / 2.));
     sol_cur = sol_next;
     sol = sol_cur;
 
@@ -127,6 +128,7 @@ public:
   }
   /* SAM_LISTING_END_2 */
 
+  /* SAM_LISTING_BEGIN_3 */
 private:
   // Finite Element Space
   const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
@@ -145,6 +147,7 @@ private:
   Eigen::SparseMatrix<double> M_;
   // Precompute LU decomposition needed for time stepping
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+  /* SAM_LISTING_END_3 */
 };
 
 } /* namespace FisherKPP. */
