@@ -13,4 +13,7 @@ set(SOURCES
 set(LIBRARIES
   Eigen3::Eigen
   GTest::gtest_main
+  LF::lf.assemble
+  LF::lf.mesh.test_utils
+  LF::lf.uscalfe
 )
