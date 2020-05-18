@@ -49,8 +49,9 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
     elMat_vec *= area / 12.0;
   } else {
     // for QUADRILATERAL CELLS
+    elMat_vec = Eigen::MatrixXd::Zero(8, 8);
     Eigen::MatrixXd elMat_scal =
-        Eigen::MatrixXd::Zero(4, 4); // element matrix to be returned
+        Eigen::MatrixXd::Zero(4, 4); // element matrix for scalar FEM
     // Tensor product Gauss-Legendre quadrature rule of order 4
     const lf::quad::QuadRule qr{
         lf::quad::make_QuadRule(lf::base::RefEl::kQuad(), 3)};
@@ -82,15 +83,16 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
         }
       }
     }
+    // 8x8 element (mass) matrix for vectorial FEM
     // clang-format off
-    elMat_vec << elMat_scal(0, 0), 0.0,              elMat_scal(0, 1), 0.0,              elMat_scal(0, 2), 0.0,              elMat_scal(0, 3), 0.0,
-                 0.0,              elMat_scal(0, 0), 0.0,              elMat_scal(0, 1), 0.0,              elMat_scal(0, 2), 0.0,              elMat_scal(0, 3),
-                 elMat_scal(1, 0), 0.0,              elMat_scal(1, 1), 0.0,              elMat_scal(1, 2), 0.0,              elMat_scal(1, 3), 0.0,
-	         0.0,              elMat_scal(1, 0), 0.0,              elMat_scal(1, 1), 0.0,              elMat_scal(1, 2), 0.0,              elMat_scal(1, 3),
-	         elMat_scal(2, 0), 0.0,              elMat_scal(2, 1), 0.0,              elMat_scal(2, 2), 0.0,              elMat_scal(2, 3), 0.0,
-	         0.0,              elMat_scal(2, 0), 0.0,              elMat_scal(2, 1), 0.0,              elMat_scal(2, 2), 0.0,              elMat_scal(2, 3),
-                 elMat_scal(3, 0), 0.0,              elMat_scal(3, 1), 0.0,              elMat_scal(3, 2), 0.0,              elMat_scal(3, 3), 0.0,
-                 0.0,              elMat_scal(3, 0), 0.0,              elMat_scal(3, 1), 0.0,              elMat_scal(3, 2), 0.0,              elMat_scal(3, 3);
+    elMat_vec << elMat_scal(0, 0), 0.0, elMat_scal(0, 1), 0.0, elMat_scal(0, 2), 0.0, elMat_scal(0, 3), 0.0,
+                 0.0, elMat_scal(0, 0), 0.0, elMat_scal(0, 1), 0.0, elMat_scal(0, 2), 0.0, elMat_scal(0, 3),
+                 elMat_scal(1, 0), 0.0, elMat_scal(1, 1), 0.0, elMat_scal(1, 2), 0.0, elMat_scal(1, 3), 0.0,
+	         0.0, elMat_scal(1, 0), 0.0, elMat_scal(1, 1), 0.0, elMat_scal(1, 2), 0.0, elMat_scal(1, 3),
+	         elMat_scal(2, 0), 0.0, elMat_scal(2, 1), 0.0, elMat_scal(2, 2), 0.0, elMat_scal(2, 3), 0.0,
+	         0.0, elMat_scal(2, 0), 0.0, elMat_scal(2, 1), 0.0, elMat_scal(2, 2), 0.0, elMat_scal(2, 3),
+                 elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3), 0.0,
+                 0.0, elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3);
      // clang-format on
 
   }

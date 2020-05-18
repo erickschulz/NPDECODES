@@ -42,8 +42,9 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
     //====================
   } else {
     // for QUADRILATERAL CELLS
+    elMat_vec = Eigen::MatrixXd::Zero(8, 8);
     Eigen::MatrixXd elMat_scal =
-        Eigen::MatrixXd::Zero(4, 4); // element matrix to be returned
+        Eigen::MatrixXd::Zero(4, 4); // element matrix for scalar FEM
     //====================
     // Your code goes here
      //====================
