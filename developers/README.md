@@ -42,7 +42,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
-| 6-8 | `NonLinSchroedingerEquation` | TO DO | |  | |
+| 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | |  | |
 | 6-9 | `FisherKPP` | TO DO | |  | |
 | 7-1 | `ExpFittedUpwind` | TO DO | | | |
 | 7-2 | `UpwindQuadrature` | TO DO | | | |
