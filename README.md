@@ -54,7 +54,11 @@ There is two folders called `homeworks/`. One contains the source files and one 
 ```
 
 ## On the student computers
-LehrFEM++ is already installed on the linux student computers in the ETH main building. To set up your local repository there, open a terminal an type:
+LehrFEM++ is already installed on the linux student computers in the ETH main building. You can even use them remotely by typing in your terminal
+```
+ssh -X <nethz_username>@slab1.ethz.ch
+```
+where `<nethz_username>` has the be replaced by your ETH username. To set up your local repository on the student computers, type:
 ```
 cd /tmp
 git clone git@github.com:erickschulz/NPDECODES.git
