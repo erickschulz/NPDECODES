@@ -2,11 +2,11 @@
 hunter_config(Eigen VERSION 3.3.5)
 hunter_config(Boost VERSION 1.66.0)
 
-# hunter_config(lehrfempp VERSION 0.7.21)
-hunter_config(lehrfempp
-  # Currently using commit 'Resolve Issue #174'
-  URL "https://github.com/craffael/lehrfempp/archive/cc8824bb827d1ca3e3157b4a3b5b50ecf468216b.tar.gz"
-  SHA1 "7371d38baa042dfda4da2b112cc5b00b1860c51c"
-)
+hunter_config(lehrfempp VERSION 0.7.21)
+# hunter_config(lehrfempp
+  # # Currently using commit 'Update README.md'
+  # URL "https://github.com/craffael/lehrfempp/archive/c50c2cebe1aa3eb4db0c899e8fcdb196445820f5.tar.gz"
+  # SHA1 "df5748205b66a0fd74c81978b04ccd503509cfe6"
+# )
 
 hunter_config(GTest VERSION 1.10.0)
