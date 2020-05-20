@@ -82,10 +82,10 @@ g++-8 --version       #check if g++-8 was installed properly
 rm -rf build          #delete the old build folder
 mkdir build           #recreate it
 ```
-If this has succeeded, you need to build the codes using the gcc compiler by defining the environment variables CC and CXX. This is done by navigating a terminal into `NPDECODES/build/` and running:
+If this has succeeded, you need to build the codes using the gcc compiler by defining the environment variables `CC` and `CXX`. This is done by navigating a terminal into `NPDECODES/build/` and running:
 ```
 export CC=gcc-8
 export CXX=g++-8
 cmake ..
 ```
-If the installation is successful, you can than build your codes using `make` as before. Note that the gcc version under OSX usulally just links to clang. However, the above procedure installs the actual gcc compiler.
+If the installation is successful, you can than build your codes using `make` as before. Note that the gcc version under OSX usulally just links to clang. However, the procedure above installs the actual gcc compiler.
