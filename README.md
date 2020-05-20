@@ -76,7 +76,7 @@ The first four lines are due to limited resources on the student computers. Sett
 ### clang: error: unknown argument: '-fcoalesce-templates'
 Mac users, after updating to macOS Catalina 10.15.4, are receiving this error. The workaround is as follows: Navigate  your terminal into the folder `NPDECODES/` and type:
 ```
-brew install gcc@8    #install gcc version 8
+brew install gcc@8    #install gcc version 8, needs brew to be installed first...
 gcc-8 --version       #check if gcc-8 was installed properly
 g++-8 --version       #check if g++-8 was installed properly
 rm -rf build          #delete the old build folder
