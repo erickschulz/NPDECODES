@@ -281,7 +281,7 @@ void humanmigration() {
   for (int k = 1; k < 21; k++) {
 
     std::stringstream filename;
-    filename << "sol" << k << ".vtk";
+    filename << "sol" << k << "_human_migration.vtk";
 
     lf::io::VtkWriter vtk_writer(mesh_p, filename.str());
     auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
@@ -298,6 +298,9 @@ void modelproblem();
 
 /* SAM_LISTING_BEGIN_9 */
 void modelproblem() {
+  std::cout << "You are running the model problem, i.e. you solve the Fisher "
+               "equation on the model domain. "
+            << std::endl;
   // Obtain mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory),
@@ -327,37 +330,41 @@ void modelproblem() {
   // Compute the solution with method of lines and Strang splitting
   StrangSplit StrangSplitter(fe_space, T, m, lambda, c);
   // Five snapshots
-  Eigen::MatrixXd sol(N_dofs, 5);
-  std::cout << "You are running the model problem, i.e. you solve the Fisher "
-               "equation on the model domain. "
-            << std::endl;
-  sol.col(0) = StrangSplitter.Evolution(K, u0);
-  std::cout << "Solution after 100 timesteps." << std::endl;
-  sol.col(1) = StrangSplitter.Evolution(K, sol.col(0));
-  std::cout << "Solution after 200 timesteps." << std::endl;
-  sol.col(2) = StrangSplitter.Evolution(K, sol.col(1));
-  std::cout << "Solution after 300 timesteps." << std::endl;
-  sol.col(3) = StrangSplitter.Evolution(K, sol.col(2));
-  std::cout << "Solution after 400 timesteps." << std::endl;
-  sol.col(4) = StrangSplitter.Evolution(K, sol.col(3));
-  std::cout << "Solution after 500 timesteps." << std::endl;
-  // Use VTK-Writer for Visualization of solution.
-  for (int k = 1; k < 6; k++) {
+  std::vector<Eigen::VectorXd> sol;
+  std::cout << "Computing solution after 100 timesteps..." << std::endl;
+  sol.push_back(StrangSplitter.Evolution(K, u0));
+  // Uncomment the following calls to StrangSplitter.Evolution in order
+  // to solve for a longer evolution.
+  /*std::cout << "Computing solution after 200 timesteps..." << std::endl;
+  sol.push_back(StrangSplitter.Evolution(K, sol[0]));
+  std::cout << "Computing solution after 300 timesteps..." << std::endl;
+  sol.push_back(StrangSplitter.Evolution(K, sol[1]));
+  std::cout << "Computing solution after 400 timesteps..." << std::endl;
+  sol.push_back(StrangSplitter.Evolution(K, sol[2]));
+  std::cout << "Computing solution after 500 timesteps..." << std::endl;
+  sol.push_back(StrangSplitter.Evolution(K, sol[3]));*/
+  
+ 
+// Use VTK-Writer for Visualization of solution.
+std::cout << "Writting solution(s) in VTK format." << std::endl;
+std::cout << std::size(sol) << std::endl;
+  for (int k = 0; k < std::size(sol); k++) {
     std::stringstream filename;
-    filename << "sol" << k << ".vtk";
+    filename << "model_problem_sol" << k+1 << ".vtk";
     lf::io::VtkWriter vtk_writer(mesh_p, filename.str());
     auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
     for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
       nodal_data->operator()(dofh.Entity(global_idx)) =
-          sol.col(k - 1)[global_idx];
+          sol[k][global_idx];
     }
     vtk_writer.WritePointData("sol", *nodal_data);
   }
+std::cout << "Solution after i*100 timesteps written to model_problem_sol'i'.vtk" << std::endl;
 }
 /* SAM_LISTING_END_9 */
 
 int main(int /*argc*/, char ** /*argv*/) {
-  std::cout << "Finite-element simulation of the Fisher/KPP evolution"
+  std::cout << "\nFinite-element simulation of the Fisher/KPP evolution"
             << std::endl;
   std::cout
       << "Select: h = human migration, m = model problem (your implementation)"
