@@ -10,25 +10,6 @@
 
 namespace ElectrostaticForce {
 
-/* SAM_LISTING_BEGIN_2 */
-double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
-  double mesh_size = 0.0;
-
-  // Find maximal edge length
-  double edge_length;
-  // Loop over all edges of the mesh
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
-    // Compute the length of the edge
-    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
-    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
-    if (mesh_size < edge_length) {
-      mesh_size = edge_length;
-    }
-  }
-  return mesh_size;
-}; // getMeshSize
-/* SAM_LISTING_END_2 */
-
 Eigen::Matrix<double, 2, 3>
 gradbarycoordinates(const lf::mesh::Entity &entity) {
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
@@ -280,5 +261,24 @@ Eigen::Vector2d computeForceDomainFunctional(
   return approx_force;
 } // computeForceDomainFunctional
 /* SAM_LISTING_END_5 */
+
+/* SAM_LISTING_BEGIN_6 */
+double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
+  double mesh_size = 0.0;
+
+  // Find maximal edge length
+  double edge_length;
+  // Loop over all edges of the mesh
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
+    // Compute the length of the edge
+    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
+    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
+    if (mesh_size < edge_length) {
+      mesh_size = edge_length;
+    }
+  }
+  return mesh_size;
+}; // getMeshSize
+/* SAM_LISTING_END_6 */
 
 } // namespace ElectrostaticForce
