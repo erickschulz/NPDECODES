@@ -1,3 +1,7 @@
+// Demonstration code for course Numerical Methods for Partial Differential Equations
+// Author: R. Hiptmair, SAM, ETH Zurich
+// Date: May 2020
+
 #ifndef HIGHRESEVL_HPP
 #define HIGHRESEVL_HPP
 

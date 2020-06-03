@@ -1,18 +1,32 @@
+// * Demonstration code for course Numerical Methods for Partial Differential
+// Equations
+// * Author: R. Hiptmair, SAM, ETH Zurich
+// * Date: May 2020
+
 #include "consformevl.h"
+#include "numexp_runner.h"
 
-#include <cmath>
-#include <iostream>
+int main(int /*argc*/, char ** /*argv*/) {
+  std::cout << "Model problem: 1D Burgers equation" << std::endl;
+  // Spatial computational domain. Note that the initial data are confined to
+  // [0,1]. Therefore the maximal speed of propagation "to the right" will be 1.
+  // This means that the exact solution  will always be supported in [0,5] for
+  // times in [0,4].
+  const double _a = -1.0;
+  const double _b = 5.0;
+  // Final time for simulation
+  const double _T = 4.0;
 
-int main(int /*argc*/, char **/*argv*/) {
-  std::cout << "Running driver for discrete evolution in conservation form"
-            << std::endl;
-  // Test script for discrete evolution in conservation form
-  double a = -2 * M_PI;
-  double b = 2 * M_PI;
-  unsigned N = 100;
-  auto u0 = [](double x) { return std::sin(x); };
-  double T = 100.;
-  auto F = [](double v, double w) { return 0.25 * (v * v + w * w); };
-
-  ConsFV::consformevl(a, b, N, u0, T, F);
+  {
+    auto evl = [&](double a, double b, double N, double T) -> Eigen::VectorXd {
+      return ConsFV::consformevl(a, b, N, box, T, nfn_lf_burger);
+    };
+    consform_compute(evl, "burgers_rusanov.csv", _T, _a, _b);
+  }
+ {
+    auto evl = [&](double a, double b, double N, double T) -> Eigen::VectorXd {
+      return ConsFV::consformevl(a, b, N, box, T, nfn_god_burger);
+    };
+    consform_compute(evl, "burgers_godunov.csv", _T, _a, _b);
+  }
 }

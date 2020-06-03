@@ -1,3 +1,7 @@
+// * Demonstration code for course Numerical Methods for Partial Differential
+// * Equations Author: R. Hiptmair, SAM, ETH Zurich
+// * Date: May 2020
+
 #ifndef SLFD_H
 #define SLFD_H
 
@@ -21,10 +25,10 @@ namespace ConsFV {
 // semidiscretization of the Cauchy problem for a 1D scalar
 // conservation law \eqref{eq:clcp}.
 template <typename FunctionF, typename FunctionSlopes>
-Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd& mu, FunctionF F,
+Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
                                  FunctionSlopes slopes) {
-  unsigned n = mu.size();  // Number of active dual grid cells
-  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
+  unsigned n = mu.size(); // Number of active dual grid cells
+  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);
 
   // Computation of slopes \Blue{$\sigma_j$}, uses \Blue{$\mu_0=\mu_1$},
@@ -45,12 +49,12 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd& mu, FunctionF F,
   fd[0] = F(nup[0], num[1]) - F(mu[0], num[0]);
   for (unsigned j = 1; j < n - 1; ++j)
     fd[j] =
-        F(nup[j], num[j + 1]) - F(nup[j - 1], num[j]);  // see \eqref{eq:2pcf}
+        F(nup[j], num[j + 1]) - F(nup[j - 1], num[j]); // see \eqref{eq:2pcf}
   fd[n - 1] = F(nup[n - 1], mu[n - 1]) - F(nup[n - 2], num[n - 1]);
   return fd;
 }
 /* SAM_LISTING_END_0 */
 
-}  // namespace ConsFV
+} // namespace ConsFV
 
 #endif
