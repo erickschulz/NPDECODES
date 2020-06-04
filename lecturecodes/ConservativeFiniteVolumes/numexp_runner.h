@@ -1,6 +1,8 @@
 // * Demonstration code for course Numerical Methods for Partial Differential
 // * Equations Author: R. Hiptmair, SAM, ETH Zurich
 // * Date: May 2020
+// Adaptped from MATLAB codes in
+// https://svn.id.ethz.ch/sam/Numcourses/rw/matlab/FiniteVolumesNPDE
 
 #ifndef NUMEXP_RUNNER_H
 #define NUMEXP_RUNNER_H
@@ -8,7 +10,6 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
-
 /*
  * Functions defining initial data, commonly denoted by u_0
  * BOX: characteristic function of the interval [0,1]
@@ -61,26 +62,29 @@ void consform_compute(EVLFUNCTION &&evl, std::string filename, double T = 4.0,
                       double a = -1.0, double b = 5.0) {
   std::cout << "Running driver for discrete evolution in conservation form"
             << std::endl;
-  // Number of gridpoints in [0,1] for numerical experiments
-  std::vector<unsigned int> Nunit_vals{20, 40, 80}; // , 160, 320, 640, 1280};
+  // Number of mesh cells in [0,1] for numerical experiments
+  std::vector<unsigned int> Nunit_vals{20, 40, 80, 160};
 
   // Formatted output to file
   const Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols,
                                   ", ", "\n");
   std::ofstream result_file(filename.c_str());
+  // Write paramters for numerical experiment
+  result_file << "fn = " << filename << ", a = " << a << ", b = " << b
+              << ", T = " << T << std::endl;
 
   // Carry out computations on a sequence of meshes
   for (const unsigned int n : Nunit_vals) {
-    // Number of spatial gridpoints inside [a,b]
+    // Number of spatial cells inside [a,b]
     const unsigned int N = (unsigned int)((b - a) * n);
     // Progress information
     std::cout << "FV solve on [a,b] = [" << a << ',' << b << "], N = " << N
               << ", T = " << T << std::endl;
-    // Invoke actual simulation
+    // Invoke actual simulation, which returns a vector of cell averages
+    // corresponding to the finite-volume approximation at final time
     Eigen::VectorXd u_final = evl(a, b, N, T);
     // Output another line of data: simulation parameters first, then the
     // simulation result as a row of comma-separated values
-    result_file << "a = " << a << ", b = " << b << ", T = " << T << std::endl;
     result_file << (u_final.transpose()).format(CSVFormat) << std::endl;
   }
   result_file.close();
