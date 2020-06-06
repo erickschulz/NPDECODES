@@ -98,7 +98,7 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   // row and column of that matrix amounts to dropping that basis function.
   // However, the efficiency of this block() operation in the case of sparse
   // matrices is in doubt, in particular, since the result is assigned to
-  // another sparse matrix, which foils Eigen's expression template optimzation.
+  // another sparse matrix, which foils Eigen's expression template optimization.
   // The use of "auto" would be highly advisable here!
   Eigen::SparseMatrix<double> A = getA_full(N, c, h).block(0, 0, N, N);
   Eigen::SparseMatrix<double> B = getB_full(N).block(0, 0, N, N);
