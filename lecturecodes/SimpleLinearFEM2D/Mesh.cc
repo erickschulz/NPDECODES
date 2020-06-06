@@ -60,6 +60,7 @@ TriaMesh2D::TriaMesh2D(const string &filename) {
  *@param cell_index    Index of a cell C
  *@return              Coordinates of vertices of C
  */
+/* SAM_LISTING_BEGIN_7 */
 TriGeo_t TriaMesh2D::getVtCoords(size_t cell_index) const {
   // Check whether valid cell index (starting from zero!)
   assert(cell_index < Elements.rows());
@@ -68,6 +69,7 @@ TriGeo_t TriaMesh2D::getVtCoords(size_t cell_index) const {
   // Bild matrix of vertex coordinates
   Eigen::Matrix<double, 3, 2> vtc;
   vtc << Coordinates.row(idx[0]), Coordinates.row(idx[1]),
-      Coordinates.row(idx[2]);
+    Coordinates.row(idx[2]);
   return vtc.transpose();
 }
+/* SAM_LISTING_END_7 */

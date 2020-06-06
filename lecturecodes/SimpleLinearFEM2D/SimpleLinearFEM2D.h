@@ -29,10 +29,9 @@ struct TriaMesh2D {
   // Constructor: reads mesh data from file, whose name is passed
   TriaMesh2D(const std::string &); // \Label[line]{tm:cs}
   virtual ~TriaMesh2D(void) {}
-
-  // Retrieve coordinates of vertices of a triangles as rows of a 3x2 matrix
+  // Retrieve coordinates of vertices of a triangles as rows
+  // of a fixed-size 3x2 matrix
   TriGeo_t getVtCoords(std::size_t) const;
-
   // Data members describing geometry and topolgy
   Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
   Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
