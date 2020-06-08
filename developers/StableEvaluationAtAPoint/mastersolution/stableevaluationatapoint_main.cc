@@ -1,7 +1,7 @@
 /**
  * @ file stableevaluationatapoint_main.cc
  * @ brief NPDE homework StableEvaluationAtAPoint
- * @ author Amélie Loher
+ * @ author Amélie Loher & Erick Schulz
  * @ date 22.04.20
  * @ copyright Developed at SAM, ETH Zurich
  */
@@ -34,36 +34,40 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Initial dofhandler
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   lf::base::size_type N_dofs = dofh.NumDofs();
+      std::cout << "square.msh: "
+    		<<"N_dofs = "
+<< N_dofs <<std::endl;
 
   /* EXACT SOLUTION AND CHOSEN POINT x INSIDE THE DOMAIN*/
-  auto u = [](Eigen::Vector2d x) -> double {
+  auto uExact = [](Eigen::Vector2d x) -> double {
     Eigen::Vector2d one(1.0, 0.0);
     return std::log((x + one).norm());
   };
+  Eigen::VectorXd uFE = solveBVP(fe_space, uExact);
   Eigen::Vector2d x(0.3, 0.4);
 
   /* INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS */
-  int N_meshes = 8; // total number of meshes (coarse + refinement)
+  int N_meshes = 5; // total number of meshes (coarse + refinement)
 
   Eigen::VectorXd mesh_sizes(N_meshes);
   mesh_sizes.setZero();
   mesh_sizes(0) = getMeshSize(mesh_p);
-  
+
   Eigen::VectorXd dofs(N_meshes);
   dofs.setZero();
   dofs(0) = N_dofs;
 
-  // Naive point evaluation
+  // Point evaluation
   Eigen::VectorXd errors_Eval(N_meshes);
   errors_Eval.setZero();
-  // Subproblem (3-11.b)
-  #if SOLUTION
+// Subproblem (3-11.b)
+#if SOLUTION
   errors_Eval(0) = pointEval(mesh_p);
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
   // Stable point evaluation
   Eigen::VectorXd errors_stabEval(N_meshes);
@@ -71,16 +75,16 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::VectorXd ux(N_meshes);
   ux.setZero();
 
-  /* CONVERGENCE ANALYSIS */
-  // Subproblem (3-11.h)
-  #if SOLUTION
-  ux(0) = stab_pointEval(fe_space, u, x);
-  errors_stabEval(0) = std::abs(u(x) - ux(0));
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+/* CONVERGENCE ANALYSIS */
+// Subproblem (3-11.h)
+#if SOLUTION
+  ux(0) = stab_pointEval(fe_space, uFE, x);
+  errors_stabEval(0) = std::abs(uExact(x) - ux(0));
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
   for (int k = 1; k < N_meshes; k++) { // for each mesh refinement
     // Load finer mesh
@@ -93,25 +97,28 @@ int main(int /*argc*/, const char ** /*argv*/) {
     fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
     const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
     lf::base::size_type N_dofs = dofh.NumDofs();
-     
+    std::cout << "square"+idx+".msh: "
+    		<<"N_dofs = "
+              << N_dofs <<std::endl;
     // Update objects info and evaluate error
     mesh_sizes(k) = getMeshSize(mesh_p);
     dofs(k) = N_dofs;
     errors_Eval(k) = pointEval(mesh_p);
 
-    ux(k) = stab_pointEval(fe_space, u, x);
-    errors_stabEval(k) = std::abs(u(x) - ux(k));
-    std::cout << "u(x)=" << u(x) << ", ux=" << ux(k) << std::endl;
+    ux(k) = stab_pointEval(fe_space, uFE, x);
+    errors_stabEval(k) = std::abs(uExact(x) - ux(k));
+    std::cout << "u(x)=" << uExact(x) << ", ux=" << ux(k) << std::endl;
   }
 
-  // Computing rates of convergence 
+  // Computing rates of convergence
   double ratesEval[N_meshes - 1];
   double ratesStabEval[N_meshes - 1];
   double log_denum;
   for (int k = 0; k < N_meshes - 1; k++) {
     log_denum = log(mesh_sizes[k] / mesh_sizes[k + 1]);
     ratesEval[k] = log(errors_Eval[k] / errors_Eval[k + 1]) / log_denum;
-    ratesStabEval[k] = log(errors_stabEval[k] / errors_stabEval[k + 1]) / log_denum;
+    ratesStabEval[k] =
+        log(errors_stabEval[k] / errors_stabEval[k + 1]) / log_denum;
   }
 
   std::cout << "*********************************************************"
@@ -127,13 +134,13 @@ int main(int /*argc*/, const char ** /*argv*/) {
             << std::endl;
   for (int i = 0; i < 5; i++) {
     std::cout << mesh_sizes(i) << "\t"
-              << "\t" << errors_Eval(i) << "\t \t"
-              << errors_stabEval(i) << std::endl;
+              << "\t" << errors_Eval(i) << "\t \t" << errors_stabEval(i)
+              << std::endl;
   }
   std::cout << "---------------------------------------------------------"
             << std::endl;
 
- std::cout << "\n" << std::endl;
+  std::cout << "\n" << std::endl;
   std::cout << "---------------------------------------------------------"
             << std::endl;
   std::cout << "      Convergence rates for NAIVE point evaluation       "
@@ -156,7 +163,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   std::cout << "---------------------------------------------------------"
             << std::endl;
 
- std::cout << "\n" << std::endl;
+  std::cout << "\n" << std::endl;
   std::cout << "---------------------------------------------------------"
             << std::endl;
   std::cout << "      Convergence rates for STABLE point evaluation       "

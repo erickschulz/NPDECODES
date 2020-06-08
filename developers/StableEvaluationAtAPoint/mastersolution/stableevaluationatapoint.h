@@ -1,7 +1,7 @@
 /**
  * @file stableevaluationatapoint.h
  * @brief NPDE homework StableEvaluationAtAPoint
- * @author Amélie Loher
+ * @author Amélie Loher & Erick Schulz
  * @date 22/04/2020
  * @copyright Developed at ETH Zurich
  */
@@ -263,10 +263,10 @@ double laplPsi(const Eigen::Vector2d y) {
  * domain u: Function handle for u x: Coordinate vector for x
  */
 /* SAM_LISTING_BEGIN_4 */
-template <typename FUNCTOR>
 double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-             FUNCTOR &&u, const Eigen::Vector2d x) {
+             Eigen::VectorXd uFE, const Eigen::Vector2d x) {
   double val = 0.0;
+
 #if SOLUTION
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
 
@@ -274,11 +274,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
   const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
   // Quadrature points
   const Eigen::MatrixXd zeta_ref{qr.Points()};
+std::cout << "zeta_ref" << std::endl;
+std::cout << zeta_ref << std::endl;
   // Quadrature weights
   const Eigen::VectorXd w_ref{qr.Weights()};
   // Number of quadrature points
   const lf::base::size_type P = qr.NumPoints();
-
+std::cout << "P" << std::endl;
+std::cout << P <<std::endl;
   // Loop over all cells
   for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
     LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(),
@@ -288,12 +291,33 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
 
-    for (int l = 0; l < P; l++) {
+    std::cout << "HERE1" <<std::endl;
+auto uFE_mf = lf::uscalfe::MeshFunctionFE(fe_space, uFE);
+    std::cout << "HERE2" <<std::endl; 
+    auto u_vals = uFE_mf(*entity, zeta);
+    std::cout << "HERE3" <<std::endl; 
+std::cout << "u_vals.size()" << std::endl;
+std::cout << u_vals.size() <<std::endl;
+std::cout << "u_val[0]" << std::endl;
+std::cout << u_vals[0] <<std::endl;
+    std::cout << "HERE4" <<std::endl; 
+for (int l = 0; l < P; l++) {
+std::cout << "loop l"<<std::endl;
+std::cout << l << std::endl;
+std::cout << "zeta_col(l)" << std::endl;
+std::cout << zeta.col(l) << std::endl;
+      /*val -= w_ref[l] * u_vals[l] *
+             (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
+              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
+             gram_dets[l];*/
+    }
+
+    /*for (int l = 0; l < P; l++) {
       val -= w_ref[l] * u(zeta.col(l)) *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
               G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
              gram_dets[l];
-    }
+    }*/
   }
 
   /* VARIANT:
@@ -321,17 +345,16 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
  * u: Function Handle for u
  * x: Coordinate vector for x
  */
-template <typename FUNCTOR>
-double stab_pointEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-    FUNCTOR &&u, const Eigen::Vector2d x) {
+double
+stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+               Eigen::VectorXd uFE, const Eigen::Vector2d x) {
 
   double res = 0.0;
 
 #if SOLUTION
   Eigen::Vector2d half(0.5, 0.5);
   if ((x - half).norm() <= 0.25) {
-    res = Jstar(fe_space, u, x);
+    res = Jstar(fe_space, uFE, x);
 
   } else {
     std::cerr << "The point does not fulfill the assumptions" << std::endl;
@@ -344,5 +367,93 @@ double stab_pointEval(
 #endif
   return res;
 }
+
+template <typename FUNCTOR>
+Eigen::VectorXd solveBVP(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    FUNCTOR &&u) {
+  Eigen::VectorXd discrete_solution;
+
+  // TOOLS AND DATA
+  // Pointer to current mesh
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
+  // Obtain local->global index mapping for current finite element space
+  const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
+  // Dimension of finite element space
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
+  // Obtain specification for shape functions on edges
+  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
+      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+
+  // Dirichlet data
+  auto mf_g = lf::mesh::utils::MeshFunctionGlobal(
+      [u](Eigen::Vector2d x) -> double { return u(x); });
+  // Right-hand side source function f
+  auto mf_f = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 0.0; });
+
+  // I : ASSEMBLY
+  // Matrix in triplet format holding Galerkin matrix, zero initially.
+  lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
+  // Right hand side vector, must be initialized with 0!
+  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
+  phi.setZero();
+
+  // I.i : Computing volume matrix for negative Laplace operator
+  // Initialize object taking care of local mass (volume) computations.
+  lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder{};
+  // Invoke assembly on cells (co-dimension = 0 as first argument)
+  // Information about the mesh and the local-to-global map is passed through
+  // a Dofhandler object, argument 'dofh'. This function call adds triplets to
+  // the internal COO-format representation of the sparse matrix A.
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
+
+  // I.ii : Computing right-hand side vector
+  lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
+      elvec_builder(fe_space_p, mf_f);
+  // Invoke assembly on cells (codim == 0)
+  AssembleVectorLocally(0, dofh, elvec_builder, phi);
+
+  // I.iii : Imposing essential boundary conditions
+  // Obtain an array of boolean flags for the edges of the mesh, 'true'
+  // indicates that the edge lies on the boundary (codim = 1)
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+  // Inspired by the example in the documentation of
+  // InitEssentialConditionFromFunction()
+  // https://craffael.github.io/lehrfempp/namespacelf_1_1uscalfe.html#a5afbd94919f0382cf3fb200c452797ac
+  // Creating a predicate that will guarantee that the computations are carried
+  // only on the exterior boundary edges of the mesh using the boundary flags
+  auto edges_predicate_Dirichlet =
+      [&bd_flags](const lf::mesh::Entity &edge) -> bool {
+    return bd_flags(edge);
+  };
+  // Determine the fixed dofs on the boundary and their values
+  // Alternative: See lecturedemoDirichlet() in
+  // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
+  auto edges_flag_values_Dirichlet{
+      lf::uscalfe::InitEssentialConditionFromFunction(
+          dofh, *rsf_edge_p, edges_predicate_Dirichlet, mf_g)};
+  // Eliminate Dirichlet dofs from the linear system
+  lf::assemble::FixFlaggedSolutionCompAlt<double>(
+      [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {
+        return edges_flag_values_Dirichlet[gdof_idx];
+      },
+      A, phi);
+
+  // Assembly completed! Convert COO matrix A into CRS format using Eigen's
+  // internal conversion routines.
+  Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
+
+  // II : SOLVING  THE LINEAR SYSTEM
+  // II.i : Setting up Eigen's sparse direct elimination
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+  solver.compute(A_sparse);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
+  // II.ii : Solving
+  discrete_solution = solver.solve(phi);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+
+  return discrete_solution;
+}; // solveBVP
 
 } /* namespace StableEvaluationAtAPoint */

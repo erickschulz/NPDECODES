@@ -5,7 +5,7 @@
  * @date 29/04/2020
  * @copyright Developed at ETH Zurich
  */
-
+/*
 #include "../stableevaluationatapoint.h"
 
 #include <cmath>
@@ -141,7 +141,7 @@ TEST(StableEvaluationAtAPoint, stab_pointEval) {
 }
 
 
-
+*/
 
 
 
