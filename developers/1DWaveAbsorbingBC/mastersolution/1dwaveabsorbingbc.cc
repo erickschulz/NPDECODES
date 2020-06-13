@@ -57,6 +57,7 @@ Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
 /**
  * @brief Get the full (--> including both boundary points) Galerkin matrix B
  * @param N number of spacial nodes, including x=0, but excluding x=1
+ * @param c speed of propagation
  * @return Full Galerkin matrix B of size (N+1)x(N+1)
  */
 /* SAM_LISTING_BEGIN_8 */
