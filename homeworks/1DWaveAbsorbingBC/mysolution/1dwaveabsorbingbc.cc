@@ -34,7 +34,7 @@ double g(double t) { return 0 <= t && t <= PI ? std::sin(t) : 0.0; }
 Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
   std::vector<Eigen::Triplet<double>> triplets;
   triplets.reserve(3 * (N + 1) - 2); // that many triplets needed
-  const double scale = c / h;
+  const double scale = c * c / h;
   // store first row separately
   triplets.push_back(Eigen::Triplet<double>(0, 0, scale));
   triplets.push_back(Eigen::Triplet<double>(0, 1, -scale));
@@ -57,13 +57,14 @@ Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
 /**
  * @brief Get the full (--> including both boundary points) Galerkin matrix B
  * @param N number of spacial nodes, including x=0, but excluding x=1
+ * @param c speed of propagation
  * @return Full Galerkin matrix B of size (N+1)x(N+1)
  */
 /* SAM_LISTING_BEGIN_8 */
-Eigen::SparseMatrix<double> getB_full(unsigned int N) {
+Eigen::SparseMatrix<double> getB_full(unsigned int N, double c) {
   Eigen::SparseMatrix<double> B(N + 1, N + 1);
   // Just a single non-zero entry; we can afford to sete it directly
-  B.coeffRef(0, 0) = 1.0;
+  B.coeffRef(0, 0) = c;
   return B;
 }
 /* SAM_LISTING_END_8 */
@@ -101,7 +102,7 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   // another sparse matrix, which foils Eigen's expression template optimization.
   // The use of "auto" would be highly advisable here!
   Eigen::SparseMatrix<double> A = getA_full(N, c, h).block(0, 0, N, N);
-  Eigen::SparseMatrix<double> B = getB_full(N).block(0, 0, N, N);
+  Eigen::SparseMatrix<double> B = getB_full(N, c).block(0, 0, N, N);
   Eigen::SparseMatrix<double> M = getM_full(N, h).block(0, 0, N, N);
   // Matrix for returning solution
   Eigen::MatrixXd R(m + 1, N + 1);
