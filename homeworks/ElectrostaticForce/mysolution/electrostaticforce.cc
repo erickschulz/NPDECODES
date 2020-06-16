@@ -28,15 +28,13 @@ gradbarycoordinates(const lf::mesh::Entity &entity) {
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d force; // return vector
-
+  // Real overkill quadrature!
   unsigned int N = 1e6; // nb. of quadrature points
-
   // Data
   double r = 4.0 / 15.0; // radius of the circle
   Eigen::Vector2d a(-16.0 / 15.0, 0.0);
   Eigen::Vector2d b(-1.0 / 15.0, 0.0);
-
-  // Tools
+  // Auxiliary variables
   Eigen::Vector2d x;    // euclidean coordinates
   Eigen::Vector2d n;    // normal vector at the coordinates
   Eigen::Vector2d grad; // gradient of the exact solution
@@ -57,10 +55,10 @@ Eigen::Vector2d computeExactForce() {
     // IV. Evaluate full integrand
     force += grad.dot(n) * grad;
   }
-  // V. Scale the summation
+  // V. Scale the result of the summation
   force *= r * M_PI / N;
   return force;
-} // computeExactForce
+} // end computeExactForce
 /* SAM_LISTING_END_1 */
 
 Eigen::VectorXd solvePoissonBVP(
@@ -202,7 +200,7 @@ Eigen::Vector2d computeForceBoundaryFunctional(
   approx_force *= 0.5;
   return approx_force;
 } // computeForceFunctional
-  /* SAM_LISTING_END_4 */
+/* SAM_LISTING_END_4 */
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Vector2d computeForceDomainFunctional(
