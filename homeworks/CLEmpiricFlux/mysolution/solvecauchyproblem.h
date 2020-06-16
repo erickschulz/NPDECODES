@@ -27,7 +27,7 @@ namespace CLEmpiricFlux {
  * @return interval containg the support of u at time t
  */
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
-                            const Eigen::Vector2d &initsupp, double t);
+                            Eigen::Vector2d initsupp, double t);
 
 /**
  * @brief Computes the cell averages at initial time on an interval
