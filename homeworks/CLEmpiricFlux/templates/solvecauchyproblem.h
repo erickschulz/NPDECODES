@@ -94,6 +94,6 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T);
 
-}  // namespace CLEmpiricFlux
+} // namespace CLEmpiricFlux
 
 #endif
