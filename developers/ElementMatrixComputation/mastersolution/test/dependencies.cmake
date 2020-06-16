@@ -7,7 +7,7 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/elementeatrixcomputation_test.cc
+  ${DIR}/test/elementmatrixcomputation_test.cc
 )
 
 set(LIBRARIES
