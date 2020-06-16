@@ -27,7 +27,7 @@ namespace CLEmpiricFlux {
  * @return interval containg the support of u at time t
  */
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
-                            const Eigen::Vector2d &initsupp, double t);
+                            Eigen::Vector2d initsupp, double t);
 
 /**
  * @brief Computes the cell averages at initial time on an interval
@@ -48,7 +48,7 @@ Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
   #if SOLUTION
   double A = -1.0;  // left bound of support
   double B = 1.0;   // right bound of support
-  double AT = std::min(A, A - f.derivative(-1.0) * T);
+  double AT = std::min(A, A + f.derivative(-1.0) * T);
   double BT = std::max(B, B + f.derivative(1.0) * T);
 
   int m_minus = (int)std::floor(AT / h);

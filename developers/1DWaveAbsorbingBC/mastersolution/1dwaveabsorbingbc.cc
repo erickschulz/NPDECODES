@@ -34,7 +34,7 @@ double g(double t) { return 0 <= t && t <= PI ? std::sin(t) : 0.0; }
 Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
   std::vector<Eigen::Triplet<double>> triplets;
   triplets.reserve(3 * (N + 1) - 2); // that many triplets needed
-  const double scale = c / h;
+  const double scale = c * c / h;
   // store first row separately
   triplets.push_back(Eigen::Triplet<double>(0, 0, scale));
   triplets.push_back(Eigen::Triplet<double>(0, 1, -scale));
@@ -57,13 +57,14 @@ Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
 /**
  * @brief Get the full (--> including both boundary points) Galerkin matrix B
  * @param N number of spacial nodes, including x=0, but excluding x=1
+ * @param c speed of propagation
  * @return Full Galerkin matrix B of size (N+1)x(N+1)
  */
 /* SAM_LISTING_BEGIN_8 */
-Eigen::SparseMatrix<double> getB_full(unsigned int N) {
+Eigen::SparseMatrix<double> getB_full(unsigned int N, double c) {
   Eigen::SparseMatrix<double> B(N + 1, N + 1);
   // Just a single non-zero entry; we can afford to sete it directly
-  B.coeffRef(0, 0) = 1.0;
+  B.coeffRef(0, 0) = c;
   return B;
 }
 /* SAM_LISTING_END_8 */
@@ -101,7 +102,7 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   // another sparse matrix, which foils Eigen's expression template optimization.
   // The use of "auto" would be highly advisable here!
   Eigen::SparseMatrix<double> A = getA_full(N, c, h).block(0, 0, N, N);
-  Eigen::SparseMatrix<double> B = getB_full(N).block(0, 0, N, N);
+  Eigen::SparseMatrix<double> B = getB_full(N, c).block(0, 0, N, N);
   Eigen::SparseMatrix<double> M = getM_full(N, h).block(0, 0, N, N);
   // Matrix for returning solution
   Eigen::MatrixXd R(m + 1, N + 1);
@@ -113,16 +114,16 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   // the special initial step usually required for leapfrog.
   double tau = T / m; // Timestep size
   // The diagonal matrix to be "inverted" in each timestep
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver(1.0 / tau * M + 0.5 * B);
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver(M + 0.5 * tau * B);
   for (int j = 0; j < m; ++j) {
     R.row(j).head(N) = mu.transpose();
-    phi(N - 1) = c / h * g(j * tau);
+    phi(N - 1) = c * c / h * g(j * tau);
     // Maybe, this can be done more efficiently by extracting the diagonal,
     // converting it into an Eigen::Array object and then perform componentwise
     // division. However, a really smart sparse elimination solver should be
     // able to detect a diagonal coefficient matrices and optimize the
     // elimination accordingly.
-    nu = solver.solve(-A * mu + (1.0 / tau * M - 0.5 * B) * nu + phi);
+    nu = solver.solve(-tau * A * mu + (M - 0.5 * tau * B) * nu + tau * phi);
     mu = mu + tau * nu;
   }
   R.row(m).head(N) = mu.transpose();
