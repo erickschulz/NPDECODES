@@ -79,14 +79,10 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
   Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
 
-  // Computation of slopes \Blue{$\sigma_j$}, uses \Blue{$\mu_{-1}=\mu_{n-1}$},
-  // \Blue{$\mu_n=\mu_0$}, which amounts to constant extension of states
-  // beyond domain of influence \Blue{$[a,b]$} of non-constant intial data. Same
-  // technique has been applied in \lref{cpp:fluxdiff}
-  sigma[0] = slopes(mu[n - 1], mu[0], mu[1]); // @\Label[line]{slfd:1}@
+  sigma[0] = slopes(mu[0], mu[0], mu[1]);
   for (int j = 1; j < n - 1; ++j)
     sigma[j] = slopes(mu[j - 1], mu[j], mu[j + 1]);
-  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[0]); // @\Label[line]{slfd:2}@
+  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[n - 1]);
 
   // Compute linear reconstruction at endpoints of dual cells \lref{eq:slopval}
   Eigen::VectorXd nup = mu + 0.5 * sigma;
