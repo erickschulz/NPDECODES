@@ -55,7 +55,8 @@ Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
   const int m_plus = (int)std::ceil(BT / h);
   const int N = m_plus - m_minus + 1;
 
-  const Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N, m_minus * h, m_plus * h);
+  const Eigen::VectorXd x =
+      Eigen::VectorXd::LinSpaced(N, m_minus * h, m_plus * h);
   mu0 = x.unaryExpr(std::forward<FUNCTOR>(u0));
   return mu0;
 }

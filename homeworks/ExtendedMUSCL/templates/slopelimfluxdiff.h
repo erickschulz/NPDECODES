@@ -28,8 +28,8 @@ namespace ExtendedMUSCL {
 // volume semidiscretization of the Cauchy problem for a 1D scalar conservation
 // law \lref{eq:clcp}.
 template <typename FunctionF, typename FunctionSlopes>
-Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
-                                 FunctionSlopes slopes) {
+Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF &&F,
+                                 FunctionSlopes &&slopes) {
   int n = mu.size(); // Number of active dual grid cells
   Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
@@ -60,10 +60,10 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
 
 /* SAM_LISTING_BEGIN_1 */
 // Function parameters:
-//   double texttt{h}: meshwidth of equidistant spatial grid
-//   Vector texttt{mu}: (finite) vector \Blue{$\vec{\mubf}$} of cell averages
-//   Functor texttt{F}: 2-point numerical flux function \Blue{$F=F(v,w)$}
-//   Functor texttt{slope}: slope reconstruction function
+//   double h: meshwidth of equidistant spatial grid
+//   Vector mu: (finite) vector \Blue{$\vec{\mubf}$} of cell averages
+//   Functor F: 2-point numerical flux function \Blue{$F=F(v,w)$}
+//   Functor slope: slope reconstruction function
 //   \Blue{$h\sigma_j=\operatorname{slopes}(\mu_{j-1},\mu_j,\mu_{j+1})$}
 //
 // returns a vector with differences of numerical fluxes
@@ -73,8 +73,8 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF F,
 // volume semidiscretization of the Cauchy problem for a 1D scalar conservation
 // law \lref{eq:clcp} in a \samemp*{1-periodic setting}.
 template <typename FunctionF, typename FunctionSlopes>
-Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF F,
-                                    FunctionSlopes slopes) {
+Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF &&F,
+                                    FunctionSlopes &&slopes) {
   int n = mu.size(); // Number of active dual grid cells
   Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
