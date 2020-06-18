@@ -45,7 +45,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 7-1 | `ExpFittedUpwind` | TO DO | | | |
-| 7-2 | `UpwindQuadrature` |  |  |  | LaTeX: BETL --> LehrFEM++ |
+| 7-2 | `UpwindQuadrature` | DONE |  |  | needs LaTeX changes by Ralf |
 | 7-3 | `TranspSemiLagr` | TO DO | | | |
 | 7-4 | `UpwindFiniteVolume` | TO DO | | | |
 | 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
