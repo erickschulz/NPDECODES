@@ -54,7 +54,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  | Philipp Egg |
-| ? | `FiniteVolumeRobin` | :white_check_mark: |  |  | Philipp L. |
+| ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |
 
