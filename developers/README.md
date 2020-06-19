@@ -46,13 +46,13 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 7-1 | `ExpFittedUpwind` | TO DO | | | |
 | 7-2 | `UpwindQuadrature` | DONE |  |  | needs LaTeX changes by Ralf |
-| 7-3 | `TranspSemiLagr` | TO DO | | | |
+| 7-3 | `TranspSemiLagr` | TO DO | | | Philippe Peter |
 | 7-4 | `UpwindFiniteVolume` | TO DO | | | |
 | 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: |  | Oliver |
+| 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  | Philipp Egg |
 | ? | `FiniteVolumeRobin` | :white_check_mark: |  |  | Philipp L. |
 | ? | `IPDGFEM` | |  |  |  |
