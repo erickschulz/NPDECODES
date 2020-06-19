@@ -37,14 +37,14 @@ int main() {
   file.close();
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
 #else
   //====================
   // Your code goes here
   // Use std::ofstream to write the solution to
   // the file "ufinal.csv". To plot this
   // file you may uncomment the following line:
-  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
   //====================
 #endif
   /* SAM_LISTING_END_1 */
@@ -62,14 +62,14 @@ int main() {
   file.close();
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal_reaction.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.eps");
 #else
   //====================
   // Your code goes here
   // Use std::ofstream to write the solution to
   // the file "ufinal_reaction.csv". To plot this
   // file you may uncomment the following line:
-  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.eps");
   //====================
 #endif
 

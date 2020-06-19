@@ -38,7 +38,7 @@ int main() {
   solution_file << tR.format(CSVFormat) << std::endl;
   solution_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
 /* SAM_LISTING_END_1 */
 
   std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
@@ -54,7 +54,7 @@ int main() {
                 << E_kin.transpose().format(CSVFormat) << std::endl;
   energies_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
 /* SAM_LISTING_END_2 */
 
   return 0;

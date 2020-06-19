@@ -86,7 +86,7 @@ int main(int /*argc*/, char ** /*argv*/)
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
 
   // Plot from .csv file using python
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot_energies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
   /* SAM_LISTING_END_1 */
 
   /* SAM_LISTING_BEGIN_2 */
