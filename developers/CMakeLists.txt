@@ -7,6 +7,7 @@ include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
 
 add_subdirectory(1DWaveAbsorbingBC)
+add_subdirectory(AdvectionFV2D)
 add_subdirectory(AvgValBoundary)
 add_subdirectory(BoundaryWave)
 add_subdirectory(BurgersEquation)
