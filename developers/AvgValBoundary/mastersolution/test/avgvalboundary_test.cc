@@ -56,6 +56,6 @@ TEST(AvgValBoundary, TestBoundaryFunctional) {
   Eigen::VectorXd mu = solveTestProblem(dofh);
   // compute boundary functional
   double boundary_functional = compBoundaryFunctional(dofh, mu, const_one);
-  ASSERT_NEAR(boundary_functional, 0.880602, 0.00001);
+  ASSERT_NEAR(boundary_functional,  0.77546, 0.00001);
 }
 } // namespace AvgValBoundary::test
