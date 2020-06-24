@@ -274,14 +274,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
   const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
   // Quadrature points
   const Eigen::MatrixXd zeta_ref{qr.Points()};
-std::cout << "zeta_ref" << std::endl;
-std::cout << zeta_ref << std::endl;
   // Quadrature weights
   const Eigen::VectorXd w_ref{qr.Weights()};
   // Number of quadrature points
   const lf::base::size_type P = qr.NumPoints();
-std::cout << "P" << std::endl;
-std::cout << P <<std::endl;
+
+  // Create mesh function to be evaluated at the quadrature points
+  auto uFE_mf = lf::uscalfe::MeshFunctionFE(fe_space, uFE);
+
   // Loop over all cells
   for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
     LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(),
@@ -291,46 +291,16 @@ std::cout << P <<std::endl;
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
 
-    std::cout << "HERE1" <<std::endl;
-auto uFE_mf = lf::uscalfe::MeshFunctionFE(fe_space, uFE);
-    std::cout << "HERE2" <<std::endl; 
-    auto u_vals = uFE_mf(*entity, zeta);
-    std::cout << "HERE3" <<std::endl; 
-std::cout << "u_vals.size()" << std::endl;
-std::cout << u_vals.size() <<std::endl;
-std::cout << "u_val[0]" << std::endl;
-std::cout << u_vals[0] <<std::endl;
-    std::cout << "HERE4" <<std::endl; 
-for (int l = 0; l < P; l++) {
-std::cout << "loop l"<<std::endl;
-std::cout << l << std::endl;
-std::cout << "zeta_col(l)" << std::endl;
-std::cout << zeta.col(l) << std::endl;
-      /*val -= w_ref[l] * u_vals[l] *
-             (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
-              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
-             gram_dets[l];*/
-    }
+    auto u_vals = uFE_mf(*entity, zeta_ref);
 
-    /*for (int l = 0; l < P; l++) {
-      val -= w_ref[l] * u(zeta.col(l)) *
+    for (int l = 0; l < P; l++) {
+      val -= w_ref[l] * u_vals[l] *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
               G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
              gram_dets[l];
-    }*/
+    }
   }
 
-  /* VARIANT:
-     auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y)
-     {
-
-     return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y)
-     ));
-     }
-     );
-
-     double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
-  */
 #else
   //====================
   // Your code goes here
@@ -421,18 +391,12 @@ Eigen::VectorXd solveBVP(
   // Inspired by the example in the documentation of
   // InitEssentialConditionFromFunction()
   // https://craffael.github.io/lehrfempp/namespacelf_1_1uscalfe.html#a5afbd94919f0382cf3fb200c452797ac
-  // Creating a predicate that will guarantee that the computations are carried
-  // only on the exterior boundary edges of the mesh using the boundary flags
-  auto edges_predicate_Dirichlet =
-      [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-    return bd_flags(edge);
-  };
   // Determine the fixed dofs on the boundary and their values
   // Alternative: See lecturedemoDirichlet() in
   // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
   auto edges_flag_values_Dirichlet{
-      lf::uscalfe::InitEssentialConditionFromFunction(
-          dofh, *rsf_edge_p, edges_predicate_Dirichlet, mf_g)};
+      lf::uscalfe::InitEssentialConditionFromFunction(dofh, *rsf_edge_p,
+                                                      bd_flags, mf_g)};
   // Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {
