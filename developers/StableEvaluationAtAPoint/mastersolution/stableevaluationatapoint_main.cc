@@ -27,6 +27,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
     Eigen::Vector2d one(1.0, 0.0);
     return std::log((x + one).norm());
   };
+  // Fixed evaluation point
   Eigen::Vector2d x(0.3, 0.4);
   std::cout << "Exact evaluation at (0.3,0.4) : " << uExact(x) << std::endl;
 

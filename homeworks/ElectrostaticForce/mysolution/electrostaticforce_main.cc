@@ -75,7 +75,7 @@ int main() {
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
     /* SAM_LISTING_END_1 */
 
-    // COMPUTE l2 ERROR FOR THE FORCE
+    // COMPUTE ERROR FOR THE FORCE
     errorsl2ForceBoundaryFunctional[i] =
         (exact_force - approx_force_boundary_functional).norm();
     errorsl2ForceDomainFunctional[i] =
@@ -220,32 +220,34 @@ int main() {
   std::ofstream file2;
   file2.open("errorsl2ForceBoundaryFunctional.csv");
   file2 << mesh_sizes.transpose().format(CSVFormat) << std::endl;
-  file2 << errorsl2ForceBoundaryFunctional.transpose().format(CSVFormat) << std::endl;
+  file2 << errorsl2ForceBoundaryFunctional.transpose().format(CSVFormat)
+        << std::endl;
   file2.close();
-  std::cout << "Generated " CURRENT_BINARY_DIR "/errorsl2ForceBoundaryFunctional.csv"
+  std::cout << "Generated " CURRENT_BINARY_DIR
+               "/errorsl2ForceBoundaryFunctional.csv"
             << std::endl;
 
   std::ofstream file3;
   file3.open("errorsl2ForceDomainFunctional.csv");
   file3 << mesh_sizes.transpose().format(CSVFormat) << std::endl;
-  file3 << errorsl2ForceDomainFunctional.transpose().format(CSVFormat) << std::endl;
+  file3 << errorsl2ForceDomainFunctional.transpose().format(CSVFormat)
+        << std::endl;
   file3.close();
-  std::cout << "Generated " CURRENT_BINARY_DIR "/errorsl2ForceDomainFunctional.csv"
+  std::cout << "Generated " CURRENT_BINARY_DIR
+               "/errorsl2ForceDomainFunctional.csv"
             << std::endl;
 
   // Plot from .csv file using python
-  std::system("python3 " CURRENT_SOURCE_DIR
-              "/plot_errors.py " CURRENT_BINARY_DIR
-              "/errorsL2PoissonBVP.csv " CURRENT_BINARY_DIR
-              "/errorsL2PoissonBVP.png");
+  std::system(
+      "python3 " CURRENT_SOURCE_DIR "/plot_errors.py " CURRENT_BINARY_DIR
+      "/errorsL2PoissonBVP.csv " CURRENT_BINARY_DIR "/errorsL2PoissonBVP.eps");
   std::system("python3 " CURRENT_SOURCE_DIR
               "/plot_errors.py " CURRENT_BINARY_DIR
               "/errorsl2ForceBoundaryFunctional.csv " CURRENT_BINARY_DIR
-              "/errorsl2ForceBoundaryFunctional.png");
+              "/errorsl2ForceBoundaryFunctional.eps");
   std::system("python3 " CURRENT_SOURCE_DIR
               "/plot_errors.py " CURRENT_BINARY_DIR
               "/errorsl2ForceDomainFunctional.csv " CURRENT_BINARY_DIR
-              "/errorsl2ForceDomainFunctional.png");
-
+              "/errorsl2ForceDomainFunctional.eps");
   return 0;
 }

@@ -94,7 +94,7 @@ TEST(CLEmpiricFlux, findSupport) {
   Eigen::Vector2d initsupp = {0.0, 1.0};
   double t = 2.0;
 
-  Eigen::Vector2d speed = {-spline.derivative(-1.0), spline.derivative(1.0)};
+  Eigen::Vector2d speed = {spline.derivative(-1.0), spline.derivative(1.0)};
   Eigen::Vector2d newsupp_ref = initsupp + t * speed;
   Eigen::Vector2d newsupp = findSupport(spline, initsupp, t);
 
@@ -209,8 +209,9 @@ TEST(CLEmpiricFlux, solveCauchyProblem_computeInitVec) {
   Eigen::VectorXd mu0 = computeInitVec(f, u0, h, T);
 
   // reference
-  Eigen::VectorXd mu0_ref(76);
+  Eigen::VectorXd mu0_ref(101);
   mu0_ref << 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0;

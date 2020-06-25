@@ -20,6 +20,7 @@
     "ExtendedMUSCL/",
     "FiniteVolumeRobin/",
     "FiniteVolumeSineConsLaw/",
+    "FisherKPP/",
     "IncidenceMatrices/",
     "IPDGFEM/",
     "LaxWendroffScheme/",
@@ -32,19 +33,20 @@
     "NonLinSchroedingerEquation/",
     "OutputImpedanceBVP/",
     "ParametricElementMatrices/",
-    "ParametricFiniteElements",
+    "ParametricFiniteElements/",
     "PointEvaluationRhs/",
     "ProjectionOntoGradients/",
     "RadauThreeTimestepping/",
     "RegularizedNeumannProblem/",
     "SDIRKMethodOfLines/",
     "SimpleLinearFiniteElements/",
+    "StableEvaluationAtAPoint/",
     "SymplecticTimesteppingWaves/",
     "TestQuadratureRules/",
     "TransformationOfGalerkinMatrices/",
     "UnstableBVP/",
+    "UpwindQuadrature/",
     "WaveABC2D/",
-    "ZienkiewiczZhuEstimator/",
-    "FisherKPP/"  
+    "ZienkiewiczZhuEstimator/"
   ]
 }

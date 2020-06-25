@@ -32,7 +32,7 @@ Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t& V) {
   double area = 0.5 * std::abs((V(0, 1) - V(0, 0)) * (V(1, 2) - V(1, 1)) -
                                (V(0, 2) - V(0, 1)) * (V(1, 1) - V(1, 0)));
   // Compute gradients of barycentric coordinate functions, see
-  // \cref{mc:gradbarycoords}
+  // \cref{cpp:gradbarycoords}
   Eigen::Matrix<double, 2, 3> X = gradbarycoordinates(V);
   // compute inner products of gradients through matrix multiplication
   return area * X.transpose() * X;

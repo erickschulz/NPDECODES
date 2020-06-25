@@ -13,6 +13,9 @@
 
 #include <cassert>
 #include <cmath>
+#include <fstream>
+#include <iostream>
+#include <tuple>
 
 #include <Eigen/Core>
 
@@ -93,6 +96,69 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   return mu;
 }
 /* SAM_LISTING_END_4 */
+
+/* Stores the cell averages of a FV solution obtained by the MUSCL scheme in a
+ * 1-periodic setting to file. The filename is passed as an argument. The other
+ * arguments are the same as for soveClaw(), which is called by this function.
+ */
+template <typename U0_FUNCTOR>
+void storeMUSCLSolution(const std::string &filename, U0_FUNCTOR &&u0, double T,
+                        unsigned int n) {
+  const Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols,
+                                  ", ", "\n");
+  Eigen::VectorXd mu = solveClaw(std::forward<U0_FUNCTOR>(u0), T, n);
+  std::ofstream file;
+  file.open(filename.c_str());
+  file << mu.transpose().format(CSVFormat) << std::endl;
+  file.close();
+}
+
+/* The function takess two sequences (usually of reals), whose values are read
+ * as nodal values on the cell midpoints of an equidistant grid on [0,1].
+ * 1-piodic continuation outside [0,1] is assumed. The values on the source grid
+ * are linearly interpolated to the cell midpoints of the fine grid.
+ */
+/* SAM_LISTING_BEGIN_5 */
+template <typename VECSOURCE, typename VECDEST>
+void interpolate(const VECSOURCE &s, VECDEST &d) {
+  // Determine number of cells
+  const std::size_t n = s.size();
+  const std::size_t N = d.size();
+  // Mesh widths/cell sizes
+  const double H = 1.0 / n;
+  const double h = 1.0 / N;
+//====================
+// Your code goes here
+//====================
+}
+/* SAM_LISTING_END_5 */
+
+/* Function conducting a convergence study for the MUSCL scheme. The solution a
+ * prescribed final time T is computed for different spatial and temporal
+ * resolutions adn then compared with a highly resolved solution obtain on a
+ * mesh with 8192 cells. The discrete L1 and L\infty norms of the errors are
+ * written to a table u0 passes the initial value, and T the final time.
+ */
+/* SAM_LISTING_BEGIN_6 */
+template <typename U0_FUNCTOR>
+void studyCvgMUSCLSolution(U0_FUNCTOR &&u0, double T) {
+  // For temporarily storing the number of cells and the associated error norms
+  std::vector<std::tuple<std::size_t, double, double>> result{};
+  constexpr int n_ref = 8192;
+  // Compute reference solution
+  std::cout << "Computing reference solution at T = " << T << " with " << n_ref
+            << " cells" << std::endl;
+  Eigen::VectorXd u_ref{solveClaw(std::forward<U0_FUNCTOR>(u0), T, n_ref)};
+  //====================
+  // Your code goes here
+  //====================
+  std::cout << "n \t linf error \t l1 error" << std::endl;
+  for (auto &data : result) {
+    std::cout << std::get<0>(data) << " \t " << std::get<1>(data) << " \t "
+              << std::get<2>(data) << std::endl;
+  }
+}
+/* SAM_LISTING_END_6 */
 
 } // namespace ExtendedMUSCL
 

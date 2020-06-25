@@ -17,10 +17,10 @@ namespace CLEmpiricFlux {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
-                            const Eigen::Vector2d &initsupp, double t) {
+                            Eigen::Vector2d initsupp, double t) {
   Eigen::Vector2d result;
   #if SOLUTION
-  Eigen::Vector2d speed = {-f.derivative(-1.0), f.derivative(1.0)};
+  Eigen::Vector2d speed = {f.derivative(-1.0), f.derivative(1.0)};
   result = initsupp + t * speed;
   #else
   //====================

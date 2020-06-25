@@ -46,7 +46,7 @@ double identityScalarFunctor(Eigen::Vector2d x) { return 1.0; };
 // Test solve
 //////////////////////
 TEST(Solve, test) {
-  auto mesh_p = Generate2DTestMesh();
+  auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(8, 1.0 / 3.0);
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
