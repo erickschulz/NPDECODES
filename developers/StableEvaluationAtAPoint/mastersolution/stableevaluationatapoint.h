@@ -19,7 +19,10 @@
 
 namespace StableEvaluationAtAPoint {
 
-/* Returns the mesh size for the given mesh. */
+/** @ brief Returns the mesh size for the given mesh.
+ *
+ * @param mesh_p pointer to a LehreFEM++ mesh object
+ */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   double mesh_size = 0.0;
   // Find maximal edge length
@@ -35,7 +38,10 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   return mesh_size;
 }
 
-/* Returns G(x,y). */
+/** @brief Returns fundamental solution G(x,y).
+ *
+ * @param x, y: point coordinate vectors
+ */
 double G(Eigen::Vector2d x, Eigen::Vector2d y) {
   double res;
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
@@ -44,7 +50,10 @@ double G(Eigen::Vector2d x, Eigen::Vector2d y) {
   return res;
 }
 
-/* Returns the gradient of G(x,y). */
+/** @brief Returns the gradient of the fundamental solution G(x,y).
+ *
+ * @param x, y: point coordinate vectors
+ */
 Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
 
   Eigen::Vector2d res;
@@ -54,9 +63,11 @@ Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
   return res;
 }
 
-/* Evaluates the Integral P_SL using the local midpoint rule
+/** @brief Evaluates the Integral P_SL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
- * The supplied meshes are unitary squares.
+ *
+ * @warn The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting
  */
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
@@ -75,7 +86,10 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
       const Eigen::Matrix2d corners = lf::geometry::Corners(*geo_ptr);
       // Determine midpoints of edges
       const Eigen::Vector2d midpoint{0.5 * (corners.col(0) + corners.col(1))};
-      // Compute and add the elemental contribution
+      // Note that the midpoint could more directly be obtained through the
+      // Global() method of the Geometry object.
+
+      // Compute and add the edge contribution
       PSLval += v(midpoint) * G(x, midpoint) * lf::geometry::Volume(*geo_ptr);
     }
   }
@@ -86,12 +100,14 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
 #endif
   return PSLval;
 }
-
 /* SAM_LISTING_END_1 */
 
-/* Evaluates the Integral P_DL using the local midpoint rule
+/** @brief Evaluates the Integral P_DL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
- * The supplied meshes are unitary squares.
+ *
+ * @warn The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting
+ *
  */
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
@@ -138,14 +154,18 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
 #endif
   return PDLval;
 }
-
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-/* This function computes u(x) = P_SL(grad u * n) - P_DL(u).
+/** @brief  This function computes u(x) = P_SL(grad u * n) - P_DL(u).
+ *
  * For u(x) = log( (x + (1, 0)^T).norm() ) and x = (0.3, 0.4)^T,
  * it computes the difference between the analytical and numerical
- * evaluation of u. The mesh is supposed to cover the unit square.
+ * evaluation of u.
+ *
+ * @warn The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting.
+ *
  */
 double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   double error = 0.0;
@@ -186,7 +206,6 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 #endif
   return error;
 }
-
 /* SAM_LISTING_END_3 */
 
 /* Computes Psi_x(y). */
@@ -203,15 +222,12 @@ double Psi(const Eigen::Vector2d y) {
   } else {
     Psi_xy = std::pow(std::cos(constant * (dist - 0.5)), 2);
   }
-
   return Psi_xy;
 }
 
 /* Computes grad(Psi_x(y)). */
 Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
-
   Eigen::Vector2d gradPsi_xy;
-
   Eigen::Vector2d half(0.5, 0.5);
   double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
   double dist = (y - half).norm();
@@ -225,12 +241,10 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
     gradPsi_xy(1) = 0.0;
 
   } else {
-
     gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
                  std::sin(constant * (dist - 0.5)) * (constant / dist) *
                  (y - half);
   }
-
   return gradPsi_xy;
 }
 
@@ -266,10 +280,9 @@ double laplPsi(const Eigen::Vector2d y) {
 double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
              Eigen::VectorXd uFE, const Eigen::Vector2d x) {
   double val = 0.0;
-
 #if SOLUTION
+  // Mesh covering a unit square domain
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
-
   // Use midpoint quadrature rule
   const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
   // Quadrature points
@@ -284,15 +297,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
 
   // Loop over all cells
   for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
-    LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(),
-                  "Not on triangular mesh!");
-
+    // Standard way to apply a local quadrature rule
     const lf::geometry::Geometry &geo{*entity->Geometry()};
+    // Quadrature points on actual cell
     const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
-
+    // Values of finite element function on all quadrature points
     auto u_vals = uFE_mf(*entity, zeta_ref);
-
+    // Quadrature loop
     for (int l = 0; l < P; l++) {
       val -= w_ref[l] * u_vals[l] *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
@@ -300,7 +312,6 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
              gram_dets[l];
     }
   }
-
 #else
   //====================
   // Your code goes here

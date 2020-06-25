@@ -113,6 +113,10 @@ int main(int /*argc*/, const char ** /*argv*/) {
   }
 
   // Computing rates of convergence
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // ILLEGAL in C++: No dynamic arrays on stack
+  // https://stackoverflow.com/questions/7812566/why-no-variable-size-array-in-stack
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   double ratesEval[N_meshes - 1];
   double ratesStabEval[N_meshes - 1];
   double log_denum;
