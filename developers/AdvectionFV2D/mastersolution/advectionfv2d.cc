@@ -8,27 +8,23 @@
 
 #include "advectionfv2d.h"
 
-#include <iostream>
-#include <array>
 #include <algorithm>
+#include <array>
+#include <cmath>
 #include <functional>
-#include <vector>
+#include <iostream>
+#include <memory>
 #include <stdexcept>
-	
+#include <vector>
+
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
-#include <lf/refinement/refinement.h>
-
 
 namespace AdvectionFV2D {
 
@@ -43,22 +39,19 @@ Eigen::VectorXd dummyFunction(double x, int n) {
 #endif
 }
 
-
 // A helper function to compute the normal vectors
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(
     const Eigen::Matrix<double, 2, 3> &triangle){
-
   Eigen::Matrix3d X;
-
+  
   // solve for the coefficients of the barycentric coordinate functions
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
   X.block<3, 2>(0, 1) = triangle.transpose();
   return X.inverse().block<2, 3>(1, 0);
 }
 
-
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
-    <Eigen::Matrix<double,2,Eigen::Dynamic>>> 
+    <Eigen::Matrix<double, 2, Eigen::Dynamic>>> 
     computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
 
 #if SOLUTION
@@ -70,7 +63,7 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
 
   // Compute normal vectors
   for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
-    const lf::geometry::Geometry* geo_p = cell->Geometry();
+    const lf::geometry::Geometry *geo_p = cell->Geometry();
     const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
 
     if (corners.cols() == 3){
@@ -87,7 +80,6 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
 
       // Save the matrix in our datastructure
       result(*cell) = normal_vectors;
-
     } else { // corners.cols() == 4
       Eigen::Matrix<double, 2, Eigen::Dynamic> normal_vectors(2, 4);
 
@@ -113,7 +105,7 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
     }
   }
   return std::make_shared<lf::mesh::utils::CodimMeshDataSet
-	<Eigen::Matrix<double,2,Eigen::Dynamic>>>(result);
+      <Eigen::Matrix<double,2,Eigen::Dynamic>>>(result);
   
 #else
   // Appears only in mysolution and templates
@@ -121,16 +113,15 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
 }
 
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
-    <std::array<const lf::mesh::Entity*,4>>>
-    getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
-
+    <std::array<const lf::mesh::Entity*, 4>>> getAdjacentCellPointers(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p){
   // Initialize auxilary object
   lf::mesh::utils::CodimMeshDataSet
-      <std::array<const lf::mesh::Entity*,2>> 
+      <std::array<const lf::mesh::Entity*, 2>> 
       aux_obj(mesh_p, 1, {nullptr, nullptr});
 
   // Iterate over every cell
-  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)){
     auto cell_edges = cell->SubEntities(1);
 
     // Iterate over every edge of the cell
@@ -149,8 +140,8 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
   }
 
   // Initialize datastructure for result
-	lf::mesh::utils::CodimMeshDataSet
-      <std::array<const lf::mesh::Entity*,4>> result(
+  lf::mesh::utils::CodimMeshDataSet
+      <std::array<const lf::mesh::Entity*, 4>> result(
       mesh_p, 0, {nullptr, nullptr, nullptr, nullptr});
 
   // Collect the objects of the auxilary object
@@ -168,7 +159,7 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
   }
 
   return std::make_shared <lf::mesh::utils::CodimMeshDataSet
-      <std::array<const lf::mesh::Entity*,4>>>(result);
+      <std::array<const lf::mesh::Entity*, 4>>>(result);
 }
 
 // Function returning the barycenter of TRIA or QUAD
@@ -176,22 +167,22 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners){
   Eigen::Vector2d midpoint;
   if (corners.cols() == 3){
     midpoint = (corners.col(0) + corners.col(1) + corners.col(2)) / 3.0;
-	} else if (corners.cols() == 4) {
-		midpoint = (corners.col(0) + corners.col(1) + corners.col(2) + 
+  } else if (corners.cols() == 4) {
+    midpoint = (corners.col(0) + corners.col(1) + corners.col(2) + 
                 corners.col(3)) / 4.0;
-	} else {
-		throw std::runtime_error("Wrong geometrie in barycenter()");
-	}
-	return midpoint;
+  } else {
+    throw std::runtime_error("Wrong geometrie in barycenter()");
+  }
+  return midpoint;
 }
 
-
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
-    std::vector<double> min_h;
+  //Vector to store the distances between cells
+  std::vector<double> min_h;
   
   // Get Adjectent Cells
   std::shared_ptr<lf::mesh::utils::CodimMeshDataSet
-      <std::array<const lf::mesh::Entity*,4>>>
+      <std::array<const lf::mesh::Entity*, 4>>>
       adjacentCells = AdvectionFV2D::getAdjacentCellPointers(mesh_p);
 
   //Iterate over all cells
@@ -203,10 +194,10 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
     Eigen::Vector2d cur_midpoint = barycenter(corners);
 
     //Iterate over all adjecent cells
-    for (const lf::mesh::Entity* neighbour_cell: (*adjacentCells)(*cell)){
+    for (const lf::mesh::Entity *neighbour_cell: (*adjacentCells)(*cell)){
       //Check that the neighbor exists
       if (neighbour_cell != nullptr){
-        const lf::geometry::Geometry* geo_p_neighbour = 
+        const lf::geometry::Geometry *geo_p_neighbour = 
             neighbour_cell->Geometry();
         const Eigen::MatrixXd neighbour_corners = 
             lf::geometry::Corners(*geo_p_neighbour);
@@ -214,13 +205,13 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
         //Compute barycenter of neighbour cell
         Eigen::Vector2d neighbour_midpoint = 
             barycenter(neighbour_corners);
-        
+
         //Compute distances between cells
         Eigen::Vector2d diff = cur_midpoint - neighbour_midpoint;
         double distance = diff.norm();
 
         //Store value in vector
-        min_h.push_back(distance);			
+        min_h.push_back(distance);
       }
     }
   }
@@ -230,29 +221,28 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
   return result;
 }
 
-
 // TODO: Problem description Vector2d?? -> changed to VectorXd
 Eigen::VectorXd simulateAdvection(const lf::assemble::DofHandler &dofh){
-
   //Specifiy final time
   double T_max = 1.0;
 
   Eigen::Vector2d x0(0.8, 0.2);
-
   //////////////////////////////////////////////////////////////////////
-  //TODO u0 (x - x0) ??
+  //TODO Inconsistency (x - x0) -> ||x - x0||
+  //////////////////////////////////////////////////////////////////////
   // Set up lambda function u0 and beta
-  //////////////////////////////////////////////////////////////////////
   double d = 0.2;
   auto u0 = [x0, d](Eigen::Vector2d x) -> double {
-      double dist = (x - x0).norm();
-      if ( dist < d ){
-        return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
-      } else {
-        return 0.0;
-      }};
-  auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d { 
-      return Eigen::Vector2d(-x[1], x[0]); };
+    double dist = (x - x0).norm();
+    if (dist < d){
+      return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
+    } else {
+      return 0.0;
+    }
+  };
+  auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d {
+    return Eigen::Vector2d(-x[1], x[0]) / std::sqrt(2.0);
+  };
 
   // Get number of dofs and
   // inititialize a vector for the initial condition
@@ -261,33 +251,25 @@ Eigen::VectorXd simulateAdvection(const lf::assemble::DofHandler &dofh){
 
   // Iterate over all cells
   for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
-    const lf::geometry::Geometry* geo_p = cell->Geometry();
+    const lf::geometry::Geometry *geo_p = cell->Geometry();
     const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
 
     // Compute barycenter of the cell
     Eigen::Vector2d x = barycenter(corners);
 
     // Find the index of the DOF for the cell
-    int idx = dofh.InteriorGlobalDofIndices(*cell)[0];
+    int idx = dofh.GlobalDofIndices(*cell)[0];
 
-    ////////////////////////////////////////////////////////////////////
-    // TODO: (x - x0) ? - scalar?? 
-    // I used ||x - x0|| 
-    ////////////////////////////////////////////////////////////////////
     double distance = (x - x0).norm();
-    if ( distance < d ){
+    if (distance < d){
       u0_h[idx] = u0(x);
     } else {
       u0_h[idx] = 0.0;
     }
   }
 
-  //////////////////////////////////////////////////////////////////////
-  //TODO: Check
-  //////////////////////////////////////////////////////////////////////
   // Set up the number of steps according to the CFL condition
-  int M =  int ( (1.0 / computeHmin(dofh.Mesh())) + 1);
-  //std::cout << "M = " << M << std::endl;
+  int M = int ((T_max / computeHmin(dofh.Mesh())) + 2);
 
   // Run simulation
   Eigen::VectorXd result = solveAdvection2D(dofh, beta, u0_h, T_max , M);
@@ -300,25 +282,22 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh){
   double T_max = 1.0;
 
   Eigen::Vector2d x0(0.8, 0.2);
-  //////////////////////////////////////////////////////////////////////
-  //TODO: u0 (x - x0) ??
-  //////////////////////////////////////////////////////////////////////
   // Set up lambda function u0 and beta
   double d = 0.2;
   auto u0 = [x0, d](Eigen::Vector2d x) -> double {
-      double dist = (x - x0).norm();
-      if ( dist < d ){
-        return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
-      } else {
-        return 0.0;
-      }};
-  auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d { 
-      return Eigen::Vector2d(-x[1], x[0]); };
+    double dist = (x - x0).norm();
+    if (dist < d){
+      return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
+    } else {
+      return 0.0;
+    }
+  };
 
   // Setup inverted phi^-1  
   Eigen::Matrix2d phi_inv;
-  phi_inv << std::cos(T_max), std::sin(T_max), 
-                  -std::sin(T_max), std::cos(T_max);
+  double t_mod = T_max / std::sqrt(2.0);
+  phi_inv << std::cos(t_mod), std::sin(t_mod), 
+            -std::sin(t_mod), std::cos(t_mod);
 
   // Initialize vector for the result
   int num_dof = dofh.NumDofs();
@@ -326,14 +305,14 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh){
 
   // Iterate over all cells
   for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
-    const lf::geometry::Geometry* geo_p = cell->Geometry();
+    const lf::geometry::Geometry *geo_p = cell->Geometry();
     const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
 
     // Compute the barycenter of the cell
     Eigen::Vector2d x = barycenter(corners);
 
     // Find the index of the DOF for the cell
-    int idx = dofh.InteriorGlobalDofIndices(*cell)[0];
+    int idx = dofh.GlobalDofIndices(*cell)[0];
 
     // Compute exact solution
     Eigen::Vector2d phi_inv_x = phi_inv * x;

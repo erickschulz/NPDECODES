@@ -20,6 +20,6 @@ set(LIBRARIES
   LF::lf.mesh.hybrid2d
   LF::lf.mesh.utils
   LF::lf.mesh.test_utils
+  LF::lf.quad
   LF::lf.refinement
-  LF::lf.uscalfe
 )
