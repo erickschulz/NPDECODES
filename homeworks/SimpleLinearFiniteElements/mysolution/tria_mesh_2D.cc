@@ -70,7 +70,6 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[](int i) const {
  */
 void TriaMesh2D::SaveMesh3D(std::string filename,
                             const Eigen::VectorXd &z) const {
-
   int n_vertices = vertices.rows();
   int n_elements = elements.rows();
 
@@ -92,4 +91,4 @@ void TriaMesh2D::SaveMesh3D(std::string filename,
   }
 }
 
-} // namespace SimpleLinearFiniteElements
+}  // namespace SimpleLinearFiniteElements

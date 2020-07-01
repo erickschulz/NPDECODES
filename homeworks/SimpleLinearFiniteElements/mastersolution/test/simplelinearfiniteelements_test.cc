@@ -130,4 +130,4 @@ TEST(SimpleLinearFiniteElements, Solve) {
   ASSERT_NEAR(0.0, std::get<2>(solution) - H1Serror_ref, tol);
 }
 
-} // namespace SimpleLinearFiniteElements::test
+}  // namespace SimpleLinearFiniteElements::test

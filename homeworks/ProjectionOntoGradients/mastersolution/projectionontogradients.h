@@ -6,23 +6,22 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <utility>
+
 namespace ProjectionOntoGradients {
 
 /* SAM_LISTING_BEGIN_1 */
 class ElementMatrixProvider {
-public:
+ public:
   Eigen::Matrix3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
 };
@@ -54,22 +53,23 @@ Eigen::Matrix3d ElementMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-template <typename FUNCTOR> class GradProjRhsProvider {
-public:
+template <typename FUNCTOR>
+class GradProjRhsProvider {
+ public:
   explicit GradProjRhsProvider(FUNCTOR f) : f_(f) {}
 
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity);
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
 
-private:
+ private:
   FUNCTOR f_;
 };
 /* SAM_LISTING_END_3 */
 
 /* SAM_LISTING_BEGIN_4 */
 template <typename FUNCTOR>
-Eigen::Vector3d
-GradProjRhsProvider<FUNCTOR>::Eval(const lf::mesh::Entity &entity) {
+Eigen::Vector3d GradProjRhsProvider<FUNCTOR>::Eval(
+    const lf::mesh::Entity &entity) {
   LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                 "Function only defined for triangular cells");
 
@@ -154,4 +154,4 @@ Eigen::VectorXd projectOntoGradients(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace ProjectionOntoGradients
+}  // namespace ProjectionOntoGradients

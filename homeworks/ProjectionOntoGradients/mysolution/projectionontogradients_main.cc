@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "projectionontogradients.h"
-
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <memory>
+
+#include "projectionontogradients.h"
 
 int main() {
   // for this exercise a main file is not required

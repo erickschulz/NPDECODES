@@ -103,4 +103,4 @@ struct Solution {
  */
 Solution solveTrafficFlow();
 
-} // namespace DiscontinuousGalerkin1D
+}  // namespace DiscontinuousGalerkin1D

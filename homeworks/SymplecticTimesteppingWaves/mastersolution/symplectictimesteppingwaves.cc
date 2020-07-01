@@ -12,7 +12,7 @@ namespace SymplecticTimesteppingWaves {
 
 /* SAM_LISTING_BEGIN_7 */
 void wavePropSimulation(unsigned int m) {
-  double T = 10.0; // final time
+  double T = 10.0;  // final time
 
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -122,4 +122,4 @@ double testStab() {
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace SymplecticTimesteppingWaves
+}  // namespace SymplecticTimesteppingWaves

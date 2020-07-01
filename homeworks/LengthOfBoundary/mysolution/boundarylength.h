@@ -9,10 +9,10 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include <lf/mesh/mesh.h>
+
 #include <memory>
 #include <string>
-
-#include <lf/mesh/mesh.h>
 
 namespace LengthOfBoundary {
 
@@ -22,5 +22,5 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p);
 
 std::pair<double, double> measureDomain(std::string filename);
 
-} // namespace LengthOfBoundary
+}  // namespace LengthOfBoundary
 #endif

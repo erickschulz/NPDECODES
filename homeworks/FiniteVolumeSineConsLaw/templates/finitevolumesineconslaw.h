@@ -97,4 +97,4 @@ unsigned int findTimesteps();
  */
 Eigen::VectorXd sineClawReactionRhs(const Eigen::VectorXd &mu, double c);
 
-} // namespace FiniteVolumeSineConsLaw
+}  // namespace FiniteVolumeSineConsLaw

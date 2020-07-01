@@ -14,7 +14,6 @@
 #include "lf/base/base.h"
 #include "lf/mesh/mesh.h"
 #include "lf/mesh/test_utils/test_meshes.h"
-
 #include "lfppdofhandling.h"
 
 int main() {

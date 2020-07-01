@@ -10,11 +10,11 @@
 #undef SOLUTION
 #define SOLUTION 1
 
+#include "../ipdgfem.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../ipdgfem.h"
 
 namespace IPDGFEM::test {
 
@@ -30,4 +30,4 @@ TEST(NewProblem, dummyFunction) {
   ASSERT_NEAR(0.0, (v - v_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-} // namespace IPDGFEM::test
+}  // namespace IPDGFEM::test

@@ -37,8 +37,8 @@ bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
  *
  * @param edge current edge */
 /* SAM_LISTING_BEGIN_2 */
-Eigen::MatrixXd
-ImpedanceBoundaryEdgeMatrixProvider::Eval(const lf::mesh::Entity &edge) {
+Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
+    const lf::mesh::Entity &edge) {
   Eigen::MatrixXd element_matrix(2, 2);
 
   /* TOOLS AND DATA */
@@ -71,4 +71,4 @@ ImpedanceBoundaryEdgeMatrixProvider::Eval(const lf::mesh::Entity &edge) {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace ParametricElementMatrices
+}  // namespace ParametricElementMatrices

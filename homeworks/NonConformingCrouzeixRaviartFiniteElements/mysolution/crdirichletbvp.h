@@ -27,6 +27,6 @@ Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
   return sol;
 }
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_DIRICHLET_BVP_H
+#endif  // NUMPDE_SOLVE_CR_DIRICHLET_BVP_H

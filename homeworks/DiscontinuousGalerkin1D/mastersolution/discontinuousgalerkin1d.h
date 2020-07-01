@@ -42,7 +42,7 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   const int N_half = (Ml + Mr + 1);
   const int N = 2 * N_half;
   Eigen::VectorXd Gvec(N);
-  double uN_xminus = 0.0; // since we extend mu to the left by zero
+  double uN_xminus = 0.0;  // since we extend mu to the left by zero
   double uN_xplus = mu(0) - 0.5 * h * mu(1);
   double F_old;
   double F_new = F(uN_xminus, uN_xplus);
@@ -62,7 +62,7 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   }
 
   uN_xminus = mu(2 * (N_half - 1)) + 0.5 * h * mu(2 * (N_half - 1) + 1);
-  uN_xplus = 0.0; // since we extend mu to the right by zero
+  uN_xplus = 0.0;  // since we extend mu to the right by zero
   F_old = F_new;
   F_new = F(uN_xminus, uN_xplus);
   Gvec(2 * (N_half - 1)) = F_new - F_old;
@@ -140,4 +140,4 @@ struct Solution {
  */
 Solution solveTrafficFlow();
 
-} // namespace DiscontinuousGalerkin1D
+}  // namespace DiscontinuousGalerkin1D

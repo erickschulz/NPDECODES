@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iomanip>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
+
+#include <iomanip>
 
 #include "crl2errordirichletbvp.h"
 

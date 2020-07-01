@@ -8,19 +8,18 @@
 
 #include "avgvalboundary.h"
 
-#include <cmath>
-#include <memory>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
+#include <utility>
+#include <vector>
 
 namespace AvgValBoundary {
 
@@ -78,8 +77,8 @@ Eigen::VectorXd solveTestProblem(const lf::assemble::DofHandler &dofh) {
 
 /** @brief generate sequence of nested triangular meshes with L+1 levels */
 /* SAM_LISTING_BEGIN_3 */
-std::shared_ptr<lf::refinement::MeshHierarchy>
-generateTestMeshSequence(unsigned int L) {
+std::shared_ptr<lf::refinement::MeshHierarchy> generateTestMeshSequence(
+    unsigned int L) {
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1.0 / 3.0);
   std::shared_ptr<lf::refinement::MeshHierarchy> meshes =
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh, L);
@@ -94,8 +93,8 @@ generateTestMeshSequence(unsigned int L) {
  *	    boundary functional for each level
  */
 /* SAM_LISTING_BEGIN_5 */
-std::vector<std::pair<unsigned int, double>>
-approxBoundaryFunctionalValues(unsigned int L) {
+std::vector<std::pair<unsigned int, double>> approxBoundaryFunctionalValues(
+    unsigned int L) {
   std::vector<std::pair<unsigned int, double>> result;
   auto meshes = generateTestMeshSequence(L - 1);
   int num_meshes = meshes->NumLevels();
@@ -138,4 +137,4 @@ approxBoundaryFunctionalValues(unsigned int L) {
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace AvgValBoundary
+}  // namespace AvgValBoundary

@@ -71,6 +71,6 @@ Eigen::VectorXd computeLoadVector(int M, FUNCTOR &&f) {
  */
 Eigen::SparseMatrix<double> computeGalerkinMatrixTR(int M, double c);
 
-} // namespace MaximumPrinciple
+}  // namespace MaximumPrinciple
 
-#endif // NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_
+#endif  // NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_

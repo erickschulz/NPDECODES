@@ -21,7 +21,6 @@ using namespace FisherKPP;
 void humanmigration();
 
 void humanmigration() {
-
   // Obtain mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory),
@@ -100,7 +99,7 @@ void humanmigration() {
 
   // Total number of timesteps
   unsigned int m = 100;
-  double T = 1.; // the timestepsize tau will equal T/m = 0.01
+  double T = 1.;  // the timestepsize tau will equal T/m = 0.01
 
   std::cout << "You are running the simulation on the globe." << std::endl;
 
@@ -279,7 +278,6 @@ void humanmigration() {
             << std::endl;
 
   for (int k = 1; k < 21; k++) {
-
     std::stringstream filename;
     filename << "sol" << k << "_human_migration.vtk";
 
@@ -320,7 +318,7 @@ void modelproblem() {
 
   // Diffusion Coefficient
   auto c = [](Eigen::Vector2d x) -> double { return 1.2; };
-  double lambda = 2.1; // Growth Factor
+  double lambda = 2.1;  // Growth Factor
   // Carrying capacity
   Eigen::VectorXd K{0.8 * Eigen::VectorXd::Ones(N_dofs)};
   // Time Steps
@@ -373,18 +371,18 @@ int main(int /*argc*/, char ** /*argv*/) {
   std::cout << "[h|m]: ";
   std::getline(std::cin, selection);
   switch (selection[0]) {
-  case 'h': {
-    humanmigration();
-    break;
-  }
-  case 'm': {
-    modelproblem();
-    break;
-  }
-  default: {
-    std::cout << "Unrecognized input: terminating .." << std::endl;
-    break;
-  }
+    case 'h': {
+      humanmigration();
+      break;
+    }
+    case 'm': {
+      modelproblem();
+      break;
+    }
+    default: {
+      std::cout << "Unrecognized input: terminating .." << std::endl;
+      break;
+    }
   }
   return 0;
 }

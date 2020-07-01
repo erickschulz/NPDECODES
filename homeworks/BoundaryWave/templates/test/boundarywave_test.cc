@@ -9,9 +9,9 @@
 #include <memory>
 #include <utility>
 // Eigen includes
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
@@ -108,4 +108,4 @@ TEST(BoundaryWave, solveBoundaryWave) {
       (reference_solution - discrete_solution).lpNorm<Eigen::Infinity>(), 0.0,
       eps);
 }
-} // namespace BoundaryWave::test
+}  // namespace BoundaryWave::test

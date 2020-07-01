@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../1dwaveabsorbingbc.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../1dwaveabsorbingbc.h"
 
 namespace WaveAbsorbingBC1D::test {
 
@@ -77,4 +77,4 @@ TEST(WaveAbsorbingBC1D, computeEnergies) {
   EXPECT_NEAR(E_kin_error, 0.0, tol);
 }
 
-} // namespace WaveAbsorbingBC1D::test
+}  // namespace WaveAbsorbingBC1D::test

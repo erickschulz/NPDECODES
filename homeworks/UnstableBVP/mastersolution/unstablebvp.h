@@ -22,8 +22,8 @@ namespace UnstableBVP {
  * @param mesh_type Where triangle is located, see description
  * @return A shared pointer to a lf::refinement::MeshHierarchy object
  */
-std::shared_ptr<lf::refinement::MeshHierarchy>
-createMeshHierarchy(const int reflevels, const std::string &mesh_type = "top");
+std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
+    const int reflevels, const std::string &mesh_type = "top");
 
 /** @brief Solve source-free diffusion PDE with a potentially non-continuous
  *        boundary condition, depending on the x2 variable, and compute H1
@@ -33,7 +33,7 @@ createMeshHierarchy(const int reflevels, const std::string &mesh_type = "top");
  * a `lf::uscalfe::FeSpaceLagrangeO1` object.
  * @return H1 seminorm of the solution
  */
-double
-solveTemperatureDistribution(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+double solveTemperatureDistribution(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
-} // namespace UnstableBVP
+}  // namespace UnstableBVP

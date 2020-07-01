@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../finitevolumesineconslaw.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../finitevolumesineconslaw.h"
 
 namespace FiniteVolumeSineConsLaw::test {
 
@@ -116,4 +116,4 @@ TEST(FiniteVolumeSineConsLaw, sineClawReactionRhs) {
   EXPECT_NEAR(error, 0.0, tol);
 }
 
-} // namespace FiniteVolumeSineConsLaw::test
+}  // namespace FiniteVolumeSineConsLaw::test

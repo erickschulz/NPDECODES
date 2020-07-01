@@ -16,7 +16,7 @@
 namespace ParametricElementMatrices {
 
 class AnisotropicDiffusionElementMatrixProvider {
-public:
+ public:
   /** @brief Constructor storing the vector field of modelling anisotropy */
   AnisotropicDiffusionElementMatrixProvider(
       std::function<Eigen::Vector2d(Eigen::Vector2d)> anisotropy_vec_field)
@@ -29,12 +29,12 @@ public:
    * quadrature rule. */
   Eigen::MatrixXd Eval(const lf::mesh::Entity &cell);
 
-private:
+ private:
   // This vector-valued function of the form d:coords -> vector is used to
   // describe anisotropic material properties. It enters for the diffusion
   // tensor k:coords -> matrix as k(x) = I + d(x)d(x)^T for example in
   // heat conduction models.
   std::function<Eigen::Vector2d(Eigen::Vector2d)> anisotropy_vec_field_;
-}; // class AnisotropicDiffusionElementMatrixProvider
+};  // class AnisotropicDiffusionElementMatrixProvider
 
-} // namespace ParametricElementMatrices
+}  // namespace ParametricElementMatrices

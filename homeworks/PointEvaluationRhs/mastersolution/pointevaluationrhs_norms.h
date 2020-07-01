@@ -23,12 +23,12 @@ double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
                              const Eigen::VectorXd &mu);
 
 class MassLocalMatrixAssembler {
-private:
-public:
+ private:
+ public:
   explicit MassLocalMatrixAssembler() = default;
   bool isActive(const lf::mesh::Entity &entity) { return true; }
   Eigen::MatrixXd Eval(const lf::mesh::Entity &entity);
 };
 
-} // namespace PointEvaluationRhs
-#endif // define __NORMS_H
+}  // namespace PointEvaluationRhs
+#endif  // define __NORMS_H

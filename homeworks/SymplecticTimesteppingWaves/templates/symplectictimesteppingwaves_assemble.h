@@ -47,6 +47,6 @@ Eigen::SparseMatrix<double> assembleGalerkinMatrix(
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace SymplecticTimesteppingWaves
+}  // namespace SymplecticTimesteppingWaves
 
 #endif

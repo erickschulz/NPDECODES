@@ -24,8 +24,8 @@
 
 namespace UnstableBVP {
 
-std::shared_ptr<lf::refinement::MeshHierarchy>
-createMeshHierarchy(const int reflevels, const std::string &mesh_type) {
+std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
+    const int reflevels, const std::string &mesh_type) {
   // Helper object: mesh factory
   std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -70,8 +70,8 @@ createMeshHierarchy(const int reflevels, const std::string &mesh_type) {
   return multi_mesh_p;
 }
 
-double
-solveTemperatureDistribution(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+double solveTemperatureDistribution(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   // **********************************************************************
   // Stage 0: provide all coefficient functions mainly through lambda
   //          functions and derived MeshFunctions
@@ -185,4 +185,4 @@ solveTemperatureDistribution(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return norm;
 }
 
-} // namespace UnstableBVP
+}  // namespace UnstableBVP

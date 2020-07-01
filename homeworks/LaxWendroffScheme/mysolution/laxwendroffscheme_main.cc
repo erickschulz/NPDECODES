@@ -6,10 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
-
-#include <Eigen/Core>
 
 #include "laxwendroffscheme.h"
 

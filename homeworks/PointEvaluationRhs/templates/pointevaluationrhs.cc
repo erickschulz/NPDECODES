@@ -77,10 +77,9 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   return x_hat;
 }
 
-std::pair<double, double>
-normsSolutionPointLoadDirichletBVP(const lf::assemble::DofHandler &dofh,
-                                   Eigen::Vector2d source_point,
-                                   Eigen::VectorXd &sol_vec) {
+std::pair<double, double> normsSolutionPointLoadDirichletBVP(
+    const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
+    Eigen::VectorXd &sol_vec) {
   std::pair<double, double> result(0, 0);
   const unsigned int N_dofs = dofh.NumDofs();
   sol_vec.resize(N_dofs);
@@ -104,4 +103,4 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
 }
 /* SAM_LISTING_END_6 */
 
-} // namespace PointEvaluationRhs
+}  // namespace PointEvaluationRhs

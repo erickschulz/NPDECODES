@@ -85,8 +85,8 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Approximate dual cell averages at t=0
   Eigen::VectorXd mu = x.unaryExpr(u0);
 
-  double alpha = mu.minCoeff(); // lower bound for initial data
-  double beta = mu.maxCoeff();  // upper bound for initial data
+  double alpha = mu.minCoeff();  // lower bound for initial data
+  double beta = mu.maxCoeff();   // upper bound for initial data
   assert(alpha > 0.0 && beta > 0.0);
 
   // Set timestep tau according to the CFL-condition
@@ -101,8 +101,7 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   };
   // Timestepping: Solve the semi-discrete ODE
   int N = (int)(T / tau + 0.5);
-  for (int i = 0; i < N; ++i)
-    mu = sspEvolop(semi_discrete_rhs, mu, tau);
+  for (int i = 0; i < N; ++i) mu = sspEvolop(semi_discrete_rhs, mu, tau);
 
   return mu;
 }
@@ -145,8 +144,8 @@ void interpolate(const VECSOURCE &s, VECDEST &d) {
     // Index of source node to the right
     std::size_t k = (std::size_t)std::round(xd / H);
     // Position of nodes of source cell, in which xd is contained
-    const double xsl = H * (k - 0.5); // left node
-    const double xsr = xsl + H;       // right node
+    const double xsl = H * (k - 0.5);  // left node
+    const double xsr = xsl + H;        // right node
     // Values at source nodes taking into account periodic continuation
     auto svl = s[(k < 1) ? (n - 1) : k - 1];
     auto svr = s[(k >= n) ? 0 : k];
@@ -173,8 +172,8 @@ void studyCvgMUSCLSolution(U0_FUNCTOR &&u0, double T) {
             << " cells" << std::endl;
   Eigen::VectorXd u_ref{solveClaw(std::forward<U0_FUNCTOR>(u0), T, n_ref)};
   // Compute solution on different meshes
-  constexpr int lmin = 4;  // Coarsest mesh with 16 cells
-  constexpr int lmax = 10; // Finest mesh with 1024 cells
+  constexpr int lmin = 4;   // Coarsest mesh with 16 cells
+  constexpr int lmax = 10;  // Finest mesh with 1024 cells
   for (int l = lmin; l <= lmax; ++l) {
     const std::size_t n = 1U << l;
     std::cout << "Computing with n = " << n << std::endl;
@@ -195,6 +194,6 @@ void studyCvgMUSCLSolution(U0_FUNCTOR &&u0, double T) {
 }
 /* SAM_LISTING_END_6 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL
 
-#endif // EXTENDEDMUSCL_H_
+#endif  // EXTENDEDMUSCL_H_

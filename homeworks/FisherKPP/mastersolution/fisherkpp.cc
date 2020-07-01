@@ -16,7 +16,6 @@ namespace FisherKPP {
 template <typename DIFF_COEFF>
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh, DIFF_COEFF &&c) {
-
   std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>> A_M;
   // Obtain mesh and finite element space
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofh.Mesh();

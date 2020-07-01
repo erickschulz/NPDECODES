@@ -27,7 +27,7 @@ double logGodunovFlux(double v, double w) {
     else if (df(w) < 0.0)
       godunov_numerical_flux = f(w);
     else
-      godunov_numerical_flux = f(1.0); // note: df(1.0) = 0.0
+      godunov_numerical_flux = f(1.0);  // note: df(1.0) = 0.0
   }
   return godunov_numerical_flux;
 }
@@ -58,4 +58,4 @@ double limiterMC(double mu_left, double mu_center, double mu_right) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL

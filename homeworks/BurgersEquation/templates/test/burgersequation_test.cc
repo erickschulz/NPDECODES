@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../burgersequation.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../burgersequation.h"
 
 namespace BurgersEquation::test {
 
@@ -41,4 +41,4 @@ TEST(BurgersEquation, numexpBurgersGodunov) {
   ASSERT_NEAR(0.0, (result - result_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-} // namespace BurgersEquation::test
+}  // namespace BurgersEquation::test

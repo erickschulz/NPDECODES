@@ -8,16 +8,15 @@
 
 #include "laxwendroffscheme.h"
 
-#include <cmath>
-
 #include <Eigen/Core>
+#include <cmath>
 
 namespace LaxWendroffScheme {
 
 namespace Constant {
 constexpr double e = 2.71828182845904523536;
 constexpr double pi = 3.14159265358979323846;
-} // namespace Constant
+}  // namespace Constant
 
 constexpr double Square(double x) { return x * x; }
 
@@ -44,8 +43,7 @@ Eigen::VectorXd solveLaxWendroff(const Eigen::VectorXd &u0, double T,
   double gamma = 1.0 / Constant::e;
   Eigen::VectorXd mu = u0;
   // Main timestepping loop
-  for (int j = 0; j < M; ++j)
-    mu = LaxWendroffRhs(mu, gamma);
+  for (int j = 0; j < M; ++j) mu = LaxWendroffRhs(mu, gamma);
   return mu;
 }
 
@@ -90,10 +88,8 @@ double eval(const Eigen::VectorXd &u, const Eigen::VectorXd &y, double x) {
   double a = y(0);
   double b = y(N - 1);
 
-  if (x <= a)
-    return u(0);
-  if (b <= x)
-    return u(N - 1);
+  if (x <= a) return u(0);
+  if (b <= x) return u(N - 1);
 
   double lambda = (x - a) / (b - a);
   int k0 = (int)(lambda * (N - 1));
@@ -170,4 +166,4 @@ Eigen::VectorXd numexpGodunovSmoothU0(const Eigen::VectorXi &M) {
 }
 /* SAM_LISTING_END_8 */
 
-} // namespace LaxWendroffScheme
+}  // namespace LaxWendroffScheme

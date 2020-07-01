@@ -20,12 +20,12 @@ namespace NonLinSchroedingerEquation {
 /** @brief Abstract interface for non-copyable propagator
  */
 class Propagator {
-public:
+ public:
   Propagator() = default;
   virtual ~Propagator() = default;
   virtual Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const = 0;
 
-private:
+ private:
   Propagator(const Propagator &) = delete;
   Propagator(Propagator &&) = delete;
   Propagator &operator=(const Propagator &) = delete;
@@ -39,7 +39,7 @@ class KineticPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
-public:
+ public:
   /** @brief Computes and caches the data necessary to
    *  perform a kinetic timestep of length tau using
    *  the implicit trapezoidal rule
@@ -57,7 +57,7 @@ public:
    */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   //====================
   // Your code goes here
   // Add needed member variables here
@@ -68,7 +68,7 @@ private:
  *  (i.e. non-linear) part if the NLSE
  */
 class InteractionPropagator : public Propagator {
-public:
+ public:
   /** @brief Computes and caches the data necessary to
    *  perform an interaction timestep of length tau using
    *  the analytic solution
@@ -83,7 +83,7 @@ public:
    */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   //====================
   // Your code goes here
   // Add needed member variables here
@@ -98,7 +98,7 @@ class SplitStepPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
-public:
+ public:
   // @brief Forwards the arguments to the constructors of the underlying
   //  propagators KineticPropagator (semi-step) and InteractionPropagator
   //  (full-step).
@@ -117,7 +117,7 @@ public:
   //*
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   //====================
   // Your code goes here
   // Add needed member variables here
@@ -125,6 +125,6 @@ private:
 };
 /* SAM_LISTING_END_3 */
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation
 
-#endif // PROPAGATOR_H_
+#endif  // PROPAGATOR_H_

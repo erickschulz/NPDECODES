@@ -63,7 +63,6 @@ TEST(UpwindQuadrature, opposite_velocity_direction_3) {
 }
 
 TEST(UpwindQuadrature, initialize_masses) {
-
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -205,4 +204,4 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_3) {
   EXPECT_NEAR(upwind_eval.row(2).norm(), 0.0, 1E-14);
 }
 
-} // namespace UpwindQuadrature::test
+}  // namespace UpwindQuadrature::test

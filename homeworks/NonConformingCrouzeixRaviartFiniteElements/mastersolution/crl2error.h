@@ -64,6 +64,6 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_COMPUTE_CR_L2_ERROR_H
+#endif  // NUMPDE_COMPUTE_CR_L2_ERROR_H

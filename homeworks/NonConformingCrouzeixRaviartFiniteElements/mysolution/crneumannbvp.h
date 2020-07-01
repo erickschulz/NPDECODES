@@ -29,6 +29,6 @@ Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#endif  // NUMPDE_SOLVE_CR_NEUMANN_BVP_H

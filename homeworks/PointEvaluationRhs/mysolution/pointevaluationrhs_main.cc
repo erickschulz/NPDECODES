@@ -6,14 +6,6 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include <iomanip>
-#include <memory>
-#include <sstream>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/io/io.h>
@@ -21,6 +13,13 @@
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/mesh_hierarchy.h>
+
+#include <Eigen/Core>
+#include <iomanip>
+#include <memory>
+#include <sstream>
+#include <utility>
+#include <vector>
 
 #include "pointevaluationrhs.h"
 

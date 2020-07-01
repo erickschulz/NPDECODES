@@ -105,7 +105,6 @@ TEST(RadauThreeTimestepping, rhsVectorheatSource) {
 }
 
 TEST(RadauThreeTimestepping, solveHeatEvolution) {
-
   // Generate a triangular test mesh on [0,1]^2
   const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3);
   // Create a DOF handler
@@ -129,7 +128,6 @@ TEST(RadauThreeTimestepping, solveHeatEvolution) {
 }
 
 TEST(RadauThreeTimestepping, dropMatrixRowsColumns) {
-
   // Generate a triangular test mesh on [0,1]^2
   const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3);
   // Create a DOF handler
@@ -250,4 +248,4 @@ TEST(RadauThreeTimestepping, discreteEvolutionOperator) {
   }
 }
 
-} // end namespace RadauThreeTimestepping::test
+}  // end namespace RadauThreeTimestepping::test

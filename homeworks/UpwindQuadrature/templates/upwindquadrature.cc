@@ -19,9 +19,8 @@ namespace UpwindQuadrature {
  * @return A vector, containing for all 3 corners the corresponding direction of
  * -v(a^j)
  */
-std::vector<Direction>
-opposite_velocity_directions(const lf::geometry::Geometry &geo,
-                             const Eigen::MatrixXd &velocities) {
+std::vector<Direction> opposite_velocity_directions(
+    const lf::geometry::Geometry &geo, const Eigen::MatrixXd &velocities) {
   std::vector<Direction> res(3);
   const Eigen::MatrixXd corners = lf::geometry::Corners(geo);
 
@@ -37,9 +36,8 @@ opposite_velocity_directions(const lf::geometry::Geometry &geo,
  * @return Datastructure containing the masses m(p) for all vertices p of the
  * mesh represented by mesh_p.
  */
-lf::mesh::utils::CodimMeshDataSet<double>
-initializeMasses(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
-
+lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   lf::mesh::utils::CodimMeshDataSet<double> masses(mesh_p, 2, 0.0);
 
   //====================
@@ -48,4 +46,4 @@ initializeMasses(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return masses;
 }
 
-} // namespace UpwindQuadrature
+}  // namespace UpwindQuadrature

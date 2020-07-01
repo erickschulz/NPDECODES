@@ -20,7 +20,7 @@ void sympTimestep(double tau, Eigen::Vector2d &pq_j) {
 
 Eigen::Vector2d sympTimesteppingHarmonicOscillatorODE(unsigned int m) {
   Eigen::Vector2d approx_sol;
-  approx_sol << 0.0, 1.0; // initial conditions
+  approx_sol << 0.0, 1.0;  // initial conditions
   double tau = 2.0 * M_PI / m;
   for (int i = 0; i < m; i++) {
     sympTimestep(tau, approx_sol);
@@ -37,4 +37,4 @@ void sympTimesteppingODETest() {
 
 /* SAM_LISTING_END_2 */
 
-} // namespace SymplecticTimesteppingWaves
+}  // namespace SymplecticTimesteppingWaves

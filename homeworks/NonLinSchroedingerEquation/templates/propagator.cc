@@ -26,8 +26,8 @@ KineticPropagator::KineticPropagator(const SparseMatrixXd &A,
   //====================
 }
 
-Eigen::VectorXcd KineticPropagator::
-operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd KineticPropagator::operator()(
+    const Eigen::VectorXcd &mu) const {
   //====================
   // Your code goes here
   // Replace mu by its value after a timestep tau
@@ -44,8 +44,8 @@ InteractionPropagator::InteractionPropagator(double tau) {
   //====================
 }
 
-Eigen::VectorXcd InteractionPropagator::
-operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd InteractionPropagator::operator()(
+    const Eigen::VectorXcd &mu) const {
   //====================
   // Your code goes here
   // Replace mu by its value after a timestep tau
@@ -63,8 +63,8 @@ SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
 }
 //====================
 
-Eigen::VectorXcd SplitStepPropagator::
-operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd SplitStepPropagator::operator()(
+    const Eigen::VectorXcd &mu) const {
   Eigen::VectorXcd nu(mu.size());
   //====================
   // Your code goes here
@@ -74,4 +74,4 @@ operator()(const Eigen::VectorXcd &mu) const {
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation

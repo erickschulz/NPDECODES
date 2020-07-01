@@ -77,4 +77,4 @@ Solution solveTrafficFlow() {
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace DiscontinuousGalerkin1D
+}  // namespace DiscontinuousGalerkin1D

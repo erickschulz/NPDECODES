@@ -92,4 +92,4 @@ TEST(LinFeReactDiff, TestEnergy) {
   ASSERT_NEAR(energy, 0.0105153, 0.00001);
 }
 
-} // namespace LinFeReactDiff::test
+}  // namespace LinFeReactDiff::test

@@ -23,7 +23,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
                                   "/../meshes/BoundaryWave.msh");
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
   // Finite element space
   auto fe_space_p =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);

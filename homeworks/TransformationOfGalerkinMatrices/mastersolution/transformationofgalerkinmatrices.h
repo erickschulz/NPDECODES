@@ -14,7 +14,7 @@ namespace TransformationOfGalerkinMatrices {
  * @param A "Old" Galerkin matrix in COO format
  * @return triplets describing "New" Galerkin matrix
  */
-std::vector<Eigen::Triplet<double>>
-transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A);
+std::vector<Eigen::Triplet<double>> transformCOOmatrix(
+    const std::vector<Eigen::Triplet<double>> &A);
 
-} // namespace TransformationOfGalerkinMatrices
+}  // namespace TransformationOfGalerkinMatrices

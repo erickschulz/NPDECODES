@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../laxwendroffscheme.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../laxwendroffscheme.h"
 
 namespace LaxWendroffScheme::test {
 
@@ -158,4 +158,4 @@ TEST(LaxWendroffScheme, numexpGodunovSmoothU0) {
   EXPECT_NEAR(max_diff, 0.0, tol);
 }
 
-} // namespace LaxWendroffScheme::test
+}  // namespace LaxWendroffScheme::test

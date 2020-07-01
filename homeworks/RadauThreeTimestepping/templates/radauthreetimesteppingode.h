@@ -21,4 +21,4 @@ std::vector<double> twoStageRadauTimesteppingLinScalODE(unsigned int m);
  */
 void testConvergenceTwoStageRadauLinScalODE();
 
-} // namespace RadauThreeTimestepping
+}  // namespace RadauThreeTimestepping

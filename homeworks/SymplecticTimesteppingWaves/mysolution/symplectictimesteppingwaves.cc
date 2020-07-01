@@ -45,4 +45,4 @@ double testStab() {
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace SymplecticTimesteppingWaves
+}  // namespace SymplecticTimesteppingWaves

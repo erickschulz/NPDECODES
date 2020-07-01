@@ -16,8 +16,8 @@ coordinates of the nodes (i.e. the distance of the node from origin 0.0).
 
 int main() {
   // Creating a 1D mesh of the interval (0,1)
-  int N = 100;                 // nb. of cells
-  Eigen::VectorXd mesh(N + 1); // nb. of nodes
+  int N = 100;                  // nb. of cells
+  Eigen::VectorXd mesh(N + 1);  // nb. of nodes
   // Nodes are equally spaced
   for (int i = 0; i < N + 1; i++) {
     mesh[i] = i * (1.0 / N);

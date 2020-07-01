@@ -8,9 +8,9 @@
 
 #include "qfeinterpolator.h"
 
-#include <Eigen/Core>
-
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace DebuggingFEM {
 
@@ -33,4 +33,4 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace DebuggingFEM
+}  // namespace DebuggingFEM

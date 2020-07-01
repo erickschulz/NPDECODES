@@ -54,4 +54,4 @@ Eigen::MatrixXd MassLocalMatrixAssembler::Eval(const lf::mesh::Entity &entity) {
   return result;
 }
 
-} // namespace PointEvaluationRhs
+}  // namespace PointEvaluationRhs

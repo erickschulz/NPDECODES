@@ -78,20 +78,20 @@ TEST(UnstableBVP, CenterMesh) {
     double h1 = UnstableBVP::solveTemperatureDistribution(mesh_p);
 
     switch (level) {
-    case 0:
-      EXPECT_NEAR(h1, 1.06066, 1e-5);
-      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.967539, 1e-6);
-      break;
-    case 3:
-      EXPECT_NEAR(h1, 1.50899, 1e-5);
-      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.519206, 1e-6);
-      break;
-    case 6:
-      EXPECT_NEAR(h1, 1.913105, 1e-6);
-      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.115094, 1e-6);
-      break;
-    default:
-      throw "Test for this level not implemented.";
+      case 0:
+        EXPECT_NEAR(h1, 1.06066, 1e-5);
+        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.967539, 1e-6);
+        break;
+      case 3:
+        EXPECT_NEAR(h1, 1.50899, 1e-5);
+        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.519206, 1e-6);
+        break;
+      case 6:
+        EXPECT_NEAR(h1, 1.913105, 1e-6);
+        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.115094, 1e-6);
+        break;
+      default:
+        throw "Test for this level not implemented.";
     }
   }
 }

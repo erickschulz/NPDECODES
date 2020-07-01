@@ -21,7 +21,6 @@
 #include <gtest/gtest.h>
 
 TEST(StableEvaluationAtAPoint, PSL) {
-
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");
@@ -44,7 +43,6 @@ TEST(StableEvaluationAtAPoint, PSL) {
 }
 
 TEST(StableEvaluationAtAPoint, PDL) {
-
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");
@@ -67,7 +65,6 @@ TEST(StableEvaluationAtAPoint, PDL) {
 }
 
 TEST(StableEvaluationAtAPoint, pointEval) {
-
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");
@@ -83,7 +80,6 @@ TEST(StableEvaluationAtAPoint, pointEval) {
 }
 
 TEST(StableEvaluationAtAPoint, Jstar) {
-
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");
@@ -109,7 +105,6 @@ TEST(StableEvaluationAtAPoint, Jstar) {
 }
 
 TEST(StableEvaluationAtAPoint, stab_pointEval) {
-
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
                                  CURRENT_SOURCE_DIR "/../../meshes/square.msh");

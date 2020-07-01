@@ -6,8 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
 #include <math.h>
+#include <iostream>
 // Eigen includes
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -51,4 +51,4 @@ Eigen::Vector2d computeForceDomainFunctional(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     Eigen::VectorXd approx_sol);
 
-} // namespace ElectrostaticForce
+}  // namespace ElectrostaticForce

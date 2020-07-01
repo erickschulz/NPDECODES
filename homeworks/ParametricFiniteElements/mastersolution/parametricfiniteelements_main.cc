@@ -6,20 +6,18 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "parametricfiniteelements.h"
-
+#include <Eigen/Core>
+#include <Eigen/Sparse>
 #include <cmath>
 #include <complex>
 #include <iostream>
 #include <vector>
 
-#include <Eigen/Core>
-#include <Eigen/Sparse>
+#include "parametricfiniteelements.h"
 
 using namespace ParametricFiniteElements;
 
 int main() {
-
   unsigned int n = 3;
   Eigen::VectorXd mu((n + 1) * (n + 1));
 

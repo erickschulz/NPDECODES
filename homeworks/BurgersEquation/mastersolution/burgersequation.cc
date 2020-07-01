@@ -8,9 +8,8 @@
 
 #include "burgersequation.h"
 
-#include <cmath>
-
 #include <Eigen/Core>
+#include <cmath>
 
 namespace BurgersEquation {
 /* SAM_LISTING_BEGIN_1 */
@@ -25,9 +24,9 @@ double w0(double x) {
 double f(double x) { return 2.0 / 3.0 * std::sqrt(x * x * x); }
 
 Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
-  double h = 5.0 / N;          // meshwidth
-  double tau = h;              // timestep = meshwidth by CFL condition
-  int m = std::round(T / tau); // no. of timesteps
+  double h = 5.0 / N;           // meshwidth
+  double tau = h;               // timestep = meshwidth by CFL condition
+  int m = std::round(T / tau);  // no. of timesteps
 
   // initialize vector with initial nodal values
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
@@ -40,7 +39,7 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
     }
     // truncation to a finite vector. Only required on one side, because all
     // information flows from left to right.
-    mu(0) = 0.0; // Value of u0 to the left of x=0
+    mu(0) = 0.0;  // Value of u0 to the left of x=0
   }
 
   return mu;
@@ -70,8 +69,7 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
   Eigen::Vector2d T{0.3, 3.0};
   Eigen::Vector4i N{5 * 10, 5 * 20, 5 * 40, 5 * 80};
   Eigen::Vector4d h;
-  for (int i = 0; i < 4; ++i)
-    h(i) = 5.0 / N(i);
+  for (int i = 0; i < 4; ++i) h(i) = 5.0 / N(i);
 
   Eigen::Matrix<double, 3, 4> result;
   result.row(0) = h.transpose();
@@ -91,4 +89,4 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace BurgersEquation
+}  // namespace BurgersEquation

@@ -8,7 +8,7 @@
 
 #include "solve.h"
 
-int main(int /*argc*/, const char ** /*argv*/) {
+int main(int /*argc*/, const char** /*argv*/) {
   ElementMatrixComputation::solvePoissonBVP();
   ElementMatrixComputation::solveNeumannEq();
   return 0;

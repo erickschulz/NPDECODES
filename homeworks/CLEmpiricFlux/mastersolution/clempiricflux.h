@@ -9,23 +9,23 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "uniformcubicspline.h"
-
 #include <Eigen/Core>
+
+#include "uniformcubicspline.h"
 
 namespace CLEmpiricFlux {
 
 class GodunovFlux {
-public:
+ public:
   GodunovFlux(const UniformCubicSpline &f);
   // evaluate the Godunov numerical flux F(v, w)
   double operator()(double v, double w) const;
 
-private:
+ private:
   // strictly convex flux function (describing the PDE)
   UniformCubicSpline _f;
 };
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux
 
 #endif

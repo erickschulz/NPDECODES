@@ -10,9 +10,9 @@
 #undef SOLUTION
 #define SOLUTION 1
 
-#include <gtest/gtest.h>
-
 #include "../electrostaticforce.h"
+
+#include <gtest/gtest.h>
 
 #include <Eigen/Core>
 
@@ -91,4 +91,4 @@ TEST(ElectrostaticForce, solvePoissonBVPBoundaryConditions) {
   }
 }
 
-} // namespace ElectrostaticForce::test
+}  // namespace ElectrostaticForce::test

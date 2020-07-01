@@ -38,4 +38,4 @@ double limiterMC(double mu_left, double mu_center, double mu_right) {
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL

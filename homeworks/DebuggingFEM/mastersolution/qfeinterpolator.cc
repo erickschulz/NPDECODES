@@ -8,9 +8,9 @@
 
 #include "qfeinterpolator.h"
 
-#include <Eigen/Core>
-
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace DebuggingFEM {
 
@@ -27,29 +27,29 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {
   Eigen::Matrix<double, 2, 3> corners(2, 3);
   corners << 0., 1., 0., 0., 0., 1.;
   switch (idx) {
-  case (0):
-    result = geom->Global(corners.col(0));
-    break;
-  case (1):
-    result = geom->Global(corners.col(1));
-    break;
-  case (2):
-    result = geom->Global(corners.col(2));
-    break;
-  case (3):
-    result = geom->Global((corners.col(0) + corners.col(1)) / 2.);
-    break;
-  case (4):
-    result = geom->Global((corners.col(1) + corners.col(2)) / 2.);
-    break;
-  case (5):
-    result = geom->Global((corners.col(2) + corners.col(0)) / 2.);
-    break;
-  default:
-    throw std::invalid_argument("idx needs to be in range [0,5]");
+    case (0):
+      result = geom->Global(corners.col(0));
+      break;
+    case (1):
+      result = geom->Global(corners.col(1));
+      break;
+    case (2):
+      result = geom->Global(corners.col(2));
+      break;
+    case (3):
+      result = geom->Global((corners.col(0) + corners.col(1)) / 2.);
+      break;
+    case (4):
+      result = geom->Global((corners.col(1) + corners.col(2)) / 2.);
+      break;
+    case (5):
+      result = geom->Global((corners.col(2) + corners.col(0)) / 2.);
+      break;
+    default:
+      throw std::invalid_argument("idx needs to be in range [0,5]");
   }
   return result;
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace DebuggingFEM
+}  // namespace DebuggingFEM

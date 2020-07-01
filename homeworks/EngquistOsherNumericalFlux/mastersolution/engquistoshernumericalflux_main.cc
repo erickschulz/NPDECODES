@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "engquistoshernumericalflux.h"
-
+#include <Eigen/Core>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "engquistoshernumericalflux.h"
 
 /* SAM_LISTING_BEGIN_1 */
 const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,

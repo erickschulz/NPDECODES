@@ -36,7 +36,6 @@ template <typename FUNCTOR_U>
 Eigen::VectorXd interpolateData(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
     FUNCTOR_U &&u) {
-
   // Generate Lehrfem++ mesh functions out of the functors
   auto mf_u = lf::mesh::utils::MeshFunctionGlobal(
       [&u](Eigen::Vector2d x) -> double { return u(x); });
@@ -47,6 +46,6 @@ Eigen::VectorXd interpolateData(
   return dof_vector_u;
 };
 
-} // namespace OutputImpedanceBVP
+}  // namespace OutputImpedanceBVP
 
 #endif

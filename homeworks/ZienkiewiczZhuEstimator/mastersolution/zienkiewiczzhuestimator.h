@@ -29,7 +29,7 @@ VectorProjectionMatrixProvider::Eval function returning the local MASS matrix
 for linear first-order lagrange FE bases over mixed triangular and quadrilateral
 meshes. Integration is performed using appropriate quadrature rule.*/
 class VectorProjectionMatrixProvider {
-public:
+ public:
   /** @brief default constructor */
   explicit VectorProjectionMatrixProvider() = default;
   /** @brief Default implement: all cells are active */
@@ -38,7 +38,7 @@ public:
    * @param cell refers to current cell for which the element matrix is desired
    * The implementation uses appropriate quadrature rule of the cells*/
   Eigen::MatrixXd Eval(const lf::mesh::Entity &entity);
-}; // class VectorProjectionMatrixProvider
+};  // class VectorProjectionMatrixProvider
 
 /** @brief This class implements a Lehrfem++ matrix provider defining a
 GradientProjectionVectorProvider::Eval function returning the local
@@ -46,7 +46,7 @@ contribution to the element vectors for linear first-order lagrange FE bases
 over triangular mesh (only!). Integration over the triangular cells is performed
 using the trapezoidal rule.*/
 class GradientProjectionVectorProvider {
-public:
+ public:
   /** @brief Constructor storing the right hand side function */
   explicit GradientProjectionVectorProvider(
       const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
@@ -59,7 +59,7 @@ public:
    * The implementation uses an appropriate quadrature rule.*/
   Eigen::VectorXd Eval(const lf::mesh::Entity &entity);
 
-private:
+ private:
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> _fe_space_p;
   Eigen::VectorXd _mu;
 };
@@ -71,10 +71,12 @@ class progress_bar {
   std::string message;
   const std::string full_bar;
 
-public:
+ public:
   progress_bar(std::ostream &os, std::size_t line_width, std::string message_,
                const char symbol = '.')
-      : os{os}, bar_width{line_width - overhead}, message{std::move(message_)},
+      : os{os},
+        bar_width{line_width - overhead},
+        message{std::move(message_)},
         full_bar{std::string(bar_width, symbol) + std::string(bar_width, ' ')} {
     if (message.size() + 1 >= bar_width || message.find('\n') != message.npos) {
       os << message << '\n';
@@ -99,10 +101,9 @@ public:
 /* LIBRARY FUNCTIONS */
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(const lf::mesh::Entity &entity);
 
-Eigen::VectorXd
-computeLumpedProjection(const lf::assemble::DofHandler &scal_dofh,
-                        const Eigen::VectorXd &mu,
-                        const lf::assemble::DofHandler &vec_dofh);
+Eigen::VectorXd computeLumpedProjection(
+    const lf::assemble::DofHandler &scal_dofh, const Eigen::VectorXd &mu,
+    const lf::assemble::DofHandler &vec_dofh);
 
 double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
                           const Eigen::VectorXd &eta,
@@ -122,7 +123,6 @@ template <typename FUNCTOR_U>
 Eigen::VectorXd interpolateData(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
     FUNCTOR_U &&u) {
-
   // Generate Lehrfem++ mesh functions out of the functors
   lf::mesh::utils::MeshFunctionGlobal mf_u{u};
 
@@ -132,6 +132,6 @@ Eigen::VectorXd interpolateData(
   return dof_vector_u;
 };
 
-} // namespace ZienkiewiczZhuEstimator
+}  // namespace ZienkiewiczZhuEstimator
 
 #endif

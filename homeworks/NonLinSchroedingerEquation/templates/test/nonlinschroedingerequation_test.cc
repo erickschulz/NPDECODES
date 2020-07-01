@@ -218,4 +218,4 @@ TEST(NonLinSchroedingerEquation, SplitStepPropagator) {
   ASSERT_NEAR(0.0, (mu1 - mu1_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-} // namespace NonLinSchroedingerEquation::test
+}  // namespace NonLinSchroedingerEquation::test

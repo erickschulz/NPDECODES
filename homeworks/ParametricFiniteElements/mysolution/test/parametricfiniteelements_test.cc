@@ -18,7 +18,6 @@
 namespace ParametricFiniteElements::test {
 
 TEST(ParametricFiniteElements, assembleGeoTherm) {
-
   unsigned int n = 2;
 
   auto alpha = [](Eigen::Vector2d x) -> double { return 3.0 / 2.0; };
@@ -49,7 +48,6 @@ TEST(ParametricFiniteElements, assembleGeoTherm) {
 }
 
 TEST(ParametricFiniteElements, geoThermSolve) {
-
   unsigned int n = 3;
 
   auto alpha = [](Eigen::Vector2d x) -> double { return 3.0 / 2.0; };
@@ -68,7 +66,6 @@ TEST(ParametricFiniteElements, geoThermSolve) {
 }
 
 TEST(ParametricFiniteElements, geoThermSurfInt) {
-
   unsigned int n = 3;
 
   auto Psi = [](double x1) -> double { return x1 * x1 + 1.0; };
@@ -85,4 +82,4 @@ TEST(ParametricFiniteElements, geoThermSurfInt) {
   ASSERT_NEAR(0.0, val - val_ref, tol);
 }
 
-} // namespace ParametricFiniteElements::test
+}  // namespace ParametricFiniteElements::test

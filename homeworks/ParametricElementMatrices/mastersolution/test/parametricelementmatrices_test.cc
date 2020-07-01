@@ -98,4 +98,4 @@ TEST(ParametricElementMatrices, TestLoad) {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace ParametricElementMatrices::test
+}  // namespace ParametricElementMatrices::test

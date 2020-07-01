@@ -16,7 +16,7 @@
 namespace ParametricElementMatrices {
 
 class ImpedanceBoundaryEdgeMatrixProvider {
-public:
+ public:
   /** @brief Constructor storing the basis expansion vector of the variable
    * coefficient, the finite elements space and the boundary edge predicate */
   ImpedanceBoundaryEdgeMatrixProvider(
@@ -25,7 +25,7 @@ public:
   bool isActive(const lf::mesh::Entity &edge);
   Eigen::MatrixXd Eval(const lf::mesh::Entity &cell);
 
-private:
+ private:
   // Linear first-order lagrangian finite element space
   std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
   // Finite element basis expansion vector of the coefficient function
@@ -33,4 +33,4 @@ private:
   // Predicate returning true if an edge is on the boundary
   std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<bool>> bd_flags_;
 };
-} // namespace ParametricElementMatrices
+}  // namespace ParametricElementMatrices

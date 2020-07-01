@@ -7,12 +7,11 @@
  */
 
 #include <gtest/gtest.h>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
+
+#include <Eigen/Core>
 
 #include "../crfespace.h"
 #include "../crl2errordirichletbvp.h"

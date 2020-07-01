@@ -231,4 +231,4 @@ TEST(solveNeumannEq, test) {
   }
 }
 
-} // namespace ElementMatrixComputation::test
+}  // namespace ElementMatrixComputation::test

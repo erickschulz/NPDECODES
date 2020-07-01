@@ -10,9 +10,9 @@
 #include <memory>
 
 // Eigen includes
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
@@ -87,7 +87,6 @@ TEST(WaveABC2D, WaveABC2DTimestepper) {
 }
 
 TEST(WaveABC2D, energies) {
-
   double eps = 1.0e-4;
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3);
   auto fe_space_p =
@@ -111,4 +110,4 @@ TEST(WaveABC2D, energies) {
   ASSERT_NEAR(reference_solution - student_solution, 0, eps);
 }
 
-} // namespace WaveABC2D::test
+}  // namespace WaveABC2D::test

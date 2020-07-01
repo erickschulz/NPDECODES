@@ -34,4 +34,4 @@ double EngquistOsherNumFlux(double v, double w);
  */
 Eigen::VectorXd solveCP(double a, double b, Eigen::VectorXd u0, double T);
 
-} // namespace EngquistOsherNumericalFlux
+}  // namespace EngquistOsherNumericalFlux

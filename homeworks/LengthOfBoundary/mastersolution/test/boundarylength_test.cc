@@ -6,11 +6,10 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include <gtest/gtest.h>
-
-#include <lf/mesh/test_utils/test_meshes.h>
-
 #include "../boundarylength.h"
+
+#include <gtest/gtest.h>
+#include <lf/mesh/test_utils/test_meshes.h>
 
 namespace LengthOfBoundary::test {
 
@@ -30,4 +29,4 @@ TEST(BoundaryLength, length_test) {
   EXPECT_NEAR(LengthOfBoundary::lengthOfBoundary(mesh_p), 12.0, 1e-12);
 }
 
-} // namespace LengthOfBoundary::test
+}  // namespace LengthOfBoundary::test

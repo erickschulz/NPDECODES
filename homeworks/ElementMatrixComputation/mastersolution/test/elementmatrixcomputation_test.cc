@@ -6,19 +6,18 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <memory>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+
 #include <gtest/gtest.h>
+
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-<<<<<<< HEAD:developers/ElementMatrixComputation/mastersolution/test/elementeatrixcomputation_test.cc
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-#include <memory>
-
-=======
->>>>>>> master:homeworks/ElementMatrixComputation/mastersolution/test/elementmatrixcomputation_test.cc
 #include "../../meshes/mesh.h"
 #include "../mylinearfeelementmatrix.h"
 #include "../mylinearloadvector.h"
@@ -232,8 +231,4 @@ TEST(solveNeumannEq, test) {
   }
 }
 
-<<<<<<< HEAD:developers/ElementMatrixComputation/mastersolution/test/elementeatrixcomputation_test.cc
 }  // namespace ElementMatrixComputation::test
-=======
-} // namespace ElementMatrixComputation::test
->>>>>>> master:homeworks/ElementMatrixComputation/mastersolution/test/elementmatrixcomputation_test.cc

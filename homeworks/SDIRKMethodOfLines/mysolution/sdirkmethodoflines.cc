@@ -14,7 +14,7 @@ LinFEMassMatrixProvider::Eval function returning the local MASS matrix for
 linear first-order lagrange FE bases over triangular mesh (only!). Integration
 over the triangular cells is performed using the trapezoidal rule.*/
 class LinFEMassMatrixProvider {
-public:
+ public:
   /** @brief default constructor */
   explicit LinFEMassMatrixProvider() = default;
   /** @brief Default implement: all cells are active */
@@ -23,26 +23,27 @@ public:
    * @param cell refers to current cell for which the element vector is desired
    * The implementation uses an analytic formula defined over triangular cells*/
   Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
-}; // class LinFEMassMatrixProvider
+};  // class LinFEMassMatrixProvider
 /** Implementing member function Eval of class LinFEMassMatrixProvider*/
 /* SAM_LISTING_BEGIN_8 */
-Eigen::Matrix<double, 3, 3>
-LinFEMassMatrixProvider::Eval(const lf::mesh::Entity &tria) {
+Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
+    const lf::mesh::Entity &tria) {
   Eigen::Matrix<double, 3, 3> elMat;
   //====================
   // Your code goes here
   //====================
 
-  return elMat; // return the local mass element matrix
-} // LinFEMassMatrixProvider::Eval
+  return elMat;  // return the local mass element matrix
+}  // LinFEMassMatrixProvider::Eval
 /* SAM_LISTING_END_8 */
 
 /** @brief This class implements a Lehrfem++ matrix provider defining a
 LinearMassEdgeMatrixProvider<FUNCTOR>::Eval function returning the local EDGE
 MASS matrix for linear first-order lagrange FE over triangular mesh (only!).
 Integration over the triangular cells is performed using the trapezoidal rule.*/
-template <typename FUNCTOR> class LinearMassEdgeMatrixProvider {
-public:
+template <typename FUNCTOR>
+class LinearMassEdgeMatrixProvider {
+ public:
   /** @brief Constructor storing the right hand side function
    *  @param predicate is lambda function returning booleans on edge entities
    *         cool_coeff is the convective cooling coefficient */
@@ -55,22 +56,22 @@ public:
    * The implementation uses simple vertex based quadrature */
   Eigen::Matrix<double, 2, 2> Eval(const lf::mesh::Entity &edge);
 
-private:
+ private:
   /** predicate_ provides booleans for boundary edges */
   FUNCTOR predicate_;
   double cool_coeff_;
-}; // class LinearMassEdgeMatrixProvider
+};  // class LinearMassEdgeMatrixProvider
 /* Implementing member function Eval of class LinearMassEdgeMatrixProvider */
 /* SAM_LISTING_BEGIN_9 */
 template <typename FUNCTOR>
-Eigen::Matrix<double, 2, 2>
-LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(const lf::mesh::Entity &edge) {
+Eigen::Matrix<double, 2, 2> LinearMassEdgeMatrixProvider<FUNCTOR>::Eval(
+    const lf::mesh::Entity &edge) {
   Eigen::Matrix<double, 2, 2> elBdyEdgeMat;
   //====================
   // Your code goes here
   //====================
   return (Eigen::Matrix<double, 2, 2>::Zero());
-} // LinearMassEdgeMatrixProvider<FUNCTOR>::Eval
+}  // LinearMassEdgeMatrixProvider<FUNCTOR>::Eval
 /* SAM_LISTING_END_9 */
 
 /* SAM_LISTING_BEGIN_1 */
@@ -95,18 +96,18 @@ SDIRK2Timestepper::SDIRK2Timestepper(const lf::assemble::DofHandler &dofh,
   //====================
   // Your code goes here
   //====================
-} // SDIRK2Timestepper constructor
+}  // SDIRK2Timestepper constructor
 
 /* Implementation of SDIRK2Timestepper member function */
 /* SAM_LISTING_BEGIN_9 */
-Eigen::VectorXd
-SDIRK2Timestepper::discreteEvolutionOperator(const Eigen::VectorXd &mu) const {
+Eigen::VectorXd SDIRK2Timestepper::discreteEvolutionOperator(
+    const Eigen::VectorXd &mu) const {
   Eigen::VectorXd discrete_evolution_operator;
   //====================
   // Your code goes here
   //====================
   return discrete_evolution_operator;
-} // SDIRK2Timestepper::discreteEvolutionOperator
+}  // SDIRK2Timestepper::discreteEvolutionOperator
 /* SAM_LISTING_END_9 */
 
 /** @Brief Implementing the temperature evolution solver. The solver obtains the
@@ -114,16 +115,15 @@ discrete evolution operator from the SDIRK2Timestepper class and repeatedly
 iterates its applicaiton starting from the initial condition argument
 * @param cool_coeff is the convective cooling coefficient */
 /* SAM_LISTING_BEGIN_6 */
-std::pair<Eigen::VectorXd, Eigen::VectorXd>
-solveTemperatureEvolution(const lf::assemble::DofHandler &dofh, unsigned int m,
-                          double cool_coeff,
-                          Eigen::VectorXd initial_temperature_vec) {
+std::pair<Eigen::VectorXd, Eigen::VectorXd> solveTemperatureEvolution(
+    const lf::assemble::DofHandler &dofh, unsigned int m, double cool_coeff,
+    Eigen::VectorXd initial_temperature_vec) {
   std::pair<Eigen::VectorXd, Eigen::VectorXd> solution_pair;
   //====================
   // Your code goes here
   //====================
   return solution_pair;
-} // solveTemperatureEvolution
+}  // solveTemperatureEvolution
 
 /* SAM_LISTING_END_6 */
 
@@ -138,8 +138,8 @@ double thermalEnergy(const lf::assemble::DofHandler &dofh,
   // Your code goes here
   //====================
   return thermal_energy;
-} // thermalEnergy
+}  // thermalEnergy
 
 /* SAM_LISTING_END_7 */
 
-} // namespace SDIRKMethodOfLines
+}  // namespace SDIRKMethodOfLines

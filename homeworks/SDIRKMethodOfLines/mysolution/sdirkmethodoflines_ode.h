@@ -13,4 +13,4 @@ namespace SDIRKMethodOfLines {
 
 void sdirk2ScalarODECvTest();
 
-} // namespace SDIRKMethodOfLines
+}  // namespace SDIRKMethodOfLines

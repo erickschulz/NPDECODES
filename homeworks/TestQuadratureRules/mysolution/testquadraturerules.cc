@@ -8,13 +8,12 @@
 
 #include "testquadraturerules.h"
 
-#include <cassert>
-#include <cmath>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
+
+#include <Eigen/Core>
+#include <cassert>
+#include <cmath>
 
 namespace TestQuadratureRules {
 
@@ -23,7 +22,7 @@ double factorial(int i) { return std::tgamma(i + 1); }
 /* SAM_LISTING_BEGIN_1 */
 bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
                        unsigned int order) {
-  bool order_isExact = true; // return variable
+  bool order_isExact = true;  // return variable
   //====================
   // Your code goes here
   //====================
@@ -34,7 +33,7 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule,
 /* SAM_LISTING_BEGIN_2 */
 bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule,
                        unsigned int order) {
-  bool order_isExact = true; // return variable
+  bool order_isExact = true;  // return variable
 
   //====================
   // Your code goes here
@@ -54,4 +53,4 @@ unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule) {
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace TestQuadratureRules
+}  // namespace TestQuadratureRules

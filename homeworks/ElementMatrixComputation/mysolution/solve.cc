@@ -8,9 +8,8 @@
 
 #include "solve.h"
 
-#include <iostream>
-
 #include <Eigen/Core>
+#include <iostream>
 
 #include "mylinearfeelementmatrix.h"
 #include "mylinearloadvector.h"
@@ -44,4 +43,4 @@ Eigen::VectorXd solveNeumannEq() {
   return solution;
 }
 
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation

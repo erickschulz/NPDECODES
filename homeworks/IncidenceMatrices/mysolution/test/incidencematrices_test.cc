@@ -1,13 +1,11 @@
-#include <memory>
+#include "../incidencematrices.h"
+
+#include <gtest/gtest.h>
+#include <lf/mesh/mesh.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
-
-#include <gtest/gtest.h>
-
-#include <lf/mesh/mesh.h>
-
-#include "../incidencematrices.h"
+#include <memory>
 
 namespace IncidenceMatrices::test {
 
@@ -63,4 +61,4 @@ TEST(Homework_2_6, CoChainComplexProperty) {
   EXPECT_TRUE(IncidenceMatrices::testZeroIncidenceMatrixProduct(*demoMesh));
 }
 
-} // namespace IncidenceMatrices::test
+}  // namespace IncidenceMatrices::test

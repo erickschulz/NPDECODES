@@ -8,16 +8,14 @@
 
 #include "radauthreetimestepping.h"
 
-#include <iostream>
-
-#include <Eigen/Core>
-#include <Eigen/Sparse>
-
-#include <unsupported/Eigen/KroneckerProduct>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <iostream>
+#include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {
 
@@ -63,13 +61,13 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
 /* SAM_LISTING_END_6 */
 
 /* Implementing member function Eval of class LinFEMassMatrixProvider*/
-Eigen::Matrix<double, 3, 3>
-LinFEMassMatrixProvider::Eval(const lf::mesh::Entity &tria) {
+Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
+    const lf::mesh::Entity &tria) {
   Eigen::Matrix<double, 3, 3> elMat;
   //====================
   // Your code goes here
   //====================
-  return elMat; // return the local mass element matrix
+  return elMat;  // return the local mass element matrix
 }
 
 /* Implementing constructor of class Radau3MOLTimestepper */
@@ -98,4 +96,4 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace RadauThreeTimestepping
+}  // namespace RadauThreeTimestepping

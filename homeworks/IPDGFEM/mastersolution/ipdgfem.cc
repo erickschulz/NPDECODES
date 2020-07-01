@@ -19,4 +19,4 @@ Eigen::VectorXd dummyFunction(double x, int n) {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace IPDGFEM
+}  // namespace IPDGFEM
