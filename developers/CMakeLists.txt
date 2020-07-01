@@ -7,7 +7,7 @@ include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
 
 add_subdirectory(1DWaveAbsorbingBC)
-add_subdirectory(AdvectionFV2D)
+#add_subdirectory(AdvectionFV2D) # under construction
 add_subdirectory(AvgValBoundary)
 add_subdirectory(BoundaryWave)
 add_subdirectory(BurgersEquation)
@@ -22,10 +22,10 @@ add_subdirectory(ErrorEstimatesForTraces)
 add_subdirectory(ExtendedMUSCL)
 add_subdirectory(FiniteVolumeRobin)
 add_subdirectory(FiniteVolumeSineConsLaw)
-add_subdirectory(FisherKPP)
+#add_subdirectory(FisherKPP) # missing unit tests
 add_subdirectory(IncidenceMatrices)
 add_subdirectory(IPDGFEM)
-add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
+#add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
 add_subdirectory(LengthOfBoundary)
 add_subdirectory(LFPPDofHandling)
 add_subdirectory(LinearFE1D)
