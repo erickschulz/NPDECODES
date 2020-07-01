@@ -15,7 +15,10 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <tuple>
+#include <utility>
+#include <vector>
 
 #include <Eigen/Core>
 
