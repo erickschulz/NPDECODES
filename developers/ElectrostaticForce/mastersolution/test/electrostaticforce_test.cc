@@ -91,4 +91,4 @@ TEST(ElectrostaticForce, solvePoissonBVPBoundaryConditions) {
   }
 }
 
-}  // namespace ElectrostaticForce::test
+} // namespace ElectrostaticForce::test

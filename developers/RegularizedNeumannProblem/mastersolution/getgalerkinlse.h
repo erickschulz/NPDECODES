@@ -63,6 +63,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE(
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace RegularizedNeumannProblem
+} // namespace RegularizedNeumannProblem
 
-#endif  // GETGALERKINLSE_H_
+#endif // GETGALERKINLSE_H_

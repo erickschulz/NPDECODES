@@ -31,15 +31,13 @@
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
-namespace SymplecticTimesteppingWaves
-{
+namespace SymplecticTimesteppingWaves {
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNC_ALPHA, typename FUNC_GAMMA, typename FUNC_BETA>
 Eigen::SparseMatrix<double> assembleGalerkinMatrix(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
-    FUNC_ALPHA &&alpha, FUNC_GAMMA &&gamma, FUNC_BETA &&beta)
-{
+    FUNC_ALPHA &&alpha, FUNC_GAMMA &&gamma, FUNC_BETA &&beta) {
   Eigen::SparseMatrix<double> galMat;
 
 #if SOLUTION

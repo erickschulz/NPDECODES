@@ -15,11 +15,12 @@
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>
 
-namespace PointEvaluationRhs{
+namespace PointEvaluationRhs {
 
-std::pair<double, double> normsSolutionPointLoadDirichletBVP(
-    const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
-    Eigen::VectorXd &sol_vec);
+std::pair<double, double>
+normsSolutionPointLoadDirichletBVP(const lf::assemble::DofHandler &dofh,
+                                   Eigen::Vector2d source_point,
+                                   Eigen::VectorXd &sol_vec);
 
 Eigen::Vector2d GlobalInverseTria(Eigen::Matrix<double, 2, 3> mycorners,
                                   Eigen::Vector2d x);
@@ -32,7 +33,7 @@ inline double triaArea(const Eigen::Vector2d a, const Eigen::Vector2d b,
 
 std::pair<double, double> solveQuadraticEquation(double a, double b, double c);
 
-class DeltaLocalVectorAssembler{
+class DeltaLocalVectorAssembler {
 private:
   Eigen::Vector2d x_0;
   bool already_found;
@@ -40,7 +41,7 @@ private:
 public:
   explicit DeltaLocalVectorAssembler(Eigen::Vector2d x)
       : x_0(x), already_found(false) {}
-  bool isActive(const lf::mesh::Entity &entity) const{
+  bool isActive(const lf::mesh::Entity &entity) const {
     return (!already_found);
   }
   Eigen::VectorXd Eval(const lf::mesh::Entity &entity);

@@ -76,7 +76,6 @@ lf::assemble::COOMatrix<double> computeGalerkinMat(
   return galMat_COO;
 }
 
-
 class progress_bar {
   static const auto overhead = sizeof " [100%]";
   std::ostream &os;
@@ -109,7 +108,6 @@ public:
   void write(double fraction);
 }; // class progress_bar
 
-
 /** @brief class providing timestepping for WaveABC2D */
 /* SAM_LISTING_BEGIN_9 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
@@ -119,30 +117,32 @@ public:
   WaveABC2DTimestepper(
       const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
       FUNC_RHO rho, unsigned int M, double T);
-  
+
   // Public member functions
   Eigen::VectorXd solveWaveABC2D(FUNC_MU0 mu0, FUNC_NU0 nu0);
   double energies();
 
 private:
-  double T_;         		// final time
-  unsigned int M_;         	// nb of steps
-  double step_size_; 		// time inverval
+  double T_;         // final time
+  unsigned int M_;   // nb of steps
+  double step_size_; // time inverval
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p_;
-  #if SOLUTION
+#if SOLUTION
   lf::uscalfe::size_type N_dofs_; // nb of degrees of freedom
-  bool timestepping_performed_;	 // bool to assert that energies are computed only after timestepping
+  bool timestepping_performed_;   // bool to assert that energies are computed
+                                  // only after timestepping
   // Precomputed objects
-  std::vector<Eigen::Triplet<double>> A_triplets_vec_;	// stiffness matrix	
-  std::vector<Eigen::Triplet<double>> M_triplets_vec_;	// mass matrix
+  std::vector<Eigen::Triplet<double>> A_triplets_vec_;  // stiffness matrix
+  std::vector<Eigen::Triplet<double>> M_triplets_vec_;  // mass matrix
   Eigen::SparseMatrix<double> R_;                       // rhs evaluation matrix
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_; // linear solver
-  Eigen::VectorXd full_sol_; // Vector for discrete solution and discrete velocity 
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+  Eigen::VectorXd
+      full_sol_; // Vector for discrete solution and discrete velocity
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 }; // class WaveABC2DTimestepper
 /* SAM_LISTING_END_9 */
 
@@ -150,11 +150,11 @@ private:
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
-	const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     FUNC_RHO rho, unsigned int M, double T)
-    
-	: fe_space_p_(fe_space_p), M_(M), T_(T), step_size_(T / M) {
-  
+
+    : fe_space_p_(fe_space_p), M_(M), T_(T), step_size_(T / M) {
+
   /* Creating coefficient-functions as Lehrfem++ mesh functions */
   // Coefficient-functions used in the class template
   // ReactionDiffusionElementMatrixProvider and MassEdgeMatrixProvider
@@ -164,8 +164,8 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   auto one_mf = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d) -> double { return 1.0; });
 
-  #if SOLUTION
- // On construction no timestepping was yet performed
+#if SOLUTION
+  // On construction no timestepping was yet performed
   timestepping_performed_ = false;
 
   std::cout << "Assembling Galerkin matrices..." << std::endl;
@@ -176,7 +176,7 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   lf::assemble::COOMatrix<double> B_COO =
       computeGalerkinMat(fe_space_p, zero_mf, zero_mf,
                          one_mf); // Boundary mass matrix
-  
+
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   N_dofs_ = dofh.NumDofs();
   std::cout << "Number of degrees of freedom : " << N_dofs_ << std::endl;
@@ -245,11 +245,11 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
     R_COO.AddToEntry(i + N_dofs_, i + N_dofs_, 1.0);
   }
   R_ = R_COO.makeSparse();
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 }
 /* SAM_LISTING_END_1 */
 
@@ -257,9 +257,9 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 Eigen::VectorXd
-    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::solveWaveABC2D(
+WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::solveWaveABC2D(
     FUNC_MU0 mu0, FUNC_NU0 nu0) {
-  
+
   std::cout << "\nSolving variational problem of WaveABC2D." << std::endl;
   Eigen::VectorXd sol;
 
@@ -271,7 +271,7 @@ Eigen::VectorXd
   Eigen::VectorXd mu0_nodal =
       lf::uscalfe::NodalProjection(*fe_space_p_, mf_mu0);
 
-  #if SOLUTION
+#if SOLUTION
   // Setup loop and tools
   Eigen::VectorXd cur_step_vec(2 * N_dofs_);
   Eigen::VectorXd next_step_vec(2 * N_dofs_);
@@ -295,11 +295,11 @@ Eigen::VectorXd
   sol = full_sol_.tail(N_dofs_);
   // Full solution is computed
   timestepping_performed_ = true;
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
   return sol;
 } // solveWaveABC2D
@@ -307,34 +307,35 @@ Eigen::VectorXd
 
 /* SAM_LISTING_BEGIN_10 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
-double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() { 
-  
+double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() {
+
   double energy;
-  #if SOLUTION 
+#if SOLUTION
   Eigen::SparseMatrix<double> A_sps(N_dofs_, N_dofs_);
   A_sps.setFromTriplets(A_triplets_vec_.begin(), A_triplets_vec_.end());
   Eigen::SparseMatrix<double> M_sps(N_dofs_, N_dofs_);
   M_sps.setFromTriplets(M_triplets_vec_.begin(), M_triplets_vec_.end());
-  
+
   double tmp1, tmp2;
-  if(timestepping_performed_) {
-  	tmp1 = full_sol_.tail(N_dofs_).transpose() * A_sps * full_sol_.tail(N_dofs_);
-  	tmp2 = full_sol_.head(N_dofs_).transpose() * M_sps * full_sol_.head(N_dofs_);
-  	energy = tmp1 + tmp2;
+  if (timestepping_performed_) {
+    tmp1 =
+        full_sol_.tail(N_dofs_).transpose() * A_sps * full_sol_.tail(N_dofs_);
+    tmp2 =
+        full_sol_.head(N_dofs_).transpose() * M_sps * full_sol_.head(N_dofs_);
+    energy = tmp1 + tmp2;
   } else {
-	energy = 0.0;
-	std::cout << "You have not computed the solution and its velocity yet!"
-			  << std::endl;
+    energy = 0.0;
+    std::cout << "You have not computed the solution and its velocity yet!"
+              << std::endl;
   }
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   return energy;
 }
 /* SAM_LISTING_END_10 */
-
 
 } // namespace WaveABC2D
 

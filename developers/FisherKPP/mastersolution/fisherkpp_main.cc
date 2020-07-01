@@ -343,24 +343,24 @@ void modelproblem() {
   sol.push_back(StrangSplitter.Evolution(K, sol[2]));
   std::cout << "Computing solution after 500 timesteps..." << std::endl;
   sol.push_back(StrangSplitter.Evolution(K, sol[3]));*/
-  
- 
-// Use VTK-Writer for Visualization of solution.
-std::cout << "Writting solution(s) in VTK format." << std::endl;
+
+  // Use VTK-Writer for Visualization of solution.
+  std::cout << "Writting solution(s) in VTK format." << std::endl;
 #if SOLUTION
-std::cout << std::size(sol) << std::endl;
+  std::cout << std::size(sol) << std::endl;
   for (int k = 0; k < std::size(sol); k++) {
     std::stringstream filename;
-    filename << "model_problem_sol" << k+1 << ".vtk";
+    filename << "model_problem_sol" << k + 1 << ".vtk";
     lf::io::VtkWriter vtk_writer(mesh_p, filename.str());
     auto nodal_data = lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 2);
     for (int global_idx = 0; global_idx < N_dofs; global_idx++) {
-      nodal_data->operator()(dofh.Entity(global_idx)) =
-          sol[k][global_idx];
+      nodal_data->operator()(dofh.Entity(global_idx)) = sol[k][global_idx];
     }
     vtk_writer.WritePointData("sol", *nodal_data);
   }
-std::cout << "Solution after i*100 timesteps written to model_problem_sol'i'.vtk" << std::endl;
+  std::cout
+      << "Solution after i*100 timesteps written to model_problem_sol'i'.vtk"
+      << std::endl;
 #else
   //====================
   // Your code goes here: write .vtk files sol[1-6].vtk

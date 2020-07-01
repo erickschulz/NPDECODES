@@ -12,7 +12,7 @@ namespace FiniteVolumeSineConsLaw {
 
 /**
  * @brief Godunov numerical flux with F, with f(u) = sin(PI * u).
- * 
+ *
  * @param v 0 <= v <= 1
  * @param w 0 <= w <= 1
  * @return F(v, w)
@@ -22,7 +22,7 @@ double sineGodFlux(double v, double w);
 /**
  * @brief RHS of the semi-discretized ODE on the spacial interval [-6, 6].
  * The solution u(x, t) is assumed to be zero on the complement.
- * 
+ *
  * @param mu cell averages
  * @return RHS evaluated at mu
  */
@@ -30,7 +30,7 @@ Eigen::VectorXd sineClawRhs(const Eigen::VectorXd &mu);
 
 /**
  * @brief Applies the explicit trapezoidal method to an (semi-discretized) ODE.
- * 
+ *
  * @param g RHS of the (semi-discretized) ODE
  * @param y0 initial data u(x, 0) for x in [-6, 6]
  * @param T final time T > 0
@@ -65,7 +65,7 @@ Eigen::VectorXd explTrpzTimestepping(RHSFUNCTOR &&g, const Eigen::VectorXd &y0,
  * @brief Solves the fully discretized ODE by explTrpzTimestepping(...),
  * where the initial data is the characterisitc function of [0, 1),
  * on the spacial interval [-6, 6] and time interval [0, T=1].
- * 
+ *
  * @param g RHS of the (semi-discretized) ODE
  * @param N number of uniform cells partitioning [-6, 6]
  * @param M number of time steps
@@ -106,11 +106,11 @@ unsigned int findTimesteps();
 /**
  * @brief Same as sineClawRhs(...), but with the additional reaction term
  * -c * u(x, t).
- * 
+ *
  * @param mu cell averages
  * @param c c > 0
  * @return RHS evaluated at mu
  */
 Eigen::VectorXd sineClawReactionRhs(const Eigen::VectorXd &mu, double c);
 
-}  // namespace FiniteVolumeSineConsLaw
+} // namespace FiniteVolumeSineConsLaw

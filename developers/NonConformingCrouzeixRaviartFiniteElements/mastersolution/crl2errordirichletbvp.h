@@ -15,9 +15,9 @@
 #include <lf/io/io.h>
 #include <lf/mesh/mesh.h>
 
+#include "crdirichletbvp.h"
 #include "crfespace.h"
 #include "crl2error.h"
-#include "crdirichletbvp.h"
 
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
@@ -59,6 +59,6 @@ double L2errorCRDiscretizationDirichletBVP(const std::string &filename) {
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace NonConformingCrouzeixRaviartFiniteElements
+} // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif  // NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H
+#endif // NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H

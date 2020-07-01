@@ -8,7 +8,6 @@
 
 #include <iostream>
 
-
 #include <cmath>
 #include <utility>
 
@@ -44,7 +43,7 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   const int N = 2 * N_half;
   Eigen::VectorXd Gvec(N);
 #if SOLUTION
-  double uN_xminus = 0.0;  // since we extend mu to the left by zero
+  double uN_xminus = 0.0; // since we extend mu to the left by zero
   double uN_xplus = mu(0) - 0.5 * h * mu(1);
   double F_old;
   double F_new = F(uN_xminus, uN_xplus);
@@ -64,7 +63,7 @@ Eigen::VectorXd G(const Eigen::VectorXd &mu, FUNCTOR &&f, NUMFLUX &&F, int Ml,
   }
 
   uN_xminus = mu(2 * (N_half - 1)) + 0.5 * h * mu(2 * (N_half - 1) + 1);
-  uN_xplus = 0.0;  // since we extend mu to the right by zero
+  uN_xplus = 0.0; // since we extend mu to the right by zero
   F_old = F_new;
   F_new = F(uN_xminus, uN_xplus);
   Gvec(2 * (N_half - 1)) = F_new - F_old;
@@ -110,7 +109,8 @@ Eigen::VectorXd dgcl(Eigen::VectorXd mu0, FUNCTOR &&f, NUMFLUX &&F, double T,
   // single-step method
   double tau = T / m;
   for (int i = 0; i < m; ++i) {
-    // First compute the increment and then update the state vector, see \lref{eq:Chemp}
+    // First compute the increment and then update the state vector, see
+    // \lref{eq:Chemp}
     Eigen::VectorXd k = -Binv * G_bound(mu0);
     mu0 = mu0 - tau * Binv * G_bound(mu0 + 0.5 * tau * k);
   }
@@ -140,7 +140,8 @@ struct Solution {
     u_ = other.u_;
     std::cout << "Called copy contructor" << std::endl;
   }
-  Solution(Eigen::VectorXd x, Eigen::VectorXd u) : x_(std::move(x)), u_(std::move(u)) {}
+  Solution(Eigen::VectorXd x, Eigen::VectorXd u)
+      : x_(std::move(x)), u_(std::move(u)) {}
   Eigen::VectorXd x_;
   Eigen::VectorXd u_;
 };
@@ -152,4 +153,4 @@ struct Solution {
  */
 Solution solveTrafficFlow();
 
-}  // namespace DiscontinuousGalerkin1D
+} // namespace DiscontinuousGalerkin1D

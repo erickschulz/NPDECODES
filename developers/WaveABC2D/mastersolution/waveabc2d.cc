@@ -38,7 +38,7 @@ Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
   x(0, 0) = 1.0;
   x(0, 1) = 1.0;
 
-  #if SOLUTION
+#if SOLUTION
   Eigen::MatrixXd A(2, 2);
   Eigen::VectorXd b(2);
   // clang-format off
@@ -54,11 +54,11 @@ Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
     // Solve the linear system
     x.row(k) = A.fullPivLu().solve(b);
   }
-  #else
-  //====================
-  // Your code goes here
-  //====================
-  #endif
+#else
+//====================
+// Your code goes here
+//====================
+#endif
 
   return x.col(1);
 } // scalarImplicitTimestepping

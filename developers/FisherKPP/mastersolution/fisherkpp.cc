@@ -82,7 +82,7 @@ StrangSplit::StrangSplit(
   xi_ = 1.0 - 0.5 * sqrt(2.0);
 #else
   //====================
-  // Your code goes here: initialization of data members 
+  // Your code goes here: initialization of data members
   //====================
 #endif
 }

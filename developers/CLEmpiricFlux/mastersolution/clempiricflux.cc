@@ -26,7 +26,7 @@ namespace CLEmpiricFlux {
 /* SAM_LISTING_BEGIN_8 */
 template <typename FUNCTOR>
 double findRoots(double v, double w, FUNCTOR &&g, double tol = 1.0E-6) {
-  double x = v;  // approximate root
+  double x = v; // approximate root
   const double len = w - v;
   constexpr static const int maxN = 1000;
   double gv = g(v), gw = g(w);
@@ -54,7 +54,7 @@ GodunovFlux::GodunovFlux(const UniformCubicSpline &f) : _f(f){};
 /* SAM_LISTING_BEGIN_9 */
 double GodunovFlux::operator()(double v, double w) const {
   double result;
-  #if SOLUTION
+#if SOLUTION
   if (v >= w)
     result = std::max(_f(v), _f(w));
   else {
@@ -68,7 +68,7 @@ double GodunovFlux::operator()(double v, double w) const {
       result = _f(z);
     }
   }
-  #else
+#else
   //====================
   // Your code goes here
   //====================
@@ -78,4 +78,4 @@ double GodunovFlux::operator()(double v, double w) const {
 
 /* SAM_LISTING_END_9 */
 
-}  // namespace CLEmpiricFlux
+} // namespace CLEmpiricFlux

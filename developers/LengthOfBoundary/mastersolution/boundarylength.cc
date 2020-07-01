@@ -13,7 +13,6 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 
-
 namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */
@@ -84,4 +83,4 @@ std::pair<double, double> measureDomain(std::string filename) {
 }
 /* SAM_LISTING_END_3 */
 
-}  // namespace LengthOfBoundary
+} // namespace LengthOfBoundary

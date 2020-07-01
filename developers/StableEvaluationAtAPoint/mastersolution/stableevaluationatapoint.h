@@ -322,9 +322,9 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
  * x: Coordinate vector for x
  */
 template <typename FUNCTOR>
-double stab_pointEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-    FUNCTOR &&u, const Eigen::Vector2d x) {
+double
+stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+               FUNCTOR &&u, const Eigen::Vector2d x) {
 
   double res = 0.0;
 

@@ -193,6 +193,6 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_augment(
   return std::make_pair(A, rhs_vec);
 }
 
-}  // namespace RegularizedNeumannProblem
+} // namespace RegularizedNeumannProblem
 
-#endif  // REGULARIZEDNEUMANNPROBLEM_H_
+#endif // REGULARIZEDNEUMANNPROBLEM_H_

@@ -26,4 +26,4 @@ TEST(AdvectionFV2D, dummyFunction) {
   ASSERT_NEAR(0.0, (v - v_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-}  // namespace AdvectionFV2D::test
+} // namespace AdvectionFV2D::test

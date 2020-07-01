@@ -100,12 +100,12 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
 	         0.0, elMat_scal(2, 0), 0.0, elMat_scal(2, 1), 0.0, elMat_scal(2, 2), 0.0, elMat_scal(2, 3),
                  elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3), 0.0,
                  0.0, elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3);
-     // clang-format on
+    // clang-format on
 
 #else
     //====================
     // Your code goes here
-     //====================
+    //====================
 #endif
   }
   return elMat_vec; // return the local mass element matrix

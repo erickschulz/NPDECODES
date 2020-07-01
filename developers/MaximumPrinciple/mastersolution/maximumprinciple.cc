@@ -104,4 +104,4 @@ Eigen::SparseMatrix<double> computeGalerkinMatrixTR(int M, double c) {
 }
 /* SAM_LISTING_END_4 */
 
-}  // namespace MaximumPrinciple
+} // namespace MaximumPrinciple

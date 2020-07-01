@@ -77,4 +77,4 @@ Eigen::VectorXd solveGodunov(const Eigen::VectorXd &u0, double T,
  */
 Eigen::VectorXd numexpGodunovSmoothU0(const Eigen::VectorXi &M);
 
-}  // namespace LaxWendroffScheme
+} // namespace LaxWendroffScheme

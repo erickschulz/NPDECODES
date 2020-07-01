@@ -15,13 +15,13 @@
 
 namespace LinFeReactDiff {
 
-std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
-    const lf::base::size_type levels);
+std::shared_ptr<lf::refinement::MeshHierarchy>
+generateMeshHierarchy(const lf::base::size_type levels);
 
 Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh);
 
 double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
                      Eigen::VectorXd mu);
-}  // namespace LinFeReactDiff
+} // namespace LinFeReactDiff
 
 #endif // define __LINFEREACTDIFF_H
