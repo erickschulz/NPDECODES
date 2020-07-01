@@ -6,22 +6,22 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <cmath>
+#include <complex>
+
+#include <Eigen/Core>
+
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <cmath>
-#include <complex>
-
 namespace StableEvaluationAtAPoint {
 
 /* Returns the mesh size for the given mesh. */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   double mesh_size = 0.0;
-
   // Find maximal edge length
   double edge_length;
   for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
@@ -32,28 +32,25 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
       mesh_size = edge_length;
     }
   }
-
   return mesh_size;
 }
 
 /* Returns G(x,y). */
 double G(Eigen::Vector2d x, Eigen::Vector2d y) {
   double res;
-
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
+  // Straightforward implementation
   res = (-1.0 / (2.0 * M_PI)) * std::log((x - y).norm());
-
   return res;
 }
 
 /* Returns the gradient of G(x,y). */
 Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
+
   Eigen::Vector2d res;
-
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-
+  // Straightforward implementation
   res = (x - y) / (2.0 * M_PI * (x - y).squaredNorm());
-
   return res;
 }
 
@@ -61,46 +58,49 @@ Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
  * on the partitioning of the boundary of Omega induced by the mesh.
  * The supplied meshes are unitary squares.
  */
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
-double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
+double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
            const Eigen::Vector2d x) {
   double PSLval = 0.0;
-
+#if SOLUTION
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-
   // Loop over boundary edges
   for (const lf::mesh::Entity *e : mesh->Entities(1)) {
     if (bd_flags_edge(*e)) {
       const lf::geometry::Geometry *geo_ptr = e->Geometry();
       LF_ASSERT_MSG(geo_ptr != nullptr, "Missing geometry!");
       // Fetch coordinates of corner points
-      Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
+      const Eigen::Matrix2d corners = lf::geometry::Corners(*geo_ptr);
       // Determine midpoints of edges
-      Eigen::Vector2d midpoint;
-      midpoint(0) = 0.5 * (corners(0, 0) + corners(0, 1));
-      midpoint(1) = 0.5 * (corners(1, 0) + corners(1, 1));
-
+      const Eigen::Vector2d midpoint{0.5 * (corners.col(0) + corners.col(1))};
       // Compute and add the elemental contribution
       PSLval += v(midpoint) * G(x, midpoint) * lf::geometry::Volume(*geo_ptr);
     }
   }
-
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return PSLval;
 }
+
+/* SAM_LISTING_END_1 */
 
 /* Evaluates the Integral P_DL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
  * The supplied meshes are unitary squares.
  */
+/* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
-double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
+double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
            const Eigen::Vector2d x) {
   double PDLval = 0.0;
-
+#if SOLUTION
   // This predicate returns true for edges on the boundary
   auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
-
   // Loop over boundary edges
   for (const lf::mesh::Entity *e : mesh->Entities(1)) {
     if (bd_flags_edge(*e)) {
@@ -112,67 +112,65 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
       Eigen::Vector2d midpoint;
       midpoint(0) = 0.5 * (corners(0, 0) + corners(0, 1));
       midpoint(1) = 0.5 * (corners(1, 0) + corners(1, 1));
-      // Determine the normal vector n on the unit square
+      // Determine the normal vector n on the unit square. There are four
+      // possibilities depending on the edge of the unit square
       Eigen::Vector2d n;
       if ((midpoint(0) > midpoint(1)) && (midpoint(0) < 1.0 - midpoint(1))) {
         n << 0.0, -1.0;
-
       } else if ((midpoint(0) > midpoint(1)) &&
                  (midpoint(0) > 1.0 - midpoint(1))) {
         n << 1.0, 0.0;
-
       } else if ((midpoint(0) < midpoint(1)) &&
                  (midpoint(0) > 1.0 - midpoint(1))) {
         n << 0.0, 1.0;
-
       } else {
         n << -1.0, 0.0;
       }
-
       // Compute and add the elemental contribution
       PDLval += v(midpoint) * (gradG(x, midpoint)).dot(n) *
                 lf::geometry::Volume(*geo_ptr);
     }
   }
-
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return PDLval;
 }
 
+/* SAM_LISTING_END_2 */
+
+/* SAM_LISTING_BEGIN_3 */
 /* This function computes u(x) = P_SL(grad u * n) - P_DL(u).
  * For u(x) = log( (x + (1, 0)^T).norm() ) and x = (0.3, 0.4)^T,
  * it computes the difference between the analytical and numerical
- * evaluation of u. The mesh is supposed to be the unit square.
+ * evaluation of u. The mesh is supposed to cover the unit square.
  */
 double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   double error = 0.0;
-
+#if SOLUTION
   const auto u = [](Eigen::Vector2d x) -> double {
     Eigen::Vector2d one(1.0, 0.0);
     return std::log((x + one).norm());
   };
-
   const auto gradu = [](Eigen::Vector2d x) -> Eigen::Vector2d {
     Eigen::Vector2d one(1.0, 0.0);
     return (x + one) / (x + one).squaredNorm();
   };
-
   // Define a Functor for the dot product of grad u(x) * n(x)
   const auto dotgradu_n = [gradu](const Eigen::Vector2d x) -> double {
     // Determine the normal vector n on the unit square
     Eigen::Vector2d n;
     if ((x(0) > x(1)) && (x(0) < 1.0 - x(1))) {
       n << 0.0, -1.0;
-
     } else if ((x(0) > x(1)) && (x(0) > 1.0 - x(1))) {
       n << 1.0, 0.0;
-
     } else if ((x(0) < x(1)) && (x(0) > 1.0 - x(1))) {
       n << 0.0, 1.0;
-
     } else {
       n << -1.0, 0.0;
     }
-
     return gradu(x).dot(n);
   };
 
@@ -181,24 +179,27 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
   const double rhs = PSL(mesh, dotgradu_n, x) - PDL(mesh, u, x);
   // Compute the error
   error = std::abs(u(x) - rhs);
-
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return error;
 }
+
+/* SAM_LISTING_END_3 */
 
 /* Computes Psi_x(y). */
 double Psi(const Eigen::Vector2d y) {
   double Psi_xy;
-
-  Eigen::Vector2d half(0.5, 0.5);
-  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
-  double dist = (y - half).norm();
+  const Eigen::Vector2d half(0.5, 0.5);
+  const double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  const double dist = (y - half).norm();
 
   if (dist <= 0.25 * std::sqrt(2)) {
     Psi_xy = 0.0;
-
   } else if (dist >= 0.5) {
     Psi_xy = 1.0;
-
   } else {
     Psi_xy = std::pow(std::cos(constant * (dist - 0.5)), 2);
   }
@@ -208,6 +209,7 @@ double Psi(const Eigen::Vector2d y) {
 
 /* Computes grad(Psi_x(y)). */
 Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
+
   Eigen::Vector2d gradPsi_xy;
 
   Eigen::Vector2d half(0.5, 0.5);
@@ -223,6 +225,7 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
     gradPsi_xy(1) = 0.0;
 
   } else {
+
     gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
                  std::sin(constant * (dist - 0.5)) * (constant / dist) *
                  (y - half);
@@ -234,17 +237,14 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
 /* Computes Laplacian of Psi_x(y). */
 double laplPsi(const Eigen::Vector2d y) {
   double laplPsi_xy;
-
   Eigen::Vector2d half(0.5, 0.5);
   double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
   double dist = (y - half).norm();
 
   if (dist <= 0.25 * std::sqrt(2)) {
     laplPsi_xy = 0.0;
-
   } else if (dist >= 0.5) {
     laplPsi_xy = 0.0;
-
   } else {
     laplPsi_xy =
         (2 * std::pow(constant, 2) / (y - half).squaredNorm()) *
@@ -255,7 +255,6 @@ double laplPsi(const Eigen::Vector2d y) {
             std::sin(constant * (dist - 0.5)) *
             (1.0 - ((y - half).dot(y - half) / (y - half).squaredNorm()));
   }
-
   return laplPsi_xy;
 }
 
@@ -263,11 +262,12 @@ double laplPsi(const Eigen::Vector2d y) {
  * fe_space: finite element space defined on a triangular mesh of the square
  * domain u: Function handle for u x: Coordinate vector for x
  */
+/* SAM_LISTING_BEGIN_4 */
 template <typename FUNCTOR>
-double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
+double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
              FUNCTOR &&u, const Eigen::Vector2d x) {
   double val = 0.0;
-
+#if SOLUTION
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
 
   // Use midpoint quadrature rule
@@ -297,28 +297,38 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
   }
 
   /* VARIANT:
-  auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y) {
+     auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y)
+     {
 
-        return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) *
-  laplPsi(y) ));
-  }
-  );
+     return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y)
+     ));
+     }
+     );
 
-  double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
+     double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
   */
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return val;
 }
+
+/* SAM_LISTING_END_4 */
 
 /* Evaluates u(x) according to (3.11.14).
  * u: Function Handle for u
  * x: Coordinate vector for x
  */
 template <typename FUNCTOR>
-double stab_pointEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
-    FUNCTOR &&u, const Eigen::Vector2d x) {
+double
+stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+               FUNCTOR &&u, const Eigen::Vector2d x) {
+
   double res = 0.0;
 
+#if SOLUTION
   Eigen::Vector2d half(0.5, 0.5);
   if ((x - half).norm() <= 0.25) {
     res = Jstar(fe_space, u, x);
@@ -327,6 +337,11 @@ double stab_pointEval(
     std::cerr << "The point does not fulfill the assumptions" << std::endl;
   }
 
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   return res;
 }
 

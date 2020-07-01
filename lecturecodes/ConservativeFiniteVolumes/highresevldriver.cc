@@ -1,25 +1,37 @@
+// Demonstration code for course Numerical Methods for Partial Differential
+// Equations Author: R. Hiptmair, SAM, ETH Zurich Date: May 2020
+
 #include "highresevl.h"
+#include "numexp_runner.h"
 
 int main() {
-  std::cout << "Running driver for discrete evolution in conservation form "
-               "with linear reconstruction"
-            << std::endl;
-  unsigned N = 60;  // Number of spatial cells
-  double T = 0.5;   // Final time
+  std::cout << "Model problem: 1D Burgers equation" << std::endl;
+  std::cout
+      << "Numerical simulation based on high-resolution FV with slope limiting"
+      << std::endl;
 
-  // spatial interval for simulation
-  double a = -2.5;  // left bound for computational interval
-  double b = 1.5;   // right bound
+  // Spatial computational domain. Note that the initial data are confined to
+  // [0,1]. Therefore the maximal speed of propagation "to the right" will be 1.
+  // This means that the exact solution  will always be supported in [0,5] for
+  // times in [0,4].
+  const double _a = -1.0;
+  const double _b = 5.0;
+  // Final time for simulation
+  const double _T = 4.0;
 
-  // Initial state distribution
-  auto u0 = [](double x) { return std::sin(x); };
-  // Numerical flux function: central flux
-  auto F = [](double v, double w) { return 0.25 * (v * v + w * w); };
+  // No linear reconstruction: for testing purposes
+  auto zeroslope = [](double a, double b, double c) { return 0.0; };
+  
   // Minmod slope limiter for p.w. linear reconstruction
   // Arguments: mu_{j-1}/h, mu_j/h, mu_{j+1}/h
-  auto slopes = [](double a, double b, double c) {
+  auto minmod = [](double a, double b, double c) {
     return std::max(0., std::min(b - a, c - b));
   };
-  // Fully discrete evolution
-  ConsFV::highresevl(a, b, N, u0, T, F, slopes);
+  
+  {
+    auto evl = [&](double a, double b, double N, double T) -> Eigen::VectorXd {
+      return ConsFV::highresevl(a, b, N, box, T, nfn_lf_burger, minmod);
+    };
+    consform_compute(evl, "burgers_hr_rusanov.csv", _T, _a, _b);
+  }
 }

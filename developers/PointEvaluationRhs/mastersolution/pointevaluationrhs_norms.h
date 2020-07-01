@@ -9,10 +9,10 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
+
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>
-
-#include <Eigen/Core>
 
 namespace PointEvaluationRhs {
 
@@ -23,12 +23,12 @@ double computeL2normLinearFE(const lf::assemble::DofHandler &dofh,
                              const Eigen::VectorXd &mu);
 
 class MassLocalMatrixAssembler {
- private:
- public:
+private:
+public:
   explicit MassLocalMatrixAssembler() = default;
   bool isActive(const lf::mesh::Entity &entity) { return true; }
   Eigen::MatrixXd Eval(const lf::mesh::Entity &entity);
 };
 
-}  // namespace PointEvaluationRhs
-#endif  // define __NORMS_H
+} // namespace PointEvaluationRhs
+#endif // define __NORMS_H

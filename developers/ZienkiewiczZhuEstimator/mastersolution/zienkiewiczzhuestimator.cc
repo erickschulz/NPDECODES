@@ -24,37 +24,83 @@ namespace ZienkiewiczZhuEstimator {
 
 /* Implementing member function Eval of class VectorProjectionMatrixProvider*/
 /* SAM_LISTING_BEGIN_1 */
-Eigen::MatrixXd VectorProjectionMatrixProvider::Eval(
-    const lf::mesh::Entity &entity) {
-  Eigen::MatrixXd elMat(6, 6);  // For returning the element matrix
+Eigen::MatrixXd
+VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
+  Eigen::MatrixXd elMat_vec; // element matrix to be returned
   // Throw error in case cell is not Tria nor Quad
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria() ||
                     entity.RefEl() == lf::base::RefEl::kQuad(),
                 "Unsupported cell type " << entity.RefEl());
 
   if (entity.RefEl() == lf::base::RefEl::kTria()) {
+    elMat_vec = Eigen::MatrixXd::Zero(6, 6);
     // For TRIANGULAR CELLS
     // Compute the area of the triangle cell
     const double area = lf::geometry::Volume(*(entity.Geometry()));
 #if SOLUTION
     // Assemble the mass element matrix over the cell
     // clang-format off
-      elMat << 2.0, 0.0, 1.0, 0.0, 1.0, 0.0,
-               0.0, 2.0, 0.0, 1.0, 0.0, 1.0,
-	       1.0, 0.0, 2.0, 0.0, 1.0, 0.0,
-	       0.0, 1.0, 0.0, 2.0, 0.0, 1.0,
-	       1.0, 0.0, 1.0, 0.0, 2.0, 0.0,
-	       0.0, 1.0, 0.0, 1.0, 0.0, 2.0;
+      elMat_vec << 2.0, 0.0, 1.0, 0.0, 1.0, 0.0,
+                   0.0, 2.0, 0.0, 1.0, 0.0, 1.0,
+	           1.0, 0.0, 2.0, 0.0, 1.0, 0.0,
+	           0.0, 1.0, 0.0, 2.0, 0.0, 1.0,
+	           1.0, 0.0, 1.0, 0.0, 2.0, 0.0,
+	           0.0, 1.0, 0.0, 1.0, 0.0, 2.0;
     // clang-format on
-    elMat *= area / 12.0;
+    elMat_vec *= area / 12.0;
 #else
     //====================
     // Your code goes here
     //====================
 #endif
   } else {
-// for QUADRILATERAL CELLS
+    // for QUADRILATERAL CELLS
+    elMat_vec = Eigen::MatrixXd::Zero(8, 8);
+    Eigen::MatrixXd elMat_scal =
+        Eigen::MatrixXd::Zero(4, 4); // element matrix for scalar FEM
 #if SOLUTION
+    // Tensor product Gauss-Legendre quadrature rule of order 4
+    const lf::quad::QuadRule qr{
+        lf::quad::make_QuadRule(lf::base::RefEl::kQuad(), 3)};
+    // Reference quadrature points
+    const Eigen::MatrixXd zeta_ref{qr.Points()};
+    // Quadrature weights
+    const Eigen::VectorXd w_ref{qr.Weights()};
+    // Number of quadrature points
+    const lf::base::size_type P = qr.NumPoints();
+
+    // Reference tensor product basis functions on quadrilateral ref entity
+    std::vector<std::function<double(coord_t)>> ref_basis_vec;
+    auto b0_ref = [](coord_t x) -> double { return (1 - x(0)) * (1 - x(1)); };
+    auto b1_ref = [](coord_t x) -> double { return x(0) * (1 - x(1)); };
+    auto b2_ref = [](coord_t x) -> double { return x(0) * x(1); };
+    auto b3_ref = [](coord_t x) -> double { return (1 - x(0)) * x(1); };
+    ref_basis_vec.push_back(b0_ref);
+    ref_basis_vec.push_back(b1_ref);
+    ref_basis_vec.push_back(b2_ref);
+    ref_basis_vec.push_back(b3_ref);
+
+    const lf::geometry::Geometry &geo{*(entity.Geometry())};
+    const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        for (int l = 0; l < P; l++) {
+          elMat_scal(i, j) += w_ref[l] * ref_basis_vec[i](zeta_ref.col(l)) *
+                              ref_basis_vec[j](zeta_ref.col(l)) * gram_dets[l];
+        }
+      }
+    }
+    // 8x8 element (mass) matrix for vectorial FEM
+    // clang-format off
+    elMat_vec << elMat_scal(0, 0), 0.0, elMat_scal(0, 1), 0.0, elMat_scal(0, 2), 0.0, elMat_scal(0, 3), 0.0,
+                 0.0, elMat_scal(0, 0), 0.0, elMat_scal(0, 1), 0.0, elMat_scal(0, 2), 0.0, elMat_scal(0, 3),
+                 elMat_scal(1, 0), 0.0, elMat_scal(1, 1), 0.0, elMat_scal(1, 2), 0.0, elMat_scal(1, 3), 0.0,
+	         0.0, elMat_scal(1, 0), 0.0, elMat_scal(1, 1), 0.0, elMat_scal(1, 2), 0.0, elMat_scal(1, 3),
+	         elMat_scal(2, 0), 0.0, elMat_scal(2, 1), 0.0, elMat_scal(2, 2), 0.0, elMat_scal(2, 3), 0.0,
+	         0.0, elMat_scal(2, 0), 0.0, elMat_scal(2, 1), 0.0, elMat_scal(2, 2), 0.0, elMat_scal(2, 3),
+                 elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3), 0.0,
+                 0.0, elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3);
+    // clang-format on
 
 #else
     //====================
@@ -62,15 +108,15 @@ Eigen::MatrixXd VectorProjectionMatrixProvider::Eval(
     //====================
 #endif
   }
-  return elMat;  // return the local mass element matrix
-}  //
+  return elMat_vec; // return the local mass element matrix
+} //
 /* SAM_LISTING_END_1 */
 
 /* Implementing member function Eval of class GradientProjectionVectorProvider*/
 /* SAM_LISTING_BEGIN_2 */
-Eigen::VectorXd GradientProjectionVectorProvider::Eval(
-    const lf::mesh::Entity &entity) {
-  Eigen::VectorXd elVec(6);  // for returning the element vector
+Eigen::VectorXd
+GradientProjectionVectorProvider::Eval(const lf::mesh::Entity &entity) {
+  Eigen::VectorXd elVec(6); // for returning the element vector
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{_fe_space_p->LocGlobMap()};
   // Obtain global indices of the vertices of the triangle entity
@@ -110,28 +156,29 @@ Eigen::VectorXd GradientProjectionVectorProvider::Eval(
 //====================
 #endif
   return elVec;
-}  // GradientProjectionVectorProvider::Eval
+} // GradientProjectionVectorProvider::Eval
 /* SAM_LISTING_END_2 */
 
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(
-    const lf::mesh::Entity &entity) {
+Eigen::Matrix<double, 2, 3>
+gradbarycoordinates(const lf::mesh::Entity &entity) {
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
                 "Unsupported cell type " << entity.RefEl());
 
   // Get vertices of the triangle
   auto endpoints = lf::geometry::Corners(*(entity.Geometry()));
 
-  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
+  Eigen::Matrix<double, 3, 3> X; // temporary matrix
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
   X.block<3, 2>(0, 1) = endpoints.transpose();
 
   return X.inverse().block<2, 3>(1, 0);
-}  // gradbarycoordinates
+} // gradbarycoordinates
 
 /* SAM_LISTING_BEGIN_3 */
-Eigen::VectorXd computeLumpedProjection(
-    const lf::assemble::DofHandler &scal_dofh, const Eigen::VectorXd &mu,
-    const lf::assemble::DofHandler &vec_dofh) {
+Eigen::VectorXd
+computeLumpedProjection(const lf::assemble::DofHandler &scal_dofh,
+                        const Eigen::VectorXd &mu,
+                        const lf::assemble::DofHandler &vec_dofh) {
   // Obtain shared_ptr to mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = scal_dofh.Mesh();
   // Dimension of vector-valued finite element space
@@ -192,7 +239,7 @@ Eigen::VectorXd computeLumpedProjection(
 #endif
   }
   return proj_vec;
-};  // computeLumpedProjection
+}; // computeLumpedProjection
 
 /* SAM_LISTING_END_3 */
 
@@ -201,7 +248,7 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
                           const Eigen::VectorXd &eta,
                           const lf::assemble::DofHandler &vec_dofh,
                           const Eigen::VectorXd &gamma) {
-  double deviation_norm_value = 0.0;  // For retrurning the result
+  double deviation_norm_value = 0.0; // For retrurning the result
   // Obtain shared_ptr to mesh
   auto mesh_p = scal_dofh.Mesh();
   // Cell-oriented computation of deviation norm (squared)
@@ -253,7 +300,7 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
 #endif
   }
   return std::sqrt(deviation_norm_value);
-};  // computeL2Deviation
+}; // computeL2Deviation
 /* SAM_LISTING_END_4 */
 
 Eigen::VectorXd solveBVP(
@@ -341,7 +388,7 @@ Eigen::VectorXd solveBVP(
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
 
   return discrete_solution;
-};  // solveBVP
+}; // solveBVP
 
 Eigen::VectorXd solveGradVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
@@ -376,7 +423,7 @@ Eigen::VectorXd solveGradVP(
   approx_grad = solver.solve(phi);
 
   return approx_grad;
-};  // solveGradVP
+}; // solveGradVP
 
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   double mesh_size = 0.0;
@@ -393,7 +440,7 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
   }
 
   return mesh_size;
-};  // getMeshSize
+}; // getMeshSize
 
 void progress_bar::write(double fraction) {
   // clamp fraction to valid range [0,1]
@@ -412,4 +459,4 @@ void progress_bar::write(double fraction) {
      << sign + " of meshes]" << std::flush;
 };
 
-}  // namespace ZienkiewiczZhuEstimator
+} // namespace ZienkiewiczZhuEstimator

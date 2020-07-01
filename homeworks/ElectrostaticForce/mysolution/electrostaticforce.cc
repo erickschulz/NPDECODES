@@ -10,25 +10,6 @@
 
 namespace ElectrostaticForce {
 
-/* SAM_LISTING_BEGIN_2 */
-double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
-  double mesh_size = 0.0;
-
-  // Find maximal edge length
-  double edge_length;
-  // Loop over all edges of the mesh
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
-    // Compute the length of the edge
-    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
-    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
-    if (mesh_size < edge_length) {
-      mesh_size = edge_length;
-    }
-  }
-  return mesh_size;
-}; // getMeshSize
-/* SAM_LISTING_END_2 */
-
 Eigen::Matrix<double, 2, 3>
 gradbarycoordinates(const lf::mesh::Entity &entity) {
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
@@ -47,15 +28,13 @@ gradbarycoordinates(const lf::mesh::Entity &entity) {
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d computeExactForce() {
   Eigen::Vector2d force; // return vector
-
+  // Real overkill quadrature!
   unsigned int N = 1e6; // nb. of quadrature points
-
   // Data
   double r = 4.0 / 15.0; // radius of the circle
   Eigen::Vector2d a(-16.0 / 15.0, 0.0);
   Eigen::Vector2d b(-1.0 / 15.0, 0.0);
-
-  // Tools
+  // Auxiliary variables
   Eigen::Vector2d x;    // euclidean coordinates
   Eigen::Vector2d n;    // normal vector at the coordinates
   Eigen::Vector2d grad; // gradient of the exact solution
@@ -76,10 +55,10 @@ Eigen::Vector2d computeExactForce() {
     // IV. Evaluate full integrand
     force += grad.dot(n) * grad;
   }
-  // V. Scale the summation
+  // V. Scale the result of the summation
   force *= r * M_PI / N;
   return force;
-} // computeExactForce
+} // end computeExactForce
 /* SAM_LISTING_END_1 */
 
 Eigen::VectorXd solvePoissonBVP(
@@ -221,7 +200,7 @@ Eigen::Vector2d computeForceBoundaryFunctional(
   approx_force *= 0.5;
   return approx_force;
 } // computeForceFunctional
-  /* SAM_LISTING_END_4 */
+/* SAM_LISTING_END_4 */
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Vector2d computeForceDomainFunctional(
@@ -280,5 +259,24 @@ Eigen::Vector2d computeForceDomainFunctional(
   return approx_force;
 } // computeForceDomainFunctional
 /* SAM_LISTING_END_5 */
+
+/* SAM_LISTING_BEGIN_6 */
+double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
+  double mesh_size = 0.0;
+
+  // Find maximal edge length
+  double edge_length;
+  // Loop over all edges of the mesh
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
+    // Compute the length of the edge
+    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
+    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
+    if (mesh_size < edge_length) {
+      mesh_size = edge_length;
+    }
+  }
+  return mesh_size;
+}; // getMeshSize
+/* SAM_LISTING_END_6 */
 
 } // namespace ElectrostaticForce

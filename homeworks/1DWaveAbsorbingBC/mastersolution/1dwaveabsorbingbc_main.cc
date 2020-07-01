@@ -19,22 +19,17 @@ using namespace WaveAbsorbingBC1D;
 const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                        Eigen::DontAlignCols, ", ", "\n");
 
-/* SAM_LISTING_BEGIN_1 */
 int main() {
+  /* SAM_LISTING_BEGIN_1 */
   double c = 1.0;
   double T = 7.0;
   unsigned int N = 100;
   unsigned int m = 2000;
   Eigen::MatrixXd R = waveLeapfrogABC(c, T, N, m);
-
-  std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
-      computeEnergies(R, c, T / m);
-  Eigen::VectorXd E_pot = energies.first;
-  Eigen::VectorXd E_kin = energies.second;
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(m + 1, 0.0, T);
 
   // print the data, e.g. to a .csv file, in a suitable way
-  std::ofstream solution_file, energies_file;
+  std::ofstream solution_file;
 
   solution_file.open("solution.csv");
   Eigen::MatrixXd tR(m + 1, N + 2);
@@ -43,16 +38,27 @@ int main() {
   solution_file << tR.format(CSVFormat) << std::endl;
   solution_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR
+              "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
+  /* SAM_LISTING_END_1 */
 
+  std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
+      computeEnergies(R, c, T / m);
+  Eigen::VectorXd E_pot = energies.first;
+  Eigen::VectorXd E_kin = energies.second;
+
+  /* SAM_LISTING_BEGIN_2 */
+  std::ofstream energies_file;
   energies_file.open("energies.csv");
   energies_file << t.transpose().format(CSVFormat) << std::endl
                 << E_pot.transpose().format(CSVFormat) << std::endl
                 << E_kin.transpose().format(CSVFormat) << std::endl;
   energies_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/visenergies.py " CURRENT_BINARY_DIR
+              "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
+/* SAM_LISTING_END_2 */
 
   return 0;
 }
-/* SAM_LISTING_END_1 */

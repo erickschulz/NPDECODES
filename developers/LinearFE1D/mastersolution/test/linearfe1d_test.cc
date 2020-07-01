@@ -6,12 +6,12 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include "../linearfe1d.h"
-
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
+
+#include "../linearfe1d.h"
 
 // Test the solver functions
 TEST(LinearFE1D, solution_testA) {
@@ -28,7 +28,8 @@ TEST(LinearFE1D, solution_testA) {
 
   // std::cout << "A" << sol << std::endl;
 
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++)
+    EXPECT_NEAR(sol_cor(i), sol(i), 1e-5);
 }
 
 TEST(LinearFE1D, solution_testB) {
@@ -44,7 +45,8 @@ TEST(LinearFE1D, solution_testB) {
   Eigen::VectorXd sol = LinearFE1D::solveB(mesh, alpha, f, 0.1, 0.5);
 
   // std::cout << "B" << sol << std::endl;
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++)
+    EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
 
 TEST(LinearFE1D, solution_testC) {
@@ -61,7 +63,8 @@ TEST(LinearFE1D, solution_testC) {
 
   // std::cout << "C" << sol << std::endl;
 
-  for (int i = 0; i < sol.size(); i++) EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
+  for (int i = 0; i < sol.size(); i++)
+    EXPECT_NEAR(sol(i), sol_cor(i), 1e-5);
 }
 
 // TODO: Implement tests for auxillary functions

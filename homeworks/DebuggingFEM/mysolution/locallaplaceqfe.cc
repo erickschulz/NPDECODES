@@ -17,8 +17,8 @@
 
 namespace DebuggingFEM {
 
-Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(
-    const lf::mesh::Entity &cell) {
+Eigen::Matrix<double, 6, 6>
+LocalLaplaceQFE1::Eval(const lf::mesh::Entity &cell) {
   // Query (topological) type of cell/reference element
   const lf::base::RefEl ref_el{cell.RefEl()};
   // Verify that the cell is a triangle
@@ -33,7 +33,7 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(
   Eigen::Matrix<double, 2, 3> vertices{geo_ptr->Global(ref_el.NodeCoords())};
   // Comopute element matrix for negative Laplacian and lowest-order Lgrangian
   // finite elements as in Remark 2.4.5.9. in the course notes
-  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
+  Eigen::Matrix<double, 3, 3> X; // temporary matrix
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
   X.block<3, 2>(0, 1) = vertices.transpose();
   const double area = 0.5 * std::abs(X.determinant());
@@ -71,8 +71,8 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE1::Eval(
   return result;
 }
 
-Eigen::Matrix<double, 6, 6> LocalLaplaceQFE2::Eval(
-    const lf::mesh::Entity &cell) {
+Eigen::Matrix<double, 6, 6>
+LocalLaplaceQFE2::Eval(const lf::mesh::Entity &cell) {
   // Query (topological) type of cell/reference element
   const lf::base::RefEl ref_el{cell.RefEl()};
   // Verify that the cell is a triangle
@@ -87,7 +87,7 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE2::Eval(
   Eigen::Matrix<double, 2, 3> vertices{geo_ptr->Global(ref_el.NodeCoords())};
   // Comopute element matrix for negative Laplacian and lowest-order Lgrangian
   // finite elements as in Remark 2.4.5.9. in the course notes
-  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
+  Eigen::Matrix<double, 3, 3> X; // temporary matrix
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
   X.block<3, 2>(0, 1) = vertices.transpose();
   const double area = 0.5 * std::abs(X.determinant());
@@ -108,8 +108,8 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE2::Eval(
 }
 
 // implementation
-Eigen::Matrix<double, 6, 6> LocalLaplaceQFE3::Eval(
-    const lf::mesh::Entity &cell) {
+Eigen::Matrix<double, 6, 6>
+LocalLaplaceQFE3::Eval(const lf::mesh::Entity &cell) {
   // Obtain the element matrix for piecewise linear Lagrangian FEM by using
   // a built-in class of LehrFEM++
   auto linear_lapl_element_matrix = lf::uscalfe::LinearFELaplaceElementMatrix();
@@ -133,4 +133,4 @@ Eigen::Matrix<double, 6, 6> LocalLaplaceQFE3::Eval(
   return (result / 3.0);
 }
 
-}  // namespace DebuggingFEM
+} // namespace DebuggingFEM

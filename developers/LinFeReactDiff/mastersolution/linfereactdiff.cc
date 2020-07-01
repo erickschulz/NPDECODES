@@ -5,6 +5,14 @@
 
 #include "linfereactdiff.h"
 
+#include <cmath>
+#include <memory>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
@@ -15,13 +23,6 @@
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-#include <cmath>
-#include <memory>
-#include <utility>
-
 namespace LinFeReactDiff {
 
 /**
@@ -29,8 +30,8 @@ namespace LinFeReactDiff {
  * @param levels: number of refinement steps
  */
 
-std::shared_ptr<lf::refinement::MeshHierarchy> generateMeshHierarchy(
-    const lf::base::size_type levels) {
+std::shared_ptr<lf::refinement::MeshHierarchy>
+generateMeshHierarchy(const lf::base::size_type levels) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory),
                             CURRENT_SOURCE_DIR "/../meshes/square.msh");
@@ -194,4 +195,4 @@ double computeEnergy(std::shared_ptr<const lf::mesh::Mesh> mesh,
   return std::sqrt(energy_stiffness_sq + energy_mass_sq);
 }
 
-}  // namespace LinFeReactDiff
+} // namespace LinFeReactDiff

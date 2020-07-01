@@ -5,6 +5,14 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <math.h>
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
@@ -13,13 +21,6 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
-#include <math.h>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 
 namespace ErrorEstimatesForTraces {
 
@@ -29,11 +30,12 @@ using quad_rule_collection_t = std::map<lf::base::RefEl, lf::quad::QuadRule>;
 using linear_lagrange = lf::uscalfe::FeSpaceLagrangeO1<double>;
 
 // Function solving the Robin elliptic boundary value problem
-Eigen::VectorXd solveBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>&);
+Eigen::VectorXd
+solveBVP(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &);
 
 // Function for evaluating the integral of a function on the boundary
-double bdFunctionalEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>&, Eigen::VectorXd&);
+double
+bdFunctionalEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &,
+                 Eigen::VectorXd &);
 
-}  // namespace ErrorEstimatesForTraces
+} // namespace ErrorEstimatesForTraces

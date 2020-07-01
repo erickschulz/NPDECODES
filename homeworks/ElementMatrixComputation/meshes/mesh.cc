@@ -1,10 +1,10 @@
 /**
-  * @file mesh.cc
-  * @brief NPDE homework ElementMatrixComputation code
-  * @author Janik Schüttler, edited by Oliver Rietmann
-  * @date 03.03.2019
-  * @copyright Developed at ETH Zurich
-  */
+ * @file mesh.cc
+ * @brief NPDE homework ElementMatrixComputation code
+ * @author Janik Schüttler, edited by Oliver Rietmann
+ * @date 03.03.2019
+ * @copyright Developed at ETH Zurich
+ */
 
 #include "mesh.h"
 
@@ -14,8 +14,8 @@
 #include <Eigen/Core>
 
 #include <lf/base/base.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/geometry/geometry.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
 
 std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh() {
   using size_type = lf::mesh::Mesh::size_type;
@@ -44,10 +44,8 @@ std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh() {
 
   // Specify triangles (five)
   std::array<std::array<size_type, 3>, 5> tria_nodes{
-      std::array<size_type, 3>({1, 2, 5}),
-      std::array<size_type, 3>({2, 3, 6}),
-      std::array<size_type, 3>({5, 2, 6}),
-      std::array<size_type, 3>({4, 5, 7}),
+      std::array<size_type, 3>({1, 2, 5}), std::array<size_type, 3>({2, 3, 6}),
+      std::array<size_type, 3>({5, 2, 6}), std::array<size_type, 3>({4, 5, 7}),
       std::array<size_type, 3>({5, 8, 7})};
 
   // Specify parallelograms (two)
@@ -56,34 +54,29 @@ std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh() {
       std::array<size_type, 4>({5, 6, 9, 8})};
 
   // Create nodes
-  for (const auto &node : node_coord)
-  {
-    mesh_factory_ptr->AddPoint(Eigen::Vector2d({node[0] * scale, node[1] * scale}));
+  for (const auto &node : node_coord) {
+    mesh_factory_ptr->AddPoint(
+        Eigen::Vector2d({node[0] * scale, node[1] * scale}));
   }
 
   // generate triangles
-  for (const auto &node : tria_nodes)
-  {
+  for (const auto &node : tria_nodes) {
     mesh_factory_ptr->AddEntity(
         lf::base::RefEl::kTria(),
-        nonstd::span<const size_type>(
-            {node[0], node[1], node[2]}),
+        nonstd::span<const size_type>({node[0], node[1], node[2]}),
         std::unique_ptr<lf::geometry::Geometry>(nullptr));
   }
 
   // generate Parallelograms
-  for (const auto &node : parg_nodes)
-  {
+  for (const auto &node : parg_nodes) {
     Eigen::MatrixXd quad_coord(2, 4);
-    for (int n_pt = 0; n_pt < 4; ++n_pt)
-    {
+    for (int n_pt = 0; n_pt < 4; ++n_pt) {
       quad_coord(0, n_pt) = node_coord[node[n_pt]][0];
       quad_coord(1, n_pt) = node_coord[node[n_pt]][1];
     }
     mesh_factory_ptr->AddEntity(
         lf::base::RefEl::kQuad(),
-        nonstd::span<const size_type>(
-            {node[0], node[1], node[2], node[3]}),
+        nonstd::span<const size_type>({node[0], node[1], node[2], node[3]}),
         std::make_unique<lf::geometry::Parallelogram>(quad_coord));
   }
 

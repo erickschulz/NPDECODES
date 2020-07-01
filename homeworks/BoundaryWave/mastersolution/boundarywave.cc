@@ -28,12 +28,13 @@ lf::assemble::COOMatrix<double> buildM(
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Creating a predicate that will guarantee that the computations are carried
   // only on the edges of the mesh using the boundary flags
+  // Actually a redundant step, because 'bdflags' is a predicate already.
   auto edges_predicate = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
     return bd_flags(edge);
   };
   // Coefficient function used in the class template MassEdgeMatrixProvider
-  auto eta =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 1.0; });
+  auto eta = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 1.0; });
   lf::uscalfe::MassEdgeMatrixProvider<double, decltype(eta),
                                       decltype(edges_predicate)>
       edgemat_builder(fe_space_p, eta, edges_predicate);
@@ -60,8 +61,8 @@ lf::assemble::COOMatrix<double> buildA(
   // Coefficient functions used in class ReactionDiffusionElementMatrixProvider
   auto alpha = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 1.0 + x.dot(x); });
-  auto gamma =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 0.0; });
+  auto gamma = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 0.0; });
   // Initialize element matrix builder
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<double, decltype(alpha),
                                                       decltype(gamma)>
@@ -76,4 +77,4 @@ lf::assemble::COOMatrix<double> buildA(
 
 /* SAM_LISTING_END_2 */
 
-}  // namespace BoundaryWave
+} // namespace BoundaryWave

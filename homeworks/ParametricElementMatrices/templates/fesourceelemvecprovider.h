@@ -15,7 +15,7 @@
 namespace ParametricElementMatrices {
 
 class FESourceElemVecProvider {
- public:
+public:
   /** @brief Constructor storing the basis expansion vector of the variable
    * coefficient and the finite elements space */
   FESourceElemVecProvider(
@@ -24,17 +24,17 @@ class FESourceElemVecProvider {
       : fe_space_(fe_space), coeff_expansion_(coeff_expansion) {}
   /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity &cell) { return true; }
-   /** @brief Main method for computing the element vector
+  /** @brief Main method for computing the element vector
    * @param cell refers to current cell (triangle or quadrilateral) for which
    * the element veector is desired. The implementation uses local edge-midpoint
    * quadrature rule. */
   Eigen::VectorXd Eval(const lf::mesh::Entity &cell);
 
- private:
+private:
   // Linear first-order lagrangian finite element space
   std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
   // Finite element basis expansion vector of the coefficient function
   Eigen::VectorXd coeff_expansion_;
 }; // class FESourceElemVecProvider
 
-}  // namespace ParametricElementMatrices
+} // namespace ParametricElementMatrices

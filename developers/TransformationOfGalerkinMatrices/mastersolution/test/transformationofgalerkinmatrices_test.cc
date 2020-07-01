@@ -1,8 +1,8 @@
-#include "../transformationofgalerkinmatrices.h"
-
 #include <gtest/gtest.h>
 
 #include <Eigen/SparseCore>
+
+#include "../transformationofgalerkinmatrices.h"
 
 namespace TransformationOfGalerkinMatrices::test {
 
@@ -30,8 +30,8 @@ TEST(TransformationOfGalerkinMatrices, TestTransformation) {
   std::vector<Eigen::Triplet<double>> A, A_tilde;
 
   // Case 1 and 2
-  A.push_back(Eigen::Triplet<double>(2 * N - 1, 2 * N - 1, 1));  // i, j even
-  A.push_back(Eigen::Triplet<double>(3 - 1, 3 - 1, 5));          // i, j odd
+  A.push_back(Eigen::Triplet<double>(2 * N - 1, 2 * N - 1, 1)); // i, j even
+  A.push_back(Eigen::Triplet<double>(3 - 1, 3 - 1, 5));         // i, j odd
   A_mat.setFromTriplets(A.begin(), A.end());
   A_tilde = TransformationOfGalerkinMatrices::transformCOOmatrix(A);
   A_tilde_mat.setFromTriplets(A_tilde.begin(), A_tilde.end());
@@ -43,7 +43,7 @@ TEST(TransformationOfGalerkinMatrices, TestTransformation) {
   A.clear();
   A_tilde.clear();
   A.push_back(Eigen::Triplet<double>(2 * N - 1, 2 * N - 1, 1));
-  A.push_back(Eigen::Triplet<double>(4 - 1, 3 - 1, 5));  // i even, j odd
+  A.push_back(Eigen::Triplet<double>(4 - 1, 3 - 1, 5)); // i even, j odd
   A_mat.setFromTriplets(A.begin(), A.end());
   A_tilde = TransformationOfGalerkinMatrices::transformCOOmatrix(A);
   A_tilde_mat.setFromTriplets(A_tilde.begin(), A_tilde.end());
@@ -55,7 +55,7 @@ TEST(TransformationOfGalerkinMatrices, TestTransformation) {
   A.clear();
   A_tilde.clear();
   A.push_back(Eigen::Triplet<double>(2 * N - 1, 2 * N - 1, 1));
-  A.push_back(Eigen::Triplet<double>(3 - 1, 4 - 1, 5));  // i odd, j even
+  A.push_back(Eigen::Triplet<double>(3 - 1, 4 - 1, 5)); // i odd, j even
   A_mat.setFromTriplets(A.begin(), A.end());
   A_tilde = TransformationOfGalerkinMatrices::transformCOOmatrix(A);
   A_tilde_mat.setFromTriplets(A_tilde.begin(), A_tilde.end());
@@ -64,4 +64,4 @@ TEST(TransformationOfGalerkinMatrices, TestTransformation) {
   ASSERT_TRUE((sol_mat - A_tilde_mat).norm() == 0);
 }
 
-}  // namespace TransformationOfGalerkinMatrices::test
+} // namespace TransformationOfGalerkinMatrices::test

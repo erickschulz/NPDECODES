@@ -4,11 +4,9 @@
 
 #include "../transformationofgalerkinmatrices.h"
 
-namespace TransformationOfGalerkinMatrices::test
-{
+namespace TransformationOfGalerkinMatrices::test {
 
-TEST(TransformationOfGalerkinMatrices, TestTransformation)
-{
+TEST(TransformationOfGalerkinMatrices, TestTransformation) {
   std::cout << "NPDE homework TransformationOfGalerkinMatrices: unit test"
             << std::endl;
 
@@ -18,8 +16,7 @@ TEST(TransformationOfGalerkinMatrices, TestTransformation)
 
   int N = 4;
   SpMat S(2 * N, 2 * N);
-  for (int i = 0; i < N; i++)
-  {
+  for (int i = 0; i < N; i++) {
     S_triplets.push_back(Eigen::Triplet<double>(i, i * 2, 1));
     S_triplets.push_back(Eigen::Triplet<double>(i, i * 2 + 1, 1));
     S_triplets.push_back(Eigen::Triplet<double>(N + i, i * 2, 1));

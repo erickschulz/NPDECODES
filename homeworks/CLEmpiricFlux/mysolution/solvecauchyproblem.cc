@@ -17,7 +17,7 @@ namespace CLEmpiricFlux {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
-                            const Eigen::Vector2d &initsupp, double t) {
+                            Eigen::Vector2d initsupp, double t) {
   Eigen::Vector2d result;
   //====================
   // Your code goes here
@@ -62,4 +62,4 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
 }
 /* SAM_LISTING_END_4 */
 
-}  // namespace CLEmpiricFlux
+} // namespace CLEmpiricFlux

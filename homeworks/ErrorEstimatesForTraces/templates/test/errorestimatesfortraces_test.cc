@@ -17,8 +17,9 @@ namespace ErrorEstimatesForTraces::test {
 TEST(ErrorEstimatesForTraces, TestResult) {
   // Load mesh into a Lehrfem++ object
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR "/../../meshes/hex4.msh");
-  auto mesh_p = reader.mesh();  // mesh_p has type shared_ptr<lf::mesh::Mesh>
+  const lf::io::GmshReader reader(std::move(mesh_factory),
+                                  CURRENT_SOURCE_DIR "/../../meshes/hex4.msh");
+  auto mesh_p = reader.mesh(); // mesh_p has type shared_ptr<lf::mesh::Mesh>
 
   // Finite element space
   auto fe_space = std::make_shared<linear_lagrange>(mesh_p);
@@ -36,4 +37,4 @@ TEST(ErrorEstimatesForTraces, TestResult) {
   ASSERT_NEAR(bd_functional_val, 2.081541059732923, 1e-08);
 }
 
-}  // namespace ErrorEstimatesForTraces::test
+} // namespace ErrorEstimatesForTraces::test

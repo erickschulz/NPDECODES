@@ -39,4 +39,4 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N);
  */
 Eigen::Matrix<double, 3, 4> numexpBurgersGodunov();
 
-}  // namespace BurgersEquation
+} // namespace BurgersEquation

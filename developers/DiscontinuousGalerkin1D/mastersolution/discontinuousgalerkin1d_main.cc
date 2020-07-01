@@ -29,7 +29,7 @@ int main() {
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR
               "/plot_solution.py " CURRENT_BINARY_DIR
-              "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+              "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
 #else
   //====================
   // Your code goes here
@@ -37,7 +37,7 @@ int main() {
   // the file "solution.csv". To plot this file
   // you may uncomment the following line:
   // std::system("python3 " CURRENT_SOURCE_DIR "/plot_solution.py "
-  // CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+  // CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
   //====================
 #endif
 

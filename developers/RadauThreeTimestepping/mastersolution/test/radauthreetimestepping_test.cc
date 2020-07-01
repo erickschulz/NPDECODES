@@ -6,16 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "../radauthreetimestepping.h"
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
+
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
+#include "../radauthreetimestepping.h"
 
 namespace RadauThreeTimestepping::test {
 
@@ -104,6 +105,7 @@ TEST(RadauThreeTimestepping, rhsVectorheatSource) {
 }
 
 TEST(RadauThreeTimestepping, solveHeatEvolution) {
+
   // Generate a triangular test mesh on [0,1]^2
   const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3);
   // Create a DOF handler
@@ -127,6 +129,7 @@ TEST(RadauThreeTimestepping, solveHeatEvolution) {
 }
 
 TEST(RadauThreeTimestepping, dropMatrixRowsColumns) {
+
   // Generate a triangular test mesh on [0,1]^2
   const auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3, 1. / 3);
   // Create a DOF handler
@@ -247,4 +250,4 @@ TEST(RadauThreeTimestepping, discreteEvolutionOperator) {
   }
 }
 
-}  // end namespace RadauThreeTimestepping::test
+} // end namespace RadauThreeTimestepping::test

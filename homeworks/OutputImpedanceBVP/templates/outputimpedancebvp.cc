@@ -17,14 +17,12 @@
 
 #include "outputimpedancebvp.h"
 
-namespace OutputImpedanceBVP
-{
+namespace OutputImpedanceBVP {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd solveImpedanceBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d g)
-{
+    Eigen::Vector2d g) {
   // Related implementations:
   // Homework problem ErrorEstimatesForTraces:
   // https://gitlab.math.ethz.ch/ralfh/npdecodes/tree/master/homeworks/ErrorEstimatesForTraces
@@ -67,8 +65,8 @@ Eigen::VectorXd solveImpedanceBVP(
   /* SAM_LISTING_BEGIN_9 */
   // I.iii : Computing right-hand side vector
   // Right-hand side source function f
-  auto mf_f =
-      lf::mesh::utils::MeshFunctionGlobal([](Eigen::Vector2d x) -> double { return 0.0; });
+  auto mf_f = lf::mesh::utils::MeshFunctionGlobal(
+      [](Eigen::Vector2d x) -> double { return 0.0; });
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
       elvec_builder(fe_space_p, mf_f);
   // Invoke assembly on cells (codim == 0)
@@ -86,10 +84,10 @@ Eigen::VectorXd solveImpedanceBVP(
   // internal conversion routines.
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
-  // II : SOLVING  THE LINEAR SYSTEM
-  //====================
-  // Your code goes here
-  //====================
+// II : SOLVING  THE LINEAR SYSTEM
+//====================
+// Your code goes here
+//====================
 
   discrete_solution.setZero();
   return discrete_solution;
@@ -100,8 +98,7 @@ Eigen::VectorXd solveImpedanceBVP(
 double computeBoundaryOutputFunctional(
     const Eigen::VectorXd eta,
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    Eigen::Vector2d d)
-{
+    Eigen::Vector2d d) {
   double func_val = 0.0;
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -117,11 +114,10 @@ double computeBoundaryOutputFunctional(
   //====================
 
   // Computing value of the functional
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1))
-  {
-  //====================
-  // Your code goes here
-  //====================
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
+    //====================
+    // Your code goes here
+    //====================
   }
   return func_val;
 };

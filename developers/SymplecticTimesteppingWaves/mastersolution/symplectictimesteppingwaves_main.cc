@@ -11,7 +11,7 @@
 
 using namespace SymplecticTimesteppingWaves;
 
-int main(int /*argc*/, char** /*argv*/) {
+int main(int /*argc*/, char ** /*argv*/) {
   // Tabulated study convergence for the symplectic stepping method for the
   // harmonic oscillator ODE dp/dt = q, dq/dt = -p
   sympTimesteppingODETest();

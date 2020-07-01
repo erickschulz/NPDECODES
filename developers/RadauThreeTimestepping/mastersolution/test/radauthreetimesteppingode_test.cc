@@ -24,4 +24,4 @@ TEST(RadauThreeTimestepping, twoStageRadauTimeSteppingLinScalODE) {
   ASSERT_NEAR(sol[1], -4. / 51, 1e-10);
 }
 
-}  // end namespace RadauThreeTimestepping::test
+} // end namespace RadauThreeTimestepping::test

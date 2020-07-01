@@ -29,6 +29,7 @@ lf::assemble::COOMatrix<double> buildM(
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Creating a predicate that will guarantee that the computations are carried
   // only on the edges of the mesh using the boundary flags
+  // Actually a redundant step, because 'bdflags' is a predicate already.
   auto edges_predicate = [&bd_flags](const lf::mesh::Entity &edge) -> bool {
     return bd_flags(edge);
   };
@@ -88,4 +89,4 @@ lf::assemble::COOMatrix<double> buildA(
 
 /* SAM_LISTING_END_2 */
 
-}  // namespace BoundaryWave
+} // namespace BoundaryWave

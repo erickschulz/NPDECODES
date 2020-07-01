@@ -19,25 +19,31 @@ using namespace WaveAbsorbingBC1D;
 const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                        Eigen::DontAlignCols, ", ", "\n");
 
-/* SAM_LISTING_BEGIN_1 */
 int main() {
+  /* SAM_LISTING_BEGIN_1 */
   double c = 1.0;
   double T = 7.0;
   unsigned int N = 100;
   unsigned int m = 2000;
   Eigen::MatrixXd R = waveLeapfrogABC(c, T, N, m);
-
-  std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
-      computeEnergies(R, c, T / m);
-  Eigen::VectorXd E_pot = energies.first;
-  Eigen::VectorXd E_kin = energies.second;
   Eigen::VectorXd t = Eigen::VectorXd::LinSpaced(m + 1, 0.0, T);
 
   // print the data, e.g. to a .csv file, in a suitable way
   //====================
   // Your code goes here
+  // Write and print the solution
+  //====================
+  /* SAM_LISTING_END_1 */
+
+  std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
+      computeEnergies(R, c, T / m);
+  Eigen::VectorXd E_pot = energies.first;
+  Eigen::VectorXd E_kin = energies.second;
+
+  //====================
+  // Your code goes here
+  // Write and print the energies
   //====================
 
   return 0;
 }
-/* SAM_LISTING_END_1 */

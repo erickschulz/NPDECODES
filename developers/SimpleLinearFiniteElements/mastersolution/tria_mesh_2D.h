@@ -9,8 +9,9 @@
 #ifndef TRIAMESH2D_H_
 #define TRIAMESH2D_H_
 
-#include <Eigen/Core>
 #include <string>
+
+#include <Eigen/Core>
 
 namespace SimpleLinearFiniteElements {
 
@@ -32,6 +33,6 @@ struct TriaMesh2D {
 };
 /* SAM_LISTING_END_1 */
 
-}  // namespace SimpleLinearFiniteElements
+} // namespace SimpleLinearFiniteElements
 
-#endif  // TRIAMESH2D_H_
+#endif // TRIAMESH2D_H_

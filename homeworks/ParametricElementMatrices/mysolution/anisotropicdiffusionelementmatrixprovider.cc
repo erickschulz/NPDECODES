@@ -18,9 +18,9 @@ namespace ParametricElementMatrices {
  *
  * where K is a cell.
  * @param cell current cell */
-Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
-    const lf::mesh::Entity &cell) {
-  Eigen::MatrixXd element_matrix;  // local matrix to return
+Eigen::MatrixXd
+AnisotropicDiffusionElementMatrixProvider::Eval(const lf::mesh::Entity &cell) {
+  Eigen::MatrixXd element_matrix; // local matrix to return
 
   // Cell data
   auto cell_geometry = cell.Geometry();
@@ -28,36 +28,36 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
   /* SOLUTION_BEGIN */
   // Integration formula distinguishes between triagular and quadrilateral cells
   switch (cell_geometry->RefEl()) {
-    /* TRIANGULAR CELL */
-    case lf::base::RefEl::kTria(): {
-      /* SAM_LISTING_BEGIN_1 */
-      
-      // ===================
-      // Your code goes here
-      // ===================
+  /* TRIANGULAR CELL */
+  case lf::base::RefEl::kTria(): {
+    /* SAM_LISTING_BEGIN_1 */
 
-      break;
-      /* SAM_LISTING_END_1 */
-    }
+    // ===================
+    // Your code goes here
+    // ===================
 
-    /* QUADRILATERAL CELL */
-    case lf::base::RefEl::kQuad(): {
-      /* SAM_LISTING_BEGIN_2 */
+    break;
+    /* SAM_LISTING_END_1 */
+  }
 
-      // ===================
-      // Your code goes here
-      // ===================
+  /* QUADRILATERAL CELL */
+  case lf::base::RefEl::kQuad(): {
+    /* SAM_LISTING_BEGIN_2 */
 
-      break;
-      /* SAM_LISTING_END_2 */
-    }
-    
-    /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
-    default:
-      LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");
+    // ===================
+    // Your code goes here
+    // ===================
+
+    break;
+    /* SAM_LISTING_END_2 */
+  }
+
+  /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
+  default:
+    LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");
   }
   /* SOLUTION_END */
   return element_matrix;
-}  // AnisotropicDiffusionElementMatrixProvider::Eval
+} // AnisotropicDiffusionElementMatrixProvider::Eval
 
-}  // namespace ParametricElementMatrices
+} // namespace ParametricElementMatrices

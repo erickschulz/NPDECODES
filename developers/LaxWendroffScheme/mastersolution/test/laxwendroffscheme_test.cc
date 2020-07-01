@@ -158,4 +158,4 @@ TEST(LaxWendroffScheme, numexpGodunovSmoothU0) {
   EXPECT_NEAR(max_diff, 0.0, tol);
 }
 
-}  // namespace LaxWendroffScheme::test
+} // namespace LaxWendroffScheme::test

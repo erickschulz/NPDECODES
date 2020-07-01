@@ -3,12 +3,10 @@
 #include "../anisotropicdiffusionelementmatrixprovider.h"
 #include "../fesourceelemvecprovider.h"
 
-namespace ParametricElementMatrices::test
-{
+namespace ParametricElementMatrices::test {
 
 /* SAM_LISTING_BEGIN_1 */
-TEST(ParametricElementMatrices, TestGalerkin)
-{
+TEST(ParametricElementMatrices, TestGalerkin) {
   //====================
   // Your code goes here
   //====================
@@ -16,8 +14,7 @@ TEST(ParametricElementMatrices, TestGalerkin)
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-TEST(ParametricElementMatrices, TestLoad)
-{
+TEST(ParametricElementMatrices, TestLoad) {
   //====================
   // Your code goes here
   //====================

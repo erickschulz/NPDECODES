@@ -39,7 +39,9 @@ int main() {
   file.close();
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot_solution.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_solution.py " CURRENT_BINARY_DIR
+              "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
 
   return 0;
 }

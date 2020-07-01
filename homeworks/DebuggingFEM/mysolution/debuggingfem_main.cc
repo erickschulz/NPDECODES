@@ -102,7 +102,7 @@ int main() {
   error_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/error.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR
-              "/error.csv " CURRENT_BINARY_DIR "/error.png");
+              "/error.csv " CURRENT_BINARY_DIR "/error.eps");
 
   return 0;
 }

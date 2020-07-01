@@ -93,4 +93,4 @@ Eigen::VectorXd sineClawReactionRhs(const Eigen::VectorXd &mu, double c) {
 }
 /* SAM_LISTING_END_4 */
 
-}  // namespace FiniteVolumeSineConsLaw
+} // namespace FiniteVolumeSineConsLaw

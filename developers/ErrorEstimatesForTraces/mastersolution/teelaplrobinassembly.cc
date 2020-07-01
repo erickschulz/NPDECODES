@@ -12,8 +12,8 @@
 
 namespace ErrorEstimatesForTraces {
 
-Eigen::VectorXd solveBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space) {
+Eigen::VectorXd
+solveBVP(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space) {
   // I : Creating coefficients as Lehrfem++ mesh functions
   // Coefficients used in the class template
   // ReactionDiffusionElementMatrixProvider<SCALAR,DIFF_COEFF,REACTION_COEFF>
@@ -41,7 +41,7 @@ Eigen::VectorXd solveBVP(
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Right hand side vector
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
-  phi.setZero();  // has to be zero initially
+  phi.setZero(); // has to be zero initially
 
   // III : Computing element and mass (volume integrals) matrix
   // Initialize object taking care of local mass (volume) computations.
@@ -142,4 +142,4 @@ double bdFunctionalEval(
 }
 /* SAM_LISTING_END_9 */
 
-}  // namespace ErrorEstimatesForTraces
+} // namespace ErrorEstimatesForTraces

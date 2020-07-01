@@ -54,7 +54,11 @@ There is two folders called `homeworks/`. One contains the source files and one 
 ```
 
 ## On the student computers
-LehrFEM++ is already installed on the linux student computers in the ETH main building. To set up your local repository there, open a terminal an type:
+LehrFEM++ is already installed on the linux student computers in the ETH main building. You can even use them remotely by typing in your terminal
+```
+ssh -X <nethz_username>@slab1.ethz.ch
+```
+where `<nethz_username>` has the be replaced by your ETH username. To set up your local repository on the student computers, type:
 ```
 cd /tmp
 git clone git@github.com:erickschulz/NPDECODES.git
@@ -66,3 +70,22 @@ export HUNTER_ROOT=/opt/libs/NumPDE
 cmake ..
 ```
 The first four lines are due to limited resources on the student computers. Setting the environment variable `HUNTER_ROOT` tells CMake where to look for the preinstalled libraries. This environment variable is local to your terminal, i.e. has to be redefined if you start a new terminal. Apart from this, you can use the folder `~/NPDECODES` in the same way you would for the approach in the previous section. However, you have only very little memory available on the student computers. We therefore recommend to only build one problem at a time.
+
+## FAQ
+
+### clang: error: unknown argument: '-fcoalesce-templates'
+Mac users, after updating to macOS Catalina 10.15.4, are receiving this error. The workaround is as follows: Navigate  your terminal into the folder `NPDECODES/` and type:
+```
+brew install gcc@8    #install gcc version 8, needs brew to be installed first...
+gcc-8 --version       #check if gcc-8 was installed properly
+g++-8 --version       #check if g++-8 was installed properly
+rm -rf build          #delete the old build folder
+mkdir build           #recreate it
+```
+If this has succeeded, you need to build the codes using the gcc compiler by defining the environment variables `CC` and `CXX`. This is done by navigating a terminal into `NPDECODES/build/` and running:
+```
+export CC=gcc-8
+export CXX=g++-8
+cmake ..
+```
+If the installation is successful, you can than build your codes using `make` as before. Note that the gcc version under OSX usulally just links to clang. However, the procedure above installs the actual gcc compiler.

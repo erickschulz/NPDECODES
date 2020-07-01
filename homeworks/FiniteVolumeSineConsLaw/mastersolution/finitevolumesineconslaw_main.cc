@@ -36,7 +36,8 @@ int main() {
   file.close();
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
   /* SAM_LISTING_END_1 */
 
   // with reaction term: -c * u(x, t), where c = 1.0
@@ -50,8 +51,11 @@ int main() {
   file << ufinal_reaction.transpose().format(CSVFormat) << std::endl;
   file.close();
 
-  std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal_reaction.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal_reaction.csv"
+            << std::endl;
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/ufinal_reaction.csv " CURRENT_BINARY_DIR
+              "/ufinal_reaction.eps");
 
   // Finding the optimal timestep (no reaction term)
   unsigned int M_small = findTimesteps();

@@ -3,12 +3,10 @@
 #include "../anisotropicdiffusionelementmatrixprovider.h"
 #include "../fesourceelemvecprovider.h"
 
-namespace ParametricElementMatrices::test
-{
+namespace ParametricElementMatrices::test {
 
 /* SAM_LISTING_BEGIN_1 */
-TEST(ParametricElementMatrices, TestGalerkin)
-{
+TEST(ParametricElementMatrices, TestGalerkin) {
   // use test mesh (with only affine equivalent cells!) to set up fe space
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(5, 1);
   auto fe_space =
@@ -46,10 +44,8 @@ TEST(ParametricElementMatrices, TestGalerkin)
   auto A_crs = A.makeSparse();
   auto B_crs = B.makeSparse();
   // compare results (floating point comparison!)
-  for (int i = 0; i < N_dofs; i++)
-  {
-    for (int j = 0; j < N_dofs; j++)
-    {
+  for (int i = 0; i < N_dofs; i++) {
+    for (int j = 0; j < N_dofs; j++) {
       ASSERT_NEAR(A_crs.coeff(i, j), B_crs.coeff(i, j), 1E-9);
     }
   }
@@ -57,8 +53,7 @@ TEST(ParametricElementMatrices, TestGalerkin)
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-TEST(ParametricElementMatrices, TestLoad)
-{
+TEST(ParametricElementMatrices, TestLoad) {
   // use test mesh (with only affine equivalent cells!) to set up fe space
   auto mesh = lf::mesh::test_utils::GenerateHybrid2DTestMesh(5, 1);
   auto fe_space =
@@ -97,8 +92,7 @@ TEST(ParametricElementMatrices, TestLoad)
   AssembleVectorLocally(0, dofh, elvec_builder_, phi_lib);
 
   // compare the results
-  for (int i = 0; i < N_dofs; i++)
-  {
+  for (int i = 0; i < N_dofs; i++) {
     ASSERT_NEAR(phi(i), phi_lib(i), 1E-9);
   }
 }

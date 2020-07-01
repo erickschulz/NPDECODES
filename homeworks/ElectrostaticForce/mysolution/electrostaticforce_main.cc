@@ -18,18 +18,18 @@ int main() {
   std::cout << "\nPROBLEM - ElectrostaticForce\n" << std::endl;
 
   // TOOLS AND DATA
-  int N_meshes = 5;           // No. of meshes for convergence test
+  int N_meshes = 6;           // No. of meshes for convergence test
   Eigen::VectorXd approx_sol; // basis coeff expansion of approx solution
   Eigen::Vector2d approx_force_boundary_functional;
   Eigen::Vector2d approx_force_domain_functional;
-  double errorsL2PoissonBVP[N_meshes]; // L2 error domain BVP
-  double
-      errorsl2ForceBoundaryFunctional[N_meshes]; // l2 err force bd functional
-  double
-      errorsl2ForceDomainFunctional[N_meshes]; // l2 err force domain functional
+  Eigen::VectorXd errorsL2PoissonBVP(N_meshes); // L2 error domain BVP
+  Eigen::VectorXd errorsl2ForceBoundaryFunctional(
+      N_meshes); // l2 err force bd functional
+  Eigen::VectorXd errorsl2ForceDomainFunctional(
+      N_meshes); // l2 err force domain functional
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p;
   std::shared_ptr<const lf::mesh::Mesh> mesh_p;
-  double mesh_sizes[N_meshes]; // meshwidths
+  Eigen::VectorXd mesh_sizes(N_meshes); // meshwidths
 
   // CREATE "EXACT" SOLUTION AND FORCE VECTOR
   // Create analytic (exact) solution of the Poisson BVP as mesh function
@@ -75,7 +75,7 @@ int main() {
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
     /* SAM_LISTING_END_1 */
 
-    // COMPUTE l2 ERROR FOR THE FORCE
+    // COMPUTE ERROR FOR THE FORCE
     errorsl2ForceBoundaryFunctional[i] =
         (exact_force - approx_force_boundary_functional).norm();
     errorsl2ForceDomainFunctional[i] =
@@ -208,5 +208,46 @@ int main() {
   std::cout << "\nThe solution vector was written to:" << std::endl;
   std::cout << "ElectrostaticForcePoissonBVP_solution.vtk\n" << std::endl;
 
+  // Write to .csv files
+  std::ofstream file1;
+  file1.open("errorsL2PoissonBVP.csv");
+  file1 << mesh_sizes.transpose().format(CSVFormat) << std::endl;
+  file1 << errorsL2PoissonBVP.transpose().format(CSVFormat) << std::endl;
+  file1.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/errorsL2PoissonBVP.csv"
+            << std::endl;
+
+  std::ofstream file2;
+  file2.open("errorsl2ForceBoundaryFunctional.csv");
+  file2 << mesh_sizes.transpose().format(CSVFormat) << std::endl;
+  file2 << errorsl2ForceBoundaryFunctional.transpose().format(CSVFormat)
+        << std::endl;
+  file2.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR
+               "/errorsl2ForceBoundaryFunctional.csv"
+            << std::endl;
+
+  std::ofstream file3;
+  file3.open("errorsl2ForceDomainFunctional.csv");
+  file3 << mesh_sizes.transpose().format(CSVFormat) << std::endl;
+  file3 << errorsl2ForceDomainFunctional.transpose().format(CSVFormat)
+        << std::endl;
+  file3.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR
+               "/errorsl2ForceDomainFunctional.csv"
+            << std::endl;
+
+  // Plot from .csv file using python
+  std::system(
+      "python3 " CURRENT_SOURCE_DIR "/plot_errors.py " CURRENT_BINARY_DIR
+      "/errorsL2PoissonBVP.csv " CURRENT_BINARY_DIR "/errorsL2PoissonBVP.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_errors.py " CURRENT_BINARY_DIR
+              "/errorsl2ForceBoundaryFunctional.csv " CURRENT_BINARY_DIR
+              "/errorsl2ForceBoundaryFunctional.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_errors.py " CURRENT_BINARY_DIR
+              "/errorsl2ForceDomainFunctional.csv " CURRENT_BINARY_DIR
+              "/errorsl2ForceDomainFunctional.eps");
   return 0;
 }

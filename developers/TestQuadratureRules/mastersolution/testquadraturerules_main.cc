@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <iostream>
+
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
-
-#include <iostream>
 
 #include "testquadraturerules.h"
 
@@ -56,6 +56,7 @@ int main() {
   std::cout << "|       |     kTria     |       kQuad     |" << std::endl;
   std::cout << "-------------------------------------------" << std::endl;
   for (order = 1; order <= max_order_tested; order++) {
+
     if (order < 9) {
       std::cout << "|     " << order << " |"
                 << "       " << max_orders_kTria[order - 1] << "    "

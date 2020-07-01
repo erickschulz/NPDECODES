@@ -8,7 +8,6 @@
 
 #include <iostream>
 
-
 #include <cmath>
 #include <utility>
 
@@ -91,7 +90,8 @@ struct Solution {
     u_ = other.u_;
     std::cout << "Called copy contructor" << std::endl;
   }
-  Solution(Eigen::VectorXd x, Eigen::VectorXd u) : x_(std::move(x)), u_(std::move(u)) {}
+  Solution(Eigen::VectorXd x, Eigen::VectorXd u)
+      : x_(std::move(x)), u_(std::move(u)) {}
   Eigen::VectorXd x_;
   Eigen::VectorXd u_;
 };
@@ -103,4 +103,4 @@ struct Solution {
  */
 Solution solveTrafficFlow();
 
-}  // namespace DiscontinuousGalerkin1D
+} // namespace DiscontinuousGalerkin1D

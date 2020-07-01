@@ -8,12 +8,10 @@
 
 #include "symplectictimesteppingwaves.h"
 
-namespace SymplecticTimesteppingWaves
-{
+namespace SymplecticTimesteppingWaves {
 
 /* SAM_LISTING_BEGIN_7 */
-void wavePropSimulation(unsigned int m)
-{
+void wavePropSimulation(unsigned int m) {
   //====================
   // Your code goes here
   //====================
@@ -21,8 +19,7 @@ void wavePropSimulation(unsigned int m)
 
 /* SAM_LISTING_END_7 */
 
-void progress_bar::write(double fraction)
-{
+void progress_bar::write(double fraction) {
   // clamp fraction to valid range [0,1]
   if (fraction < 0)
     fraction = 0;
@@ -39,8 +36,7 @@ void progress_bar::write(double fraction)
 }
 
 /* SAM_LISTING_BEGIN_5 */
-double testStab()
-{
+double testStab() {
   double maxUniformTimestep;
   //====================
   // Your code goes here

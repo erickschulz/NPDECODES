@@ -110,4 +110,4 @@ TEST(WaveABC2D, energies) {
   ASSERT_NEAR(reference_solution - student_solution, 0, eps);
 }
 
-}  // namespace WaveABC2D::test
+} // namespace WaveABC2D::test

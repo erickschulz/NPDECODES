@@ -21,12 +21,12 @@
 #include "../pointevaluationrhs_norms.h"
 
 /* SAM_LISTING_BEGIN_1 */
-void testGlobalInverseQuad(const lf::mesh::Entity& quad, Eigen::Vector2d xh) {
+void testGlobalInverseQuad(const lf::mesh::Entity &quad, Eigen::Vector2d xh) {
   LF_ASSERT_MSG(quad.RefEl() == lf::base::RefEl::kQuad(),
                 "Cell must be a quadrilateral");
 #if SOLUTION
   // get the coordinates of the corners of this cell
-  lf::geometry::Geometry* geo_ptr = quad.Geometry();
+  lf::geometry::Geometry *geo_ptr = quad.Geometry();
   auto vertices = lf::geometry::Corners(*geo_ptr);
   // Image of point in unit square under parametric mapping
   Eigen::Vector2d x = geo_ptr->Global(xh);
@@ -53,7 +53,7 @@ TEST(PoinEvaluationRhs, mapping_test) {
 
   for (auto cell : mesh_p->Entities(0)) {
     // Get shape of cell
-    lf::geometry::Geometry* geo_ptr = cell->Geometry();
+    lf::geometry::Geometry *geo_ptr = cell->Geometry();
     // Get cordinates of vertices
     auto vertices = lf::geometry::Corners(*geo_ptr);
     // Global coordinates of testing point
@@ -65,22 +65,22 @@ TEST(PoinEvaluationRhs, mapping_test) {
     // Depending on the type of cell compute the pre-image of
     // the point x
     switch (ref_el) {
-      case lf::base::RefEl::kTria(): {
-        xh_comp = PointEvaluationRhs::GlobalInverseTria(vertices, x);
-        break;
-      }
-      case lf::base::RefEl::kQuad(): {
-        xh_comp = PointEvaluationRhs::GlobalInverseQuad(vertices, x);
-        break;
-      }
-      default: {
-        LF_ASSERT_MSG(false, "Not implemented for " << ref_el);
-        break;
-      }
-    }  // end switch
+    case lf::base::RefEl::kTria(): {
+      xh_comp = PointEvaluationRhs::GlobalInverseTria(vertices, x);
+      break;
+    }
+    case lf::base::RefEl::kQuad(): {
+      xh_comp = PointEvaluationRhs::GlobalInverseQuad(vertices, x);
+      break;
+    }
+    default: {
+      LF_ASSERT_MSG(false, "Not implemented for " << ref_el);
+      break;
+    }
+    } // end switch
 
     ASSERT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8);
-  }  // end loop over cells
+  } // end loop over cells
 }
 
 TEST(PoinEvaluationRhs, solution_test) {

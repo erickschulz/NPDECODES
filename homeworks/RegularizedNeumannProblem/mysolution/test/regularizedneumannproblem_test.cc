@@ -30,7 +30,7 @@ TEST(RegularizedNeumannProblem, getGalerkinLSE) {
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(4);
   auto fe_space_p =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-  auto& dofh = fe_space_p->LocGlobMap();
+  auto &dofh = fe_space_p->LocGlobMap();
 
   // Initialize constant mesh functions
   auto mf_f0 = lf::mesh::utils::MeshFunctionConstant(0.0);
@@ -45,7 +45,7 @@ TEST(RegularizedNeumannProblem, getGalerkinLSE) {
   Eigen::VectorXd f2_h0_solution(dofh.NumDofs());
   f2_h0_solution.setZero();
 
-  for (const lf::mesh::Entity* cell : mesh_p->Entities(0)) {
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
     auto geo_ptr = cell->Geometry();
     auto area = lf::geometry::Volume(*geo_ptr);
     auto glob_dof_indices = dofh.GlobalDofIndices(*cell);
@@ -61,7 +61,7 @@ TEST(RegularizedNeumannProblem, getGalerkinLSE) {
   Eigen::VectorXd f0_h3_solution(dofh.NumDofs());
   f0_h3_solution.setZero();
 
-  for (const lf::mesh::Entity* edge : mesh_p->Entities(1)) {
+  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
     if (bd_flags(*edge)) {
       auto geo_ptr = edge->Geometry();
       auto area = lf::geometry::Volume(*geo_ptr);
@@ -251,4 +251,4 @@ TEST(RegularizedNeumannProblem, solution_test_augment_gen) {
   EXPECT_NEAR((solution_vec_f - result_f.second).norm(), 0.0, eps);
 }
 
-}  // namespace RegularizedNeumannProblem::test
+} // namespace RegularizedNeumannProblem::test

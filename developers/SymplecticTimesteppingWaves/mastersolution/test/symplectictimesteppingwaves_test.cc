@@ -7,22 +7,24 @@
  */
 
 #include "../symplectictimesteppingwaves.h"
+#include "../symplectictimesteppingwaves_assemble.h"
+#include "../symplectictimesteppingwaves_ode.h"
 
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+
+#include <utility>
+
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-#include <utility>
-
-#include "../symplectictimesteppingwaves_assemble.h"
-#include "../symplectictimesteppingwaves_ode.h"
-
 namespace SymplecticTimesteppingWaves::test {
 
 TEST(SymplecticTimesteppingWaves, sympTimesteppingHarmonicOscillatorODE) {
+
   unsigned int m = 10;
 
   Eigen::Vector2d sol = sympTimesteppingHarmonicOscillatorODE(m);
@@ -35,9 +37,10 @@ TEST(SymplecticTimesteppingWaves, sympTimesteppingHarmonicOscillatorODE) {
 }
 
 TEST(SymplecticTimesteppingWaves, assembleGalerkinMatrix) {
+
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(
-      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../../meshes/simple.msh");
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../../meshes/simple.msh");
   auto mesh_p = reader.mesh();
 
   auto fe_space =
@@ -60,9 +63,10 @@ TEST(SymplecticTimesteppingWaves, assembleGalerkinMatrix) {
 }
 
 TEST(SymplecticTimesteppingWaves, computeEnergies) {
+
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(
-      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../../meshes/simple.msh");
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../../meshes/simple.msh");
   auto mesh_p = reader.mesh();
 
   auto fe_space =
@@ -84,9 +88,10 @@ TEST(SymplecticTimesteppingWaves, computeEnergies) {
 }
 
 TEST(SymplecticTimesteppingWaves, solvewave) {
+
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(
-      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../../meshes/simple.msh");
+  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
+                                  "/../../meshes/simple.msh");
   auto mesh_p = reader.mesh();
 
   auto fe_space =

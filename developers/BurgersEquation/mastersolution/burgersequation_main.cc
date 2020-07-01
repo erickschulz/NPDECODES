@@ -6,12 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
+#include "burgersequation.h"
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include "burgersequation.h"
+#include <Eigen/Core>
 
 int main() {
   /* SAM_LISTING_BEGIN_1 */
@@ -34,7 +35,7 @@ int main() {
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR
               "/plot_solution.py " CURRENT_BINARY_DIR
-              "/solution.csv " CURRENT_BINARY_DIR "/solution.png");
+              "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
 #else
   //====================
   // Your code goes here
@@ -53,7 +54,7 @@ int main() {
   error_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/error.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR
-              "/error.csv " CURRENT_BINARY_DIR "/error.png");
+              "/error.csv " CURRENT_BINARY_DIR "/error.eps");
 #else
   //====================
   // Your code goes here

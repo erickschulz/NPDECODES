@@ -14,6 +14,7 @@
 using namespace SDIRKMethodOfLines;
 
 int main(int /*argc*/, char ** /*argv*/) {
+
   /* SDIRK-2 ODE convergence */
   sdirk2ScalarODECvTest();
 
@@ -40,7 +41,7 @@ int main(int /*argc*/, char ** /*argv*/) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
                                   "/../meshes/square64_bnd.msh");
-  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
 
   // Finite element space
   auto fe_space =
@@ -87,7 +88,7 @@ int main(int /*argc*/, char ** /*argv*/) {
   // Plot from .csv file using python
   std::system("python3 " CURRENT_SOURCE_DIR
               "/plot_energies.py " CURRENT_BINARY_DIR
-              "/energies.csv " CURRENT_BINARY_DIR "/energies.png");
+              "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
   /* SAM_LISTING_END_1 */
 #else
   //====================

@@ -13,15 +13,9 @@
 
 namespace {
 
-template <typename T>
-constexpr T Square(T x) {
-  return x * x;
-}
+template <typename T> constexpr T Square(T x) { return x * x; }
 
-template <typename T>
-constexpr T Cube(T x) {
-  return x * x * x;
-}
+template <typename T> constexpr T Cube(T x) { return x * x * x; }
 
 constexpr int getJ(double a, double b, unsigned int n, double u) {
   return u < b ? (int)(n * ((u - a) / (b - a)) + 1.0) : n;
@@ -31,13 +25,12 @@ constexpr double zeta(double a, double b, unsigned int n, double j) {
   return a + j * (b - a) / n;
 }
 
-}  // namespace
+} // namespace
 
 namespace CLEmpiricFlux {
 
-UniformCubicSpline::UniformCubicSpline(double a, double b,
-                                       const Eigen::VectorXd f,
-                                       const Eigen::VectorXd M)
+UniformCubicSpline::UniformCubicSpline(double a, double b, Eigen::VectorXd f,
+                                       Eigen::VectorXd M)
     : _n(f.size() - 1), _a(a), _b(b), _f(std::move(f)), _M(std::move(M)) {
   assert(b >= a);
   assert(_f.size() >= 2);
@@ -69,4 +62,4 @@ double UniformCubicSpline::derivative(double u) const {
          (1.0 / h);
 }
 
-}  // namespace CLEmpiricFlux
+} // namespace CLEmpiricFlux

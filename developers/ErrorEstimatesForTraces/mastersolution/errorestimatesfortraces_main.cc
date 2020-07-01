@@ -21,14 +21,14 @@ int main(int /*argc*/, const char ** /*argv*/) {
   int N_meshes = 4;
   Eigen::MatrixXd results(N_meshes, 2);
 
-  for (int i = 1; i <= N_meshes; i++) {  // for each mesh
+  for (int i = 1; i <= N_meshes; i++) { // for each mesh
     /* SAM_LISTING_BEGIN_1 */
     // Load mesh into a Lehrfem++ object
     std::string mesh_file =
         CURRENT_SOURCE_DIR "/../meshes/hex" + std::to_string(i) + ".msh";
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-    auto mesh_p = reader.mesh();  // type shared_ptr<const lf::mesh::Mesh>
+    auto mesh_p = reader.mesh(); // type shared_ptr<const lf::mesh::Mesh>
 
     // Finite element space
     auto fe_space = std::make_shared<linear_lagrange>(mesh_p);
@@ -70,5 +70,5 @@ int main(int /*argc*/, const char ** /*argv*/) {
 
   // Apply plot.py to results.csv
   std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
-              "/results.csv " CURRENT_BINARY_DIR "/results.png");
+              "/results.csv " CURRENT_BINARY_DIR "/results.eps");
 }

@@ -6,11 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
+#include "finitevolumesineconslaw.h"
+
 #include <fstream>
 #include <iostream>
 
-#include "finitevolumesineconslaw.h"
+#include <Eigen/Core>
 
 using namespace FiniteVolumeSineConsLaw;
 
@@ -37,7 +38,7 @@ int main() {
 
   std::cout << "Generated " CURRENT_BINARY_DIR "/ufinal.csv" << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
-              "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+              "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
 #else
   //====================
   // Your code goes here
@@ -45,7 +46,7 @@ int main() {
   // the file "ufinal.csv". To plot this
   // file you may uncomment the following line:
   // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
-  // "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.png");
+  // "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
   //====================
 #endif
   /* SAM_LISTING_END_1 */
@@ -66,7 +67,7 @@ int main() {
             << std::endl;
   std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
               "/ufinal_reaction.csv " CURRENT_BINARY_DIR
-              "/ufinal_reaction.png");
+              "/ufinal_reaction.eps");
 #else
   //====================
   // Your code goes here
@@ -74,7 +75,7 @@ int main() {
   // the file "ufinal_reaction.csv". To plot this
   // file you may uncomment the following line:
   // std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
-  // "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.png");
+  // "/ufinal_reaction.csv " CURRENT_BINARY_DIR "/ufinal_reaction.eps");
   //====================
 #endif
 

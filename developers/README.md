@@ -17,38 +17,50 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | check unitest |
 | 2-9 | `LFPPDofHandling` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-15 | `RegularizedNeumannProblem` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 2-16 | `DegenerateFiniteElementSpace` | TO DO |  |  | |
+| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |check unitest |
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-5 | `ErrorEstimatesForTraces` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-7 | `MaximumPrinciple` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-8 | `OutputImpedanceBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
-| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 3-11 | `StableEvaluationAtAPoint` | :heavy_check_mark: | :heavy_check_mark: |  | Need checking by Ralf |
+| 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | :white_check_mark: (Erick) | check unitest |
 | 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: |:heavy_check_mark: |  |  |
+| 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
-| 7-1 | `ExpFittedUpwind` | | | | |
-| 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   |
+| 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 7-1 | `ExpFittedUpwind` | TO DO | | | |
+| 7-2 | `UpwindQuadrature` | DONE |  |  | needs LaTeX changes by Ralf |
+| 7-3 | `TranspSemiLagr` | TO DO | | | Philippe Peter |
+| 7-4 | `UpwindFiniteVolume` | TO DO | | | |
+| 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| ? | `ElectrostaticForce` | bug |  |  |  |
-| ? | `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-8 | `AdvectionFV2D` | TODO |  |  | Philipp Egg |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
-| ? | `LinFeReactDiff` | :white_check_mark: |  |  | Philipp Egg |
+| ? | `LinFeReactDiff` |  |  |  |  |
+
+Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
+ * Problem 7.5: Transport Problem?
+ * Problem 7.6: Upwind Finite Volume Method ?
 
 ## General Remarks
 
@@ -76,7 +88,6 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 * Add comments if necessary.
 * Use `#include <cmath>` instead of `#include <math.h>`.
 * Only use the `#includes "..."` you need, e.g. for `Eigen::MatrixXd`, `#include <Eigen/Core>` is sufficient (no `#include <Eigen/Dense>` needed). Likewise for the `dependencies.cmake`. However, every file (`.h` and `.cc`) should contain all the `#includes` it needs, not relying on other headers to provide them silently.
-* Use forward declarations to avoid `#includes` whenever possible.
 * Make the code follow the Google style (see https://google.github.io/styleguide/cppguide.html). In particular, respect the include order (https://google.github.io/styleguide/cppguide.html#Names_and_Order_of_Includes).
 * Never store data in the remote repository that is generated by the code anyway (e.g. figures). The repo should only contain source files (and maybe some mesh files).
 * Provide unit tests for all functions that the students have to change.
@@ -106,19 +117,3 @@ In the files of `./developers/mastersolution/` we put the following tags
 #endif
 ```
 to indicate what belongs to mastersolution and/or template. Based on these tags, the file `./scripts/deploy_npde.py` generates a directory `./homeworks/<ProblemName>/` containg the directories `mastersolution`, `mysolution`, `temaplates` with the corresponding content. The students work exclusively in `./homeworks/<ProblemName>/`.
-
-## New Problems
-
-Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
-
-* Problem 5.7: Stable Evaluation at a Point **(Amélie)**
-* Problem 5.8: Trace Error Estimates **(done already?)**
-* Problem 6.6: Non-linear Schrödinger Equation with Cubic Non-Linearity **(Oliver)**
-* Problem 7.3: Upwind Quadrature
-* Problem 7.4: Exponentially fitted upwind scheme
-* Problem 7.5: Transport Problem
-* Problem 7.6: Upwind Finite Volume Method
-
-# TO DO LIST
-
-- ZienkiewiczZhuEstimator: Codes for Subproblem e) are missing.

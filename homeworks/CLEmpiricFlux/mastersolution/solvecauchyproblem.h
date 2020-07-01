@@ -27,7 +27,7 @@ namespace CLEmpiricFlux {
  * @return interval containg the support of u at time t
  */
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
-                            const Eigen::Vector2d &initsupp, double t);
+                            Eigen::Vector2d initsupp, double t);
 
 /**
  * @brief Computes the cell averages at initial time on an interval
@@ -45,16 +45,18 @@ template <typename FUNCTOR>
 Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
                                double h, double T) {
   Eigen::VectorXd mu0;
-  double A = -1.0;  // left bound of support
-  double B = 1.0;   // right bound of support
-  double AT = std::min(A, A - f.derivative(-1.0) * T);
-  double BT = std::max(B, B + f.derivative(1.0) * T);
+  const double A = -1.0; // left bound of support
+  const double B = 1.0;  // right bound of support
+  // Here one could also call findSupport()
+  const double AT = std::min(A, A + f.derivative(-1.0) * T);
+  const double BT = std::max(B, B + f.derivative(1.0) * T);
 
-  int m_minus = (int)std::floor(AT / h);
-  int m_plus = (int)std::ceil(BT / h);
-  int N = m_plus - m_minus + 1;
+  const int m_minus = (int)std::floor(AT / h);
+  const int m_plus = (int)std::ceil(BT / h);
+  const int N = m_plus - m_minus + 1;
 
-  Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N, m_minus * h, m_plus * h);
+  const Eigen::VectorXd x =
+      Eigen::VectorXd::LinSpaced(N, m_minus * h, m_plus * h);
   mu0 = x.unaryExpr(std::forward<FUNCTOR>(u0));
   return mu0;
 }
@@ -102,6 +104,6 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T);
 
-}  // namespace CLEmpiricFlux
+} // namespace CLEmpiricFlux
 
 #endif

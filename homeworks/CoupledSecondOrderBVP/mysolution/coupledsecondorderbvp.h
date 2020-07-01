@@ -21,7 +21,7 @@ namespace CoupledSecondOrderBVP {
 
 template <typename SCALAR>
 class FeSpaceLagrangeO2 : public lf::uscalfe::UniformScalarFESpace<SCALAR> {
- public:
+public:
   FeSpaceLagrangeO2() = delete;
   FeSpaceLagrangeO2(const FeSpaceLagrangeO2 &) = delete;
   FeSpaceLagrangeO2(FeSpaceLagrangeO2 &&) noexcept = default;
@@ -35,7 +35,7 @@ class FeSpaceLagrangeO2 : public lf::uscalfe::UniformScalarFESpace<SCALAR> {
             std::make_shared<lf::uscalfe::FeLagrangeO2Segment<SCALAR>>(),
             std::make_shared<lf::uscalfe::FeLagrangePoint<SCALAR>>(2)) {}
   ~FeSpaceLagrangeO2() override = default;
-};  // FeSpaceLagrangeO2
+}; // FeSpaceLagrangeO2
 
 /** @Brief This function enforces Dirichlet zero boundary conditions on the
  * Galerkin stiffness and mass matrices. It transforms every columns and rows
@@ -76,10 +76,10 @@ void dropMatrixRows(SELECTOR &&selectvals, lf::assemble::COOMatrix<SCALAR> &M) {
 
 // Function solving the coupled BVP
 template <typename FUNCTOR>
-Eigen::VectorXd solveCoupledBVP(
-    std::shared_ptr<FeSpaceLagrangeO2<double>> &fe_space, double gamma,
-    FUNCTOR &&f) {
-  Eigen::VectorXd sol_vec;  // solution vector
+Eigen::VectorXd
+solveCoupledBVP(std::shared_ptr<FeSpaceLagrangeO2<double>> &fe_space,
+                double gamma, FUNCTOR &&f) {
+  Eigen::VectorXd sol_vec; // solution vector
   // Get pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space->Mesh();
   // Obtain local->global index mapping for current finite element space
@@ -98,10 +98,9 @@ Eigen::VectorXd solveCoupledBVP(
                       &dofh](unsigned int idx) -> bool {
     if (dofh.Entity(idx).RefEl() == lf::base::RefElType::kPoint) {
       return nodes_bd_flags(dofh.Entity(idx));
-      
+
     } else {
       return edges_bd_flags(dofh.Entity(idx));
-      
     }
   };
 
@@ -116,14 +115,14 @@ Eigen::VectorXd solveCoupledBVP(
   /* II: Instantiating finite element matrices and right hand side vector*/
   // Matrices in triplet format holding  the Galerkin matrices
   // (set to zero initially)
-  lf::assemble::COOMatrix<double> A0(N_dofs, N_dofs);  // upper left block
-  lf::assemble::COOMatrix<double> A1(N_dofs, N_dofs);  // lower right block
-  lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);   // off-diag blocks
-  lf::assemble::COOMatrix<double> L(2 * N_dofs, 2 * N_dofs);  // full matrix
-  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);       // source f
-  phi.setZero();  // set to zero initially
-  Eigen::Matrix<double, Eigen::Dynamic, 1> rhs(2 * N_dofs);  // full rhs vector
-  rhs.setZero();  // set to zero initially
+  lf::assemble::COOMatrix<double> A0(N_dofs, N_dofs); // upper left block
+  lf::assemble::COOMatrix<double> A1(N_dofs, N_dofs); // lower right block
+  lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);  // off-diag blocks
+  lf::assemble::COOMatrix<double> L(2 * N_dofs, 2 * N_dofs); // full matrix
+  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);      // source f
+  phi.setZero(); // set to zero initially
+  Eigen::Matrix<double, Eigen::Dynamic, 1> rhs(2 * N_dofs); // full rhs vector
+  rhs.setZero(); // set to zero initially
 
   /* III : Computing the Galerkin matrices */
   // III.i Computing A0 : standard negative Laplace Galerkin Matrix
@@ -166,7 +165,7 @@ Eigen::VectorXd solveCoupledBVP(
       phi(dof_idx[0]) = 0.0;
     }
   }
- 
+
   /* V : Assemble the full linear system matrix and right hand side vector */
   //                        _        _
   //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T           (*)
@@ -190,9 +189,9 @@ Eigen::VectorXd solveCoupledBVP(
   const std::vector<Eigen::Triplet<double>> M_triplets_vec = M.triplets();
   for (auto &triplet : M_triplets_vec) {
     L.AddToEntry(triplet.row(), triplet.col() + N_dofs,
-                 triplet.value());  // for M in upper right block
+                 triplet.value()); // for M in upper right block
     L.AddToEntry(triplet.col() + N_dofs, triplet.row(),
-                 triplet.value());  // for M^T in lower left block
+                 triplet.value()); // for M^T in lower left block
   }
   // V.iv Assembling full right hand side vector
   // Recall that rhs was initialized with zero entries
@@ -214,4 +213,4 @@ Eigen::VectorXd solveCoupledBVP(
   return sol_vec;
 }
 
-}  // namespace CoupledSecondOrderBVP
+} // namespace CoupledSecondOrderBVP

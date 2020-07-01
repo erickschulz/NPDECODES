@@ -1,13 +1,13 @@
-#include "tria_mesh_2D.h"
-
 #include <cassert>
 #include <fstream>
 #include <iostream>
 
+#include "tria_mesh_2D.h"
+
 namespace SimpleLinearFiniteElements {
 
 template <typename Derived>
-std::istream& operator>>(std::istream& is, Eigen::MatrixBase<Derived>& matrix) {
+std::istream &operator>>(std::istream &is, Eigen::MatrixBase<Derived> &matrix) {
   for (int i = 0; i < matrix.rows(); ++i) {
     for (int j = 0; j < matrix.cols(); ++j) {
       is >> matrix(i, j);
@@ -69,7 +69,8 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[](int i) const {
  * @param z vector of z values, in correct order
  */
 void TriaMesh2D::SaveMesh3D(std::string filename,
-                            const Eigen::VectorXd& z) const {
+                            const Eigen::VectorXd &z) const {
+
   int n_vertices = vertices.rows();
   int n_elements = elements.rows();
 
@@ -91,4 +92,4 @@ void TriaMesh2D::SaveMesh3D(std::string filename,
   }
 }
 
-}  // namespace SimpleLinearFiniteElements
+} // namespace SimpleLinearFiniteElements

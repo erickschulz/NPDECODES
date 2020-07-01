@@ -29,4 +29,4 @@ TEST(BoundaryLength, length_test) {
   EXPECT_NEAR(LengthOfBoundary::lengthOfBoundary(mesh_p), 12.0, 1e-12);
 }
 
-}  // namespace LengthOfBoundary::test
+} // namespace LengthOfBoundary::test

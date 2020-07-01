@@ -43,7 +43,7 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
       return 0.0;
     }
   };
-  auto mesh_p = dofh.Mesh();  // pointer to current mesh
+  auto mesh_p = dofh.Mesh(); // pointer to current mesh
   phi.setZero();
 
   /* Assembling right-hand side source vector */
@@ -97,8 +97,8 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
                                    unsigned int m, double final_time) {
   Eigen::VectorXd discrete_heat_sol(dofh.NumDofs());
 #if SOLUTION
-  double tau = final_time / m;                          // step size
-  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());  // dim. of FE space
+  double tau = final_time / m;                         // step size
+  const lf::uscalfe::size_type N_dofs(dofh.NumDofs()); // dim. of FE space
 
   std::cout << "*********************************************************"
             << std::endl;
@@ -136,8 +136,8 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
 /* SAM_LISTING_END_6 */
 
 /* Implementing member function Eval of class LinFEMassMatrixProvider*/
-Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
-    const lf::mesh::Entity &tria) {
+Eigen::Matrix<double, 3, 3>
+LinFEMassMatrixProvider::Eval(const lf::mesh::Entity &tria) {
   Eigen::Matrix<double, 3, 3> elMat;
 #if SOLUTION
   // Throw error in case no triangular cell
@@ -157,7 +157,7 @@ Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
   // Your code goes here
   //====================
 #endif
-  return elMat;  // return the local mass element matrix
+  return elMat; // return the local mass element matrix
 }
 
 /* Implementing constructor of class Radau3MOLTimestepper */
@@ -166,16 +166,16 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
     : dofh_(dofh) {
 #if SOLUTION
   std::cout << "\n>> Constructing SRadau3MOLTimestepper " << std::endl;
-  auto mesh_p = dofh.Mesh();  // pointer to current mesh
+  auto mesh_p = dofh.Mesh(); // pointer to current mesh
 
   // Instantiating Galerkin matrices to be pre-computed
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Matrices in triplet format holding Galerkin matrices, zero initially.
   lf::assemble::COOMatrix<double> A_COO(N_dofs,
-                                        N_dofs);  // element matrix Laplace
+                                        N_dofs); // element matrix Laplace
   lf::assemble::COOMatrix<double> M_COO(N_dofs,
-                                        N_dofs);  // element mass matrix
+                                        N_dofs); // element mass matrix
 
   std::cout << "> Initializing the Galerking local matrices builders"
             << std::endl;
@@ -254,7 +254,7 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
   // Building the linear system for the implicitely defined increments
   // Assembling the right hand side using block initialization
   Eigen::VectorXd linSys_rhs(2 * N_dofs);
-  Eigen::VectorXd rhs_subtraction_term = A_ * mu;  // precomputation
+  Eigen::VectorXd rhs_subtraction_term = A_ * mu; // precomputation
   linSys_rhs << rhsVectorheatSource(dofh_, time + c_[0] * tau) -
                     rhs_subtraction_term,
       rhsVectorheatSource(dofh_, time + tau) - rhs_subtraction_term;
@@ -287,4 +287,4 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
 }
 /* SAM_LISTING_END_5 */
 
-}  // namespace RadauThreeTimestepping
+} // namespace RadauThreeTimestepping

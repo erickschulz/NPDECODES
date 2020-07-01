@@ -21,9 +21,7 @@ int main() {
   // for this exercise a main file is not required
   // but feel free to use it to call some of your functions for debugging
   // purposes
-  const auto f = [](Eigen::Vector2d x){
-    return Eigen::Vector2d(-x(1), x(0));
-  };
+  const auto f = [](Eigen::Vector2d x) { return Eigen::Vector2d(-x(1), x(0)); };
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3);
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);

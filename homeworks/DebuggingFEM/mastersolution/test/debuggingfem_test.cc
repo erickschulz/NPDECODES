@@ -92,4 +92,4 @@ TEST(DebuggingFEM, QFEProviderTester) {
   EXPECT_NEAR(energy, energy_ref, 1.0e-8);
 }
 
-}  // namespace DebuggingFEM::test
+} // namespace DebuggingFEM::test

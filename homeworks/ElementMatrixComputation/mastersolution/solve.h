@@ -65,8 +65,8 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
   // Right-hand side vector; has to be set to zero initially
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
   phi.setZero();
-  // Invoke assembly on cells (codim == 0). The element vector provider is passed
-  // as an argument
+  // Invoke assembly on cells (codim == 0). The element vector provider is
+  // passed as an argument
   AssembleVectorLocally(0, dofh, elvec_provider, phi);
 
   // Define solution vector

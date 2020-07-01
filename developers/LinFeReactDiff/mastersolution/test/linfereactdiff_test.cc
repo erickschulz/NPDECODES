@@ -1,6 +1,13 @@
-#include "../linfereactdiff.h"
+
+#include <memory>
+#include <utility>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
 
 #include <gtest/gtest.h>
+
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/io/io.h>
@@ -9,11 +16,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-#include <memory>
-#include <utility>
+#include "../linfereactdiff.h"
 
 namespace LinFeReactDiff::test {
 
@@ -89,4 +92,4 @@ TEST(LinFeReactDiff, TestEnergy) {
   ASSERT_NEAR(energy, 0.0105153, 0.00001);
 }
 
-}  // namespace LinFeReactDiff::test
+} // namespace LinFeReactDiff::test

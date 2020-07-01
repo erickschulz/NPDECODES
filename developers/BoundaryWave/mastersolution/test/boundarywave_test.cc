@@ -108,4 +108,4 @@ TEST(BoundaryWave, solveBoundaryWave) {
       (reference_solution - discrete_solution).lpNorm<Eigen::Infinity>(), 0.0,
       eps);
 }
-}  // namespace BoundaryWave::test
+} // namespace BoundaryWave::test

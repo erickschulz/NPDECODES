@@ -68,4 +68,4 @@ Eigen::VectorXd solveCP(double a, double b, Eigen::VectorXd u0, double T) {
 }
 /* SAM_LISTING_END_2 */
 
-}  // namespace EngquistOsherNumericalFlux
+} // namespace EngquistOsherNumericalFlux

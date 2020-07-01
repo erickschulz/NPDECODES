@@ -15,7 +15,7 @@
 // Eigen
 #include <Eigen/Core>
 #include <Eigen/SparseLU>
-//Lehrfempp
+// Lehrfempp
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
@@ -24,8 +24,8 @@
 
 namespace UnstableBVP {
 
-std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
-    const int reflevels, const std::string &mesh_type) {
+std::shared_ptr<lf::refinement::MeshHierarchy>
+createMeshHierarchy(const int reflevels, const std::string &mesh_type) {
   // Helper object: mesh factory
   std::shared_ptr<lf::mesh::hybrid2d::MeshFactory> mesh_factory_ptr =
       std::make_shared<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -43,10 +43,10 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
 
   // Define the nodes
   std::array<std::array<double, 2>, 3> node_coord{
-  	std::array<double, 2>({0.5, -0.5 + offset }),
-  	std::array<double, 2>({0  ,  0.5 + offset }),
-  	std::array<double, 2>({1  ,  0.5 + offset })};
-   
+      std::array<double, 2>({0.5, -0.5 + offset}),
+      std::array<double, 2>({0, 0.5 + offset}),
+      std::array<double, 2>({1, 0.5 + offset})};
+
   for (const auto &node : node_coord) {
     mesh_factory_ptr->AddPoint(Eigen::Vector2d({node[0], node[1]}));
   }
@@ -70,8 +70,8 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
   return multi_mesh_p;
 }
 
-double solveTemperatureDistribution(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+double
+solveTemperatureDistribution(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   // **********************************************************************
   // Stage 0: provide all coefficient functions mainly through lambda
   //          functions and derived MeshFunctions
@@ -175,8 +175,8 @@ double solveTemperatureDistribution(
   // We use this trick to avoid the manual computation and make use of the
   // LehrFEM facilities :)
   lf::uscalfe::MeshFunctionL2GradientDifference loc_comp(
-      fe_space, lf::mesh::utils::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)),
-      2);
+      fe_space,
+      lf::mesh::utils::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)), 2);
 
   // Compute the norm of the ``difference'' (i.e. the norm of the gradient of
   // the solution)
@@ -185,4 +185,4 @@ double solveTemperatureDistribution(
   return norm;
 }
 
-}  // namespace UnstableBVP
+} // namespace UnstableBVP
