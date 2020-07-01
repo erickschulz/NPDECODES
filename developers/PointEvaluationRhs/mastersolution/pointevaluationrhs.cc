@@ -59,14 +59,14 @@ std::pair<double, double> solveQuadraticEquation(double a, double b, double c) {
   if (a != 0.) {
     b /= a;
     c /= a;
-    const double D = b * b - 4 * c; // discriminant
-    if (D >= 0) {                   // real solutions
+    const double D = b * b - 4 * c;  // discriminant
+    if (D >= 0) {                    // real solutions
       const double rtD = std::sqrt(D);
       // Real solutions, cancellation-free formulas !
       if (b < 0) {
         const double root = 0.5 * (-b + rtD);
         return {root, c / root};
-      } else { // b >= 0
+      } else {  // b >= 0
         const double root = 0.5 * (-b - rtD);
         return {root, c / root};
       }
@@ -186,22 +186,22 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   /* SAM_LISTING_BEGIN_3 */
   // Reverse initial permutation
   switch (vt_zero_idx) {
-  case 1: {
-    x_hat = ((Eigen::Matrix2d() << 0., -1., 1., 0.)).finished() * x_hat +
-            Eigen::Vector2d(1.0, 0.0);
-    break;
+    case 1: {
+      x_hat = ((Eigen::Matrix2d() << 0., -1., 1., 0.)).finished() * x_hat +
+              Eigen::Vector2d(1.0, 0.0);
+      break;
+    }
+    case 2: {
+      x_hat = -x_hat + Eigen::Vector2d(1.0, 1.0);
+      break;
+    }
+    case 3: {
+      x_hat = ((Eigen::Matrix2d() << 0., 1., -1., 0.)).finished() * x_hat +
+              Eigen::Vector2d(0.0, 1.0);
+      break;
+    }
   }
-  case 2: {
-    x_hat = -x_hat + Eigen::Vector2d(1.0, 1.0);
-    break;
-  }
-  case 3: {
-    x_hat = ((Eigen::Matrix2d() << 0., 1., -1., 0.)).finished() * x_hat +
-            Eigen::Vector2d(0.0, 1.0);
-    break;
-  }
-  }
-  /* SAM_LISTING_END_3 */
+    /* SAM_LISTING_END_3 */
 #else
   //====================
   // Your code goes here
@@ -210,10 +210,9 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
   return x_hat;
 }
 
-std::pair<double, double>
-normsSolutionPointLoadDirichletBVP(const lf::assemble::DofHandler &dofh,
-                                   Eigen::Vector2d source_point,
-                                   Eigen::VectorXd &sol_vec) {
+std::pair<double, double> normsSolutionPointLoadDirichletBVP(
+    const lf::assemble::DofHandler &dofh, Eigen::Vector2d source_point,
+    Eigen::VectorXd &sol_vec) {
   std::pair<double, double> result(0, 0);
   const unsigned int N_dofs = dofh.NumDofs();
   sol_vec.resize(N_dofs);
@@ -231,7 +230,7 @@ normsSolutionPointLoadDirichletBVP(const lf::assemble::DofHandler &dofh,
   lf::assemble::AssembleVectorLocally(0, dofh, myvec_pro, rhs);
 
   // Enforce Dirichlet boundary conditions
-  const double boundary_val = 0; // zero Dirichlet boundary conditions
+  const double boundary_val = 0;  // zero Dirichlet boundary conditions
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(dofh.Mesh(), 2)};
   auto my_selector = [&dofh, &bd_flags, &boundary_val](unsigned int dof_idx) {
     if (bd_flags(dofh.Entity(dof_idx))) {
@@ -315,4 +314,4 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
 }
 /* SAM_LISTING_END_6 */
 
-} // namespace PointEvaluationRhs
+}  // namespace PointEvaluationRhs

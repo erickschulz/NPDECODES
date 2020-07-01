@@ -40,8 +40,8 @@ Eigen::VectorXd dummyFunction(double x, int n) {
 }
 
 // A helper function to compute the normal vectors
-Eigen::Matrix<double, 2, 3>
-gradbarycoordinates(const Eigen::Matrix<double, 2, 3> &triangle) {
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(
+    const Eigen::Matrix<double, 2, 3> &triangle) {
   Eigen::Matrix3d X;
 
   // solve for the coefficients of the barycentric coordinate functions
@@ -53,7 +53,6 @@ gradbarycoordinates(const Eigen::Matrix<double, 2, 3> &triangle) {
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
-
 #if SOLUTION
   // Appears only in mastersolution
 
@@ -80,7 +79,7 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 
       // Save the matrix in our datastructure
       result(*cell) = normal_vectors;
-    } else { // corners.cols() == 4
+    } else {  // corners.cols() == 4
       Eigen::Matrix<double, 2, Eigen::Dynamic> normal_vectors(2, 4);
 
       // Split the quadrilateral into two triangles (1,2,3) and (1,3,4)
@@ -320,4 +319,4 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh) {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace AdvectionFV2D
+}  // namespace AdvectionFV2D

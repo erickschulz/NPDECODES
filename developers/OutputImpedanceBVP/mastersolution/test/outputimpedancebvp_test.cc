@@ -27,7 +27,7 @@ TEST(OutputImpedanceBVP, computeApproxSolDirichlet) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
                                   "/../../meshes/unitsquare.msh");
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Finite element space
   auto fe_space_p =
@@ -50,4 +50,4 @@ TEST(OutputImpedanceBVP, computeApproxSolDirichlet) {
   ASSERT_TRUE(uApprox_vec.isApprox(uExact_vec));
 }
 
-} // namespace OutputImpedanceBVP::test
+}  // namespace OutputImpedanceBVP::test

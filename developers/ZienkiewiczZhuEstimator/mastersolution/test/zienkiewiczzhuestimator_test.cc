@@ -168,4 +168,4 @@ TEST(ZienkiewiczZhuEstimator, computeL2Deviation) {
   ASSERT_NEAR(error_grad, 0.0419009, 1.0e-6);
 }
 
-} // namespace ZienkiewiczZhuEstimator::test
+}  // namespace ZienkiewiczZhuEstimator::test

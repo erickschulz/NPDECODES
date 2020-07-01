@@ -20,7 +20,7 @@ namespace NonLinSchroedingerEquation {
  *  It satisfies the LehrFEM++ concept EntityMatrixProvider.
  */
 class MassElementMatrixProvider {
-public:
+ public:
   /** @brief Default implement: all cells are active */
   bool isActive(const lf::mesh::Entity &cell) { return true; }
   /** @brief routine for the computation of element matrices
@@ -59,6 +59,6 @@ double KineticEnergy(const Eigen::VectorXcd &mu,
 double InteractionEnergy(const Eigen::VectorXcd &mu,
                          const Eigen::SparseMatrix<double> &D);
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation
 
-#endif // NONLINSCHROEDINGEREQUATION_H_
+#endif  // NONLINSCHROEDINGEREQUATION_H_

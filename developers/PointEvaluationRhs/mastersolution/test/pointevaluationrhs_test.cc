@@ -65,22 +65,22 @@ TEST(PoinEvaluationRhs, mapping_test) {
     // Depending on the type of cell compute the pre-image of
     // the point x
     switch (ref_el) {
-    case lf::base::RefEl::kTria(): {
-      xh_comp = PointEvaluationRhs::GlobalInverseTria(vertices, x);
-      break;
-    }
-    case lf::base::RefEl::kQuad(): {
-      xh_comp = PointEvaluationRhs::GlobalInverseQuad(vertices, x);
-      break;
-    }
-    default: {
-      LF_ASSERT_MSG(false, "Not implemented for " << ref_el);
-      break;
-    }
-    } // end switch
+      case lf::base::RefEl::kTria(): {
+        xh_comp = PointEvaluationRhs::GlobalInverseTria(vertices, x);
+        break;
+      }
+      case lf::base::RefEl::kQuad(): {
+        xh_comp = PointEvaluationRhs::GlobalInverseQuad(vertices, x);
+        break;
+      }
+      default: {
+        LF_ASSERT_MSG(false, "Not implemented for " << ref_el);
+        break;
+      }
+    }  // end switch
 
     ASSERT_NEAR((xh - xh_comp).norm(), 0.0, 1.0E-8);
-  } // end loop over cells
+  }  // end loop over cells
 }
 
 TEST(PoinEvaluationRhs, solution_test) {

@@ -30,10 +30,9 @@ namespace CoupledSecondOrderBVP::test {
 constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../../meshes/simple.msh";
 
 TEST(CoupledSecondOrderBVP, dropMatrixRowsAndColumns) {
-
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Load finite element space
   // We discretization by means of piecewise QUADRATIC lagrangian FE
@@ -104,10 +103,9 @@ TEST(CoupledSecondOrderBVP, dropMatrixRowsAndColumns) {
 }
 
 TEST(CoupledSecondOrderBVP, dropMatrixRows) {
-
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Load finite element space
   // We discretization by means of piecewise QUADRATIC lagrangian FE
@@ -140,7 +138,7 @@ TEST(CoupledSecondOrderBVP, dropMatrixRows) {
   auto const_zero = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d x) -> double { return 0.0; });
 
-  lf::assemble::COOMatrix<double> M(N_dofs, N_dofs); // off-diag blocks
+  lf::assemble::COOMatrix<double> M(N_dofs, N_dofs);  // off-diag blocks
   // Computing M: standard mass matrix
   lf::uscalfe::ReactionDiffusionElementMatrixProvider<
       double, decltype(const_zero), decltype(const_one)>
@@ -185,10 +183,9 @@ TEST(CoupledSecondOrderBVP, dropMatrixRows) {
 }
 
 TEST(CoupledSecondOrderBVP, solveCoupledBVP) {
-
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   const lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
-  auto mesh_p = reader.mesh(); // type shared_ptr< const lf::mesh::Mesh>
+  auto mesh_p = reader.mesh();  // type shared_ptr< const lf::mesh::Mesh>
 
   // Load finite element space
   // We discretization by means of piecewise QUADRATIC lagrangian FE
@@ -215,4 +212,4 @@ TEST(CoupledSecondOrderBVP, solveCoupledBVP) {
   ASSERT_NEAR(ref_sol.norm(), sol.norm(), tol);
 }
 
-} // namespace CoupledSecondOrderBVP::test
+}  // namespace CoupledSecondOrderBVP::test

@@ -16,7 +16,7 @@ namespace LaxWendroffScheme {
 namespace Constant {
 constexpr double e = 2.71828182845904523536;
 constexpr double pi = 3.14159265358979323846;
-} // namespace Constant
+}  // namespace Constant
 
 constexpr double Square(double x) { return x * x; }
 
@@ -48,9 +48,9 @@ Eigen::VectorXd LaxWendroffRhs(const Eigen::VectorXd &mu, double gamma) {
   // $f'\left(\tfrac{1}{2}\left(\mu_{j+1}+\mu_j\right)\right)^2$:
   double df2_new = df2(0.5 * (mu(1) + mu(0)));
 
-  double f_old = f(mu_left); // $f\left(\mu_{j-1}\right)$
-  double f_mid = f(mu(0));   // $f\left(\mu_j\right)$
-  double f_new = f(mu(1));   // $f\left(\mu_{j+1}\right)$
+  double f_old = f(mu_left);  // $f\left(\mu_{j-1}\right)$
+  double f_mid = f(mu(0));    // $f\left(\mu_j\right)$
+  double f_new = f(mu(1));    // $f\left(\mu_{j+1}\right)$
 
   result(0) = mu(0) - 0.5 * gamma * (f_new - f_old) +
               0.5 * Square(gamma) *
@@ -95,8 +95,7 @@ Eigen::VectorXd solveLaxWendroff(const Eigen::VectorXd &u0, double T,
   double gamma = 1.0 / Constant::e;
   Eigen::VectorXd mu = u0;
   // Main timestepping loop
-  for (int j = 0; j < M; ++j)
-    mu = LaxWendroffRhs(mu, gamma);
+  for (int j = 0; j < M; ++j) mu = LaxWendroffRhs(mu, gamma);
   return mu;
 }
 
@@ -153,10 +152,8 @@ double eval(const Eigen::VectorXd &u, const Eigen::VectorXd &y, double x) {
   double a = y(0);
   double b = y(N - 1);
 
-  if (x <= a)
-    return u(0);
-  if (b <= x)
-    return u(N - 1);
+  if (x <= a) return u(0);
+  if (b <= x) return u(N - 1);
 
   double lambda = (x - a) / (b - a);
   int k0 = (int)(lambda * (N - 1));
@@ -271,4 +268,4 @@ Eigen::VectorXd numexpGodunovSmoothU0(const Eigen::VectorXi &M) {
 }
 /* SAM_LISTING_END_8 */
 
-} // namespace LaxWendroffScheme
+}  // namespace LaxWendroffScheme

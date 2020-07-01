@@ -19,8 +19,9 @@
 namespace DebuggingFEM {
 
 /* SAM_LISTING_BEGIN_1 */
-template <typename ENTITY_MATRIX_PROVIDER> class QFEProviderTester {
-public:
+template <typename ENTITY_MATRIX_PROVIDER>
+class QFEProviderTester {
+ public:
   /**
    * @brief Sets up and stores the Galerkin matrix
    * @param dofh dof handler
@@ -33,9 +34,10 @@ public:
    * @brief Computes the energy (H_1-seminorm) of u
    * @param u function of type double(Eigen::Vector2d)
    */
-  template <typename FUNCTOR> double energyOfInterpolant(FUNCTOR &&u) const;
+  template <typename FUNCTOR>
+  double energyOfInterpolant(FUNCTOR &&u) const;
 
-private:
+ private:
   const lf::assemble::DofHandler &dofh_;
   ENTITY_MATRIX_PROVIDER &element_matrix_provider_;
   Eigen::SparseMatrix<double> A_;
@@ -84,6 +86,6 @@ double QFEProviderTester<ENTITY_MATRIX_PROVIDER>::energyOfInterpolant(
 
 /* SAM_LISTING_END_3 */
 
-} // namespace DebuggingFEM
+}  // namespace DebuggingFEM
 
 #endif

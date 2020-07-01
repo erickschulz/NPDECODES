@@ -15,8 +15,8 @@ namespace lf {
 namespace mesh {
 class Mesh;
 }
-} // namespace lf
+}  // namespace lf
 
 std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh();
 
-#endif // MESH_H_
+#endif  // MESH_H_

@@ -237,9 +237,9 @@ TEST(CLEmpiricFlux, solveCauchyProblem_solveCauchyProblem) {
   UniformCubicSpline f(a, b, u.unaryExpr(f_lambda), u.unaryExpr(M_lambda));
 
   // spacial resolution and final time
-  int N = 101;     // number of grid points
-  double h = 0.02; // meshwidth
-  double T = 1.0;  // final time
+  int N = 101;      // number of grid points
+  double h = 0.02;  // meshwidth
+  double T = 1.0;   // final time
 
   // inital data
   Eigen::VectorXd mu0(N);
@@ -274,4 +274,4 @@ TEST(CLEmpiricFlux, solveCauchyProblem_solveCauchyProblem) {
   EXPECT_NEAR(error, 0.0, tol);
 }
 
-} // namespace CLEmpiricFlux::test
+}  // namespace CLEmpiricFlux::test

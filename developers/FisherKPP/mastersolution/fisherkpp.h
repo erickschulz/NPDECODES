@@ -28,8 +28,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh, DIFF_COEFF &&c);
 
 class StrangSplit {
-
-public:
+ public:
   // Disabled constructors
   StrangSplit() = delete;
   StrangSplit(const StrangSplit &) = delete;
@@ -129,7 +128,7 @@ public:
   /* SAM_LISTING_END_2 */
 
   /* SAM_LISTING_BEGIN_3 */
-private:
+ private:
   // Finite Element Space
   const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
   // Final Time

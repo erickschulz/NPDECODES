@@ -89,4 +89,4 @@ lf::assemble::COOMatrix<double> buildA(
 
 /* SAM_LISTING_END_2 */
 
-} // namespace BoundaryWave
+}  // namespace BoundaryWave

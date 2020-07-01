@@ -14,15 +14,14 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 
 class CRReferenceFiniteElement final
     : public lf::uscalfe::ScalarReferenceFiniteElement<double> {
-public:
+ public:
   lf::base::RefEl RefEl() const override;
   unsigned int Degree() const override;
   lf::assemble::size_type NumRefShapeFunctions() const override;
-  lf::assemble::size_type
-  NumRefShapeFunctions(lf::assemble::dim_t codim) const override;
-  lf::assemble::size_type
-  NumRefShapeFunctions(lf::assemble::dim_t codim,
-                       lf::base::sub_idx_t subidx) const override;
+  lf::assemble::size_type NumRefShapeFunctions(
+      lf::assemble::dim_t codim) const override;
+  lf::assemble::size_type NumRefShapeFunctions(
+      lf::assemble::dim_t codim, lf::base::sub_idx_t subidx) const override;
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
   EvalReferenceShapeFunctions(const Eigen::MatrixXd &refcoords) const override;
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
@@ -34,6 +33,6 @@ public:
       const Eigen::Matrix<double, 1, Eigen::Dynamic> &nodvals) const override;
 };
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // CRREFERENCEFINITEELEMENT_H
+#endif  // CRREFERENCEFINITEELEMENT_H

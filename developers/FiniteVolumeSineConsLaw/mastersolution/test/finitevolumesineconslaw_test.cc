@@ -116,4 +116,4 @@ TEST(FiniteVolumeSineConsLaw, sineClawReactionRhs) {
   EXPECT_NEAR(error, 0.0, tol);
 }
 
-} // namespace FiniteVolumeSineConsLaw::test
+}  // namespace FiniteVolumeSineConsLaw::test

@@ -143,4 +143,4 @@ TEST(DiscontinuousGalerkin1D, solveTrafficFlow) {
   }
 }
 
-} // namespace DiscontinuousGalerkin1D::test
+}  // namespace DiscontinuousGalerkin1D::test

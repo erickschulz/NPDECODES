@@ -21,7 +21,6 @@
 using namespace StableEvaluationAtAPoint;
 
 int main(int /*argc*/, const char ** /*argv*/) {
-
   /* LOADING COARSE MESH */
   // Load mesh into a Lehrfem++ Mesh object. See Example 2.7.1.11 in lecture
   // document.
@@ -47,7 +46,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::Vector2d x(0.3, 0.4);
 
   // INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS
-  int N_meshes = 8; // total number of meshes (coarse + refinement)
+  int N_meshes = 8;  // total number of meshes (coarse + refinement)
   // Array for recording mesh widths
   Eigen::VectorXd mesh_sizes{Eigen::VectorXd::Zero(N_meshes)};
   mesh_sizes(0) = getMeshSize(mesh_p);
@@ -84,7 +83,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
 //====================
 #endif
 
-  for (int k = 1; k < N_meshes; k++) { // for each mesh refinement
+  for (int k = 1; k < N_meshes; k++) {  // for each mesh refinement
     // Load finer mesh
     std::string idx = std::to_string(k);
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);

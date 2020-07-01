@@ -20,4 +20,4 @@ bool testQuadOrderTria(const lf::quad::QuadRule &quad_rule, unsigned int order);
 bool testQuadOrderQuad(const lf::quad::QuadRule &quad_rule, unsigned int order);
 unsigned int calcQuadOrder(const lf::quad::QuadRule &quad_rule);
 
-} // namespace TestQuadratureRules
+}  // namespace TestQuadratureRules

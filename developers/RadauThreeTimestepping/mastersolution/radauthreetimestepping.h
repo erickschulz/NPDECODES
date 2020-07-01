@@ -72,7 +72,7 @@ void dropMatrixRowsColumns(SELECTOR &&selectvals,
  * rule.
  */
 class LinFEMassMatrixProvider {
-public:
+ public:
   /**
    * @brief default constructor
    */
@@ -101,9 +101,9 @@ public:
  * performed using the trapezoidal rule.
  */
 /* SAM_LISTING_BEGIN_2 */
-template <typename FUNCTOR> // lambda predicate
+template <typename FUNCTOR>  // lambda predicate
 class TrapRuleLinFEElemVecProvider {
-public:
+ public:
   /**
    * @brief Constructor storing the right hand side function
    */
@@ -124,7 +124,7 @@ public:
    * barycenter.*/
   Eigen::Vector3d Eval(const lf::mesh::Entity &tria);
 
-private:
+ private:
   // f_ provides the evaluation of the source function at coordinates
   FUNCTOR f_;
 };
@@ -138,8 +138,8 @@ TrapRuleLinFEElemVecProvider(FUNCTOR)->TrapRuleLinFEElemVecProvider<FUNCTOR>;
 /* Implementing member function Eval of class TrapRuleLinFEElemVecProvider*/
 /* SAM_LISTING_BEGIN_3 */
 template <typename FUNCTOR>
-Eigen::Vector3d
-TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval(const lf::mesh::Entity &tria) {
+Eigen::Vector3d TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval(
+    const lf::mesh::Entity &tria) {
   Eigen::Vector3d ElemVec;
 #if SOLUTION
   // Throw error in case no triangular cell
@@ -168,7 +168,7 @@ TrapRuleLinFEElemVecProvider<FUNCTOR>::Eval(const lf::mesh::Entity &tria) {
  * @brief class providing timestepping for heat equation
  */
 class Radau3MOLTimestepper {
-public:
+ public:
   // Disabled constructors
   Radau3MOLTimestepper() = delete;
   Radau3MOLTimestepper(const Radau3MOLTimestepper &) = delete;
@@ -187,14 +187,14 @@ public:
   Eigen::VectorXd discreteEvolutionOperator(double time, double tau,
                                             const Eigen::VectorXd &mu) const;
 
-private:
+ private:
 #if SOLUTION
   double tau_;
-  const lf::assemble::DofHandler &dofh_; // dangerous
+  const lf::assemble::DofHandler &dofh_;  // dangerous
   // Matrices in triplet format holding Galerkin matrices
-  Eigen::SparseMatrix<double> A_;    // Element matrix
-  Eigen::SparseMatrix<double> A_Kp_; // Element Kronecker product matrix
-  Eigen::SparseMatrix<double> M_Kp_; // Mass Kronecker product matrix
+  Eigen::SparseMatrix<double> A_;     // Element matrix
+  Eigen::SparseMatrix<double> A_Kp_;  // Element Kronecker product matrix
+  Eigen::SparseMatrix<double> M_Kp_;  // Mass Kronecker product matrix
   // Butcher tableau of the Runge-Kutta RADAU-2 method
   Eigen::Matrix<double, 2, 2> U_;
   Eigen::Vector2d b_;
@@ -204,13 +204,13 @@ private:
   // precompute the LU decomposition for more efficiency.
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_;
 #else
-  const lf::assemble::DofHandler &dofh_; // dangerous
-                                         //====================
-                                         // Your code goes here
-                                         //====================
+  const lf::assemble::DofHandler &dofh_;  // dangerous
+                                          //====================
+                                          // Your code goes here
+                                          //====================
 #endif
 };
 
-} // namespace RadauThreeTimestepping
+}  // namespace RadauThreeTimestepping
 
 #endif

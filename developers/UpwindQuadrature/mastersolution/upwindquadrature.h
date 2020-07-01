@@ -25,8 +25,9 @@ namespace UpwindQuadrature {
  * @tparam FUNCTOR function that defines the vector valued velocity
  * coefficient v.
  */
-template <typename FUNCTOR> class ConvectionElementMatrixProvider {
-public:
+template <typename FUNCTOR>
+class ConvectionElementMatrixProvider {
+ public:
   /**
    * @brief
    * @param v functor for the velocity field
@@ -44,13 +45,13 @@ public:
   /** @brief Default implementation: all cells are active */
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
 
-private:
-  FUNCTOR v_; // functor for the velocity field.
+ private:
+  FUNCTOR v_;  // functor for the velocity field.
 };
 
 template <typename FUNCTOR>
-Eigen::Matrix3d
-ConvectionElementMatrixProvider<FUNCTOR>::Eval(const lf::mesh::Entity &entity) {
+Eigen::Matrix3d ConvectionElementMatrixProvider<FUNCTOR>::Eval(
+    const lf::mesh::Entity &entity) {
   LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity.RefEl(),
                 "Function only defined for triangular cells");
 
@@ -91,9 +92,8 @@ enum class Direction { INWARDS, OUTWARDS, ALONG_EDGE };
  * @return A vector containing for all 3 corners the corresponding direction of
  * -v(a^j)
  */
-std::vector<Direction>
-opposite_velocity_directions(const lf::geometry::Geometry &geo,
-                             const Eigen::MatrixXd &velocities);
+std::vector<Direction> opposite_velocity_directions(
+    const lf::geometry::Geometry &geo, const Eigen::MatrixXd &velocities);
 
 /**
  * @headerfile upwindquadrature.h
@@ -102,8 +102,9 @@ opposite_velocity_directions(const lf::geometry::Geometry &geo,
  * @tparam FUNCTOR function that defines the vector valued velocity
  * coefficient v.
  */
-template <typename FUNCTOR> class UpwindConvectionElementMatrixProvider {
-public:
+template <typename FUNCTOR>
+class UpwindConvectionElementMatrixProvider {
+ public:
   /**
    * @brief
    * @param v functor for the velocity field
@@ -125,10 +126,10 @@ public:
   /** @brief Default implementation: all cells are active */
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
 
-private:
-  FUNCTOR v_; // velocity field
+ private:
+  FUNCTOR v_;  // velocity field
   lf::mesh::utils::CodimMeshDataSet<double>
-      masses_; // masses of all vertices of the mesh.
+      masses_;  // masses of all vertices of the mesh.
 };
 
 template <typename FUNCTOR>
@@ -168,17 +169,17 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   // compute rows of the local matrix according to the upwind quadrature scheme.
   for (int i = 0; i < 3; ++i) {
     switch (directions[i]) {
-    case Direction::INWARDS:
-      loc_mat.row(i) =
-          local_masses[i] * velocities.transpose().row(i) * grad_basis;
-      break;
-    case Direction::OUTWARDS:
-      loc_mat.row(i) = Eigen::Vector3d::Zero();
-      break;
-    case Direction::ALONG_EDGE:
-      loc_mat.row(i) =
-          0.5 * local_masses[i] * velocities.transpose().row(i) * grad_basis;
-      break;
+      case Direction::INWARDS:
+        loc_mat.row(i) =
+            local_masses[i] * velocities.transpose().row(i) * grad_basis;
+        break;
+      case Direction::OUTWARDS:
+        loc_mat.row(i) = Eigen::Vector3d::Zero();
+        break;
+      case Direction::ALONG_EDGE:
+        loc_mat.row(i) =
+            0.5 * local_masses[i] * velocities.transpose().row(i) * grad_basis;
+        break;
     }
   }
 #else
@@ -196,7 +197,7 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
  * @return data structure containing the masses m(p) for all vertices p of the
  * mesh represented by mesh_p.
  */
-lf::mesh::utils::CodimMeshDataSet<double>
-initializeMasses(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
-} // namespace UpwindQuadrature
+}  // namespace UpwindQuadrature

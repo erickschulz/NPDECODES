@@ -26,10 +26,10 @@ TEST(EngquistOsherNumericalFlux, EngquistOsherNumFlux) {
   }
 
   double tol = 1.0e-8;
-  EXPECT_NEAR(flux(0), flux_ref(0), tol); // v < w < 0
-  EXPECT_NEAR(flux(1), flux_ref(1), tol); // v < 0 < w
-  EXPECT_NEAR(flux(2), flux_ref(2), tol); // 0 < v < w
-  EXPECT_NEAR(flux(3), flux_ref(3), tol); // w < 0 < v
+  EXPECT_NEAR(flux(0), flux_ref(0), tol);  // v < w < 0
+  EXPECT_NEAR(flux(1), flux_ref(1), tol);  // v < 0 < w
+  EXPECT_NEAR(flux(2), flux_ref(2), tol);  // 0 < v < w
+  EXPECT_NEAR(flux(3), flux_ref(3), tol);  // w < 0 < v
 }
 
 TEST(EngquistOsherNumericalFlux, solveCP) {
@@ -46,4 +46,4 @@ TEST(EngquistOsherNumericalFlux, solveCP) {
   EXPECT_NEAR(error, 0.0, tol);
 }
 
-} // namespace EngquistOsherNumericalFlux::test
+}  // namespace EngquistOsherNumericalFlux::test

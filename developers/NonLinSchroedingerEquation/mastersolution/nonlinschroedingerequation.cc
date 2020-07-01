@@ -79,4 +79,4 @@ double InteractionEnergy(const Eigen::VectorXcd &mu,
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation

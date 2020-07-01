@@ -46,15 +46,14 @@ std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 4>>>
 getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
-Eigen::Matrix<double, 2, 3>
-gradbarycoordinates(const Eigen::Matrix<double, 2, 3> &triangle);
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(
+    const Eigen::Matrix<double, 2, 3> &triangle);
 
 Eigen::Vector2d barycenter(const Eigen::MatrixXd corners);
 
 template <typename VECTORFIELD>
-Eigen::SparseMatrix<double>
-initializeMOLODEMatrix(const lf::assemble::DofHandler &dofh,
-                       VECTORFIELD &&beta) {
+Eigen::SparseMatrix<double> initializeMOLODEMatrix(
+    const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta) {
   // Compute cell normals
   std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<
       Eigen::Matrix<double, 2, Eigen::Dynamic>>>
@@ -116,7 +115,7 @@ initializeMOLODEMatrix(const lf::assemble::DofHandler &dofh,
         double flux = (cur_normal_vectors.col(counter)).dot(beta(midpoint));
         if (flux >= 0) {
           B_Matrix.coeffRef(row, row) -= flux * edge_length / area;
-        } else { // flux < 0
+        } else {  // flux < 0
           B_Matrix.coeffRef(row, col) -= flux * edge_length / area;
         }
       } else if (counter < num_edges) {
@@ -274,6 +273,6 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
   return thres;
 }
 
-} // namespace AdvectionFV2D
+}  // namespace AdvectionFV2D
 
-#endif // define __ADCECTIONFV2D_H
+#endif  // define __ADCECTIONFV2D_H

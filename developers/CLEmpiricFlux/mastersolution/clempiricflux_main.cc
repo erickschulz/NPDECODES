@@ -30,8 +30,8 @@ int main() {
   // initial data and its support
   auto u0 = [](double x) { return x < 0.0 ? 1.0 : 0.0; };
 
-  double h = 0.05; // spacial meshwidth
-  double T = 1.0;  // final time
+  double h = 0.05;  // spacial meshwidth
+  double T = 1.0;   // final time
 
   // compute solution
   Eigen::VectorXd mu0 = computeInitVec(f, u0, h, T);

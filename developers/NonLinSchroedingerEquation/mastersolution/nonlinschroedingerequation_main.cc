@@ -28,8 +28,8 @@ int main() {
   /* SAM_LISTING_BEGIN_9 */
   // Load mesh and initalize FE space and DOF handler
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
-                                  "/../meshes/square_64.msh");
+  const lf::io::GmshReader reader(
+      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square_64.msh");
   auto mesh_p = reader.mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);

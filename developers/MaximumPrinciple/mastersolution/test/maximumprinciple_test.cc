@@ -87,4 +87,4 @@ TEST(MaximumPrinciple, computeGalerkinMatrixTR) {
   ASSERT_NEAR(0.0, (A - A_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-} // namespace MaximumPrinciple::test
+}  // namespace MaximumPrinciple::test

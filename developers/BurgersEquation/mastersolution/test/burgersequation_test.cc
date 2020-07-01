@@ -41,4 +41,4 @@ TEST(BurgersEquation, numexpBurgersGodunov) {
   ASSERT_NEAR(0.0, (result - result_ref).lpNorm<Eigen::Infinity>(), tol);
 }
 
-} // namespace BurgersEquation::test
+}  // namespace BurgersEquation::test
