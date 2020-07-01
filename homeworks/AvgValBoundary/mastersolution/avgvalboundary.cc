@@ -118,8 +118,7 @@ approxBoundaryFunctionalValues(unsigned int L) {
     // compute load vector for f(x) = x.norm()
     auto f = [](Eigen::Vector2d x) -> double { return x.norm(); };
     lf::mesh::utils::MeshFunctionGlobal mf_f{f};
-    lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space,
-                                                               mf_f);
+    lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fe_space, mf_f);
     Eigen::VectorXd phi(N_dofs);
     phi.setZero();
     AssembleVectorLocally(0, dofh, elvec_builder, phi);

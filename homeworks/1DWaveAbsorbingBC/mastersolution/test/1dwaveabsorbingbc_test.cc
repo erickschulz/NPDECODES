@@ -77,4 +77,4 @@ TEST(WaveAbsorbingBC1D, computeEnergies) {
   EXPECT_NEAR(E_kin_error, 0.0, tol);
 }
 
-}  // namespace WaveAbsorbingBC1D::test
+} // namespace WaveAbsorbingBC1D::test

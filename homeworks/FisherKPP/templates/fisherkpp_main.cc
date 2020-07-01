@@ -343,10 +343,9 @@ void modelproblem() {
   sol.push_back(StrangSplitter.Evolution(K, sol[2]));
   std::cout << "Computing solution after 500 timesteps..." << std::endl;
   sol.push_back(StrangSplitter.Evolution(K, sol[3]));*/
-  
- 
-// Use VTK-Writer for Visualization of solution.
-std::cout << "Writting solution(s) in VTK format." << std::endl;
+
+  // Use VTK-Writer for Visualization of solution.
+  std::cout << "Writting solution(s) in VTK format." << std::endl;
   //====================
   // Your code goes here: write .vtk files sol[1-6].vtk
   //====================

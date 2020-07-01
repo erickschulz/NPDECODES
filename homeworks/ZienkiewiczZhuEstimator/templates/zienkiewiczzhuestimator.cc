@@ -47,7 +47,7 @@ VectorProjectionMatrixProvider::Eval(const lf::mesh::Entity &entity) {
         Eigen::MatrixXd::Zero(4, 4); // element matrix for scalar FEM
     //====================
     // Your code goes here
-     //====================
+    //====================
   }
   return elMat_vec; // return the local mass element matrix
 } //

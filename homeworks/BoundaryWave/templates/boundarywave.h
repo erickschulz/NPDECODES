@@ -70,6 +70,6 @@ Eigen::VectorXd solveBoundaryWave(
 };
 /* SAM_LISTING_END_8 */
 
-}  // namespace BoundaryWave
+} // namespace BoundaryWave
 
 #endif

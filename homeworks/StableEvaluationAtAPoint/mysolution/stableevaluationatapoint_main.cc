@@ -51,8 +51,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Array for recording mesh widths
   Eigen::VectorXd mesh_sizes{Eigen::VectorXd::Zero(N_meshes)};
   mesh_sizes(0) = getMeshSize(mesh_p);
-  // Dimensions of (full) finite element spaces 
-  Eigen::VectorXd dofs{ Eigen::VectorXd::Zero(N_meshes)};
+  // Dimensions of (full) finite element spaces
+  Eigen::VectorXd dofs{Eigen::VectorXd::Zero(N_meshes)};
   dofs(0) = N_dofs;
 
   // Naive point evaluation

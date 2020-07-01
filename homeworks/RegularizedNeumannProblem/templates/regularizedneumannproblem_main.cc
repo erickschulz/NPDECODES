@@ -32,8 +32,10 @@ int main() {
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
   // Compute solution
-  auto result_c = RegularizedNeumannProblem::getGalerkinLSE_dropDof(fe_space, f, h);
-  auto result_f = RegularizedNeumannProblem::getGalerkinLSE_augment(fe_space, f, h);
+  auto result_c =
+      RegularizedNeumannProblem::getGalerkinLSE_dropDof(fe_space, f, h);
+  auto result_f =
+      RegularizedNeumannProblem::getGalerkinLSE_augment(fe_space, f, h);
 
   return 0;
 }

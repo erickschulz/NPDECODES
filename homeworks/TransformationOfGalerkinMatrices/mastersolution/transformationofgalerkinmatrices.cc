@@ -29,7 +29,7 @@ transformCOOmatrix(const std::vector<Eigen::Triplet<double>> &A) {
   int n_rows = rows_max_idx + 1;
   int n_cols = cols_max_idx + 1;
 
-  // Make sure we deal with a square matrix 
+  // Make sure we deal with a square matrix
   assert(n_rows == n_cols);
   // The matrix size must have even parity
   assert(n_cols % 2 == 0);

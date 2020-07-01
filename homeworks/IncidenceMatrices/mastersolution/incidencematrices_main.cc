@@ -8,11 +8,11 @@
 
 #include "incidencematrices.h"
 
-
 int main() {
   // Step 0: Create demo mesh
   std::cout << "Creating demo mesh from exercise sheet.. ";
-  std::shared_ptr<lf::mesh::Mesh> demoMesh = IncidenceMatrices::createDemoMesh();
+  std::shared_ptr<lf::mesh::Mesh> demoMesh =
+      IncidenceMatrices::createDemoMesh();
   std::cout << "Done!\n\n";
 
   // Step 1: Compute and print matrix G

@@ -34,13 +34,13 @@ bool ImpedanceBoundaryEdgeMatrixProvider::isActive(
 /* SAM_LISTING_END_1 */
 
 /**  @brief Compute the local edge element matrix for the Galerkin matrix of
- * 
+ *
  *           \int_{\boundary \Omega} w(x)^2 u(x) v(x) dx
- * 
+ *
  * @param edge current edge */
 /* SAM_LISTING_BEGIN_2 */
-Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
-    const lf::mesh::Entity &edge) {
+Eigen::MatrixXd
+ImpedanceBoundaryEdgeMatrixProvider::Eval(const lf::mesh::Entity &edge) {
   Eigen::MatrixXd element_matrix(2, 2);
 
   //====================
@@ -51,4 +51,4 @@ Eigen::MatrixXd ImpedanceBoundaryEdgeMatrixProvider::Eval(
 }
 /* SAM_LISTING_END_2 */
 
-}  // namespace ParametricElementMatrices
+} // namespace ParametricElementMatrices

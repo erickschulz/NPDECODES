@@ -14,7 +14,7 @@
 #include <memory>
 // Google Test
 #include <gtest/gtest.h>
-//Lehrfempp
+// Lehrfempp
 #include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
 
@@ -25,7 +25,7 @@ TEST(UnstableBVP, TopMesh) {
   // Get a hierachy of refined meshes
   std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =
       UnstableBVP::createMeshHierarchy(reflevels, "top");
-  lf::refinement::MeshHierarchy& multi_mesh{*multi_mesh_p};
+  lf::refinement::MeshHierarchy &multi_mesh{*multi_mesh_p};
 
   for (int level = 0; level <= reflevels; ++level) {
     // Get the mesh pointer
@@ -45,7 +45,7 @@ TEST(UnstableBVP, BottomMesh) {
   // Get a hierachy of refined meshes
   std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =
       UnstableBVP::createMeshHierarchy(reflevels, "bottom");
-  lf::refinement::MeshHierarchy& multi_mesh{*multi_mesh_p};
+  lf::refinement::MeshHierarchy &multi_mesh{*multi_mesh_p};
 
   for (int level = 0; level <= reflevels; ++level) {
     // Get the mesh pointer
@@ -64,7 +64,7 @@ TEST(UnstableBVP, CenterMesh) {
   // in the test
   std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =
       UnstableBVP::createMeshHierarchy(7, "center");
-  lf::refinement::MeshHierarchy& multi_mesh{*multi_mesh_p};
+  lf::refinement::MeshHierarchy &multi_mesh{*multi_mesh_p};
 
   // Get the seminorm of level 7 mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = multi_mesh.getMesh(7);
@@ -78,20 +78,20 @@ TEST(UnstableBVP, CenterMesh) {
     double h1 = UnstableBVP::solveTemperatureDistribution(mesh_p);
 
     switch (level) {
-      case 0:
-        EXPECT_NEAR(h1, 1.06066, 1e-5);
-        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.967539, 1e-6);
-        break;
-      case 3:
-        EXPECT_NEAR(h1, 1.50899, 1e-5);
-        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.519206, 1e-6);
-        break;
-      case 6:
-        EXPECT_NEAR(h1, 1.913105, 1e-6);
-        EXPECT_NEAR(std::abs(h1 - h1_uL), 0.115094, 1e-6);
-        break;
-      default:
-        throw "Test for this level not implemented.";
+    case 0:
+      EXPECT_NEAR(h1, 1.06066, 1e-5);
+      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.967539, 1e-6);
+      break;
+    case 3:
+      EXPECT_NEAR(h1, 1.50899, 1e-5);
+      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.519206, 1e-6);
+      break;
+    case 6:
+      EXPECT_NEAR(h1, 1.913105, 1e-6);
+      EXPECT_NEAR(std::abs(h1 - h1_uL), 0.115094, 1e-6);
+      break;
+    default:
+      throw "Test for this level not implemented.";
     }
   }
 }

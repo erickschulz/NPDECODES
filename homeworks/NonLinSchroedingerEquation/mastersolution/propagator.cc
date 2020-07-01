@@ -30,8 +30,8 @@ KineticPropagator::KineticPropagator(const SparseMatrixXd &A,
   solver_.compute(B_minus);
 }
 
-Eigen::VectorXcd
-KineticPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd KineticPropagator::
+operator()(const Eigen::VectorXcd &mu) const {
   // Cheap elimination steps operating on the LU-factors. Effort is almost O(N)
   // thanks to sophisticated fill-in avoiding techniques employed by the sparse
   // solvers.
@@ -52,8 +52,8 @@ InteractionPropagator::InteractionPropagator(double tau) {
   };
 }
 
-Eigen::VectorXcd
-InteractionPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd InteractionPropagator::
+operator()(const Eigen::VectorXcd &mu) const {
   // Eigen's way of applying a function to all components of a vector.
   return mu.unaryExpr(phase_multiplier_);
 }
@@ -64,8 +64,8 @@ SplitStepPropagator::SplitStepPropagator(const SparseMatrixXd &A,
                                          const SparseMatrixXcd &M, double tau)
     : kineticPropagator_(A, M, 0.5 * tau), interactionPropagator_(tau) {}
 
-Eigen::VectorXcd
-SplitStepPropagator::operator()(const Eigen::VectorXcd &mu) const {
+Eigen::VectorXcd SplitStepPropagator::
+operator()(const Eigen::VectorXcd &mu) const {
   Eigen::VectorXcd nu(mu.size());
   nu = kineticPropagator_(mu);
   nu = interactionPropagator_(nu);

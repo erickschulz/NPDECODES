@@ -20,7 +20,7 @@ const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                        Eigen::DontAlignCols, ", ", "\n");
 
 int main() {
-/* SAM_LISTING_BEGIN_1 */
+  /* SAM_LISTING_BEGIN_1 */
   double c = 1.0;
   double T = 7.0;
   unsigned int N = 100;
@@ -33,7 +33,7 @@ int main() {
   // Your code goes here
   // Write and print the solution
   //====================
-/* SAM_LISTING_END_1 */
+  /* SAM_LISTING_END_1 */
 
   std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
       computeEnergies(R, c, T / m);

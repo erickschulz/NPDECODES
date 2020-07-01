@@ -22,9 +22,9 @@ int main() {
             << "L2 error" << std::endl;
 
   // Loop over meshes and output number of dofs and L2 norm of error
-  for (int i = 1; i <= 4; ++i)
-  {
-    std::string mesh_file = CURRENT_SOURCE_DIR "/../meshes/refined_square" + std::to_string(i) + ".msh";
+  for (int i = 1; i <= 4; ++i) {
+    std::string mesh_file = CURRENT_SOURCE_DIR "/../meshes/refined_square" +
+                            std::to_string(i) + ".msh";
 
     // Read mesh from file
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -32,14 +32,14 @@ int main() {
     auto mesh_p = reader.mesh();
 
 // TODO: task 2-14.h)
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 
 // TODO: task 2-14.y)
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
   }
 
   return 0;

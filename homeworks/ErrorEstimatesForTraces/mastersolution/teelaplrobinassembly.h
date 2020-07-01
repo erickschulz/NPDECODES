@@ -5,10 +5,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <math.h>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <math.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -30,11 +30,12 @@ using quad_rule_collection_t = std::map<lf::base::RefEl, lf::quad::QuadRule>;
 using linear_lagrange = lf::uscalfe::FeSpaceLagrangeO1<double>;
 
 // Function solving the Robin elliptic boundary value problem
-Eigen::VectorXd solveBVP(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>&);
+Eigen::VectorXd
+solveBVP(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &);
 
 // Function for evaluating the integral of a function on the boundary
-double bdFunctionalEval(
-    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>>&, Eigen::VectorXd&);
+double
+bdFunctionalEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &,
+                 Eigen::VectorXd &);
 
-}  // namespace ErrorEstimatesForTraces
+} // namespace ErrorEstimatesForTraces

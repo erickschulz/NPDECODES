@@ -44,4 +44,4 @@ Eigen::VectorXd solveNeumannEq() {
   return solution;
 }
 
-}  // namespace ElementMatrixComputation
+} // namespace ElementMatrixComputation

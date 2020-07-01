@@ -16,9 +16,9 @@
 
 namespace SymplecticTimesteppingWaves {
 
-void sympTimestep(double tau, Eigen::Vector2d& pq_j);
+void sympTimestep(double tau, Eigen::Vector2d &pq_j);
 Eigen::Vector2d sympTimesteppingHarmonicOscillatorODE(unsigned int m);
 void sympTimesteppingODETest();
 
-}  // namespace SymplecticTimesteppingWaves
+} // namespace SymplecticTimesteppingWaves
 #endif

@@ -34,7 +34,7 @@ StrangSplit::StrangSplit(
     : fe_space_(fe_space), T_(T), m_(m), lambda_(lambda) {
   const lf::assemble::DofHandler &dofh{fe_space_->LocGlobMap()};
   //====================
-  // Your code goes here: initialization of data members 
+  // Your code goes here: initialization of data members
   //====================
 }
 /* SAM_LISTING_END_2 */

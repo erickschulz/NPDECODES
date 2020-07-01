@@ -11,7 +11,7 @@
 
 using namespace SymplecticTimesteppingWaves;
 
-int main(int /*argc*/, char** /*argv*/) {
+int main(int /*argc*/, char ** /*argv*/) {
   // Tabulated study convergence for the symplectic stepping method for the
   // harmonic oscillator ODE dp/dt = q, dq/dt = -p
   sympTimesteppingODETest();
@@ -21,5 +21,6 @@ int main(int /*argc*/, char** /*argv*/) {
   wavePropSimulation(m);
 
   double max_step_size = testStab();
-  std::cout << "Maximum uniform step size for stability is roughly " << max_step_size << std::endl;
+  std::cout << "Maximum uniform step size for stability is roughly "
+            << max_step_size << std::endl;
 }
