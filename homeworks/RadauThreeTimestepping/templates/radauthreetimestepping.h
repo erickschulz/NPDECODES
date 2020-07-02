@@ -8,17 +8,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
-
-#include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {
 
@@ -90,7 +86,7 @@ class LinFEMassMatrixProvider {
    *
    * The implementation uses an analytic formula defined over triangular cells
    **/
-  Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
+  Eigen::Matrix3d Eval(const lf::mesh::Entity &tria);
 };
 
 /**

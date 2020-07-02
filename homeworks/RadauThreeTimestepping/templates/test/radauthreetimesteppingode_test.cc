@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "../radauthreetimesteppingode.h"
+#include <vector>
 
 #include <gtest/gtest.h>
 
-#include <vector>
+#include "../radauthreetimesteppingode.h"
 
 namespace RadauThreeTimestepping::test {
 

@@ -1,20 +1,25 @@
 /**
  * @file radauthreetimestepping.cc
  * @brief NPDE homework RadauThreeTimestepping
- * @author Erick Schulz
+ * @author Erick Schulz, edited by Oliver Rietmann
  * @date 08/04/2019
  * @copyright Developed at ETH Zurich
  */
 
 #include "radauthreetimestepping.h"
 
+#include <cmath>
+#include <iostream>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+
 #include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
+#include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <Eigen/Sparse>
-#include <iostream>
 #include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {
@@ -32,16 +37,13 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Right-hand side vector has to be set to zero initially
-  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
+  Eigen::VectorXd phi(N_dofs);
 #if SOLUTION
   // Functor for computing the source function at 2d coordinates
   auto f = [time](Eigen::Vector2d x) -> double {
-    Eigen::Vector2d v(std::cos(time * M_PI), std::sin(time * M_PI));
-    if ((x - 0.5 * v).norm() < 0.5) {
-      return 1.0;
-    } else {
-      return 0.0;
-    }
+    const double PI = 3.14159265358979323846;
+    Eigen::Vector2d v(std::cos(time * PI), std::sin(time * PI));
+    return ((x - 0.5 * v).norm() < 0.5) ? 1.0 : 0.0;
   };
   auto mesh_p = dofh.Mesh();  // pointer to current mesh
   phi.setZero();

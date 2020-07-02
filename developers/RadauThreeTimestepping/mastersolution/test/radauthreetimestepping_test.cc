@@ -1,14 +1,14 @@
 /**
  * @file radauthreetimestepping_test.cc
  * @brief NPDE homework "RadauThreeTimestepping" code
- * @author Tobias Rohner
+ * @author Tobias Rohner, edited by Oliver Rietmann
  * @date 16.03.2020
  * @copyright Developed at ETH Zurich
  */
 
-#include <gtest/gtest.h>
-
 #include <Eigen/Core>
+
+#include <gtest/gtest.h>
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
@@ -24,9 +24,9 @@ TEST(RadauThreeTimestepping, TrapRuleLinFEElemVecProvider) {
   // Get some triangular test mesh
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(3);
   // Define some easy functions to test the provider with
-  auto f1 = [](const Eigen::Vector2d &x) -> double { return 0; };
-  auto f2 = [](const Eigen::Vector2d &x) -> double { return 1; };
-  auto f3 = [](const Eigen::Vector2d &x) -> double { return x[0]; };
+  auto f1 = [](const Eigen::Vector2d &x) { return 0.0; };
+  auto f2 = [](const Eigen::Vector2d &x) { return 1.0; };
+  auto f3 = [](const Eigen::Vector2d &x) { return x[0]; };
   // Check the element vector for each triangle
   RadauThreeTimestepping::TrapRuleLinFEElemVecProvider f1p(f1);
   RadauThreeTimestepping::TrapRuleLinFEElemVecProvider f2p(f2);
@@ -53,40 +53,34 @@ TEST(RadauThreeTimestepping, rhsVectorheatSource) {
   const auto &dofh = fespace.LocGlobMap();
   // Assemble the vectors for t=0 and t=0.5
   const Eigen::VectorXd rhs0 =
-      RadauThreeTimestepping::rhsVectorheatSource(dofh, 0);
+      RadauThreeTimestepping::rhsVectorheatSource(dofh, 0.0);
   const Eigen::VectorXd rhs1 =
       RadauThreeTimestepping::rhsVectorheatSource(dofh, 0.5);
   // Get the DOFs on the boundary
   const auto boundary = lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 2);
 
   // Create a functional for time t=0 and t=0.5
-  auto f0 = [](const Eigen::Vector2d &x) -> double {
-    if ((x[0] - 0.5) * (x[0] - 0.5) + x[1] * x[1] < 0.25) {
-      return 1;
-    } else {
-      return 0;
-    }
+  auto f0 = [](const Eigen::Vector2d &x) {
+    return ((x[0] - 0.5) * (x[0] - 0.5) + x[1] * x[1] < 0.25) ? 1.0 : 0.0;
   };
-  auto f1 = [](const Eigen::Vector2d &x) -> double {
-    if (x[0] * x[0] + (x[1] - 0.5) * (x[0] * 0.5) < 0.25) {
-      return 1;
-    } else {
-      return 0;
-    }
+  auto f1 = [](const Eigen::Vector2d &x) {
+    return (x[0] * x[0] + (x[1] - 0.5) * (x[1] - 0.5) < 0.25) ? 1.0 : 0.0;
   };
 
   // Assume TrapRuleLinFEElemVecProvider works correctly,
   // as it is tested above
   RadauThreeTimestepping::TrapRuleLinFEElemVecProvider provider0(f0);
   RadauThreeTimestepping::TrapRuleLinFEElemVecProvider provider1(f1);
-  Eigen::VectorXd rhs0_test(dofh.NumDofs());
-  Eigen::VectorXd rhs1_test(dofh.NumDofs());
+  Eigen::VectorXd rhs0_test = Eigen::VectorXd::Zero(dofh.NumDofs());
+  Eigen::VectorXd rhs1_test = Eigen::VectorXd::Zero(dofh.NumDofs());
   lf::assemble::AssembleVectorLocally(0, dofh, provider0, rhs0_test);
   lf::assemble::AssembleVectorLocally(0, dofh, provider1, rhs1_test);
 
+  double tol = 1e-10;
+
   // Make sure the TrapRuleLinFEElemVecProvider is indeed implemented already
-  ASSERT_TRUE(rhs0_test.norm() > 1e-10);
-  ASSERT_TRUE(rhs1_test.norm() > 1e-10);
+  ASSERT_TRUE(rhs0_test.norm() > tol);
+  ASSERT_TRUE(rhs1_test.norm() > tol);
 
   for (int i = 0; i < dofh.NumDofs(); ++i) {
     if (boundary(dofh.Entity(i))) {
@@ -98,8 +92,8 @@ TEST(RadauThreeTimestepping, rhsVectorheatSource) {
     } else {
       // Check whether the value coincides with the one
       // computed previously
-      ASSERT_NEAR(rhs0[i], rhs0_test[i], 1e-10);
-      ASSERT_NEAR(rhs1[i], rhs1_test[i], 1e-10);
+      ASSERT_NEAR(rhs0[i], rhs0_test[i], tol);
+      ASSERT_NEAR(rhs1[i], rhs1_test[i], tol);
     }
   }
 }

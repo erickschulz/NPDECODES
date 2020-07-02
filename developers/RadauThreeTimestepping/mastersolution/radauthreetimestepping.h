@@ -8,17 +8,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
-
-#include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {
 
@@ -90,7 +86,7 @@ class LinFEMassMatrixProvider {
    *
    * The implementation uses an analytic formula defined over triangular cells
    **/
-  Eigen::Matrix<double, 3, 3> Eval(const lf::mesh::Entity &tria);
+  Eigen::Matrix3d Eval(const lf::mesh::Entity &tria);
 };
 
 /**
@@ -196,7 +192,7 @@ class Radau3MOLTimestepper {
   Eigen::SparseMatrix<double> A_Kp_;  // Element Kronecker product matrix
   Eigen::SparseMatrix<double> M_Kp_;  // Mass Kronecker product matrix
   // Butcher tableau of the Runge-Kutta RADAU-2 method
-  Eigen::Matrix<double, 2, 2> U_;
+  Eigen::Matrix2d U_;
   Eigen::Vector2d b_;
   Eigen::Vector2d c_;
   // For fixed step-size in time, the linear system of equations implicitely
