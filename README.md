@@ -1,4 +1,4 @@
-# NPDECODES
+# NPDECODES [![Build Status](https://travis-ci.com/erickschulz/NPDECODES.svg?branch=master)](https://travis-ci.com/erickschulz/NPDECODES)
 This repository contains the codes for the homework problems of the recurring course **Numerical Methods for Partial Differential Equations** at [ETH Zurich](https://ethz.ch/en.html). The course treats finite element methods (FEMs) using the C++ library [LehrFEM++](https://github.com/craffael/lehrfempp) and relies on the following material:
 * [lecture notes](https://www.sam.math.ethz.ch/~grsam/NUMPDEFL/NUMPDE.pdf)
 * [homework problems](https://www.sam.math.ethz.ch/~grsam/NUMPDEFL/HOMEWORK/NPDEFL_Problems.pdf)
