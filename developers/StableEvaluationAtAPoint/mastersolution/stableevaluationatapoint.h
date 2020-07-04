@@ -296,8 +296,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
 	lf::mesh::utils::MeshFunctionGlobal mf_test{test};
 */
 
-
-  // Loop over all cells
+	// Loop over all cells
   for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
     // Standard way to apply a local quadrature rule
     const lf::geometry::Geometry &geo{*entity->Geometry()};
@@ -309,7 +308,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     
 /*
 		auto u_vals = mf_test(*entity, zeta_ref);
-*/	
+*/
 
 		// Quadrature loop
     for (int l = 0; l < P; l++) {
@@ -319,6 +318,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
              gram_dets[l];
     }
   }
+
+/*
+	double testval = test(x);
+	std::cout << "testval " << testval << std::endl;
+	std::cout << "val " << val <<std::endl;
+	std::cout << "err " << testval - val << std::endl;
+*/
+
 #else
   //====================
   // Your code goes here
