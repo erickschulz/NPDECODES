@@ -232,7 +232,7 @@ Eigen::VectorXd simulateAdvection(const lf::assemble::DofHandler &dofh) {
   auto u0 = [x0, d](Eigen::Vector2d x) -> double {
     double dist = (x - x0).norm();
     if (dist < d) {
-      return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
+      return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
     } else {
       return 0.0;
     }
@@ -284,7 +284,7 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh) {
   auto u0 = [x0, d](Eigen::Vector2d x) -> double {
     double dist = (x - x0).norm();
     if (dist < d) {
-      return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
+      return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
     } else {
       return 0.0;
     }
