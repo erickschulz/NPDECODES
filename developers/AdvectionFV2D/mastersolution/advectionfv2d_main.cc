@@ -245,12 +245,9 @@ int main() {
           l2_error += w_ref[l] *
                       std::pow((u0(phi_inv * zeta.col(l)) - result[idx]), 2) *
                       gram_dets[l];
-          volume_ref += w_ref[l] *
-                      std::abs(u0(phi_inv * zeta.col(l))) *
-                      gram_dets[l];
-          volume_sol += w_ref[l] *
-                      std::abs(result[idx]) *
-                      gram_dets[l];
+          volume_ref +=
+              w_ref[l] * std::abs(u0(phi_inv * zeta.col(l))) * gram_dets[l];
+          volume_sol += w_ref[l] * std::abs(result[idx]) * gram_dets[l];
         }
       } else if (corners.cols() == 4) {
         const int P = quad_rule_kQuad.NumPoints();
@@ -266,12 +263,9 @@ int main() {
           l2_error += w_ref[l] *
                       std::pow((u0(phi_inv * zeta.col(l)) - result[idx]), 2) *
                       gram_dets[l];
-          volume_ref += w_ref[l] *
-                      std::abs(u0(phi_inv * zeta.col(l))) *
-                      gram_dets[l];
-          volume_sol += w_ref[l] *
-                      std::abs(result[idx]) *
-                      gram_dets[l];
+          volume_ref +=
+              w_ref[l] * std::abs(u0(phi_inv * zeta.col(l))) * gram_dets[l];
+          volume_sol += w_ref[l] * std::abs(result[idx]) * gram_dets[l];
         }
       } else {
         throw std::runtime_error("Error in L2 Geometrie");

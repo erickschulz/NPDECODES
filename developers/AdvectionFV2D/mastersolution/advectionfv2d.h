@@ -95,7 +95,8 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
       // Check whether cell has a neighbor at the current edge
       if (next_cell != nullptr) {
         // Geo pointer of edge to next_cell
-        const lf::geometry::Geometry *edge_geo_p = (cell_edges[counter])->Geometry();
+        const lf::geometry::Geometry *edge_geo_p =
+            (cell_edges[counter])->Geometry();
 
         // Length of current edge
         double edge_length = lf::geometry::Volume(*edge_geo_p);
@@ -123,7 +124,8 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
         // flux has to be considered if it is greater than 0
 
         // Geo pointer of edge to next_cell
-        const lf::geometry::Geometry *edge_geo_p = (cell_edges[counter])->Geometry();
+        const lf::geometry::Geometry *edge_geo_p =
+            (cell_edges[counter])->Geometry();
 
         // Length of current edge
         double edge_length = lf::geometry::Volume(*edge_geo_p);
