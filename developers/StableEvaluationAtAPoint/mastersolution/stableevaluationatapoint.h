@@ -39,33 +39,27 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
 }
 
 /** @brief Returns fundamental solution G(x,y).
- *
- * @param x, y: point coordinate vectors
+ *  @param x, y: point coordinate vectors
  */
 double G(Eigen::Vector2d x, Eigen::Vector2d y) {
   double res;
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-  // Straightforward implementation
   res = (-1.0 / (2.0 * M_PI)) * std::log((x - y).norm());
   return res;
 }
 
 /** @brief Returns the gradient of the fundamental solution G(x,y).
- *
- * @param x, y: point coordinate vectors
+ *  @param x, y: point coordinate vectors
  */
 Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
-
   Eigen::Vector2d res;
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-  // Straightforward implementation
   res = (x - y) / (2.0 * M_PI * (x - y).squaredNorm());
   return res;
 }
 
 /** @brief Evaluates the Integral P_SL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
- *
  * @warn The supplied mesh object must hold a triangulation of the **unit
  * square**. This functions only works in this particular setting
  */
@@ -281,7 +275,8 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
              Eigen::VectorXd uFE, const Eigen::Vector2d x) {
   double val = 0.0;
 #if SOLUTION
-  // Mesh covering a unit square domain
+
+	// Mesh covering a unit square domain
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
   // Use midpoint quadrature rule
   const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
@@ -291,9 +286,16 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
   const Eigen::VectorXd w_ref{qr.Weights()};
   // Number of quadrature points
   const lf::base::size_type P = qr.NumPoints();
-
   // Create mesh function to be evaluated at the quadrature points
   auto uFE_mf = lf::uscalfe::MeshFunctionFE(fe_space, uFE);
+
+/*
+	auto test = [](Eigen::Vector2d x) -> double { 
+		return x[0] * x[0] - x[1] * x[1];
+	};
+	lf::mesh::utils::MeshFunctionGlobal mf_test{test};
+*/
+
 
   // Loop over all cells
   for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
@@ -304,9 +306,14 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
     // Values of finite element function on all quadrature points
     auto u_vals = uFE_mf(*entity, zeta_ref);
-    // Quadrature loop
+    
+/*
+		auto u_vals = mf_test(*entity, zeta_ref);
+*/	
+
+		// Quadrature loop
     for (int l = 0; l < P; l++) {
-      val -= w_ref[l] * u_vals[l] *
+      val += w_ref[l] * (-u_vals[l]) *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
               G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
              gram_dets[l];
