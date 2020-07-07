@@ -92,17 +92,18 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
 
     int counter = 0;
     for (const lf::mesh::Entity *next_cell : neighbour_cells) {
-      // Check whether cell has a neighbor
+      // Check whether cell has a neighbor at the current edge
       if (next_cell != nullptr) {
         // Geo pointer of edge to next_cell
-        const lf::geometry::Geometry *geo_p = (cell_edges[counter])->Geometry();
+        const lf::geometry::Geometry *edge_geo_p =
+            (cell_edges[counter])->Geometry();
 
         // Length of current edge
-        double edge_length = lf::geometry::Volume(*geo_p);
+        double edge_length = lf::geometry::Volume(*edge_geo_p);
 
         // Corners of current edge
         Eigen::Matrix<double, 2, Eigen::Dynamic> corner_edges =
-            lf::geometry::Corners(*geo_p);
+            lf::geometry::Corners(*edge_geo_p);
 
         // Midpoint of current edge
         Eigen::Vector2d midpoint =
@@ -119,18 +120,19 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
           B_Matrix.coeffRef(row, col) -= flux * edge_length / area;
         }
       } else if (counter < num_edges) {
-        // In the case a cell has no neighbor, the flux of the edge has
-        // to be considered if it is greater than 0
+        // In the case a cell has no neighbor at the current edge, the
+        // flux has to be considered if it is greater than 0
 
         // Geo pointer of edge to next_cell
-        const lf::geometry::Geometry *geo_p = (cell_edges[counter])->Geometry();
+        const lf::geometry::Geometry *edge_geo_p =
+            (cell_edges[counter])->Geometry();
 
         // Length of current edge
-        double edge_length = lf::geometry::Volume(*geo_p);
+        double edge_length = lf::geometry::Volume(*edge_geo_p);
 
         // Corners of current edge
         Eigen::Matrix<double, 2, Eigen::Dynamic> corner_edges =
-            lf::geometry::Corners(*geo_p);
+            lf::geometry::Corners(*edge_geo_p);
 
         // Midpoint of current edge
         Eigen::Vector2d midpoint =
@@ -189,11 +191,11 @@ Eigen::VectorXd solveAdvection2D(const lf::assemble::DofHandler &dofh,
       for (auto edge : edges) {
         // Cell contains edge at boundary
         if (bd_blags(*edge)) {
-          const lf::geometry::Geometry *geo_p = edge->Geometry();
+          const lf::geometry::Geometry *edge_geo_p = edge->Geometry();
 
           // Corners of current edge
           Eigen::Matrix<double, 2, Eigen::Dynamic> corner_edges =
-              lf::geometry::Corners(*geo_p);
+              lf::geometry::Corners(*edge_geo_p);
 
           // Midpoint of current edge
           Eigen::Vector2d midpoint =

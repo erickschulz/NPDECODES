@@ -129,6 +129,8 @@ int main() {
   std::vector<double> array_l1error;
   std::vector<double> array_l2error;
   std::vector<double> array_hmin_inv;
+  std::vector<double> array_volume_ref;
+  std::vector<double> array_volume_sol;
 
   // Iterate over all mesh levels
   for (int level = 0; level < num_meshes; level++) {
@@ -198,7 +200,7 @@ int main() {
     auto u0 = [x0, d](Eigen::Vector2d x) -> double {
       double dist = (x - x0).norm();
       if (dist < d) {
-        return std::pow(std::cos(M_PI / (2 * d) * dist), 2);
+        return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
       } else {
         return 0.0;
       }
@@ -220,6 +222,8 @@ int main() {
 
     double l1_error = 0;
     double l2_error = 0;
+    double volume_ref = 0;
+    double volume_sol = 0;
     for (const lf::mesh::Entity *cell : cur_mesh->Entities(0)) {
       const lf::geometry::Geometry *geo_p = cell->Geometry();
       double area = lf::geometry::Volume(*geo_p);
@@ -241,6 +245,9 @@ int main() {
           l2_error += w_ref[l] *
                       std::pow((u0(phi_inv * zeta.col(l)) - result[idx]), 2) *
                       gram_dets[l];
+          volume_ref +=
+              w_ref[l] * std::abs(u0(phi_inv * zeta.col(l))) * gram_dets[l];
+          volume_sol += w_ref[l] * std::abs(result[idx]) * gram_dets[l];
         }
       } else if (corners.cols() == 4) {
         const int P = quad_rule_kQuad.NumPoints();
@@ -256,11 +263,15 @@ int main() {
           l2_error += w_ref[l] *
                       std::pow((u0(phi_inv * zeta.col(l)) - result[idx]), 2) *
                       gram_dets[l];
+          volume_ref +=
+              w_ref[l] * std::abs(u0(phi_inv * zeta.col(l))) * gram_dets[l];
+          volume_sol += w_ref[l] * std::abs(result[idx]) * gram_dets[l];
         }
       } else {
         throw std::runtime_error("Error in L2 Geometrie");
       }
     }
+    l2_error = std::sqrt(l2_error);
 
     std::cout << "L2Error at level " << level << " :" << l2_error << std::endl;
 
@@ -268,6 +279,8 @@ int main() {
     array_num_cells.push_back(cur_dofh.NumDofs());
     array_l1error.push_back(l1_error);
     array_l2error.push_back(l2_error);
+    array_volume_sol.push_back(volume_sol);
+    array_volume_ref.push_back(volume_ref);
 
     double hmin_inv = 1. / AdvectionFV2D::computeHmin(cur_mesh);
     array_hmin_inv.push_back(hmin_inv);
@@ -304,6 +317,8 @@ int main() {
     std::cout << "Cells: " << array_num_cells.at(level)
               << " | L2Error: " << array_l2error.at(level)
               << " | L1Error: " << array_l1error.at(level)
+              << " | Vol. Ref: " << array_volume_ref.at(level)
+              << " | Vol. Sol: " << array_volume_sol.at(level)
               << " | Thres: " << array_clf_thres.at(level)
               << " | 1/Hmin: " << array_hmin_inv.at(level) << std::endl;
     csv_file << array_num_cells.at(level) << "," << array_hmin_inv.at(level)
