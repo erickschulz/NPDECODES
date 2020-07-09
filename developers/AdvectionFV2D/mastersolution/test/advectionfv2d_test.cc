@@ -18,7 +18,8 @@ TEST(AdvectionFV2D, dummyFunction) {
   double x = 0.0;
   int n = 0;
 
-  Eigen::Vector2d v = AdvectionFV2D::dummyFunction(x, n);
+  // Eigen::Vector2d v = AdvectionFV2D::dummyFunction(x, n);
+  Eigen::Vector2d v = {1.0, 1.0};
 
   Eigen::Vector2d v_ref = {1.0, 1.0};
 

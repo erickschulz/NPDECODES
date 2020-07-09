@@ -29,15 +29,6 @@
 namespace AdvectionFV2D {
 
 /* SAM_LISTING_BEGIN_1 */
-Eigen::VectorXd dummyFunction(double x, int n) {
-#if SOLUTION
-  // Appears only in mastersolution
-  return Eigen::Vector2d::Constant(1.0);
-#else
-  // Appears only in mysolution and templates
-  return Eigen::Vector2d::Zero();
-#endif
-}
 
 // A helper function to compute the normal vectors
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(
@@ -50,6 +41,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
   return X.inverse().block<2, 3>(1, 0);
 }
 
+// Task 8-8.g
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
@@ -107,13 +99,18 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
       Eigen::Matrix<double, 2, Eigen::Dynamic>>>(result);
 
 #else
-  // Appears only in mysolution and templates
+  //====================
+  // Your code goes here
+  //====================
+  return nullptr;
 #endif
 }
 
+// Task 8-8.h
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 4>>>
 getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+#if SOLUTION
   // Initialize auxilary object
   lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 2>>
       aux_obj(mesh_p, 1, {nullptr, nullptr});
@@ -157,6 +154,12 @@ getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 
   return std::make_shared<lf::mesh::utils::CodimMeshDataSet<
       std::array<const lf::mesh::Entity *, 4>>>(result);
+#else
+  //====================
+  // Your code goes here
+  //====================
+  return nullptr;
+#endif
 }
 
 // Function returning the barycenter of TRIA or QUAD
@@ -174,7 +177,9 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
   return midpoint;
 }
 
+// Task 8-8.l
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+#if SOLUTION
   // Vector to store the distances between cells
   std::vector<double> min_h;
 
@@ -216,107 +221,14 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   // Find the minimum value in the vector and return it
   double result = *std::min_element(std::begin(min_h), std::end(min_h));
   return result;
+#else
+  //====================
+  // Your code goes here
+  //====================
+  return 0.0;
+#endif
 }
 
-// TODO: Problem description Vector2d?? -> changed to VectorXd
-Eigen::VectorXd simulateAdvection(const lf::assemble::DofHandler &dofh) {
-  // Specifiy final time
-  double T_max = 1.0;
-
-  Eigen::Vector2d x0(0.8, 0.2);
-  //////////////////////////////////////////////////////////////////////
-  // TODO Inconsistency (x - x0) -> ||x - x0||
-  //////////////////////////////////////////////////////////////////////
-  // Set up lambda function u0 and beta
-  double d = 0.2;
-  auto u0 = [x0, d](Eigen::Vector2d x) -> double {
-    double dist = (x - x0).norm();
-    if (dist < d) {
-      return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
-    } else {
-      return 0.0;
-    }
-  };
-  auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d {
-    return Eigen::Vector2d(-x[1], x[0]) / std::sqrt(2.0);
-  };
-
-  // Get number of dofs and
-  // inititialize a vector for the initial condition
-  int num_dof = dofh.NumDofs();
-  Eigen::VectorXd u0_h(num_dof);
-
-  // Iterate over all cells
-  for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
-    const lf::geometry::Geometry *geo_p = cell->Geometry();
-    const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
-
-    // Compute barycenter of the cell
-    Eigen::Vector2d x = barycenter(corners);
-
-    // Find the index of the DOF for the cell
-    int idx = dofh.GlobalDofIndices(*cell)[0];
-
-    double distance = (x - x0).norm();
-    if (distance < d) {
-      u0_h[idx] = u0(x);
-    } else {
-      u0_h[idx] = 0.0;
-    }
-  }
-
-  // Set up the number of steps according to the CFL condition
-  int M = int((T_max / computeHmin(dofh.Mesh())) + 2);
-
-  // Run simulation
-  Eigen::VectorXd result = solveAdvection2D(dofh, beta, u0_h, T_max, M);
-
-  return result;
-}
-
-Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh) {
-  // Specifiy final time
-  double T_max = 1.0;
-
-  Eigen::Vector2d x0(0.8, 0.2);
-  // Set up lambda function u0 and beta
-  double d = 0.2;
-  auto u0 = [x0, d](Eigen::Vector2d x) -> double {
-    double dist = (x - x0).norm();
-    if (dist < d) {
-      return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
-    } else {
-      return 0.0;
-    }
-  };
-
-  // Setup inverted phi^-1
-  Eigen::Matrix2d phi_inv;
-  double t_mod = T_max / std::sqrt(2.0);
-  phi_inv << std::cos(t_mod), std::sin(t_mod), -std::sin(t_mod),
-      std::cos(t_mod);
-
-  // Initialize vector for the result
-  int num_dof = dofh.NumDofs();
-  Eigen::VectorXd ref_solution(num_dof);
-
-  // Iterate over all cells
-  for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
-    const lf::geometry::Geometry *geo_p = cell->Geometry();
-    const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
-
-    // Compute the barycenter of the cell
-    Eigen::Vector2d x = barycenter(corners);
-
-    // Find the index of the DOF for the cell
-    int idx = dofh.GlobalDofIndices(*cell)[0];
-
-    // Compute exact solution
-    Eigen::Vector2d phi_inv_x = phi_inv * x;
-    ref_solution[idx] = u0(phi_inv_x);
-  }
-  return ref_solution;
-}
 /* SAM_LISTING_END_1 */
 
 }  // namespace AdvectionFV2D
