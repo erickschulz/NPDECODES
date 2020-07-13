@@ -13,20 +13,15 @@
 #include <functional>
 #include <iostream>
 #include <memory>
-#include <sstream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
@@ -34,6 +29,7 @@
 
 #include "advectionfv2d.h"
 
+/* SAM_LISTING_BEGIN_1 */
 int main() {
 #if SOLUTION
   // Define velocity field beta
@@ -62,14 +58,14 @@ int main() {
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1. / 3.);
 
   auto mesh_seq_p{
-      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 5)};
+      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
 
   std::vector<int> vector_num_cells;
   std::vector<double> vector_l2error;
 
   // Iterate over mesh levels starting from thrid refinement
   int num_meshes = mesh_seq_p->NumLevels();
-  for (int level = 3; level < num_meshes; level++) {
+  for (int level = 3; level < num_meshes; ++level) {
     std::cout << "Computing L2Error for level: " << level << std::endl;
 
     // Get the current mesh
@@ -164,7 +160,7 @@ int main() {
   // Write Output file of Task 8-8.o and 8-8.q
   std::ofstream csv_file;
   csv_file.open("advectionfv2d.csv");
-  for (int i = 0; i < vector_num_cells.size(); i++) {
+  for (int i = 0; i < vector_num_cells.size(); ++i) {
     std::cout << "Cells: " << vector_num_cells.at(i)
               << " | L2Error: " << vector_l2error.at(i) << std::endl;
     csv_file << vector_num_cells.at(i) << "," << vector_l2error.at(i) << "\n";
@@ -172,7 +168,7 @@ int main() {
   csv_file.close();
 
   // Print convergence rates
-  for (int i = 1; i < vector_num_cells.size(); i++) {
+  for (int i = 1; i < vector_num_cells.size(); ++i) {
     double conv_rate =
         (std::log(vector_l2error[i - 1]) - std::log(vector_l2error[i])) /
         (std::log(vector_num_cells[i]) - std::log(vector_num_cells[i - 1]));
@@ -193,3 +189,4 @@ int main() {
   return 0;
 #endif
 }
+/* SAM_LISTING_BEGIN_5 */

@@ -11,26 +11,20 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <functional>
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <vector>
 
 #include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
 
-#include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 
 namespace AdvectionFV2D {
 
-/* SAM_LISTING_BEGIN_1 */
-
 // A helper function to compute the normal vectors
+/* SAM_LISTING_BEGIN_1 */
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(
     const Eigen::Matrix<double, 2, 3> &triangle) {
   Eigen::Matrix3d X;
@@ -40,8 +34,10 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
   X.block<3, 2>(0, 1) = triangle.transpose();
   return X.inverse().block<2, 3>(1, 0);
 }
+/* SAM_LISTING_END_1 */
 
 // Task 8-8.g
+/* SAM_LISTING_BEGIN_2 */
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
@@ -105,8 +101,10 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return nullptr;
 #endif
 }
+/* SAM_LISTING_END_2 */
 
 // Task 8-8.h
+/* SAM_LISTING_BEGIN_3 */
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 4>>>
 getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
@@ -161,8 +159,10 @@ getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return nullptr;
 #endif
 }
+/* SAM_LISTING_END_3 */
 
 // Function returning the barycenter of TRIA or QUAD
+/* SAM_LISTING_BEGIN_4 */
 Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
   Eigen::Vector2d midpoint;
   if (corners.cols() == 3) {
@@ -176,8 +176,10 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
   }
   return midpoint;
 }
+/* SAM_LISTING_END_4 */
 
 // Task 8-8.l
+/* SAM_LISTING_BEGIN_5 */
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 #if SOLUTION
   // Vector to store the distances between cells
@@ -228,7 +230,6 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return 0.0;
 #endif
 }
-
-/* SAM_LISTING_END_1 */
+/* SAM_LISTING_END_5 */
 
 }  // namespace AdvectionFV2D
