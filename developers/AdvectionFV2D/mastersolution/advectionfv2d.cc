@@ -23,7 +23,6 @@
 
 namespace AdvectionFV2D {
 
-// A helper function to compute the normal vectors
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(
     const Eigen::Matrix<double, 2, 3> &triangle) {

@@ -18,7 +18,8 @@ set(LIBRARIES
   LF::lf.base
   LF::lf.geometry
   LF::lf.io
-  LF::lf.mesh.utils
+  LF::lf.mesh
   LF::lf.mesh.test_utils
+  LF::lf.mesh.utils
   LF::lf.refinement
 )

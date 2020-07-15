@@ -9,6 +9,7 @@
  */
 
 #include <array>
+#include <cmath>
 #include <memory>
 #include <stdexcept>
 
@@ -36,7 +37,7 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 // TODO: Inconsistenent file name in solution (getAdjacentDofIndex())
 ////////////////////////////////////////////////////////////////////////////////
 /**
- * @brief Compute the neighbor cells for each cell in the mesh.
+ * @brief Find the neighbor cells to each cell in the mesh.
  *
  * @param mesh_p Pointer to the mesh.
  * @return CodimMeshDataSet which stores for each cell all neighbor cells.
@@ -186,7 +187,7 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
  * condition and perform timestepping
  *
  * @param dofh Reference to dof handler.
- * @param beta Functor to vectorfield beta
+ * @param beta Functor to vector field beta
  * @param u0_h Vector describing the initial bump
  * @param adjacentCells Pointer to CodimMeshDataSet containing information
  * about the neighbors of the cells
@@ -288,11 +289,11 @@ Eigen::VectorXd solveAdvection2D(
 ////////////////////////////////////////////////////////////////////////////////
 // Task 8-8.n
 /**
- * @brief Function computes the initial bump vector and the number of 
+ * @brief Function computes the initial bump vector and the number of
  * required timesteps and also calls solveAdvection2D()
  *
  * @param dofh Reference to dof handler.
- * @param beta Functor to vectorfield beta
+ * @param beta Functor to vector field beta
  * @param u0 Functor describing the initial bump
  * @param adjacentCells Pointer to CodimMeshDataSet containing information
  * about the neighbors of the cells
@@ -396,15 +397,15 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
 }
 /* SAM_LISTING_END_4 */
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // TODO: Returned int instead of double
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // Task 8-8.p
 /**
  * @brief Function searching for the CFL threshold
  *
  * @param dofh Reference to dof handler.
- * @param beta Functor to vectorfield beta
+ * @param beta Functor to vector field beta
  * @param T Final time
  * @return Minimum number of steps where no blowup occurs.
  */

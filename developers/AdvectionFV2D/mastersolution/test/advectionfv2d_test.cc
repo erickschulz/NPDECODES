@@ -2,21 +2,19 @@
  * @file advectionfv2d_test.cc
  * @brief NPDE homework AdvectionFV2D code
  * @author Philipp Egg
- * @date 01.01.2020
+ * @date 13.07.2020
  * @copyright Developed at ETH Zurich
  */
 
 #include <array>
 #include <cmath>
-#include <cstdlib>
-#include <fstream>
 #include <functional>
-#include <iostream>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include <Eigen/Core>
+
+#include <gtest/gtest.h>
 
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
@@ -24,8 +22,6 @@
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
-
-#include <gtest/gtest.h>
 
 #include "../advectionfv2d.h"
 
@@ -246,7 +242,6 @@ TEST(AdvectionFV2D, findCFLthreshold) {
     return Eigen::Vector2d(-x[1], x[0]) / std::sqrt(2.0);
   };
 
-  // Create a DOF Hander for the current mesh
   const lf::assemble::UniformFEDofHandler cur_dofh(
       cur_mesh, {{lf::base::RefEl::kPoint(), 0},
                  {lf::base::RefEl::kSegment(), 0},

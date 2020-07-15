@@ -54,7 +54,9 @@ int main() {
   // Generate a mesh hierarchy
   double T = 1.0;
 
+  //////////////////////////////////////////////////////////////////////////////
   // TODO inconsistancy: g vs. G
+  //////////////////////////////////////////////////////////////////////////////
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1. / 3.);
 
   auto mesh_seq_p{
@@ -189,4 +191,4 @@ int main() {
   return 0;
 #endif
 }
-/* SAM_LISTING_BEGIN_5 */
+/* SAM_LISTING_END_1 */
