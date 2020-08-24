@@ -89,11 +89,12 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
   //////////////////////////////////////////////////////////////////////////////
   // TODO: Consistency Number of NNZ Entities
   //////////////////////////////////////////////////////////////////////////////
-#if SOLUTION
   // Set up matrix B
-  int bound_nnz = dofh.Mesh()->NumEntities(0) * 4;
   int num_dof = dofh.NumDofs();
   Eigen::SparseMatrix<double> B_Matrix(num_dof, num_dof);
+
+#if SOLUTION
+  int bound_nnz = dofh.Mesh()->NumEntities(0) * 4;
   B_Matrix.reserve(bound_nnz);
 
   // Iterate over all cells
@@ -160,13 +161,13 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
       }
     }
   }
-  return B_Matrix;
 #else
   //====================
   // Your code goes here
   //====================
-  return Eigen::SparseMatrix<double>(dofh.NumDofs(), dofh.NumDofs());
 #endif
+
+  return B_Matrix;
 }
 /* SAM_LISTING_END_1 */
 
@@ -209,19 +210,13 @@ Eigen::VectorXd solveAdvection2D(
         Eigen::Matrix<double, 2, Eigen::Dynamic>>>
         normal_vectors,
     double T, unsigned int M) {
+  // Set mu to inital bump
+  Eigen::VectorXd mu = u0_h;
+
 #if SOLUTION
-  double tau = T / M;
-
-  // Initialize vector for the result
-  int num_dof = dofh.NumDofs();
-  Eigen::VectorXd result(num_dof);
-
   // Compute B
   Eigen::SparseMatrix B_matrix =
       initializeMOLODEMatrix(dofh, beta, adjacentCells, normal_vectors);
-
-  // Set mu to inital bump
-  Eigen::VectorXd mu = u0_h;
 
   // Enforce dirichlet boundary condition
   // Might interfere with the initial bump!
@@ -231,17 +226,14 @@ Eigen::VectorXd solveAdvection2D(
 
   // Iterate over all cells
   for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
-    auto edges = cell->SubEntities(1);
     int counter = 0;
     // Iterate over all edges
-    for (auto edge : edges) {
+    for (auto edge : cell->SubEntities(1)) {
       // Cell contains edge at boundary
       if (bd_blags(*edge)) {
-        const lf::geometry::Geometry *edge_geo_p = edge->Geometry();
-
         // Corners of current edge
         Eigen::Matrix<double, 2, Eigen::Dynamic> corner_edges =
-            lf::geometry::Corners(*edge_geo_p);
+            lf::geometry::Corners(*edge->Geometry());
 
         // Midpoint of current edge
         Eigen::Vector2d midpoint =
@@ -265,22 +257,24 @@ Eigen::VectorXd solveAdvection2D(
   // Timestepping
   Eigen::VectorXd k0;
   Eigen::VectorXd k1;
+  const double overflow = 1000 * u0_h.lpNorm<Eigen::Infinity>();
   for (int step = 0; step < M; ++step) {
+    double tau = T / M;
     k0 = B_matrix * mu;
     k1 = B_matrix * (mu + tau * k0);
     mu = mu + tau * 0.5 * (k0 + k1);
 
-    if (mu.lpNorm<Eigen::Infinity>() > 1000 * u0_h.lpNorm<Eigen::Infinity>()) {
+    if (mu.lpNorm<Eigen::Infinity>() > overflow) {
       throw std::overflow_error("Overflow occured!!\n");
     }
   }
-  return mu;
 #else
   //====================
   // Your code goes here
   //====================
-  return Eigen::VectorXd::Zero(dofh.NumDofs());
 #endif
+
+  return mu;
 }
 /* SAM_LISTING_END_2 */
 
@@ -313,9 +307,11 @@ Eigen::VectorXd simulateAdvection(
         Eigen::Matrix<double, 2, Eigen::Dynamic>>>
         normal_vectors,
     double T) {
-#if SOLUTION
-  // Get number of dofs and inititialize a vector for the initial condition
+  // Get number of dofs
   int num_dof = dofh.NumDofs();
+
+#if SOLUTION
+  // Inititialize a vector for the initial condition
   Eigen::VectorXd u0_h(num_dof);
 
   // Iterate over all cells
@@ -335,16 +331,12 @@ Eigen::VectorXd simulateAdvection(
   // Set up the number of steps according to the CFL condition
   int M = int((T / computeHmin(dofh.Mesh())) + 2);
 
-  // Run simulation
-  Eigen::VectorXd result =
-      solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T, M);
-
-  return result;
+  return solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T, M);
 #else
   //====================
   // Your code goes here
+  return Eigen::VectorXd::Zero(num_dof);
   //====================
-  return Eigen::VectorXd::Zero(dofh.NumDofs());
 #endif
 }
 /* SAM_LISTING_END_3 */
@@ -361,7 +353,6 @@ Eigen::VectorXd simulateAdvection(
 template <typename FUNCTOR>
 Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
                             double T) {
-#if SOLUTION
   // Setup inverted phi^-1
   Eigen::Matrix2d phi_inv;
   double t_mod = T / std::sqrt(2.0);
@@ -372,6 +363,7 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
   int num_dof = dofh.NumDofs();
   Eigen::VectorXd ref_solution(num_dof);
 
+#if SOLUTION
   // Iterate over all cells
   for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
     const lf::geometry::Geometry *geo_p = cell->Geometry();
@@ -387,13 +379,13 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
     Eigen::Vector2d phi_inv_x = phi_inv * x;
     ref_solution[idx] = u0(phi_inv_x);
   }
-  return ref_solution;
 #else
   //====================
   // Your code goes here
   //====================
-  return Eigen::Vector2d::Zero();
 #endif
+
+  return ref_solution;
 }
 /* SAM_LISTING_END_4 */
 
@@ -431,7 +423,6 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
   // Initialize a vector for the result and
   // randomly initialize a vector for the initial condition
   int num_dof = dofh.NumDofs();
-  Eigen::VectorXd result(num_dof);
   Eigen::VectorXd u0_h = Eigen::VectorXd::Random(num_dof);
 
   // Shift upper and lower bound until contition below isn't satisfied
@@ -442,8 +433,8 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
     // Repeat ...
     int M_middle = (M_upper + M_lower) / 2;
     try {
-      Eigen::VectorXd result = solveAdvection2D(dofh, beta, u0_h, adjacentCells,
-                                                normal_vectors, T, M_middle);
+      solveAdvection2D(dofh, beta, u0_h, adjacentCells,
+          normal_vectors, T, M_middle);
       M_upper = M_middle;
     } catch (const std::exception &e) {
       M_lower = M_middle;
@@ -455,8 +446,9 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
 #else
   //====================
   // Your code goes here
-  //====================
+  // Replace the dummy return value below:
   return 0;
+  //====================
 #endif
 }
 /* SAM_LISTING_END_5 */

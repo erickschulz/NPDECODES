@@ -10,7 +10,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -29,9 +28,22 @@
 
 #include "advectionfv2d.h"
 
-/* SAM_LISTING_BEGIN_1 */
+// Use this function to plot your solution
+void write_vtk(const lf::assemble::DofHandler &dofh,
+    const Eigen::VectorXd &solution, std::string name) {
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = dofh.Mesh();
+  lf::io::VtkWriter vtk_writer(mesh_p, name + ".vtk");
+  auto cell_data_ref =
+      lf::mesh::utils::make_CodimMeshDataSet<double>(mesh_p, 0);
+  for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
+    int row = dofh.GlobalDofIndices(*cell)[0];
+    cell_data_ref->operator()(*cell) = solution[row];
+  }
+  vtk_writer.WriteCellData(name, *cell_data_ref);
+}
+
 int main() {
-#if SOLUTION
+/* SAM_LISTING_BEGIN_1 */
   // Define velocity field beta
   // Note that the problem description requires ||B|| <= 1
   auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d {
@@ -39,12 +51,13 @@ int main() {
   };
 
   // Functor for initial bump
-  Eigen::Vector2d x0(0.8, 0.2);
-  double d = 0.2;
-  auto u0 = [x0, d](Eigen::Vector2d x) -> double {
+  auto u0 = [](Eigen::Vector2d x) -> double {
+    Eigen::Vector2d x0(0.8, 0.2);
+    double d = 0.2;
     double dist = (x - x0).norm();
     if (dist < d) {
-      return std::pow(std::cos(M_PI / (2.0 * d) * dist), 2);
+      double cos = std::cos(M_PI / (2.0 * d) * dist);
+      return cos * cos;
     } else {
       return 0.0;
     }
@@ -57,7 +70,7 @@ int main() {
   //////////////////////////////////////////////////////////////////////////////
   // TODO inconsistancy: g vs. G
   //////////////////////////////////////////////////////////////////////////////
-  auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1. / 3.);
+  auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
 
   auto mesh_seq_p{
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
@@ -70,6 +83,7 @@ int main() {
   for (int level = 3; level < num_meshes; ++level) {
     std::cout << "Computing L2Error for level: " << level << std::endl;
 
+#if SOLUTION
     // Get the current mesh
     auto cur_mesh = mesh_seq_p->getMesh(level);
 
@@ -79,6 +93,7 @@ int main() {
                    {lf::base::RefEl::kSegment(), 0},
                    {lf::base::RefEl::kTria(), 1},
                    {lf::base::RefEl::kQuad(), 1}});
+    int N = cur_dofh.NumDofs();
 
     // Compute cell normals
     std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<
@@ -90,12 +105,14 @@ int main() {
         std::array<const lf::mesh::Entity *, 4>>>
         adjacentCells = AdvectionFV2D::getAdjacentCellPointers(cur_dofh.Mesh());
 
-    // Get result from simulation
-    Eigen::VectorXd result = AdvectionFV2D::simulateAdvection(
+    // Get approximate solution from simulation
+    Eigen::VectorXd mu_approx = AdvectionFV2D::simulateAdvection(
         cur_dofh, beta, u0, adjacentCells, normal_vectors, T);
+    write_vtk(cur_dofh, mu_approx, "approx" + std::to_string(level));
 
-    // Get exact result at barycenters of cells
-    Eigen::VectorXd ref_solution = AdvectionFV2D::refSolution(cur_dofh, u0, T);
+    // Get exact solution at barycenters of cells
+    Eigen::VectorXd mu_exact = AdvectionFV2D::refSolution(cur_dofh, u0, T);
+    write_vtk(cur_dofh, mu_exact, "exact" + std::to_string(level));
 
     // Compute L2 error in barycenter
     double l2_error = 0;
@@ -103,63 +120,26 @@ int main() {
       const lf::geometry::Geometry *geo_p = cell->Geometry();
       double area = lf::geometry::Volume(*geo_p);
       int idx = cur_dofh.GlobalDofIndices(*cell)[0];
-      l2_error += std::pow((result[idx] - ref_solution[idx]), 2) * area;
+      l2_error += std::pow((mu_approx[idx] - mu_exact[idx]), 2) * area;
     }
     l2_error = std::sqrt(l2_error);
-    vector_num_cells.push_back(cur_dofh.NumDofs());
+#else
+    //====================
+    // Your code goes here
+    // Compute the number N of DOFs and the L2-error,
+    // and replace the lines below:
+    int N = 1;
+    double l2_error = 1.0;
+    // If you want, you can use the function write_vtk(...),
+    // defined in this file, to plot your solution.
+    //====================
+#endif
+
+    vector_num_cells.push_back(N);
     vector_l2error.push_back(l2_error);
-    std::cout << "L2Error at level " << level << ": " << l2_error << std::endl;
-
-    // Writing vtk files (optional part)
-    std::string sol = "sol";
-    std::string ref = "ref";
-    std::string f_end = ".vtk";
-    std::ostringstream sol_st;
-    std::ostringstream ref_st;
-    std::ostringstream sol_st_file;
-    std::ostringstream ref_st_file;
-    sol_st << sol << level;
-    ref_st << ref << level;
-    sol_st_file << sol << level << f_end;
-    ref_st_file << ref << level << f_end;
-
-    lf::io::VtkWriter vtk_writer1(cur_dofh.Mesh(), sol_st_file.str());
-    auto cell_data_ref =
-        lf::mesh::utils::make_CodimMeshDataSet<double>(cur_dofh.Mesh(), 0);
-    for (const lf::mesh::Entity *cell : cur_dofh.Mesh()->Entities(0)) {
-      int row = cur_dofh.GlobalDofIndices(*cell)[0];
-      cell_data_ref->operator()(*cell) = result[row];
-    }
-    vtk_writer1.WriteCellData(sol_st.str(), *cell_data_ref);
-
-    lf::io::VtkWriter vtk_writer2(cur_dofh.Mesh(), ref_st_file.str());
-    auto cell_data_sol =
-        lf::mesh::utils::make_CodimMeshDataSet<double>(cur_dofh.Mesh(), 0);
-    for (const lf::mesh::Entity *cell : cur_dofh.Mesh()->Entities(0)) {
-      int row = cur_dofh.GlobalDofIndices(*cell)[0];
-      cell_data_sol->operator()(*cell) = ref_solution[row];
-    }
-    vtk_writer2.WriteCellData(ref_st.str(), *cell_data_sol);
   }
 
-  // Task 8-8.q
-  // Compute threshold for fourth refinement level
-  int level = 4;
-  auto cur_mesh = mesh_seq_p->getMesh(level);
-
-  // Create a DOF Hander for the current mesh
-  const lf::assemble::UniformFEDofHandler cur_dofh(
-      cur_mesh, {{lf::base::RefEl::kPoint(), 0},
-                 {lf::base::RefEl::kSegment(), 0},
-                 {lf::base::RefEl::kTria(), 1},
-                 {lf::base::RefEl::kQuad(), 1}});
-
-  int threshold = AdvectionFV2D::findCFLthreshold(cur_dofh, beta, T);
-  int cfl_thres = int((T / AdvectionFV2D::computeHmin(cur_mesh) + 1));
-  std::cout << "Threshold for level: " << level << " is: " << threshold
-            << " | Threshold from CFL is: " << cfl_thres << std::endl;
-
-  // Write Output file of Task 8-8.o and 8-8.q
+  // Write Output file of Task 8-8.o
   std::ofstream csv_file;
   csv_file.open("advectionfv2d.csv");
   for (int i = 0; i < vector_num_cells.size(); ++i) {
@@ -169,26 +149,39 @@ int main() {
   }
   csv_file.close();
 
-  // Print convergence rates
-  for (int i = 1; i < vector_num_cells.size(); ++i) {
-    double conv_rate =
-        (std::log(vector_l2error[i - 1]) - std::log(vector_l2error[i])) /
-        (std::log(vector_num_cells[i]) - std::log(vector_num_cells[i - 1]));
-    std::cout << "Conv. Rate " << i << "-" << i + 1 << "  is: " << conv_rate
-              << std::endl;
-  }
-
-  // Plot results from 8-8.o
   std::system("python3 " CURRENT_SOURCE_DIR
               "/advectionfv2d.py " CURRENT_BINARY_DIR
               "/advectionfv2d.csv " CURRENT_BINARY_DIR "/solution.eps");
+/* SAM_LISTING_END_1 */
 
-  return 0;
+/* SAM_LISTING_BEGIN_2 */
+  // Task 8-8.q
+  // Compute threshold for fourth refinement level
+  int level = 4;
+  auto mesh = mesh_seq_p->getMesh(level);
+
+#if SOLUTION
+  // Create a DOF Hander for the current mesh
+  const lf::assemble::UniformFEDofHandler dofh(
+      mesh, {{lf::base::RefEl::kPoint(), 0},
+                 {lf::base::RefEl::kSegment(), 0},
+                 {lf::base::RefEl::kTria(), 1},
+                 {lf::base::RefEl::kQuad(), 1}});
+
+  int threshold = AdvectionFV2D::findCFLthreshold(dofh, beta, T);
+  int cfl_thres = int((T / AdvectionFV2D::computeHmin(mesh) + 1));
 #else
   //====================
   // Your code goes here
+  // Replace the two variables below:
+  int threshold = 0.0;  // Threshold computed by findCFLthreshold(...)
+  int cfl_thres = 0.0;  // Threshold obtained from CLF using computeHmin(mesh)
   //====================
-  return 0;
 #endif
+
+  std::cout << "Threshold for level " << level << " is " << threshold
+            << " | Threshold from CFL is " << cfl_thres << std::endl;
+/* SAM_LISTING_END_2 */
+
+  return 0;
 }
-/* SAM_LISTING_END_1 */

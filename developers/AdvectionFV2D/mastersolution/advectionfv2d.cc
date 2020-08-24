@@ -10,7 +10,6 @@
 
 #include <algorithm>
 #include <array>
-#include <cmath>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -210,8 +209,7 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
         Eigen::Vector2d neighbour_midpoint = barycenter(neighbour_corners);
 
         // Compute distances between cells
-        Eigen::Vector2d diff = cur_midpoint - neighbour_midpoint;
-        double distance = diff.norm();
+        double distance = (cur_midpoint - neighbour_midpoint).norm();
 
         // Store value in vector
         min_h.push_back(distance);
@@ -220,13 +218,13 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   }
 
   // Find the minimum value in the vector and return it
-  double result = *std::min_element(std::begin(min_h), std::end(min_h));
-  return result;
+  return *std::min_element(std::begin(min_h), std::end(min_h));
 #else
   //====================
   // Your code goes here
-  //====================
+  // Replace the dummy return value below:
   return 0.0;
+  //====================
 #endif
 }
 /* SAM_LISTING_END_5 */
