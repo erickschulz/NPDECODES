@@ -11,12 +11,12 @@ num_cells = data[:,0]
 l2_errors = data[:,1]
 
 fig = plt.figure()
-plt.plot(num_cells, l2_errors)
+plt.plot(num_cells, l2_errors, 'o-')
 plt.grid()
 plt.xlabel("Number of Cells")
-plt.xscale('log')
+plt.xscale('log', basex=2)
 plt.ylabel("L2 Error")
-plt.yscale('log')
+plt.yscale('log', basey=2)
 plt.tight_layout()
 
 plt.savefig(output_file)
