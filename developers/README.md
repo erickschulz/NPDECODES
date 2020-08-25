@@ -53,7 +53,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-8 | `AdvectionFV2D` | TODO |  |  | Philipp Egg |
+| 8-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |
