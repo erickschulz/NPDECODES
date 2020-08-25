@@ -6,15 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <array>
-#include <cmath>
-#include <memory>
-#include <vector>
-
-#include <Eigen/Core>
+#include "../advectionfv2d.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/mesh/mesh.h>
@@ -22,7 +16,11 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 
-#include "../advectionfv2d.h"
+#include <Eigen/Core>
+#include <array>
+#include <cmath>
+#include <memory>
+#include <vector>
 
 namespace AdvectionFV2D::test {
 

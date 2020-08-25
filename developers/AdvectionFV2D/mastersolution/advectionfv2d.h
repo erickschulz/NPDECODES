@@ -8,18 +8,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <array>
-#include <cmath>
-#include <memory>
-#include <stdexcept>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <array>
+#include <cmath>
+#include <memory>
+#include <stdexcept>
 
 namespace AdvectionFV2D {
 
@@ -331,7 +330,8 @@ Eigen::VectorXd simulateAdvection(
   // Set up the number of steps according to the CFL condition
   int M = int((T / computeHmin(dofh.Mesh())) + 2);
 
-  return solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T, M);
+  return solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T,
+                          M);
 #else
   //====================
   // Your code goes here
@@ -433,8 +433,8 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
     // Repeat ...
     int M_middle = (M_upper + M_lower) / 2;
     try {
-      solveAdvection2D(dofh, beta, u0_h, adjacentCells,
-          normal_vectors, T, M_middle);
+      solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T,
+                       M_middle);
       M_upper = M_middle;
     } catch (const std::exception &e) {
       M_lower = M_middle;

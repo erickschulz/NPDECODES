@@ -8,17 +8,16 @@
 
 #include "advectionfv2d.h"
 
+#include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
+#include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
 #include <algorithm>
 #include <array>
 #include <memory>
 #include <stdexcept>
 #include <vector>
-
-#include <Eigen/Core>
-
-#include <lf/geometry/geometry.h>
-#include <lf/mesh/mesh.h>
-#include <lf/mesh/utils/utils.h>
 
 namespace AdvectionFV2D {
 

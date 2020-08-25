@@ -6,17 +6,6 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <array>
-#include <cmath>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
@@ -26,11 +15,21 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 
+#include <Eigen/Core>
+#include <array>
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "advectionfv2d.h"
 
 // Use this function to plot your solution
 void write_vtk(const lf::assemble::DofHandler &dofh,
-    const Eigen::VectorXd &solution, std::string name) {
+               const Eigen::VectorXd &solution, std::string name) {
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = dofh.Mesh();
   lf::io::VtkWriter vtk_writer(mesh_p, name + ".vtk");
   auto cell_data_ref =
@@ -43,7 +42,7 @@ void write_vtk(const lf::assemble::DofHandler &dofh,
 }
 
 int main() {
-/* SAM_LISTING_BEGIN_1 */
+  /* SAM_LISTING_BEGIN_1 */
   // Define velocity field beta
   // Note that the problem description requires ||B|| <= 1
   auto beta = [](Eigen::Vector2d x) -> Eigen::Vector2d {
@@ -152,9 +151,9 @@ int main() {
   std::system("python3 " CURRENT_SOURCE_DIR
               "/advectionfv2d.py " CURRENT_BINARY_DIR
               "/advectionfv2d.csv " CURRENT_BINARY_DIR "/solution.eps");
-/* SAM_LISTING_END_1 */
+  /* SAM_LISTING_END_1 */
 
-/* SAM_LISTING_BEGIN_2 */
+  /* SAM_LISTING_BEGIN_2 */
   // Task 8-8.q
   // Compute threshold for fourth refinement level
   int level = 4;
@@ -164,9 +163,9 @@ int main() {
   // Create a DOF Hander for the current mesh
   const lf::assemble::UniformFEDofHandler dofh(
       mesh, {{lf::base::RefEl::kPoint(), 0},
-                 {lf::base::RefEl::kSegment(), 0},
-                 {lf::base::RefEl::kTria(), 1},
-                 {lf::base::RefEl::kQuad(), 1}});
+             {lf::base::RefEl::kSegment(), 0},
+             {lf::base::RefEl::kTria(), 1},
+             {lf::base::RefEl::kQuad(), 1}});
 
   int threshold = AdvectionFV2D::findCFLthreshold(dofh, beta, T);
   int cfl_thres = int((T / AdvectionFV2D::computeHmin(mesh) + 1));
@@ -176,12 +175,12 @@ int main() {
   // Replace the two variables below:
   int threshold = 0.0;  // Threshold computed by findCFLthreshold(...)
   int cfl_thres = 0.0;  // Threshold obtained from CLF using computeHmin(mesh)
-  //====================
+                        //====================
 #endif
 
   std::cout << "Threshold for level " << level << " is " << threshold
             << " | Threshold from CFL is " << cfl_thres << std::endl;
-/* SAM_LISTING_END_2 */
+  /* SAM_LISTING_END_2 */
 
   return 0;
 }
