@@ -6,6 +6,7 @@
   "Problems" :
   [
     "1DWaveAbsorbingBC/",
+    "AdvectionFV2D/",
     "AvgValBoundary/",
     "BoundaryWave/",
     "BurgersEquation/",
