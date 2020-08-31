@@ -39,10 +39,10 @@ double Bernoulli(double tau) {
 
 //std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<Eigen::VectorXd>> 
 Eigen::VectorXd
-	compBeta(const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space, 
+	compBeta(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space, 
 					 const Eigen::VectorXd& mu) {
 
-  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space.Mesh();	
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space->Mesh();	
 	unsigned int nEdges = mu.size() * (mu.size()-1)/2;
 	Eigen::VectorXd beta(nEdges);
   
@@ -66,9 +66,8 @@ class ExpFittedEMP {
 
 	public:
 		
-		ExpFittedEMP() = delete;
- 		explicit ExpFittedEMP(lf::uscalfe::FeSpaceLagrangeO1<double> fe_space,
-								 				Eigen::VectorXd mu);
+ 		explicit ExpFittedEMP(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space,
+								 				Eigen::VectorXd mu): mu_(mu) { }
 		virtual ~ExpFittedEMP() = default;
 
 		bool isActive(const lf::mesh::Entity &/*cell*/) { return true; }
@@ -100,16 +99,16 @@ class ExpFittedEMP {
 		}
 
 		private: 
-			lf::uscalfe::FeSpaceLagrangeO1<double> fe_space_;
+		  std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
 			Eigen::VectorXd mu_;
 
 };
   
 template<typename FUNC_F, typename FUNC_G> 
-Eigen::VectorXd solveDriftDiffusionDirBVP(const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space, 
+Eigen::VectorXd solveDriftDiffusionDirBVP(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space, 
 																					const Eigen::VectorXd& mu, FUNC_F &&func_f,FUNC_G &&func_g) {
 
-  const lf::assemble::DofHandler &dofh{fe_space.LocGlobMap()};
+  const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 	lf::base::size_type N_dofs = dofh.NumDofs();
   
   lf::mesh::utils::MeshFunctionGlobal mf_f{func_f};
@@ -128,10 +127,10 @@ Eigen::VectorXd solveDriftDiffusionDirBVP(const lf::uscalfe::FeSpaceLagrangeO1<d
 	lf::assemble::AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
 	// Fixing Solution components according to essential Dirichlet boundary conditions
-	auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space.Mesh(), 1)};
+	auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
 
 	std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>> rsf_edge = 
-		fe_space.ShapeFunctionLayout(lf::base::RefEl::kSegment());
+		fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
 	LF_ASSERT_MSG(rsf_edge != nullptr, "FE specification for edges missing.");
   

@@ -12,6 +12,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <lf/uscalfe/uscalfe.h>
 
 namespace ExpFittedUpwind {
 
@@ -19,10 +20,11 @@ double Bernoulli(double tau);
 
 //std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<Eigen::VectorXd>>
 Eigen::VectorXd
-	compBeta(const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space,
+	compBeta(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space,
            const Eigen::VectorXd& mu);
 
 template<typename FUNC_F, typename FUNC_G>
-Eigen::VectorXd solveDriftDiffusionDirBVP(const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space,
+Eigen::VectorXd solveDriftDiffusionDirBVP(std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> &fe_space,
                                           const Eigen::VectorXd& mu, FUNC_F &&func_f,FUNC_G &&func_g);
+
 }
