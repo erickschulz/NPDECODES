@@ -47,6 +47,7 @@
     "UnstableBVP/",
     "UpwindQuadrature/",
     "WaveABC2D/",
-    "ZienkiewiczZhuEstimator/"
+     "ZienkiewiczZhuEstimator/",
+     "AdvectionFV2D/" 
   ]
 }
