@@ -47,6 +47,7 @@ add_subdirectory(SymplecticTimesteppingWaves)
 add_subdirectory(TestQuadratureRules)
 add_subdirectory(TransformationOfGalerkinMatrices)
 add_subdirectory(UnstableBVP)
+add_subdirectory(UpwindFiniteVolume) # Under construction
 add_subdirectory(UpwindQuadrature)
 add_subdirectory(WaveABC2D)
 add_subdirectory(ZienkiewiczZhuEstimator)
