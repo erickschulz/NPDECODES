@@ -92,7 +92,6 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
   int num_dof = dofh.NumDofs();
   Eigen::SparseMatrix<double> B_Matrix(num_dof, num_dof);
 
-#if SOLUTION
   int bound_nnz = dofh.Mesh()->NumEntities(0) * 4;
   B_Matrix.reserve(bound_nnz);
 
@@ -160,11 +159,6 @@ Eigen::SparseMatrix<double> initializeMOLODEMatrix(
       }
     }
   }
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   return B_Matrix;
 }
@@ -212,7 +206,6 @@ Eigen::VectorXd solveAdvection2D(
   // Set mu to inital bump
   Eigen::VectorXd mu = u0_h;
 
-#if SOLUTION
   // Compute B
   Eigen::SparseMatrix B_matrix =
       initializeMOLODEMatrix(dofh, beta, adjacentCells, normal_vectors);
@@ -267,11 +260,6 @@ Eigen::VectorXd solveAdvection2D(
       throw std::overflow_error("Overflow occured!!\n");
     }
   }
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   return mu;
 }
@@ -309,7 +297,6 @@ Eigen::VectorXd simulateAdvection(
   // Get number of dofs
   int num_dof = dofh.NumDofs();
 
-#if SOLUTION
   // Inititialize a vector for the initial condition
   Eigen::VectorXd u0_h(num_dof);
 
@@ -332,12 +319,6 @@ Eigen::VectorXd simulateAdvection(
 
   return solveAdvection2D(dofh, beta, u0_h, adjacentCells, normal_vectors, T,
                           M);
-#else
-  //====================
-  // Your code goes here
-  return Eigen::VectorXd::Zero(num_dof);
-  //====================
-#endif
 }
 /* SAM_LISTING_END_3 */
 
@@ -363,7 +344,6 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
   int num_dof = dofh.NumDofs();
   Eigen::VectorXd ref_solution(num_dof);
 
-#if SOLUTION
   // Iterate over all cells
   for (const lf::mesh::Entity *cell : dofh.Mesh()->Entities(0)) {
     const lf::geometry::Geometry *geo_p = cell->Geometry();
@@ -379,11 +359,6 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
     Eigen::Vector2d phi_inv_x = phi_inv * x;
     ref_solution[idx] = u0(phi_inv_x);
   }
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   return ref_solution;
 }
@@ -405,7 +380,6 @@ Eigen::VectorXd refSolution(const lf::assemble::DofHandler &dofh, FUNCTOR &&u0,
 template <typename VECTORFIELD>
 int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
                      double T) {
-#if SOLUTION
   // Set upper and lower limit
   int M_upper = int((T / computeHmin(dofh.Mesh())) + 1);
   int M_lower = 1;
@@ -443,13 +417,6 @@ int findCFLthreshold(const lf::assemble::DofHandler &dofh, VECTORFIELD &&beta,
 
   int thres = M_upper;
   return thres;
-#else
-  //====================
-  // Your code goes here
-  // Replace the dummy return value below:
-  return 0;
-  //====================
-#endif
 }
 /* SAM_LISTING_END_5 */
 

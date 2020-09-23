@@ -82,47 +82,6 @@ int main() {
   for (int level = 3; level < num_meshes; ++level) {
     std::cout << "Computing L2Error for level: " << level << std::endl;
 
-#if SOLUTION
-    // Get the current mesh
-    auto cur_mesh = mesh_seq_p->getMesh(level);
-
-    // Create a DOF Hander for the current mesh
-    const lf::assemble::UniformFEDofHandler cur_dofh(
-        cur_mesh, {{lf::base::RefEl::kPoint(), 0},
-                   {lf::base::RefEl::kSegment(), 0},
-                   {lf::base::RefEl::kTria(), 1},
-                   {lf::base::RefEl::kQuad(), 1}});
-    int N = cur_dofh.NumDofs();
-
-    // Compute cell normals
-    std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<
-        Eigen::Matrix<double, 2, Eigen::Dynamic>>>
-        normal_vectors = AdvectionFV2D::computeCellNormals(cur_dofh.Mesh());
-
-    // Compute adjecent cells
-    std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<
-        std::array<const lf::mesh::Entity *, 4>>>
-        adjacentCells = AdvectionFV2D::getAdjacentCellPointers(cur_dofh.Mesh());
-
-    // Get approximate solution from simulation
-    Eigen::VectorXd mu_approx = AdvectionFV2D::simulateAdvection(
-        cur_dofh, beta, u0, adjacentCells, normal_vectors, T);
-    write_vtk(cur_dofh, mu_approx, "approx" + std::to_string(level));
-
-    // Get exact solution at barycenters of cells
-    Eigen::VectorXd mu_exact = AdvectionFV2D::refSolution(cur_dofh, u0, T);
-    write_vtk(cur_dofh, mu_exact, "exact" + std::to_string(level));
-
-    // Compute L2 error in barycenter
-    double l2_error = 0;
-    for (const lf::mesh::Entity *cell : cur_mesh->Entities(0)) {
-      const lf::geometry::Geometry *geo_p = cell->Geometry();
-      double area = lf::geometry::Volume(*geo_p);
-      int idx = cur_dofh.GlobalDofIndices(*cell)[0];
-      l2_error += std::pow((mu_approx[idx] - mu_exact[idx]), 2) * area;
-    }
-    l2_error = std::sqrt(l2_error);
-#else
     //====================
     // Your code goes here
     // Compute the number N of DOFs and the L2-error,
@@ -132,7 +91,6 @@ int main() {
     // If you want, you can use the function write_vtk(...),
     // defined in this file, to plot your solution.
     //====================
-#endif
 
     vector_num_cells.push_back(N);
     vector_l2error.push_back(l2_error);
@@ -159,24 +117,12 @@ int main() {
   int level = 4;
   auto mesh = mesh_seq_p->getMesh(level);
 
-#if SOLUTION
-  // Create a DOF Hander for the current mesh
-  const lf::assemble::UniformFEDofHandler dofh(
-      mesh, {{lf::base::RefEl::kPoint(), 0},
-             {lf::base::RefEl::kSegment(), 0},
-             {lf::base::RefEl::kTria(), 1},
-             {lf::base::RefEl::kQuad(), 1}});
-
-  int threshold = AdvectionFV2D::findCFLthreshold(dofh, beta, T);
-  int cfl_thres = int((T / AdvectionFV2D::computeHmin(mesh) + 1));
-#else
   //====================
   // Your code goes here
   // Replace the two variables below:
   int threshold = 0.0;  // Threshold computed by findCFLthreshold(...)
   int cfl_thres = 0.0;  // Threshold obtained from CLF using computeHmin(mesh)
                         //====================
-#endif
 
   std::cout << "Threshold for level " << level << " is " << threshold
             << " | Threshold from CFL is " << cfl_thres << std::endl;

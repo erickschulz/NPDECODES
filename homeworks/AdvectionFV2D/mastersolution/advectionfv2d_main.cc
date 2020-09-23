@@ -82,7 +82,6 @@ int main() {
   for (int level = 3; level < num_meshes; ++level) {
     std::cout << "Computing L2Error for level: " << level << std::endl;
 
-#if SOLUTION
     // Get the current mesh
     auto cur_mesh = mesh_seq_p->getMesh(level);
 
@@ -122,17 +121,6 @@ int main() {
       l2_error += std::pow((mu_approx[idx] - mu_exact[idx]), 2) * area;
     }
     l2_error = std::sqrt(l2_error);
-#else
-    //====================
-    // Your code goes here
-    // Compute the number N of DOFs and the L2-error,
-    // and replace the lines below:
-    int N = 1;
-    double l2_error = 1.0;
-    // If you want, you can use the function write_vtk(...),
-    // defined in this file, to plot your solution.
-    //====================
-#endif
 
     vector_num_cells.push_back(N);
     vector_l2error.push_back(l2_error);
@@ -159,7 +147,6 @@ int main() {
   int level = 4;
   auto mesh = mesh_seq_p->getMesh(level);
 
-#if SOLUTION
   // Create a DOF Hander for the current mesh
   const lf::assemble::UniformFEDofHandler dofh(
       mesh, {{lf::base::RefEl::kPoint(), 0},
@@ -169,14 +156,6 @@ int main() {
 
   int threshold = AdvectionFV2D::findCFLthreshold(dofh, beta, T);
   int cfl_thres = int((T / AdvectionFV2D::computeHmin(mesh) + 1));
-#else
-  //====================
-  // Your code goes here
-  // Replace the two variables below:
-  int threshold = 0.0;  // Threshold computed by findCFLthreshold(...)
-  int cfl_thres = 0.0;  // Threshold obtained from CLF using computeHmin(mesh)
-                        //====================
-#endif
 
   std::cout << "Threshold for level " << level << " is " << threshold
             << " | Threshold from CFL is " << cfl_thres << std::endl;

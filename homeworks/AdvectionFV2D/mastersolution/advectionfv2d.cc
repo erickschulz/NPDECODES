@@ -38,7 +38,6 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
-#if SOLUTION
   // Appears only in mastersolution
 
   // Initialize datastruture for the result
@@ -91,12 +90,6 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return std::make_shared<lf::mesh::utils::CodimMeshDataSet<
       Eigen::Matrix<double, 2, Eigen::Dynamic>>>(result);
 
-#else
-  //====================
-  // Your code goes here
-  //====================
-  return nullptr;
-#endif
 }
 /* SAM_LISTING_END_2 */
 
@@ -105,7 +98,6 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 4>>>
 getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
-#if SOLUTION
   // Initialize auxilary object
   lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 2>>
       aux_obj(mesh_p, 1, {nullptr, nullptr});
@@ -149,12 +141,6 @@ getAdjacentCellPointers(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 
   return std::make_shared<lf::mesh::utils::CodimMeshDataSet<
       std::array<const lf::mesh::Entity *, 4>>>(result);
-#else
-  //====================
-  // Your code goes here
-  //====================
-  return nullptr;
-#endif
 }
 /* SAM_LISTING_END_3 */
 
@@ -178,7 +164,6 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
 // Task 8-8.l
 /* SAM_LISTING_BEGIN_5 */
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
-#if SOLUTION
   // Vector to store the distances between cells
   std::vector<double> min_h;
 
@@ -218,13 +203,6 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 
   // Find the minimum value in the vector and return it
   return *std::min_element(std::begin(min_h), std::end(min_h));
-#else
-  //====================
-  // Your code goes here
-  // Replace the dummy return value below:
-  return 0.0;
-  //====================
-#endif
 }
 /* SAM_LISTING_END_5 */
 

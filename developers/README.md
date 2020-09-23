@@ -53,7 +53,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-8 | `AdvectionFV2D` | TODO |  |  | Philipp Egg |
+| 8-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  |  |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |
@@ -69,7 +69,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Not only the solutions, but also the corresponding templates need to compile and, if possible, run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
 * The bullets below are only a selection. If you spot additional issues, e.g. ugly or too complicated code, fix it.
 * Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem.cc`, `myhomeworkproblem.h`, `myclass.h` (lowercase, no underlines except for the main file).
-* Only in Lehrfem exercises: Use `nostd::span` (C++20) instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
+* Only in Lehrfem exercises: Use Lehrfem's `nostd::span` instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
 
 ## Continuous Integration
 * For every commit a number of checks is run:
