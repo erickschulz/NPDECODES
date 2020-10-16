@@ -86,7 +86,7 @@ TEST(DiscontinuousGalerkin1D, Feo) {
   Eigen::Vector4d v = {1.0, -1.0, 1.0, 0.3};
   Eigen::Vector4d w = {2.0, 2.0, 1.0, -2.0};
 
-  Eigen::Vector4d F = v.binaryExpr(w, &Feo);
+  Eigen::Vector4d F = v.binaryExpr(w, std::ref(Feo));
   Eigen::Vector4d F_ref = {-2.0, -4.25, 0.0, 0.21};
 
   double tol = 1.0e-8;

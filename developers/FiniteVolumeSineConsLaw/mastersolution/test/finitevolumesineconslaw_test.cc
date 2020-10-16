@@ -24,7 +24,7 @@ TEST(FiniteVolumeSineConsLaw, sineGodFlux) {
       0.277774710803188, 0.553969955795431;
 
   // to test
-  Eigen::VectorXd F_GD = v.binaryExpr(w, &sineGodFlux);
+  Eigen::VectorXd F_GD = v.binaryExpr(w, std::ref(sineGodFlux));
 
   // reference
   Eigen::VectorXd F_GD_ref(5);

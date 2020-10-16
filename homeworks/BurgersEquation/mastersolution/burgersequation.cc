@@ -30,7 +30,7 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
 
   // initialize vector with initial nodal values
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
-  Eigen::VectorXd mu = x.unaryExpr(&w0);
+  Eigen::VectorXd mu = x.unaryExpr(&w0).eval();
 
   for (int i = 0; i < m; ++i) {
     for (int j = N; 0 < j; --j) {
