@@ -8,7 +8,7 @@
 
 #include "burgersequation.h"
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include <cmath>
 
 namespace BurgersEquation {
