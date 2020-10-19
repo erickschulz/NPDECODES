@@ -11,7 +11,6 @@
 
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
@@ -87,10 +86,11 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
             << ", relative error = " << solver_relative_error << std::endl;
 
   // Postprocessing: Compute and output norms of the finite element solution
-  double L2norm = std::sqrt(
-      integrate(squaredNorm(lf::uscalfe::MeshFunctionFE(fe_space, sol_vec))));
-  double H1snorm = std::sqrt(integrate(
-      squaredNorm(lf::uscalfe::MeshFunctionGradFE(fe_space, sol_vec))));
+  double L2norm = std::sqrt(IntegrateMeshFunction(
+      *mesh_p, squaredNorm(lf::uscalfe::MeshFunctionFE(fe_space, sol_vec)), 2));
+  double H1snorm = std::sqrt(IntegrateMeshFunction(
+      *mesh_p, squaredNorm(lf::uscalfe::MeshFunctionGradFE(fe_space, sol_vec)),
+      2));
 
   std::cout << "Norms of FE solution: L2-norm = " << L2norm
             << ", H1-seminorm = " << H1snorm << std::endl;
