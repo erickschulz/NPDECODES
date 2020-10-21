@@ -27,7 +27,7 @@ TEST(ExtendedMUSCL, logGodunovFlux) {
   w << 4.63, 3.89, 1.81, 4.80, 2.05, 1.81, 0.63, 4.08, 0.40, 0.1, 0.3, 0.5, 1.5;
 
   // my solution
-  Eigen::VectorXd F_GD = v.binaryExpr(w, &logGodunovFlux);
+  Eigen::VectorXd F_GD = v.binaryExpr(w, std::ref(logGodunovFlux));
 
   // reference
   Eigen::VectorXd F_GD_ref(13);

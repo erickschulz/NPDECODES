@@ -17,10 +17,6 @@ constexpr double PI = 3.14159265358979323846;
 
 double Square(double x) { return x * x; }
 
-double w0(double x) {
-  return 0.0 <= x && x <= 1.0 ? Square(std::sin(PI * x)) : 0.0;
-}
-
 double f(double x) { return 2.0 / 3.0 * std::sqrt(x * x * x); }
 
 Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
@@ -30,7 +26,10 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
 
   // initialize vector with initial nodal values
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N + 1, -1.0, 4.0);
-  Eigen::VectorXd mu = x.unaryExpr(&w0);
+  Eigen::VectorXd mu =
+      x.unaryExpr([](double x) {
+         return 0.0 <= x && x <= 1.0 ? Square(std::sin(PI * x)) : 0.0;
+       }).eval();
 
   //====================
   // Your code goes here

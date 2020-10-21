@@ -27,7 +27,7 @@ int main() {
   double h = (b - a) / N;
 
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N, a - 0.5 * h, b - 0.5 * h);
-  Eigen::VectorXd uinitial = x.unaryExpr(&u0);
+  Eigen::VectorXd uinitial = x.unaryExpr(std::ref(u0));
   Eigen::VectorXd ufinal =
       EngquistOsherNumericalFlux::solveCP(a, b, uinitial, T);
 

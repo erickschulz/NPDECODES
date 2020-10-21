@@ -8,14 +8,14 @@ dir=$(pwd)
 
 mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
 
-if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [ ! -d "cmake" ]; then
-  CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.tar.gz"
-  mkdir cmake && wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-elif [[ "${TRAVIS_OS_NAME}" == "osx" ]] && [ ! -d "cmake" ]; then
-  CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.1-Darwin-x86_64.tar.gz"
-  mkdir cmake && wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=3 -xz -C cmake
+if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [ ! -d "cmake-3.18.4" ]; then
+  CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4-Linux-x86_64.tar.gz"
+  mkdir cmake-3.18.4 && wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-3.18.4
+elif [[ "${TRAVIS_OS_NAME}" == "osx" ]] && [ ! -d "cmake-3.18.4" ]; then
+  CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4-Darwin-x86_64.tar.gz"
+  mkdir cmake-3.18.4 && wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=3 -xz -C cmake-3.18.4
 fi
-export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+export PATH=${DEPS_DIR}/cmake-3.18.4/bin:${PATH}
 
 #Change back to where we left off.
 cd $dir

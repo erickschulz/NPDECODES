@@ -170,17 +170,11 @@ double solveTemperatureDistribution(
   // Stage 5: Compute H1 seminorm
   // **********************************************************************
 
-  // Compute the difference to a function that's zero everywhere, hence
-  // just the gradient of the solution (which is encapsulated in the fe_space).
-  // We use this trick to avoid the manual computation and make use of the
-  // LehrFEM facilities :)
-  lf::uscalfe::MeshFunctionL2GradientDifference loc_comp(
-      fe_space,
-      lf::mesh::utils::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)), 2);
-
-  // Compute the norm of the ``difference'' (i.e. the norm of the gradient of
-  // the solution)
-  const double norm = lf::uscalfe::NormOfDifference(dofh, loc_comp, sol_vec);
+  // construct a mesh function that represent |grad(x)|^2 and integrate it over
+  // the mesh to get the H^1 semi-norm:
+  auto mf_norm =
+      squaredNorm(lf::uscalfe::MeshFunctionGradFE(fe_space, sol_vec));
+  const double norm = std::sqrt(IntegrateMeshFunction(*mesh_p, mf_norm, 2));
 
   return norm;
 }

@@ -82,22 +82,16 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
 
   double solver_error = (A_crs * sol_vec - phi).norm();
   double solver_relative_error = solver_error / phi.norm();
-
-  // Postprocessing: Compute and output norms of the finite element solution
-  // Helper class for L2 error computation
-  lf::uscalfe::MeshFunctionL2NormDifference lc_L2(
-      fe_space, lf::mesh::utils::MeshFunctionConstant<double>(0.0), 2);
-  // Helper class for H1 semi norm
-  lf::uscalfe::MeshFunctionL2GradientDifference lc_H1(
-      fe_space,
-      lf::mesh::utils::MeshFunctionConstant<Eigen::Vector2d>(
-          Eigen::Vector2d(0.0, 0.0)),
-      2);
-
-  double L2norm = lf::uscalfe::NormOfDifference(dofh, lc_L2, sol_vec);
-  double H1snorm = lf::uscalfe::NormOfDifference(dofh, lc_H1, sol_vec);
   std::cout << "Error of solver: Absolute error = " << solver_error
             << ", relative error = " << solver_relative_error << std::endl;
+
+  // Postprocessing: Compute and output norms of the finite element solution
+  double L2norm = std::sqrt(IntegrateMeshFunction(
+      *mesh_p, squaredNorm(lf::uscalfe::MeshFunctionFE(fe_space, sol_vec)), 2));
+  double H1snorm = std::sqrt(IntegrateMeshFunction(
+      *mesh_p, squaredNorm(lf::uscalfe::MeshFunctionGradFE(fe_space, sol_vec)),
+      2));
+
   std::cout << "Norms of FE solution: L2-norm = " << L2norm
             << ", H1-seminorm = " << H1snorm << std::endl;
   return sol_vec;
