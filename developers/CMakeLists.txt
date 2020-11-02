@@ -46,6 +46,7 @@ add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
 add_subdirectory(SymplecticTimesteppingWaves)
 add_subdirectory(TestQuadratureRules)
 add_subdirectory(TransformationOfGalerkinMatrices)
+add_subdirectory(TranspSemiLagr)
 add_subdirectory(UnstableBVP)
 add_subdirectory(UpwindFiniteVolume) # Under construction
 add_subdirectory(UpwindQuadrature)
