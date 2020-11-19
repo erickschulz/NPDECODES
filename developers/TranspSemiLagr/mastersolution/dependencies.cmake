@@ -4,9 +4,9 @@
 # Add your custom dependencies here:
 #endif
 
-
 set(SOURCES
   ${DIR}/local_assembly.h
+  ${DIR}/transpsemilagr.h
   ${DIR}/transpsemilagr_main.cc
 )
 

@@ -1,28 +1,20 @@
 /**
- * @ file
- * @ brief NPDE homework TEMPLATE MAIN FILE
- * @ author
- * @ date
- * @ copyright Developed at SAM, ETH Zurich
+ * @file transpsemilagr_main.cc
+ * @brief NPDE homework TranspSemiLagr Main file 
+ * @author Philippe Peter
+ * @date November 2020
+ * @copyright Developed at SAM, ETH Zurich
  */
 
- #include <lf/assemble/assemble.h>
+#include<memory>
+
+#include <Eigen/Core>
+
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-#include <iostream>
-#include <memory>
-#include <string>
-#include <utility>
-
-#include <Eigen/Core>
-#include <iostream>
-#include "local_assembly.h"
 #include "transpsemilagr.h"
  
 int main(){
@@ -47,17 +39,19 @@ int main(){
       return -x(1)-x(0);
     }
   };
-  
+
+  Eigen::VectorXd u0_vector =  lf::uscalfe::NodalProjection(*fe_space, lf::mesh::utils::MeshFunctionGlobal(u0));
+
   //compute the solutions after 1st timestep
-  Eigen::VectorXd sol_rot_1 = TranspSemiLagr::solverot(fe_space, u0,1,0.1);
+  Eigen::VectorXd sol_rot_1 = TranspSemiLagr::solverot(fe_space, u0_vector,1,0.1);
   lf::uscalfe::MeshFunctionFE mf_sol_rot_1(fe_space, sol_rot_1);
-  Eigen::VectorXd sol_trp_1 = TranspSemiLagr::solvetrp(fe_space, u0, 1, 0.1);
+  Eigen::VectorXd sol_trp_1 = TranspSemiLagr::solvetrp(fe_space, u0_vector, 1, 0.1);
   lf::uscalfe::MeshFunctionFE mf_sol_trp_1(fe_space, sol_trp_1);
 
   //compute solutions at final time
-  Eigen::VectorXd sol_rot_10 = TranspSemiLagr::solverot(fe_space, u0, 10, 1.0);
+  Eigen::VectorXd sol_rot_10 = TranspSemiLagr::solverot(fe_space, u0_vector, 10, 1.0);
   lf::uscalfe::MeshFunctionFE mf_sol_rot_10(fe_space, sol_rot_10);
-  Eigen::VectorXd sol_trp_10 = TranspSemiLagr::solvetrp(fe_space, u0, 10, 1.0);
+  Eigen::VectorXd sol_trp_10 = TranspSemiLagr::solvetrp(fe_space, u0_vector, 10, 1.0);
   lf::uscalfe::MeshFunctionFE mf_sol_trp_10(fe_space, sol_trp_10);
 
   //OUTPUT RESULTS
