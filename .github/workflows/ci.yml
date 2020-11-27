@@ -8,18 +8,17 @@ env:
   HUNTER_ROOT: ${{ github.workspace}}/hunter
   
 jobs:
-  clang-format:
-    name: clang-format-8
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install clang-format
-        run: sudo apt-get install clang-format-8
-      - name: clang-format
-        run: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-8 --color always ./developers/"
-  
-   # compilation on linux/osx:
+  # clang-format:
+    # name: clang-format-8
+    # runs-on: ubuntu-20.04
+    # steps:
+      # - name: Checkout code
+        # uses: actions/checkout@v2
+      # - name: Install clang-format
+        # run: sudo apt-get install clang-format-8
+      # - name: clang-format
+        # run: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-8 --color always ./developers/"
+  # compilation on linux/osx:
   compile_test:
     name: ${{ matrix.os }} - ${{ matrix.compiler }} - ${{ matrix.build_type }}
     #needs: clang-format
@@ -30,19 +29,23 @@ jobs:
             compiler: "g++-8"
             packages: "g++-8"
             build_type: "Debug"
-          - os: ubuntu-20.04
-            compiler: "g++-8"
-            packages: "g++-8"
-            build_type: "Release"
-          - os: macos-10.15
-            compiler: "clang++"
-            build_type: "Debug"
+          # - os: ubuntu-20.04
+            # compiler: "g++-8"
+            # packages: "g++-8"
+            # build_type: "Release"
+          # - os: macos-10.15
+            # compiler: "clang++"
+            # build_type: "Debug"
     runs-on: ${{ matrix.os }}
     env:
       COMPILER: ${{ matrix.compiler }}
       BUILD_TYPE: ${{ matrix.build_type }}
     
     steps:
+      - name: make space
+        if: runner.os == 'Linux'
+        run: |
+          sudo rm -rf "/usr/local/share/boost"
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install packages
