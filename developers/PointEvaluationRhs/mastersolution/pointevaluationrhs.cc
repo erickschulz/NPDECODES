@@ -249,7 +249,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
   if (solver.info() == Eigen::Success) {
     sol_vec = solver.solve(rhs);
   } else {
-    LF_ASSERT_MSG(false, "Eigen Factorization failed")
+    LF_ASSERT_MSG(false, "Eigen Factorization failed");
   }
   /* SAM_LISTING_END_7 */
   // return the norms of the solution vector
@@ -302,8 +302,8 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
       result[3] = (1.0 - x_hat(0)) * x_hat(1);
     }
   } else {
-    LF_ASSERT_MSG(false,
-                  "Function only defined for triangular or quadrilateral cells")
+    LF_ASSERT_MSG(
+        false, "Function only defined for triangular or quadrilateral cells");
   }
 #else
   //====================

@@ -108,8 +108,8 @@ Eigen::MatrixXd MassLocalMatrixAssembler::Eval(const lf::mesh::Entity &entity) {
     // possible combinations of basis functions
     result = point_eval.transpose() * point_eval_weighted;
   } else {
-    LF_ASSERT_MSG(false,
-                  "Function only defined for triangular or quadrilateral cells")
+    LF_ASSERT_MSG(
+        false, "Function only defined for triangular or quadrilateral cells");
   }
 #else
   //====================

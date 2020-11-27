@@ -42,7 +42,7 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
 /* SAM_LISTING_END_1 */
 
 void sdirk2ScalarODECvTest() {
-  int nIter = 10;  // total number of iterations
+  const int nIter = 10;  // total number of iterations
   unsigned int m;  // number of equidistant steps
 
   // Evaluating the maximal error (discrete infinity norm) between the approx
