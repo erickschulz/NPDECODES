@@ -30,7 +30,7 @@ int main(int /*argc*/, char ** /*argv*/) {
 
   /* Solving the parabolic heat equation */
   // Create a Lehrfem++ square tensor product mesh
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(
+  lf::mesh::utils::TPTriagMeshBuilder builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
   // Set mesh parameters following the Builder pattern
   // Domain is the unit square

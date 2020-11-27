@@ -17,10 +17,10 @@ mkdir -p ${HUNTER_ROOT}
 source $(dirname $0)/install_cmake.sh
 
 # create build directory and run cmake.
-cd ${TRAVIS_BUILD_DIR}
+cd ${GITHUB_WORKSPACE}
 export CXX=${COMPILER}
 $CXX --version
 
-cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS=-g0 -Wdev
+cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS_DEBUG="-g0" -Wdev
 cd Build
 # make -j${NUM_PROC:-2}

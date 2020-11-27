@@ -141,7 +141,7 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
   // I. Construct the test mesh
 #if SOLUTION
   // mesh builder in a world of dimension 2
-  lf::mesh::hybrid2d::TPTriagMeshBuilder my_builder(
+  lf::mesh::utils::TPTriagMeshBuilder my_builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
 
   // define the test mesh

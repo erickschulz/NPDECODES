@@ -5,6 +5,7 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <fstream>
 #include <string>
 
 #include "evalclass.h"

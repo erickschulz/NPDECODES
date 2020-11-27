@@ -39,7 +39,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
     const Eigen::MatrixXd vertices{lf::geometry::Corners(cell_geom)};
     // clang-format off
     // 2x3-matrix of midpoint coordinates
-    auto midpoints{vertices *
+    Eigen::MatrixXd midpoints{vertices *
       (Eigen::Matrix<double, 3, 3>(3,3) <<
 				 0.5, 0.0, 0.5,
 				 0.5, 0.5, 0.0,
