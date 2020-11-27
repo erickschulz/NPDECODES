@@ -46,7 +46,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo rm -rf "/usr/local/share/boost"
-          du -h -s 3 /
+          sudo du -h -d 3 /
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install packages
