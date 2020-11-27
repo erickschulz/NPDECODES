@@ -76,7 +76,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
   1) `clang-format-8` is used to check if the formatting of all files under the `./developers` folder conforms with the [Google C++ Style guide](https://google.github.io/styleguide/cppguide.html).
   2) All the code under `./developer` is compiled with `g++-8` (Linux) and `clang++` (osx)
   3) All the mastersolution tests run.
-* After you have made a commit, you can check the status of the continuous integration pipeline on [travis](https://travis-ci.com/github/erickschulz/NPDECODES)
+* After you have made a commit, you can check the status of the continuous integration pipeline on [github actions](https://github.com/erickschulz/NPDECODES/actions)
 * If the clang format step fails, just reformat all files:
   ```
   cd ./developers/
