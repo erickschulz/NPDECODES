@@ -46,7 +46,10 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo rm -rf "/usr/local/share/boost"
-          sudo du -h -d 3 /
+          sudo rm -rf /usr/share/swift
+          sudo rm -rf /usr/share/rust
+          sudo rm -rf /opt/ghc
+        # sudo du -h -d 3 /
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install packages
