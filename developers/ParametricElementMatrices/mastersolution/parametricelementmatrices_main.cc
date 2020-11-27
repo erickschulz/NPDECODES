@@ -13,7 +13,7 @@
 int main() {
   /* PRODUCE MESH AND FE SPACE */
   // Create a Lehrfem++ square tensor product mesh using internal routines
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(
+  lf::mesh::utils::TPTriagMeshBuilder builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
   // Set mesh parameters following the Builder pattern
   // Domain is the unit square

@@ -8,6 +8,8 @@
 
 #include "electrostaticforce.h"
 
+#include <fstream>
+
 using namespace ElectrostaticForce;
 
 // Spcify output format for table

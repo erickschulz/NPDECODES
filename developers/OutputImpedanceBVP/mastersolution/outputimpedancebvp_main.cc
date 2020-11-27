@@ -6,6 +6,7 @@
  */
 
 #include <string>
+#include <fstream>
 
 #include "evalclass.h"
 #include "outputimpedancebvp.h"
