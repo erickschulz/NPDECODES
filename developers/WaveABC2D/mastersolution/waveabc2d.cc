@@ -84,7 +84,7 @@ void testConvergenceScalarImplicitTimestepping() {
   for (int k = 0; k < nIter; k++) {
     // M = 10 * std::pow(2, k);
     M = M_stored[k];
-    exact_sol_vec.resize(M+1);
+    exact_sol_vec.resize(M + 1);
     step_size = 1.0 / M;
     // Creating exact solution vector for epsilon = 1/5. This vector is created
     // by evaluating the exact solution using the analytic formula
