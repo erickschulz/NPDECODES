@@ -21,6 +21,6 @@ cd ${GITHUB_WORKSPACE}
 export CXX=${COMPILER}
 $CXX --version
 
-cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS_DEBUG="-g0 -Os" -Wdev
+cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS_DEBUG="-g0" -Wdev
 cd Build
 # make -j${NUM_PROC:-2}
