@@ -17,7 +17,7 @@ mkdir -p ${HUNTER_ROOT}
 source $(dirname $0)/install_cmake.sh
 
 # create build directory and run cmake.
-cd ${TRAVIS_BUILD_DIR}
+cd ${GITHUB_WORKSPACE}
 export CXX=${COMPILER}
 $CXX --version
 

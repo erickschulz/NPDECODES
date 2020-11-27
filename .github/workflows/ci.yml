@@ -22,7 +22,7 @@ jobs:
    # compilation on linux/osx:
   compile_test:
     name: ${{ matrix.os }} - ${{ matrix.compiler }} - ${{ matrix.build_type }}
-    needs: clang-format
+    #needs: clang-format
     strategy:
       matrix:
         include:
