@@ -45,8 +45,8 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 7-1 | `ExpFittedUpwind` | TO DO | | |Philippe Peter |
-| 7-2 | `UpwindQuadrature` | DONE |  |  | needs LaTeX changes by Ralf |
-| 7-3 | `TranspSemiLagr` | TO DO | | | Philippe Peter |
+| 7-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
+| 7-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
 | 7-4 | `UpwindFiniteVolume` | TO DO | | | |
 | 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -59,7 +59,6 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | ? | `LinFeReactDiff` |  |  |  |  |
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
- * Problem 7.5: Transport Problem?
  * Problem 7.6: Upwind Finite Volume Method ?
 
 ## General Remarks
