@@ -48,7 +48,7 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>>
 		unsigned int i = mesh_p->Index(*(endpoints[0]));
 		unsigned int j = mesh_p->Index(*(endpoints[1]));
 
-		(*beta_p)(*edge) =  std::exp(mu(i))*Bernoulli(mu(j)-mu(i));
+		(*beta_p)(*edge) =  std::exp(mu(j))*Bernoulli(mu(j)-mu(i));
 	}
 
 	return beta_p;
