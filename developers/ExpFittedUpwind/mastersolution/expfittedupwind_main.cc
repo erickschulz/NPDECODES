@@ -19,75 +19,91 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
+#include<lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
 #include "expfittedupwind.h"
 
 int main() {
-  // Obtain Mesh on unit square
-	auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-	const lf::io::GmshReader reader(std::move(mesh_factory),
-                                  CURRENT_SOURCE_DIR "/../meshes/square.msh");
-	auto mesh = reader.mesh();
-	// FE Space, Dofhandler
-	auto fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh);
-//lf::uscalfe::UniformScalarFESpace<double> fe_space(mesh, nullptr, nullptr);
-	const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
-  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
-  
-	// Output file
-	std::ofstream L2output;
-  L2output.open("L2error.txt");
-  L2output << "No. of dofs, L2 error" << std::endl;
-  
-	// Data
+
+	//Mesh-independent Data:
+	auto f = [] (Eigen::Vector2d x) -> double { return 0.0; };
+
 	Eigen::Vector2d q = Eigen::Vector2d::Ones(2);
 	auto Psi = [&q] (Eigen::Vector2d x) -> double {
 		return q.dot(x);
-	};
-
-	auto f = [] (Eigen::Vector2d x) -> double { return 0.0; };
+	}; 
 
 	auto g = [&Psi] (Eigen::Vector2d x) -> double {
 		return std::exp(Psi(x));
 	};
-  
-  Eigen::VectorXd mu(N_dofs);
-	mu.setZero();
 
-	for(const lf::mesh::Entity *el: mesh->Entities(0)) {
-		const auto& geom = el->Geometry();
-		const auto ids = dofh.GlobalDofIndices(*el);
-		const lf::assemble::size_type N_locDofs(dofh.NumLocalDofs(*el));
-		for(const auto idx: ids) {
-
-			Eigen::MatrixXd vertices(2,3);
-			vertices = lf::geometry::Corners(*geom);
-			Eigen::Vector2d pt; 
-			pt.setZero();
-			for(int loc_idx = 0; loc_idx < N_locDofs; loc_idx++) {
-				pt = vertices.col(loc_idx);
-			}
-			mu(idx) = pt.x() + pt.y();
-		}
-	}
-
-  // Compute Solution
-	Eigen::VectorXd sol_vec = ExpFittedUpwind::solveDriftDiffusionDirBVP(fe_space, 
-																																mu, f, g);
-  
-	// auto sol = MeshFunctionFE(fe_space, sol_vec);
-
-  // Compare to exact solution interpolated on our mesh
-  auto ref_sol = [&Psi] (Eigen::Vector2d x) -> double {
+  	auto ref_sol = [&Psi] (Eigen::Vector2d x) -> double {
 		return std::exp(Psi(x));
 	};
-	lf::mesh::utils::MeshFunctionGlobal mf_ref_sol{ref_sol};
-	Eigen::VectorXd ref_sol_vec(N_dofs);
-	ref_sol_vec = lf::uscalfe::NodalProjection(*fe_space, mf_ref_sol);
+
+	// Output file
+	std::ofstream L2output;
+    L2output.open("L2error.txt");
+    L2output << "No. of dofs, L2 error" << std::endl;
   
-  double L2_error = (sol_vec - ref_sol_vec).norm() / N_dofs;
-  L2output << N_dofs << ", " << L2_error << std::endl;
+
+	//generate mesh_hierarchy:
+	unsigned int reflevels = 6;
+	std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
+      std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
+	lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+    builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
+          .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
+          .setNumXCells(2)
+          .setNumYCells(2);
+	auto top_mesh =  builder.Build();
+
+  	std::shared_ptr<lf::refinement::MeshHierarchy> multi_mesh_p =
+      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(top_mesh,
+                                                              reflevels);
+  	lf::refinement::MeshHierarchy& multi_mesh{*multi_mesh_p};
+  	multi_mesh.PrintInfo(std::cout);
+
+
+	//get number of levels:
+	auto L = multi_mesh.NumLevels();
+
+	//perform computations on all levels:
+	for(int l = 0; l < L; ++l){
+		auto  mesh_p = multi_mesh.getMesh(l);
+		auto fe_space = std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+	
+		const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
+  		const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
+  
+		//transform Psi and reference solution into a mesh function on current level
+		auto mf_Psi = lf::mesh::utils::MeshFunctionGlobal(Psi);
+		Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
+		auto mf_ref_sol = lf::mesh::utils::MeshFunctionGlobal(ref_sol);
+
+
+		//compute solution as mesh_function:
+		Eigen::VectorXd sol_vec = ExpFittedUpwind::SolveDriftDiffusionDirBVP(fe_space, mu, f, g);
+		auto mf_sol = lf::uscalfe::MeshFunctionFE(fe_space,sol_vec);
+
+		//evaluate L2 error:
+		double L2_err = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+		*mesh_p,lf::uscalfe::squaredNorm(mf_sol - mf_ref_sol),3
+		));
+
+		L2output << N_dofs << ", " << L2_err << std::endl;
+		std::cout << N_dofs << "," << L2_err << std::endl;
+
+	}
+
+	L2output.close();
+  
+
+  	// Apply plot_error.py to L2error.txt
+  	std::system("python3 " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR
+    "/L2error.txt " CURRENT_BINARY_DIR "/results.eps");
+
 
   return 0;
 }
