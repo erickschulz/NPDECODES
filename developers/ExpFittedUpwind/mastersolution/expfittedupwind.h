@@ -114,6 +114,9 @@ Eigen::VectorXd SolveDriftDiffusionDirBVP(
   lf::mesh::utils::MeshFunctionGlobal mf_f{func_f};
   lf::mesh::utils::MeshFunctionGlobal mf_g{func_g};
 
+  Eigen::VectorXd sol = Eigen::VectorXd::Ones(N_dofs);
+
+#if SOLUTION
   // Assembly of the System Matrix based on our ExpFittedEMP class
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   ExpFittedEMP elmat_builder(fe_space, mu);
@@ -156,8 +159,13 @@ Eigen::VectorXd SolveDriftDiffusionDirBVP(
 
   solver.compute(A_crs);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
-  Eigen::VectorXd sol = solver.solve(phi);
+  sol = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return sol;
 }

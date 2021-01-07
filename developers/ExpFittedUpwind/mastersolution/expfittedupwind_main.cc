@@ -1,8 +1,8 @@
 /**
  * @file expfittedupwind_main.cc
  * @brief NPDE homework ExpFittedUpwind
- * @author Amélie Loher
- * @date 27.08.2020
+ * @author Amélie Loher, Philippe Peter
+ * @date 07.01.2020
  * @copyright Developed at ETH Zurich
  */
 
@@ -23,7 +23,8 @@
 #include "expfittedupwind.h"
 
 int main() {
-  // Mesh-independent Data:
+  // Define Mesh-independent Data:
+#if SOLUTION
   auto f = [](Eigen::Vector2d x) { return 0.0; };
 
   Eigen::Vector2d q = Eigen::Vector2d::Ones(2);
@@ -32,6 +33,11 @@ int main() {
   auto g = [&Psi](Eigen::Vector2d x) { return std::exp(Psi(x)); };
 
   auto ref_sol = [&Psi](Eigen::Vector2d x) { return std::exp(Psi(x)); };
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   // Output file
   std::ofstream L2output;
@@ -60,6 +66,9 @@ int main() {
 
   // perform computations on all levels:
   for (int l = 0; l < L; ++l) {
+    // Compute finite element solution and compute L2 error on current level:
+    double L2_err = 1.0;
+
     // get current mesh and fe space
     auto mesh_p = multi_mesh.getMesh(l);
     auto fe_space =
@@ -68,6 +77,7 @@ int main() {
     const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
     const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
 
+#if SOLUTION
     // wrap Psi and the reference solution into a mesh function on the current
     // level
     auto mf_Psi = lf::mesh::utils::MeshFunctionGlobal(Psi);
@@ -80,8 +90,13 @@ int main() {
     auto mf_sol = lf::uscalfe::MeshFunctionFE(fe_space, sol_vec);
 
     // evaluate L2 error:
-    double L2_err = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+    L2_err = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_sol - mf_ref_sol), 3));
+#else
+    //====================
+    // Your code goes here
+    //====================
+#endif
 
     L2output << N_dofs << ", " << L2_err << std::endl;
     std::cout << N_dofs << "," << L2_err << std::endl;
@@ -89,7 +104,7 @@ int main() {
 
   L2output.close();
 
-  // Apply plot_error.py to L2error.txt
+  // Plot the computed L2 error
   std::system("python3 " CURRENT_SOURCE_DIR "/plot_error.py " CURRENT_BINARY_DIR
               "/L2error.txt " CURRENT_BINARY_DIR "/results.eps");
 

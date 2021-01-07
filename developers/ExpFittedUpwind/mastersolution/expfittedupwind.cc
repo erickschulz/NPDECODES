@@ -24,6 +24,7 @@ namespace ExpFittedUpwind {
  * @brief Computes the Bernoulli function B(tau)
  **/
 double Bernoulli(double tau) {
+#if SOLUTION
   if (std::abs(tau) < 1e-10) {
     return 1.0;
   } else if (std::abs(tau) < 1e-3) {
@@ -31,6 +32,12 @@ double Bernoulli(double tau) {
   } else {
     return tau / (std::exp(tau) - 1.0);
   }
+#else
+  //====================
+  // Your code goes here
+  //====================
+  return tau;
+#endif
 }
 
 /**
@@ -42,8 +49,9 @@ double Bernoulli(double tau) {
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
     std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu) {
   // data set over all edges of the mesh.
-  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 0.0);
+  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 1.0);
 
+#if SOLUTION
   // compute beta(e) for all edges of the mesh
   for (const lf::mesh::Entity* edge : mesh_p->Entities(1)) {
     // compute the indices of the endpoints of the edge
@@ -54,6 +62,11 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
 
     (*beta_p)(*edge) = std::exp(mu(j)) * Bernoulli(mu(j) - mu(i));
   }
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return beta_p;
 }
@@ -70,6 +83,9 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
   // Evaluate the element matrix A_K
   Eigen::Matrix3d AK = laplace_provider_.Eval(cell).block<3, 3>(0, 0);
 
+  Eigen::Matrix3d result;
+
+#if SOLUTION
   // get the values of beta on the edges of the triangle.
   // by the Lehrfem++ numbering convention
   // b = [beta(e_0), beta(e_1), beta(e_2)]' = [\beta_{1,2}, \beta_{2,3},
@@ -77,7 +93,6 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
   Eigen::Vector3d b = beta_loc(cell);
 
   // evaluate the element matrix using the formula in subproblem h)
-  Eigen::Matrix3d result;
   result << AK(0, 1) * b(0) + AK(0, 2) * b(2), -AK(0, 1) * b(0),
       -AK(0, 2) * b(2), -AK(0, 1) * b(0), AK(0, 1) * b(0) + AK(1, 2) * b(1),
       -AK(1, 2) * b(1), -AK(0, 2) * b(2), -AK(1, 2) * b(1),
@@ -85,6 +100,11 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
 
   Eigen::Vector3d mu_exp = (-mu_loc(cell)).array().exp();
   result *= mu_exp.asDiagonal();
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
 
   return std::move(result);
 }

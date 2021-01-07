@@ -37,9 +37,14 @@ TEST(Bernoulli, Monotinicity) {
 
 // Check that B(tau) does not explode for small tau
 TEST(Bernoulli, Cancellation) {
-  for (int i = 8.0; i >= 10E-12; i /= 2.0) {
+  for (double i = 8.0; i >= std::numeric_limits<double>::min(); i /= 2.0) {
     EXPECT_LE(std::abs(Bernoulli(i)), 2.0);
   }
+}
+
+// Check that B(log(2)) = log(2)
+TEST(Bernoulli, Evaluation) {
+  EXPECT_NEAR(Bernoulli(std::log(2)), std::log(2), 1.0E-8);
 }
 
 // For Psi = c, all entries of beta are given by beta(e) = std::exp(c)
