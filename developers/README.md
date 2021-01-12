@@ -44,7 +44,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
 | 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 7-1 | `ExpFittedUpwind` | TO DO | | |Philippe Peter |
+| 7-1 | `ExpFittedUpwind` | :heavy_check_mark: |:heavy_check_mark: | |needs LaTeX changes |
 | 7-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
 | 7-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
 | 7-4 | `UpwindFiniteVolume` | TO DO | | | |
