@@ -14,6 +14,7 @@
 #include <Eigen/SparseLU>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>

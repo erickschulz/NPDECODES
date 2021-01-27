@@ -41,7 +41,6 @@ Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
 //====================
 // Your code goes here
 //====================
-
   return x.col(1);
 }  // scalarImplicitTimestepping
 /* SAM_LISTING_END_1 */
@@ -61,12 +60,13 @@ void testConvergenceScalarImplicitTimestepping() {
   double diff;  // temporary variable used to compute error at various nodes
   double max_norm_errors[nIter];  // errors vector for all approx. sols
   Eigen::VectorXd approx_sol_vec;
-  Eigen::VectorXd exact_sol_vec(M + 1);
+  Eigen::VectorXd exact_sol_vec;
   unsigned int M_stored[13] = {10,  20,  30,  40,  50,  60, 80,
                                100, 160, 200, 320, 500, 640};
   for (int k = 0; k < nIter; k++) {
     // M = 10 * std::pow(2, k);
     M = M_stored[k];
+    exact_sol_vec.resize(M + 1);
     step_size = 1.0 / M;
     // Creating exact solution vector for epsilon = 1/5. This vector is created
     // by evaluating the exact solution using the analytic formula

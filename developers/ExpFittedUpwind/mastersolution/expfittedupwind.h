@@ -6,17 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
+#include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
+#include <lf/fe/fe.h>
+#include <lf/mesh/mesh.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/mesh/mesh.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <memory>
 
 namespace ExpFittedUpwind {
 
@@ -133,14 +133,14 @@ Eigen::VectorXd SolveDriftDiffusionDirBVP(
   // conditions
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
 
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double>* rsf_edge =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   LF_ASSERT_MSG(rsf_edge != nullptr, "FE specification for edges missing.");
 
   // Fetch flags and values for dofs on the Dirichlet edges
-  auto bd_flags_val{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge,
+  auto bd_flags_val{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space,
       [&bd_flags](const lf::mesh::Entity& edge) -> bool {
         return bd_flags(edge);
       },

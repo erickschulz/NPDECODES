@@ -40,8 +40,7 @@ static auto nfn_lf_burger = [](double v, double w) {
 };
 // 2. Godunov flux for Burgers equation
 static auto nfn_god_burger = [](double v, double w) {
-  if (v < w)
-    return fb(std::min(std::max(v, 0.0), w));
+  if (v < w) return fb(std::min(std::max(v, 0.0), w));
   return std::max(fb(v), fb(w));
 };
 

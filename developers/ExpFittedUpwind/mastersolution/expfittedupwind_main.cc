@@ -6,20 +6,20 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <memory>
 
 #include "expfittedupwind.h"
 
@@ -82,16 +82,16 @@ int main() {
     // wrap Psi and the reference solution into a mesh function on the current
     // level
     auto mf_Psi = lf::mesh::utils::MeshFunctionGlobal(Psi);
-    Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
+    Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
     auto mf_ref_sol = lf::mesh::utils::MeshFunctionGlobal(ref_sol);
 
     // compute the finite element solution and wrap it into a mesh function
     Eigen::VectorXd sol_vec =
         ExpFittedUpwind::SolveDriftDiffusionDirBVP(fe_space, mu, f, g);
-    auto mf_sol = lf::uscalfe::MeshFunctionFE(fe_space, sol_vec);
+    auto mf_sol = lf::fe::MeshFunctionFE(fe_space, sol_vec);
 
     // evaluate L2 error:
-    L2_err = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+    L2_err = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_sol - mf_ref_sol), 3));
 #else
     //====================

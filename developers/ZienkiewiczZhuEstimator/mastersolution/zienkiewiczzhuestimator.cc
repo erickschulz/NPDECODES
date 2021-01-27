@@ -314,8 +314,8 @@ Eigen::VectorXd solveBVP(
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   // Dirichlet data
   auto mf_g = lf::mesh::utils::MeshFunctionGlobal(
@@ -363,9 +363,8 @@ Eigen::VectorXd solveBVP(
   // Determine the fixed dofs on the boundary and their values
   // Alternative: See lecturedemoDirichlet() in
   // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
-  auto edges_flag_values_Dirichlet{
-      lf::uscalfe::InitEssentialConditionFromFunction(
-          dofh, *rsf_edge_p, edges_predicate_Dirichlet, mf_g)};
+  auto edges_flag_values_Dirichlet{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space_p, edges_predicate_Dirichlet, mf_g)};
   // Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {

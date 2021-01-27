@@ -8,18 +8,17 @@
 
 #include "pointevaluationrhs.h"
 
-#include <cmath>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <utility>
 
 #include "pointevaluationrhs_norms.h"
 
@@ -224,7 +223,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
   if (solver.info() == Eigen::Success) {
     sol_vec = solver.solve(rhs);
   } else {
-    LF_ASSERT_MSG(false, "Eigen Factorization failed")
+    LF_ASSERT_MSG(false, "Eigen Factorization failed");
   }
   /* SAM_LISTING_END_7 */
   // return the norms of the solution vector
@@ -238,7 +237,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
 Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
   Eigen::VectorXd result;
   // get the coordinates of the corners of this cell
-  lf::geometry::Geometry *geo_ptr = cell.Geometry();
+  const lf::geometry::Geometry *geo_ptr = cell.Geometry();
   auto vertices = lf::geometry::Corners(*geo_ptr);
   Eigen::Vector2d x_hat;
   // the margin we allow when we determine wether a point is inside an
@@ -271,8 +270,8 @@ Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
       result[3] = (1.0 - x_hat(0)) * x_hat(1);
     }
   } else {
-    LF_ASSERT_MSG(false,
-                  "Function only defined for triangular or quadrilateral cells")
+    LF_ASSERT_MSG(
+        false, "Function only defined for triangular or quadrilateral cells");
   }
   return result;
 }

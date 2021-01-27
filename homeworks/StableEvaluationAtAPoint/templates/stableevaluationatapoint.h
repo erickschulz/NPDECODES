@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <complex>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <complex>
 
 namespace StableEvaluationAtAPoint {
 

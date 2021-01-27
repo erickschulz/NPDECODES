@@ -84,8 +84,8 @@ Eigen::VectorXd solvePoissonBVP(
   /* SAM_LISTING_BEGIN_3 */
   // I : ASSEMBLY
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Right hand side vector, must be initialized with 0!
@@ -106,8 +106,8 @@ Eigen::VectorXd solvePoissonBVP(
   // indicates that the edge or node lies on the boundary
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Determine the fixed dofs on the boundary and their values
-  auto flag_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p, bd_flags, mf_bd_values)};
+  auto flag_values{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space_p, bd_flags, mf_bd_values)};
   // II.ii Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&flag_values](lf::assemble::glb_idx_t dof_idx) {

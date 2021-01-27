@@ -13,7 +13,7 @@
 namespace NonConformingCrouzeixRaviartFiniteElements {
 
 class CRReferenceFiniteElement final
-    : public lf::uscalfe::ScalarReferenceFiniteElement<double> {
+    : public lf::fe::ScalarReferenceFiniteElement<double> {
  public:
   lf::base::RefEl RefEl() const override;
   unsigned int Degree() const override;

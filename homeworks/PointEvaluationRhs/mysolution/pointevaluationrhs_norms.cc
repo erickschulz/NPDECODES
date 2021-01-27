@@ -8,17 +8,16 @@
 
 #include "pointevaluationrhs_norms.h"
 
-#include <cmath>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <cmath>
 
 namespace PointEvaluationRhs {
 

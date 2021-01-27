@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <lf/fe/fe.h>
 
 #include "../anisotropicdiffusionelementmatrixprovider.h"
 #include "../fesourceelemvecprovider.h"

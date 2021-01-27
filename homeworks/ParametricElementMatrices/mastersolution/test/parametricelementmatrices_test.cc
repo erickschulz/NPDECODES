@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <lf/fe/fe.h>
 
 #include "../anisotropicdiffusionelementmatrixprovider.h"
 #include "../fesourceelemvecprovider.h"
@@ -71,7 +72,7 @@ TEST(ParametricElementMatrices, TestLoad) {
   lf::mesh::utils::MeshFunctionGlobal mf_f{f};
 
   // interpolation of w on fe space: reproduces function
-  auto w = lf::uscalfe::NodalProjection<double>(*fe_space, mf_w_func);
+  auto w = lf::fe::NodalProjection<double>(*fe_space, mf_w_func);
 
   // use own method to assemble load vector
   auto elvec_builder =

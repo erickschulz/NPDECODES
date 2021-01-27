@@ -21,7 +21,7 @@ double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
 #if SOLUTION
   // iterate over all cells (co-dimension = 0)
   for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
-    lf::geometry::Geometry *geo_p = cell->Geometry();
+    const lf::geometry::Geometry *geo_p = cell->Geometry();
     volume += lf::geometry::Volume(*geo_p);
   }
 #else
@@ -46,7 +46,7 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
   for (const lf::mesh::Entity *cell : mesh_p->Entities(1)) {
     // check if edge is part of the boundary
     if (bd_flags(*cell)) {
-      lf::geometry::Geometry *geo_p = cell->Geometry();
+      const lf::geometry::Geometry *geo_p = cell->Geometry();
       length += lf::geometry::Volume(*geo_p);
     }
   }

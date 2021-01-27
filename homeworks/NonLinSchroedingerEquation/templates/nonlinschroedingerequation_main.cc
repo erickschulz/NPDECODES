@@ -6,6 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
 #include <cmath>
 #include <complex>
 #include <cstdlib>
@@ -13,13 +20,6 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-
-#include <Eigen/Core>
-
-#include <lf/assemble/assemble.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/uscalfe/uscalfe.h>
 
 #include "nonlinschroedingerequation.h"
 #include "propagator.h"
@@ -114,7 +114,7 @@ int main() {
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.vtk" << std::endl;
   lf::io::VtkWriter vtk_writer(mesh_p, "solution.vtk");
   Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
-  lf::uscalfe::MeshFunctionFE mu_abs2_mf(fe_space, mu_abs2);
+  lf::fe::MeshFunctionFE mu_abs2_mf(fe_space, mu_abs2);
   vtk_writer.WritePointData("mu_abs2", mu_abs2_mf);
 
   return 0;

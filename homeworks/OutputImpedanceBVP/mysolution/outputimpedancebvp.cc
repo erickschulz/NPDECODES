@@ -33,8 +33,8 @@ Eigen::VectorXd solveImpedanceBVP(
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   Eigen::VectorXd discrete_solution(N_dofs);
 

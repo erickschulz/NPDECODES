@@ -5,20 +5,20 @@
  * @date June 2020
  * @copyright Developed at SAM, ETH Zurich
  */
-#include <cmath>
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
 
 #include "upwindquadrature.h"
 
@@ -63,8 +63,8 @@ int main() {
 
   // PREPARING DATA TO IMPOSE DIRICHLET CONDITIONS
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   // Create a dataset of boolean flags indicating edges on the boundary of the
   // mesh
@@ -72,8 +72,8 @@ int main() {
 
   // Fetch flags and values for degrees of freedom located on Dirichlet
   // boundary.
-  auto ess_bdc_flags_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p, bd_flags, mf_g)};
+  auto ess_bdc_flags_values{
+      lf::fe::InitEssentialConditionFromFunction(*fe_space, bd_flags, mf_g)};
 
   //============================================================================
   // SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (STANDARD: UNSTABLE)
@@ -111,7 +111,7 @@ int main() {
 
   // OUTPUT RESULTS TO VTK FILe
   // construct mesh function representing finite element solution
-  lf::uscalfe::MeshFunctionFE mf_sol(fe_space, sol_vec);
+  lf::fe::MeshFunctionFE mf_sol(fe_space, sol_vec);
   // construct vtk writer
   lf::io::VtkWriter vtk_writer(
       mesh_p, CURRENT_BINARY_DIR "/upwind_quadrature_solution_unstable.vtk");
@@ -157,7 +157,7 @@ int main() {
 
   // OUTPUT RESULTS TO VTK FILe
   // construct mesh function representing finite element solution
-  lf::uscalfe::MeshFunctionFE mf_sol_stable(fe_space, sol_vec_stable);
+  lf::fe::MeshFunctionFE mf_sol_stable(fe_space, sol_vec_stable);
   // construct vtk writer
   lf::io::VtkWriter vtk_writer_stable(
       mesh_p, CURRENT_BINARY_DIR "/upwind_quadrature_solution_stable.vtk");

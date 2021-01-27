@@ -34,9 +34,9 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
     const lf::assemble::size_type num_nodes = cell->RefEl().NumNodes();
     LF_ASSERT_MSG(num_nodes == 3, "Only meaningful for triangles!");
     // Obtain pointer to shape information for cell
-    lf::geometry::Geometry &cell_geom{*(cell->Geometry())};
+    const lf::geometry::Geometry *cell_geom{cell->Geometry()};
     // 2x3- matrix with corner coordinates in its columns
-    const Eigen::MatrixXd vertices{lf::geometry::Corners(cell_geom)};
+    const Eigen::MatrixXd vertices{lf::geometry::Corners(*cell_geom)};
     // clang-format off
     // 2x3-matrix of midpoint coordinates
     Eigen::MatrixXd midpoints{vertices *
@@ -59,7 +59,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
           std::pow(mu[cell_dof_idx[loc_idx]] - u(midpoints.col(loc_idx)), 2);
     }
     // Sum cell contributions
-    l2_error += lf::geometry::Volume(cell_geom) * (local_sum / num_nodes);
+    l2_error += lf::geometry::Volume(*cell_geom) * (local_sum / num_nodes);
   }
 #else
   //====================

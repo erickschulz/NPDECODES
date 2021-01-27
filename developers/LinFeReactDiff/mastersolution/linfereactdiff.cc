@@ -5,16 +5,9 @@
 
 #include "linfereactdiff.h"
 
-#include <cmath>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
@@ -22,6 +15,13 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
+#include <utility>
 
 namespace LinFeReactDiff {
 
@@ -93,20 +93,19 @@ Eigen::VectorXd solveFE(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   LF_ASSERT_MSG(rsf_edge_p != nullptr, "FE specification for edges missing");
 
   // Fetch flags and values for degrees of freedom located on Dirichlet
   // edges.
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
-  auto ess_bdc_flags_values_findest{
-      lf::uscalfe::InitEssentialConditionFromFunction(
-          dofh, *rsf_edge_p,
-          [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-            return bd_flags(edge);
-          },
-          mf_zero)};
+  auto ess_bdc_flags_values_findest{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space,
+      [&bd_flags](const lf::mesh::Entity &edge) -> bool {
+        return bd_flags(edge);
+      },
+      mf_zero)};
 
   // Eliminate Dirichlet dofs from linear system
   lf::assemble::FixFlaggedSolutionComponents<double>(

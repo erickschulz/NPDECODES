@@ -6,14 +6,13 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <memory>
 
 #include "transpsemilagr.h"
 
@@ -39,24 +38,24 @@ int main() {
     }
   };
 
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0));
 
   // compute the solutions after 1st timestep
   Eigen::VectorXd sol_rot_1 =
       TranspSemiLagr::solverot(fe_space, u0_vector, 1, 0.1);
-  lf::uscalfe::MeshFunctionFE mf_sol_rot_1(fe_space, sol_rot_1);
+  lf::fe::MeshFunctionFE mf_sol_rot_1(fe_space, sol_rot_1);
   Eigen::VectorXd sol_trp_1 =
       TranspSemiLagr::solvetrp(fe_space, u0_vector, 1, 0.1);
-  lf::uscalfe::MeshFunctionFE mf_sol_trp_1(fe_space, sol_trp_1);
+  lf::fe::MeshFunctionFE mf_sol_trp_1(fe_space, sol_trp_1);
 
   // compute solutions at final time
   Eigen::VectorXd sol_rot_10 =
       TranspSemiLagr::solverot(fe_space, u0_vector, 10, 1.0);
-  lf::uscalfe::MeshFunctionFE mf_sol_rot_10(fe_space, sol_rot_10);
+  lf::fe::MeshFunctionFE mf_sol_rot_10(fe_space, sol_rot_10);
   Eigen::VectorXd sol_trp_10 =
       TranspSemiLagr::solvetrp(fe_space, u0_vector, 10, 1.0);
-  lf::uscalfe::MeshFunctionFE mf_sol_trp_10(fe_space, sol_trp_10);
+  lf::fe::MeshFunctionFE mf_sol_trp_10(fe_space, sol_trp_10);
 
   // OUTPUT RESULTS
   // construct writers

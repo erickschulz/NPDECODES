@@ -8,18 +8,17 @@
 
 #include "pointevaluationrhs.h"
 
-#include <cmath>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <utility>
 
 #include "pointevaluationrhs_norms.h"
 
@@ -268,7 +267,7 @@ std::pair<double, double> normsSolutionPointLoadDirichletBVP(
 Eigen::VectorXd DeltaLocalVectorAssembler::Eval(const lf::mesh::Entity &cell) {
   Eigen::VectorXd result;
   // get the coordinates of the corners of this cell
-  lf::geometry::Geometry *geo_ptr = cell.Geometry();
+  const lf::geometry::Geometry *geo_ptr = cell.Geometry();
   auto vertices = lf::geometry::Corners(*geo_ptr);
 #if SOLUTION
   Eigen::Vector2d x_hat;

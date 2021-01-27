@@ -27,7 +27,7 @@ using namespace std;
 using TriGeo_t = Eigen::Matrix<double, 2, 3>;
 struct TriaMesh2D {
   // Constructor: reads mesh data from file, whose name is passed
-  TriaMesh2D(const std::string &); // \Label[line]{tm:cs}
+  TriaMesh2D(const std::string &);  // \Label[line]{tm:cs}
   virtual ~TriaMesh2D(void) {}
   // Retrieve coordinates of vertices of a triangles as rows
   // of a fixed-size 3x2 matrix
@@ -49,7 +49,7 @@ typedef std::vector<Eigen::Triplet<double>> Triplet_t;
  * function for computing local matrices from TriGeo_t triangles.
  */
 class MatrixAssembler {
-public:
+ public:
   // Constructor: stores element matrix assembler
   MatrixAssembler(LocalMatrixHandle_t getElementMatrix)
       : localMatrixHandle(std::move(getElementMatrix)) {}
@@ -57,7 +57,7 @@ public:
   // Assemble the Galerkin matrix for the provided mesh
   Eigen::SparseMatrix<double> Assemble(TriaMesh2D const &mesh);
 
-private:
+ private:
   LocalMatrixHandle_t localMatrixHandle;
 };
 
@@ -67,7 +67,7 @@ private:
  * efficient way to build the sparse matrix.
  */
 class SlowMatrixAssembler {
-public:
+ public:
   // Constructor: stores element matrix assembler
   SlowMatrixAssembler(LocalMatrixHandle_t getElementMatrix)
       : localMatrixHandle(std::move(getElementMatrix)) {}
@@ -75,7 +75,7 @@ public:
   // Assemble the Galerkin matrix for the provided mesh
   Eigen::SparseMatrix<double> Assemble(TriaMesh2D const &mesh);
 
-private:
+ private:
   LocalMatrixHandle_t localMatrixHandle;
 };
 
@@ -90,7 +90,7 @@ typedef std::function<Eigen::Vector3d(const TriGeo_t &, FHandle_t)>
  * function for computing local vectors from TriGeo_t triangles.
  */
 class VectorAssembler {
-public:
+ public:
   // Constructor: stores element matrix assembler and load function
   VectorAssembler(LocalVectorHandle_t const getElementVector,
                   FHandle_t sourceFunction)
@@ -100,7 +100,7 @@ public:
   // Assemble the load vector for the provided mesh
   Eigen::VectorXd Assemble(TriaMesh2D const &mesh);
 
-private:
+ private:
   LocalVectorHandle_t localVectorHandle;
   FHandle_t sourceFunction;
 };
@@ -113,7 +113,7 @@ private:
  * building the Galerkin matrix from triplets.
  */
 class FESolver {
-public:
+ public:
   // Constructor: stores source function f and a flag indicating
   // if the slow Galerkin matrix assembler should be used
   FESolver(const FHandle_t &sourceFunction, int inefficient_flag = 0)
@@ -124,7 +124,7 @@ public:
   // Solve the discretized system
   Eigen::VectorXd Solve(TriaMesh2D const &mesh);
 
-private:
+ private:
   const FHandle_t &sourceFunction;
   int inefficient;
 };

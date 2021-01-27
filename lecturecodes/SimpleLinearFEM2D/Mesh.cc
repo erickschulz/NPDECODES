@@ -69,7 +69,7 @@ TriGeo_t TriaMesh2D::getVtCoords(size_t cell_index) const {
   // Bild matrix of vertex coordinates
   Eigen::Matrix<double, 3, 2> vtc;
   vtc << Coordinates.row(idx[0]), Coordinates.row(idx[1]),
-    Coordinates.row(idx[2]);
+      Coordinates.row(idx[2]);
   return vtc.transpose();
 }
 /* SAM_LISTING_END_7 */

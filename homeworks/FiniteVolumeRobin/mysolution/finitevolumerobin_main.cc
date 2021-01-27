@@ -7,6 +7,7 @@
  */
 
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
@@ -75,7 +76,7 @@ int main() {
 
     // OUTPUT RESULTS TO VTK FILE
     // construct mesh function representing the finite element solution
-    lf::uscalfe::MeshFunctionFE mf_sol(fe_space, sol_vec);
+    lf::fe::MeshFunctionFE mf_sol(fe_space, sol_vec);
     // construct vtk writer
     lf::io::VtkWriter vtk_writer(mesh_p, CURRENT_BINARY_DIR
                                              "/finite_volume_robin_solution_" +

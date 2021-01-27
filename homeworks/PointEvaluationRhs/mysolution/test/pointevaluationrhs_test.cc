@@ -41,7 +41,7 @@ TEST(PoinEvaluationRhs, mapping_test) {
 
   for (auto cell : mesh_p->Entities(0)) {
     // Get shape of cell
-    lf::geometry::Geometry *geo_ptr = cell->Geometry();
+    const lf::geometry::Geometry *geo_ptr = cell->Geometry();
     // Get cordinates of vertices
     auto vertices = lf::geometry::Corners(*geo_ptr);
     // Global coordinates of testing point

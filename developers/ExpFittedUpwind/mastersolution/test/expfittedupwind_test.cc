@@ -6,21 +6,19 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <memory>
-#include <vector>
+#include "../expfittedupwind.h"
 
 #include <gtest/gtest.h>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../expfittedupwind.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <cmath>
+#include <memory>
+#include <vector>
 
 namespace ExpFittedUpwind::test {
 
@@ -54,7 +52,7 @@ TEST(CompBeta, ConstantPSI) {
       [](Eigen::Vector2d /*x*/) { return 3.1; });
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-  Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
+  Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
   double ref = std::exp(3.1);
 
   auto beta = CompBeta(mesh_p, mu);
@@ -72,7 +70,7 @@ TEST(CompBeta, linearPSI) {
       [](Eigen::Vector2d x) { return 1.0 + x(0) + 2 * x(1); });
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-  Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
+  Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
 
   auto beta = CompBeta(mesh_p, mu);
   auto edges = mesh_p->Entities(1);
@@ -102,7 +100,7 @@ TEST(ExpFittedEMP, Psi_const) {
       [](Eigen::Vector2d x) { return 3.0; });
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-  Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
+  Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
 
   // Imploemented exponentially fitted upwind provider
   ExpFittedEMP upwind_provider(fe_space, mu);
@@ -143,8 +141,8 @@ TEST(ExpFittedEMP, Bilinear_form_1) {
   auto mf_Psi = lf::mesh::utils::MeshFunctionGlobal(Psi);
   auto mf_u = lf::mesh::utils::MeshFunctionGlobal(u);
 
-  Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
-  Eigen::VectorXd u_vec = lf::uscalfe::NodalProjection(*fe_space, mf_u);
+  Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
+  Eigen::VectorXd u_vec = lf::fe::NodalProjection(*fe_space, mf_u);
 
   lf::assemble::COOMatrix<double> A(dofh.NumDofs(), dofh.NumDofs());
   ExpFittedEMP elmat_builder(fe_space, mu);
@@ -176,9 +174,9 @@ TEST(ExpFittedEMP, Bilinear_form_2) {
   auto v = [&r](Eigen::Vector2d x) { return r.dot(x); };
   auto mf_v = lf::mesh::utils::MeshFunctionGlobal(v);
 
-  Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, mf_Psi);
-  Eigen::VectorXd u_vec = lf::uscalfe::NodalProjection(*fe_space, mf_u);
-  Eigen::VectorXd v_vec = lf::uscalfe::NodalProjection(*fe_space, mf_v);
+  Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
+  Eigen::VectorXd u_vec = lf::fe::NodalProjection(*fe_space, mf_u);
+  Eigen::VectorXd v_vec = lf::fe::NodalProjection(*fe_space, mf_v);
 
   lf::assemble::COOMatrix<double> A(dofh.NumDofs(), dofh.NumDofs());
   ExpFittedEMP elmat_builder(fe_space, mu);

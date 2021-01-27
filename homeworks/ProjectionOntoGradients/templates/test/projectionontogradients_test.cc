@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
@@ -65,7 +66,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_1) {
                                       my_vec_provider, phi);
 
   // project v onto the fe space
-  auto v_vec = lf::uscalfe::NodalProjection<double>(*fe_space, v_mf);
+  auto v_vec = lf::fe::NodalProjection<double>(*fe_space, v_mf);
 
   // evaluate linear form on projected function:
   auto product = (v_vec.transpose() * phi).eval();
@@ -95,7 +96,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_2) {
                                       my_vec_provider, phi);
 
   // project v onto the fe space
-  auto v_vec = lf::uscalfe::NodalProjection<double>(*fe_space, v_mf);
+  auto v_vec = lf::fe::NodalProjection<double>(*fe_space, v_mf);
 
   // evaluate linear form on projected function:
   auto product = (v_vec.transpose() * phi).eval();

@@ -25,7 +25,7 @@ void testGlobalInverseQuad(const lf::mesh::Entity &quad, Eigen::Vector2d xh) {
   LF_ASSERT_MSG(quad.RefEl() == lf::base::RefEl::kQuad(),
                 "Cell must be a quadrilateral");
   // get the coordinates of the corners of this cell
-  lf::geometry::Geometry *geo_ptr = quad.Geometry();
+  const lf::geometry::Geometry *geo_ptr = quad.Geometry();
   auto vertices = lf::geometry::Corners(*geo_ptr);
   // Image of point in unit square under parametric mapping
   Eigen::Vector2d x = geo_ptr->Global(xh);
@@ -47,7 +47,7 @@ TEST(PoinEvaluationRhs, mapping_test) {
 
   for (auto cell : mesh_p->Entities(0)) {
     // Get shape of cell
-    lf::geometry::Geometry *geo_ptr = cell->Geometry();
+    const lf::geometry::Geometry *geo_ptr = cell->Geometry();
     // Get cordinates of vertices
     auto vertices = lf::geometry::Corners(*geo_ptr);
     // Global coordinates of testing point

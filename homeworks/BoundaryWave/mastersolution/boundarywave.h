@@ -14,6 +14,7 @@
 #include <Eigen/SparseLU>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
@@ -42,8 +43,8 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolateInitialData(
   auto mf_v0 = lf::mesh::utils::MeshFunctionGlobal(
       [&v0](Eigen::Vector2d x) -> double { return v0(x); });
 
-  dof_vector_u0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_u0);
-  dof_vector_v0 = lf::uscalfe::NodalProjection(*fe_space_p, mf_v0);
+  dof_vector_u0 = lf::fe::NodalProjection(*fe_space_p, mf_u0);
+  dof_vector_v0 = lf::fe::NodalProjection(*fe_space_p, mf_v0);
 
   std::pair<Eigen::VectorXd, Eigen::VectorXd> initialData =
       std::make_pair(dof_vector_u0, dof_vector_v0);

@@ -6,6 +6,7 @@
  */
 
 #include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 
@@ -80,12 +81,12 @@ int main(int /*argc*/, const char ** /*argv*/) {
     // Solve Poisson BVP with essential BCs
     approx_sol = solveBVP(fe_space_p);
     // Compute L2 and H1 errors
-    auto mf_approx_sol = lf::uscalfe::MeshFunctionFE(fe_space_p, approx_sol);
-    L2errors[i] = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+    auto mf_approx_sol = lf::fe::MeshFunctionFE(fe_space_p, approx_sol);
+    L2errors[i] = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
     auto mf_approx_grad_sol =
-        lf::uscalfe::MeshFunctionGradFE(fe_space_p, approx_sol);
-    H1errors[i] = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+        lf::fe::MeshFunctionGradFE(fe_space_p, approx_sol);
+    H1errors[i] = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_grad_uExact - mf_approx_grad_sol),
         2));
 

@@ -44,10 +44,10 @@ namespace ConsFV {
  * @return temporal grid and sequence of approximate states
  */
 template <typename ODEFUN>
-std::pair<std::vector<double>, std::vector<Eigen::VectorXd>>
-ode45(ODEFUN &&odefun, const double t0, const double tfinal,
-      const Eigen::VectorXd &y0, const double abserr = 1.0E-8,
-      const double relerr = 1.0E-6) {
+std::pair<std::vector<double>, std::vector<Eigen::VectorXd>> ode45(
+    ODEFUN &&odefun, const double t0, const double tfinal,
+    const Eigen::VectorXd &y0, const double abserr = 1.0E-8,
+    const double relerr = 1.0E-6) {
   // initialization
   Eigen::VectorXd mu0 = y0;
   std::vector<double> timesteps{};
@@ -68,6 +68,6 @@ ode45(ODEFUN &&odefun, const double t0, const double tfinal,
   return {timesteps, mus};
 }
 
-} // namespace ConsFV
+}  // namespace ConsFV
 
 #endif

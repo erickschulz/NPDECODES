@@ -67,7 +67,7 @@ int main(int /*argc*/, char ** /*argv*/) {
       discrete_temperature_sol.size() == N_dofs,
       "Size of discrete solution and dimension of FE space mismatch.");
   Eigen::VectorXd energies = solution_pair.second;
-  LF_ASSERT_MSG(energies.size() == m + 1, "Wrong number of energie values.")
+  LF_ASSERT_MSG(energies.size() == m + 1, "Wrong number of energie values.");
   // Define output file format for the energies
   const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");

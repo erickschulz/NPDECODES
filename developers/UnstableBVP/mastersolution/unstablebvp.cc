@@ -18,6 +18,7 @@
 // Lehrfempp
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
@@ -127,8 +128,8 @@ double solveTemperatureDistribution(
   // **********************************************************************
 
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   LF_ASSERT_MSG(rsf_edge_p != nullptr, "FE specification for edges missing");
 
   // Obtain an array of boolean flags for the edges (codim 1) of the mesh,
@@ -137,8 +138,8 @@ double solveTemperatureDistribution(
 
   // Fetch flags and values for degrees of freedom located on Dirichlet
   // edges.
-  auto ess_bdc_flags_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p,
+  auto ess_bdc_flags_values{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space,
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
         return (bd_flags(edge));
       },
@@ -172,8 +173,7 @@ double solveTemperatureDistribution(
 
   // construct a mesh function that represent |grad(x)|^2 and integrate it over
   // the mesh to get the H^1 semi-norm:
-  auto mf_norm =
-      squaredNorm(lf::uscalfe::MeshFunctionGradFE(fe_space, sol_vec));
+  auto mf_norm = squaredNorm(lf::fe::MeshFunctionGradFE(fe_space, sol_vec));
   const double norm = std::sqrt(IntegrateMeshFunction(*mesh_p, mf_norm, 2));
 
   return norm;

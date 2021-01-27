@@ -5,18 +5,16 @@
  * @date November 2020
  * @copyright Developed at SAM, ETH Zurich
  */
-#include <cmath>
-#include <memory>
+#include "../transpsemilagr.h"
 
 #include <gtest/gtest.h>
-
-#include <Eigen/Core>
-
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../transpsemilagr.h"
+#include <Eigen/Core>
+#include <cmath>
+#include <memory>
 
 namespace TranspSemiLagr::test {
 
@@ -46,7 +44,7 @@ TEST(ReactionStep, boundary_conditions) {
   auto u_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u_function));
   auto c_function = [](Eigen::VectorXd x) { return x(0) + x(1); };
 
@@ -63,7 +61,7 @@ TEST(SemiLagrStep, boundary_conditions) {
   auto u_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u_function));
 
   auto v = [](Eigen::Vector2d x) {
@@ -82,7 +80,7 @@ TEST(solverot, boundary_conditions) {
   auto u_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u_function));
 
   Eigen::VectorXd u_new = solverot(fe_space, u0_vector, 10, 1.0);
@@ -97,7 +95,7 @@ TEST(solvetrp, boundary_conditions) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
 
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u_function));
   Eigen::VectorXd u_new = solvetrp(fe_space, u0_vector, 10, 1.0);
   verify_zero_bc(fe_space, u_new);
@@ -130,9 +128,9 @@ TEST(ReactionStep, exact_solution_constant_c) {
   // c function in the ODE:
   auto c_function = [](Eigen::VectorXd /*x*/) { return 2.0; };
 
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
-  Eigen::VectorXd u1_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u1_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u1_function));
 
   // apply 100 reaction steps with time step 0.01
@@ -161,9 +159,9 @@ TEST(ReactionStep, exact_solution_linear_c) {
   // c function in the ODE:
   auto c_function = [](Eigen::VectorXd x) { return 2.0 * x(0) + x(1); };
 
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
-  Eigen::VectorXd u1_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u1_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u1_function));
 
   // apply 100 reaction steps with time step 0.01
@@ -186,7 +184,7 @@ TEST(solverot, consistency_1) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solverot(fe_space, u0_vector, 2, 1.0);
@@ -204,7 +202,7 @@ TEST(solverot, consistency_2) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solverot(fe_space, u0_vector, 10, 1.0);
@@ -222,7 +220,7 @@ TEST(solverot, consistency_3) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solverot(fe_space, u0_vector, 10, 1.0);
@@ -240,7 +238,7 @@ TEST(solvetrp, consistency_1) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solvetrp(fe_space, u0_vector, 2, 1.0);
@@ -258,7 +256,7 @@ TEST(solvetrp, consistency_2) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solvetrp(fe_space, u0_vector, 10, 1.0);
@@ -276,7 +274,7 @@ TEST(solvetrp, consistency_3) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd sol_1 = solvetrp(fe_space, u0_vector, 10, 1.0);
@@ -298,7 +296,7 @@ TEST(solverot, reference_1) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd u_ref(u0_vector.size());
@@ -317,7 +315,7 @@ TEST(solverot, reference_2) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd u_ref(u0_vector.size());
@@ -337,7 +335,7 @@ TEST(solvetrp, reference_1) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd u_ref(u0_vector.size());
@@ -356,7 +354,7 @@ TEST(solvetrp, reference_2) {
   auto u0_function = [](Eigen::VectorXd x) {
     return x(1) * x(0) * (1 - x(1)) * (1 - x(0));
   };
-  Eigen::VectorXd u0_vector = lf::uscalfe::NodalProjection(
+  Eigen::VectorXd u0_vector = lf::fe::NodalProjection(
       *fe_space, lf::mesh::utils::MeshFunctionGlobal(u0_function));
 
   Eigen::VectorXd u_ref(u0_vector.size());

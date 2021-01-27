@@ -8,6 +8,7 @@
 
 #include "stableevaluationatapoint.h"
 
+#include <fstream>
 #include <iostream>
 #include <string>
 

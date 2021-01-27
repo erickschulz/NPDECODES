@@ -15,6 +15,7 @@
 #include <Eigen/Sparse>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
@@ -126,8 +127,7 @@ Eigen::VectorXd interpolateData(
   // Generate Lehrfem++ mesh functions out of the functors
   lf::mesh::utils::MeshFunctionGlobal mf_u{u};
 
-  Eigen::VectorXd dof_vector_u =
-      lf::uscalfe::NodalProjection(*fe_space_p, mf_u);
+  Eigen::VectorXd dof_vector_u = lf::fe::NodalProjection(*fe_space_p, mf_u);
 
   return dof_vector_u;
 };

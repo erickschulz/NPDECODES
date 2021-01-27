@@ -20,7 +20,7 @@ Eigen::Vector2d globalCoordinate(int idx, const lf::mesh::Entity &cell) {
   LF_ASSERT_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
                 "Implemented for triangles only");
   // Fetch pointer to asscoiated geometry object
-  lf::geometry::Geometry *geom = cell.Geometry();
+  const lf::geometry::Geometry *geom = cell.Geometry();
   // For returning the global coordinates of the interpolation node
   Eigen::Vector2d result;
   // Reference coordinates of the vertices of the triangle

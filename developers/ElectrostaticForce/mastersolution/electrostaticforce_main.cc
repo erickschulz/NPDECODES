@@ -6,9 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "electrostaticforce.h"
+#include <lf/fe/fe.h>
 
 #include <fstream>
+
+#include "electrostaticforce.h"
 
 using namespace ElectrostaticForce;
 
@@ -72,8 +74,8 @@ int main() {
 
     /* SAM_LISTING_BEGIN_1 */
     // COMPUTE L2 ERROR FOR THE POISSON DIRICHLET PROBLEM
-    auto mf_approx_sol = lf::uscalfe::MeshFunctionFE(fe_space_p, approx_sol);
-    errorsL2PoissonBVP[i] = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+    auto mf_approx_sol = lf::fe::MeshFunctionFE(fe_space_p, approx_sol);
+    errorsL2PoissonBVP[i] = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
     /* SAM_LISTING_END_1 */
 

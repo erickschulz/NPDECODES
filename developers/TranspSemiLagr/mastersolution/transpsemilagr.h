@@ -5,16 +5,16 @@
  * @date November 2020
  * @copyright Developed at SAM, ETH Zurich
  */
-#include <memory>
+#include <lf/assemble/assemble.h>
+#include <lf/base/base.h>
+#include <lf/fe/fe.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-
-#include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/uscalfe/uscalfe.h>
+#include <memory>
 
 #include "local_assembly.h"
 
@@ -31,12 +31,12 @@ void enforce_zero_boundary_conditions(
     lf::assemble::COOMatrix<double>& A, Eigen::VectorXd& b) {
   lf::mesh::utils::MeshFunctionGlobal mf_zero{
       [](const Eigen::Vector2d& /*x*/) { return 0.0; }};
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double>* rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
-  auto flag_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      fe_space->LocGlobMap(), *rsf_edge_p, bd_flags, mf_zero)};
+  auto flag_values{
+      lf::fe::InitEssentialConditionFromFunction(*fe_space, bd_flags, mf_zero)};
 
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&flag_values](lf::assemble::glb_idx_t dof_idx) {
@@ -80,7 +80,7 @@ Eigen::VectorXd semiLagr_step(
 
   // warp u0 into a mesh function (required by the Vector provider) & assemble
   // rhs.
-  auto u0_mf = lf::uscalfe::MeshFunctionFE(fe_space, u0_vector);
+  auto u0_mf = lf::fe::MeshFunctionFE(fe_space, u0_vector);
   UpwindLagrangianElementVectorProvider vector_provider(
       v, tau, fe_space->Mesh(), u0_mf);
   Eigen::VectorXd b(fe_space->LocGlobMap().NumDofs());

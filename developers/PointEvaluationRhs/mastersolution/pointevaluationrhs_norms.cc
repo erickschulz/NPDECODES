@@ -8,17 +8,16 @@
 
 #include "pointevaluationrhs_norms.h"
 
-#include <cmath>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <cmath>
 
 namespace PointEvaluationRhs {
 
@@ -70,7 +69,7 @@ double computeH1seminormLinearFE(const lf::assemble::DofHandler &dofh,
 Eigen::MatrixXd MassLocalMatrixAssembler::Eval(const lf::mesh::Entity &entity) {
   Eigen::MatrixXd result;
 #if SOLUTION
-  lf::geometry::Geometry *geo_ptr = entity.Geometry();
+  const lf::geometry::Geometry *geo_ptr = entity.Geometry();
   double volume = lf::geometry::Volume(*geo_ptr);
 
   if (lf::base::RefEl::kTria() == entity.RefEl()) {

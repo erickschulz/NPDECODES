@@ -19,6 +19,7 @@
 #include <Eigen/SparseLU>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
@@ -170,10 +171,8 @@ Eigen::VectorXd WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0,
   // Initial conditions
   auto mf_mu0 = lf::mesh::utils::MeshFunctionGlobal(mu0);
   auto mf_nu0 = lf::mesh::utils::MeshFunctionGlobal(nu0);
-  Eigen::VectorXd nu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_nu0);
-  Eigen::VectorXd mu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_mu0);
+  Eigen::VectorXd nu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_nu0);
+  Eigen::VectorXd mu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_mu0);
 
 //====================
 // Your code goes here
