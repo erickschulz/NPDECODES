@@ -1,4 +1,6 @@
 #! /bin/bash
+# Creates mastersolution and templates from all-in-one C++ code
+# Usage: make_templates <ProblemName>
 
 script_dir=$(dirname $0)
 root=$script_dir/..
@@ -15,7 +17,9 @@ for dir in $@; do
 
   # problems
   cp -r $output_dir/mastersolution/. $output_dir/mysolution
+  # Strip template parts 
   unifdef -DSOLUTION=1 -x 2 -m $output_dir/mastersolution/*.*
+  # Strip solution 
   unifdef -DSOLUTION=0 -x 2 -m $output_dir/mysolution/*.*
 
   # tests
