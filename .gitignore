@@ -60,3 +60,5 @@ cmake-build-release
 #OSX
 .DS_Store
 
+#Emacs backup files
+*~

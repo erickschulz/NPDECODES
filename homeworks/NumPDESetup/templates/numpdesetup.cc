@@ -9,6 +9,7 @@
 #include "numpdesetup.h"
 
 #include <Eigen/Core>
+#include <iostream>
 
 namespace NumPDESetup {
 

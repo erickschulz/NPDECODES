@@ -9,6 +9,7 @@
 #include "numpdesetup.h"
 
 #include <Eigen/Core>
+#include <iostream>
 
 namespace NumPDESetup {
 
@@ -16,7 +17,7 @@ namespace NumPDESetup {
 Eigen::VectorXd dummyFunction(double x, int n) {
   // Appears only in mastersolution
   std::cout << "NumPDESetup: master solution code" << std::endl;
-  return Eigen::VectorXd::Constant(n,x);
+  return Eigen::VectorXd::Constant(n, x);
 }
 /* SAM_LISTING_END_1 */
 
