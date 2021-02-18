@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-
+# With thre exception of the next statement this file could be a copy of
+# developers/CMakeLists.txt
 project(homeworks)
 
 # Add custom targets
@@ -51,3 +52,5 @@ add_subdirectory(UpwindQuadrature)
 add_subdirectory(WaveABC2D)
 add_subdirectory(ZienkiewiczZhuEstimator)
 add_subdirectory(NumPDESetup)
+
+#end of CMakeLists.txt in folder 'homeworks'
