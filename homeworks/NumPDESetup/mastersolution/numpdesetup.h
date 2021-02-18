@@ -7,6 +7,7 @@
  */
 
 #include <Eigen/Core>
+#include <iostream>
 
 namespace NumPDESetup {
 
