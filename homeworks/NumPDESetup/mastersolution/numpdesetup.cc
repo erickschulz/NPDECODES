@@ -14,15 +14,9 @@ namespace NumPDESetup {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::VectorXd dummyFunction(double x, int n) {
-#if SOLUTION
   // Appears only in mastersolution
   std::cout << "NumPDESetup: master solution code" << std::endl;
   return Eigen::VectorXd::Constant(n,x);
-#else
-  // Appears only in mysolution and templates
-  std::cout << "NumPDESetup: student solution code" << std::endl;
-  return Eigen::Vector2d::Zero();
-#endif
 }
 /* SAM_LISTING_END_1 */
 
