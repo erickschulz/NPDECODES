@@ -15,14 +15,11 @@ do
   if [[ $d =~ /CMakeFiles/ ]]; then
     continue
   fi
-  if ! [[ $d =~ /TranspSemiLagr/ ]]; then
-    continue
-  fi
   echo "-----------------------------------------------------------------------";
   echo "Compiling & Running tests in $d";
   echo "-----------------------------------------------------------------------";
   cd "$d";
-  make -j20;
+  make -j2;
   # Run unit tests if exists:
   if [[ -f "$cmd_test" ]]; then
     echo "Executing $cmd_test";
