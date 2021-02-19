@@ -74,3 +74,4 @@ jobs:
         run: |
           cd Build
          ../scripts/ci/compile_test.sh
+         
