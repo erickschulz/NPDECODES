@@ -152,8 +152,8 @@ Eigen::Matrix<double, 2, 3> BElemMatProvider::Eval(
   X.block<3, 2>(0, 1) = vertices.transpose();  // area of triangular cell
   const double area = 0.5 * std::abs(X.determinant());
   // This matrix contains the barycentric coordinate functions in its columns
-  const Eigen::Matrix<double, 2, 3> grad_bary_coords{
-      X.inverse().block<2, 3>(1, 0)};
+  auto inv = X.inverse().eval();
+  const Eigen::Matrix<double, 2, 3> grad_bary_coords{inv.block<2, 3>(1, 0)};
   // Since the local shape function for the finite element space $Q_h$ are
   // Cartesian coordinate vectors, we just need to scale the components of the
   // gradients of the barycentric coordinate functions with the area of the

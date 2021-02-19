@@ -11,6 +11,7 @@
 #include <lf/mesh/utils/utils.h>
 
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <memory>
 #include <vector>
 

@@ -9,10 +9,7 @@
 #include <math.h>
 
 #include <iostream>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/fe/fe.h>
@@ -21,6 +18,11 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
 
 namespace ElectrostaticForce {
 

@@ -10,6 +10,7 @@
 #define QUASIINTERPOLATION_H_
 
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/refinement/refinement.h>
@@ -152,16 +153,15 @@ void interpolationError(
 
     Eigen::VectorXd coefficients = quasiInterpolate(*fe_space, u_mf);
 
-    lf::uscalfe::MeshFunctionL2NormDifference loc_comp_l2(fe_space, u_mf, 4);
-    l2_error(k) =
-        lf::uscalfe::NormOfDifference(fe_space->LocGlobMap(), loc_comp_l2,
-                                      coefficients, lf::base::PredicateTrue());
+    lf::fe::MeshFunctionFE u_mf_interpolated(fe_space, coefficients);
+    lf::fe::MeshFunctionGradFE grad_u_mf_interpolated(fe_space, coefficients);
 
-    lf::uscalfe::MeshFunctionL2GradientDifference loc_comp_h1(fe_space,
-                                                              grad_u_mf, 4);
-    double h1semi_error =
-        lf::uscalfe::NormOfDifference(fe_space->LocGlobMap(), loc_comp_h1,
-                                      coefficients, lf::base::PredicateTrue());
+    l2_error(k) = std::sqrt(lf::fe::IntegrateMeshFunction(
+        *mesh_p, squaredNorm(u_mf_interpolated - u_mf), 4));
+
+    double h1semi_error = std::sqrt(lf::fe::IntegrateMeshFunction(
+        *mesh_p, squaredNorm(grad_u_mf - grad_u_mf_interpolated), 4));
+
     auto square = [](double x) { return x * x; };
     h1_error(k) = std::sqrt(square(h1semi_error) + square(l2_error(k)));
   }

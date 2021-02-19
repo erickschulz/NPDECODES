@@ -53,7 +53,7 @@ TEST(QuasiInterpolation, quasiInterpolate) {
 
   Eigen::VectorXd coefficients =
       QuasiInterpolation::quasiInterpolate(fe_space, mf);
-  Eigen::VectorXd coefficients_ref = lf::uscalfe::NodalProjection(fe_space, mf);
+  Eigen::VectorXd coefficients_ref = lf::fe::NodalProjection(fe_space, mf);
 
   double tol = 1.0e-12;
   double error = (coefficients - coefficients_ref).lpNorm<Eigen::Infinity>();

@@ -13,6 +13,7 @@
 #include <lf/mesh/utils/utils.h>
 
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <algorithm>
 #include <array>
 #include <memory>

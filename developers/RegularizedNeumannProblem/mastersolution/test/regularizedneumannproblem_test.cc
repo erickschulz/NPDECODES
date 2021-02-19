@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-#include <utility>
-// Eigen includes
 #include <gtest/gtest.h>
 
-#include <Eigen/Core>
+#include <memory>
+#include <utility>
+
 // Lehrfem++ includes
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>

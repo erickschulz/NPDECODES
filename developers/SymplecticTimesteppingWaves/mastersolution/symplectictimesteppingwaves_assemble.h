@@ -16,11 +16,6 @@
 #include <string>
 #include <thread>
 
-// Eigen includes
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-#include <unsupported/Eigen/KroneckerProduct>
-
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>

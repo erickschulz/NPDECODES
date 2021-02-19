@@ -45,7 +45,7 @@ readMeshWithTags(std::string filename) {
   std::shared_ptr<const lf::mesh::Mesh> mesh_p{reader.mesh()};
   const lf::mesh::Mesh &mesh{*mesh_p};
   // Output information on the mesh
-  std::cout << mesh << std::endl;
+  lf::mesh::utils::PrintInfo(std::cout, mesh);
   // A set of integers associated with edges of the mesh (codim = 1 entities)
   lf::mesh::utils::CodimMeshDataSet<int> edgeids{mesh_p, 1, -1};
   // Counter for nodes on a particular part of the boundary
@@ -129,7 +129,7 @@ static auto psi = [](Eigen::Vector2d x) -> double {
     return 1.0;
   else if (x[0] < 2)
     return 0.0;
-  const double p = std::cos((3.0 - x[0]) * M_PI / 2);
+  const double p = std::cos((3.0 - x[0]) * lf::base::kPi / 2);
   return (p * p);
 };
 
@@ -137,8 +137,8 @@ static auto psi = [](Eigen::Vector2d x) -> double {
 static auto psi_grad = [](Eigen::Vector2d x) -> Eigen::Vector2d {
   double gx = 0.0;
   if ((x[0] > 2.0) && (x[0] < 3.0)) {
-    const double a = (3.0 - x[0]) * M_PI / 2;
-    gx = M_PI * std::cos(a) * std::sin(a);
+    const double a = (3.0 - x[0]) * lf::base::kPi / 2;
+    gx = lf::base::kPi * std::cos(a) * std::sin(a);
   }
   return Eigen::Vector2d(gx, 0.0);
 };

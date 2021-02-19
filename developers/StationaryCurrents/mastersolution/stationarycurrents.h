@@ -10,6 +10,7 @@
 #define DMXBC_H_
 
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
@@ -160,7 +161,7 @@ double contactFluxMF(
       exteriorEdgeWeightedNormals(fe_space->Mesh())};
   // Build a MeshFunction representing the gradient of the finite element
   // solution
-  const lf::uscalfe::MeshFunctionGradFE mf_grad(fe_space, sol_vec);
+  const lf::fe::MeshFunctionGradFE mf_grad(fe_space, sol_vec);
   // Reference coordinates of edge midpoints of a triangle
   const Eigen::MatrixXd mp_refc{
       (Eigen::Matrix<double, 2, 3>() << 0.5, 0.5, 0.0, 0.0, 0.5, 0.5)
