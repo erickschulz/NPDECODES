@@ -10,6 +10,10 @@ for d in ./developers/*/ ;
 do
   [[ $d =~ ./developers/(.*)/ ]]
   cmd="./${BASH_REMATCH[1]}_test_mastersolution";
+  
+  if [[ $d =~ /CMakeFiles/ ]]; then
+    continue
+  fi
   echo "-----------------------------------------------------------------------";
   echo "Compiling & Running tests in $d";
   echo "-----------------------------------------------------------------------";
