@@ -16,6 +16,7 @@
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
+#include <lf/fe/fe.h>
 #include <lf/uscalfe/uscalfe.h>
 #include <map>
 #include <vector>
