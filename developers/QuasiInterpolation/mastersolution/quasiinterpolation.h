@@ -138,33 +138,38 @@ Eigen::VectorXd quasiInterpolate(
  * MESHFUNCTION of value type R=\texttt{Eigen::Vector2d}
  */
 template <typename MESHFUNCTION_U, typename MESHFUNCTION_GRAD_U>
-void interpolationError(
-    Eigen::VectorXd &l2_error, Eigen::VectorXd &h1_error,
+std::pair<Eigen::VectorXd, Eigen::VectorXd> interpolationError(
     std::shared_ptr<lf::refinement::MeshHierarchy> mesh_hierarchy_p,
-    MESHFUNCTION_U &&u_mf, MESHFUNCTION_GRAD_U &&grad_u_mf) {
+    MESHFUNCTION_U &&mf_u, MESHFUNCTION_GRAD_U &&mf_grad_u) {
+  // Make sure that the coefficient types are compatible
+  // static_assert(lf::mesh::utils::isMeshFunction<MESHFUNCTION_U>);
+  // static_assert(lf::mesh::utils::isMeshFunction<MESHFUNCTION_GRAD_U>);
+  // Allocate sequences for storing error norms
   int L = mesh_hierarchy_p->NumLevels();
-  l2_error = Eigen::VectorXd(L);
-  h1_error = Eigen::VectorXd(L);
-
+  Eigen::VectorXd l2_error(L);
+  Eigen::VectorXd h1_error(L);
+  // Main loop over all levels
   for (int k = 0; k < L; ++k) {
     std::shared_ptr<const lf::mesh::Mesh> mesh_p = mesh_hierarchy_p->getMesh(k);
     auto fe_space =
         std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
-
-    Eigen::VectorXd coefficients = quasiInterpolate(*fe_space, u_mf);
-
-    lf::fe::MeshFunctionFE u_mf_interpolated(fe_space, coefficients);
-    lf::fe::MeshFunctionGradFE grad_u_mf_interpolated(fe_space, coefficients);
-
-    l2_error(k) = std::sqrt(lf::fe::IntegrateMeshFunction(
-        *mesh_p, squaredNorm(u_mf_interpolated - u_mf), 4));
-
-    double h1semi_error = std::sqrt(lf::fe::IntegrateMeshFunction(
-        *mesh_p, squaredNorm(grad_u_mf - grad_u_mf_interpolated), 4));
+    // Compute basis expansion coefficient vector of
+    Eigen::VectorXd coefficients = quasiInterpolate(*fe_space, mf_u);
+    // Compute error norms as in ellbvp_linfe_demo.cc
+    // Mesh function representing the solution
+    const lf::fe::MeshFunctionFE mf_intp(fe_space, coefficients);
+    // Mesh function encoding the gradient of the finite element function
+    const lf::fe::MeshFunctionGradFE mf_grad_intp(fe_space, coefficients);
+    // Compute the L2 norm of the interpolation error
+    l2_error(k) = std::sqrt(lf::fe::IntegrateMeshFunction(  // NOLINT
+        *mesh_p, lf::mesh::utils::squaredNorm(mf_intp - mf_u), 4));
+    double h1semi_error = std::sqrt(lf::fe::IntegrateMeshFunction(  // NOLINT
+        *mesh_p, lf::mesh::utils::squaredNorm(mf_grad_intp - mf_grad_u), 4));
 
     auto square = [](double x) { return x * x; };
     h1_error(k) = std::sqrt(square(h1semi_error) + square(l2_error(k)));
   }
+  return {l2_error, h1_error};
 }
 
 }  // namespace QuasiInterpolation

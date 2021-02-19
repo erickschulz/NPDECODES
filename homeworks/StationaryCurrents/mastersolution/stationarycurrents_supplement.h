@@ -15,6 +15,7 @@
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
+#include <lf/fe/fe.h>
 #include <lf/uscalfe/uscalfe.h>
 #include <map>
 #include <vector>
@@ -230,11 +231,11 @@ double stabFluxMF(
   const lf::mesh::utils::MeshFunctionGlobal mf_gradpsi(gradpsi);
   // Build a MeshFunction representing the gradient of the finite element
   // solution
-  const lf::uscalfe::MeshFunctionGradFE mf_grad(fe_space, sol_vec);
+  const lf::fe::MeshFunctionGradFE mf_grad(fe_space, sol_vec);
   // Mesh function representing the integrand
   const auto mf_itg{lf::mesh::utils::transpose(mf_sigma * mf_grad) *
                     mf_gradpsi};
-  const double s = lf::uscalfe::IntegrateMeshFunction(
+  const double s = lf::fe::IntegrateMeshFunction(
       *mesh_p, mf_itg, [](const lf::mesh::Entity &e) {
         return lf::quad::make_QuadRule(e.RefEl(), 2);
       })(0, 0);
@@ -305,7 +306,7 @@ double stabFluxTRF(
   const Eigen::MatrixXd zeta_ref{
       (Eigen::Matrix<double, 2, 1>() << 1.0 / 3.0, 1.0 / 3.0).finished()};
   // Obtain gradients of reference shape functions at center of gravity
-  const lf::uscalfe::ScalarReferenceFiniteElement<double> &ref_lsf{
+  const lf::fe::ScalarReferenceFiniteElement<double> &ref_lsf{
       *fe_space->ShapeFunctionLayout(lf::base::RefEl::kTria())};
   LF_ASSERT_MSG(
       ref_lsf.NumRefShapeFunctions() == 3,
