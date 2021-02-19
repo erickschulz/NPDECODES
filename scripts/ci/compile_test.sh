@@ -34,8 +34,8 @@ do
   if [[ -f "$cmd_mastersolution" ]]; then
     echo "Executing $cmd_mastersolution";
     if ! output=$(eval $cmd_mastersolution 2>&1) ; then
+      echo "ERROR: ";
       printf "$output";
-      echo "";
       exit 1;
     else
       echo "--> Success";
