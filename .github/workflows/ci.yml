@@ -40,7 +40,7 @@ jobs:
     env:
       COMPILER: ${{ matrix.compiler }}
       BUILD_TYPE: ${{ matrix.build_type }}
-    
+      CXXFLAGS: "-Werror=#warnings"
     steps:
       - name: make space
         if: runner.os == 'Linux'
