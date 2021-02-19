@@ -73,4 +73,8 @@ jobs:
       - name: compile and test
         run: |
           cd Build
-          ../scripts/ci/compile_test.sh
+          cd developers
+          cd TranspSemiLagr
+          make -j2
+          ./TranspSemiLagr_mastersolution
+#         ../scripts/ci/compile_test.sh
