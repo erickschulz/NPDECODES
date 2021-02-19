@@ -9,12 +9,11 @@
 #ifndef GAUSSLOBATTOPARABOLIC_S_H_
 #define GAUSSLOBATTOPARABOLIC_S_H_
 
-#include <functional>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <functional>
 
 namespace GaussLobattoParabolic {
 #if SOLUTION
@@ -25,7 +24,6 @@ Eigen::VectorXd evolveIBVPGaussLobatto_u0(
     double T, unsigned int M, std::function<double(double)> g,
     std::function<double(Eigen::Vector2d)> u0,
     RECORDER &&rec = [](double, const Eigen::VectorXd &) {}) {
-
   lf::mesh::utils::MeshFunctionGlobal u0_mf{u0};
   Eigen::VectorXd mu = lf::uscalfe::NodalProjection(*fe_space, u0_mf);
 
@@ -84,4 +82,4 @@ Eigen::VectorXd evolveIBVPGaussLobatto_u0(
 }
 #endif
 
-} // namespace GaussLobattoParabolic
+}  // namespace GaussLobattoParabolic

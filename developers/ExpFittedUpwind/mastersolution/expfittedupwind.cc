@@ -6,17 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <memory>
-#include <vector>
-
-#include <Eigen/Core>
+#include "expfittedupwind.h"
 
 #include <lf/base/base.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 
-#include "expfittedupwind.h"
+#include <Eigen/Core>
+#include <cmath>
+#include <memory>
+#include <vector>
 
 namespace ExpFittedUpwind {
 

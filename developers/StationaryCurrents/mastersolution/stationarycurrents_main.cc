@@ -21,18 +21,20 @@ int main(int argc, char** argv) {
         fluxes.push_back(dmxbc::computePotential(basename));
       }
       double ref_flux = 0.1859836202175363;  // "Reference value"
-      const int fieldwidth = 10; 
+      const int fieldwidth = 10;
       std::cout << std::fixed << std::setprecision(6) << std::setfill(' ');
-      std::cout << std::setw(fieldwidth) << "h" << std::setw(fieldwidth) << "bd_flux"
-                << std::setw(fieldwidth) << "err(bd)" << std::setw(fieldwidth) << "vol_flux"
-                << std::setw(fieldwidth) << "err(vol)" << std::endl;
+      std::cout << std::setw(fieldwidth) << "h" << std::setw(fieldwidth)
+                << "bd_flux" << std::setw(fieldwidth) << "err(bd)"
+                << std::setw(fieldwidth) << "vol_flux" << std::setw(fieldwidth)
+                << "err(vol)" << std::endl;
       for (unsigned int l = 0; l <= 6; ++l) {
         const double h = std::get<0>(fluxes[l]);
         const double bd_flux = std::get<1>(fluxes[l]);
         const double vol_flux = std::get<2>(fluxes[l]);
-        std::cout << std::setw(fieldwidth) << h << std::setw(fieldwidth) << bd_flux
-                  << std::setw(fieldwidth) << std::abs(bd_flux - ref_flux)
-                  << std::setw(fieldwidth) << vol_flux << std::setw(fieldwidth)
+        std::cout << std::setw(fieldwidth) << h << std::setw(fieldwidth)
+                  << bd_flux << std::setw(fieldwidth)
+                  << std::abs(bd_flux - ref_flux) << std::setw(fieldwidth)
+                  << vol_flux << std::setw(fieldwidth)
                   << std::abs(vol_flux - ref_flux) << std::endl;
       }
       break;

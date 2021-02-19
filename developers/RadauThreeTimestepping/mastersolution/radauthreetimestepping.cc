@@ -8,18 +8,16 @@
 
 #include "radauthreetimestepping.h"
 
-#include <cmath>
-#include <iostream>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <iostream>
 #include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {

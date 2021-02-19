@@ -1,12 +1,12 @@
-#include <cmath>
-#include <tuple>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
+#include "../simplelinearfiniteelements.h"
 
 #include <gtest/gtest.h>
 
-#include "../simplelinearfiniteelements.h"
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <tuple>
+
 #include "../tria_mesh_2D.h"
 
 namespace SimpleLinearFiniteElements::test {

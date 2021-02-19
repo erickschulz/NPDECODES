@@ -12,7 +12,7 @@
 #include "numpdesetup.h"
 
 /* SAM_LISTING_BEGIN_2 */
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int /*argc*/, char** /*argv*/) {
   std::cout << "Dummy \"homework problem\" for NumPDE course" << std::endl;
   Eigen::VectorXd v = NumPDESetup::dummyFunction(42.0, 10);
 

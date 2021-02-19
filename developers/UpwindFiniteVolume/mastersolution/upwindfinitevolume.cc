@@ -10,7 +10,6 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-
 #include <cmath>
 #include <stdexcept>
 

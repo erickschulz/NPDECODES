@@ -1,3 +1,5 @@
+#include "../lfppdofhandling.h"
+
 #include <gtest/gtest.h>
 
 #include <array>
@@ -10,8 +12,6 @@
 #include "lf/mesh/hybrid2d/hybrid2d.h"
 #include "lf/mesh/mesh.h"
 #include "lf/mesh/test_utils/test_meshes.h"
-
-#include "../lfppdofhandling.h"
 
 namespace LFPPDofHandling::test {
 

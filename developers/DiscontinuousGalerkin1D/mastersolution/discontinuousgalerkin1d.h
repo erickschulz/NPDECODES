@@ -6,13 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-
-#include <cmath>
-#include <utility>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
+#include <cmath>
+#include <iostream>
+#include <utility>
 
 namespace DiscontinuousGalerkin1D {
 

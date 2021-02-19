@@ -8,12 +8,11 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include <utility>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
+#include <utility>
 
 namespace PointEvaluationRhs {
 

@@ -8,12 +8,11 @@
 
 #include "propagator.h"
 
-#include <cmath>
-#include <complex>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#include <cmath>
+#include <complex>
 
 namespace NonLinSchroedingerEquation {
 

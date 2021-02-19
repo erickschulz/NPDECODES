@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
+
+#include <iostream>
 
 #include "testquadraturerules.h"
 

@@ -6,13 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <gtest/gtest.h>
+
 #include <cmath>
 #include <memory>
 
-// Eigen includes
-#include <gtest/gtest.h>
-
-#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>

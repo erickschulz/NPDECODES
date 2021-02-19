@@ -7,6 +7,7 @@
  */
 
 #include "../stationarycurrents.h"
+
 #include <gtest/gtest.h>
 
 namespace dmxbc {
@@ -72,4 +73,4 @@ TEST(StationaryCurrents, stabFlux) {
       << "Total current = " << stab_flux << ", should be 0.190757" << std::endl;
 }
 
-} // namespace dmxbc
+}  // namespace dmxbc
