@@ -73,5 +73,5 @@ jobs:
       - name: compile and test
         run: |
           cd Build
-         ../scripts/ci/compile_test.sh
+          ../scripts/ci/compile_test.sh
          
