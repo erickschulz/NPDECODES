@@ -45,7 +45,7 @@ readMeshWithTags(std::string filename) {
   std::shared_ptr<const lf::mesh::Mesh> mesh_p{reader.mesh()};
   const lf::mesh::Mesh &mesh{*mesh_p};
   // Output information on the mesh
-  std::cout << mesh << std::endl;
+  lf::mesh::utils::PrintInfo(std::cout, mesh);
   // A set of integers associated with edges of the mesh (codim = 1 entities)
   lf::mesh::utils::CodimMeshDataSet<int> edgeids{mesh_p, 1, -1};
   // Counter for nodes on a particular part of the boundary
@@ -67,12 +67,12 @@ readMeshWithTags(std::string filename) {
     std::cout << edcnt[j] << " edges in group " << contactnames[j] << std::endl;
   }
   return {mesh_p, edgeids};
-} // function readMeshWithTags()
+}  // function readMeshWithTags()
 
 // Spreading tags to nodes
-lf::mesh::utils::CodimMeshDataSet<int>
-tagNodes(std::shared_ptr<const lf::mesh::Mesh> mesh_p,
-         lf::mesh::utils::CodimMeshDataSet<int> edgeids) {
+lf::mesh::utils::CodimMeshDataSet<int> tagNodes(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p,
+    lf::mesh::utils::CodimMeshDataSet<int> edgeids) {
   // Current mesh object
   const lf::mesh::Mesh &mesh{*mesh_p};
   // A set of integer ids associated with nodes of the mesh (codim = 2 entities)
@@ -97,11 +97,10 @@ tagNodes(std::shared_ptr<const lf::mesh::Mesh> mesh_p,
     }
   }
   return nodeids;
-} // end tagNodes
+}  // end tagNodes
 
-
-Eigen::Matrix<double, 2, 3>
-GradsBaryCoords(Eigen::Matrix<double, 2, 3> vertices) {
+Eigen::Matrix<double, 2, 3> GradsBaryCoords(
+    Eigen::Matrix<double, 2, 3> vertices) {
   // Compute gradients of barycentric coordinate functions for a flat triangle,
   // whose vertex coordinates are passed in the columns of the argument matrix
   // The algorithm is explained in Remark 2.4.5.9 in the lecture document
@@ -115,7 +114,6 @@ GradsBaryCoords(Eigen::Matrix<double, 2, 3> vertices) {
   // as columns of a 2x3 matrix containing the \beta-coefficients in (2.4.5.10).
   return X.inverse().block<2, 3>(1, 0);
 }
-
 
 double computeMeshwidth(const lf::mesh::Mesh &mesh) {
   double h = 0.0;
@@ -206,9 +204,10 @@ std::tuple<double, double, double> computePotential(std::string basename) {
   const double stab_flux_trf = stabFluxTRF(fe_space, sol_vec, sigma, psi_grad);
   std::cout << "Stabilized flux = " << std::setprecision(16) << stab_flux
             << ": by MF =  " << stab_flux_mf << ", by MPR = " << stab_flux_mpr
-            << ", by GBC = " << stab_flux_gbc << ", by TRF = " << stab_flux_trf << std::endl;
+            << ", by GBC = " << stab_flux_gbc << ", by TRF = " << stab_flux_trf
+            << std::endl;
 #endif
   return {computeMeshwidth(mesh), contact_flux, stab_flux_gbc};
-} // end computePotential
+}  // end computePotential
 
-} // namespace dmxbc
+}  // namespace dmxbc
