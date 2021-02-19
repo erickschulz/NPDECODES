@@ -29,18 +29,21 @@ jobs:
             compiler: "g++-8"
             packages: "g++-8"
             build_type: "Debug"
+            cxxflags: "-Werror=cpp"
           - os: ubuntu-20.04
             compiler: "g++-8"
             packages: "g++-8"
             build_type: "Release"
+            cxxflags: "-Werror=cpp"
           - os: macos-10.15
             compiler: "clang++"
             build_type: "Debug"
+            cxxflags: "-Werror=#warnings"
     runs-on: ${{ matrix.os }}
     env:
       COMPILER: ${{ matrix.compiler }}
       BUILD_TYPE: ${{ matrix.build_type }}
-      CXXFLAGS: "-Werror=#warnings"
+      CXXFLAGS: ${{ matrix.cxxflags }}
     steps:
       - name: make space
         if: runner.os == 'Linux'
