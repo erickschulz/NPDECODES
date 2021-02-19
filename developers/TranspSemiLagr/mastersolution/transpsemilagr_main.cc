@@ -12,6 +12,7 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
+#include <filesystem>
 #include <memory>
 
 #include "transpsemilagr.h"
@@ -58,6 +59,11 @@ int main() {
   lf::fe::MeshFunctionFE mf_sol_trp_10(fe_space, sol_trp_10);
 
   // OUTPUT RESULTS
+  // create directory `transp_semi_lagr_solution` if it doesn't exist yet:
+  if (!std::filesystem::is_directory("transp_semi_lagr_solution") ||
+      !std::filesystem::exists("transp_semi_lagr_solution")) {
+    std::filesystem::create_directory("transp_semi_lagr_solution");
+  }
   // construct writers
   lf::io::VtkWriter vtk_writer_rot_1(
       mesh_p, CURRENT_BINARY_DIR "/transp_semi_lagr_solution/rot_1.vtk");
