@@ -9,15 +9,15 @@ env:
   
 jobs:
   clang-format:
-    name: clang-format-8
+    name: clang-format-10
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install clang-format
-        run: sudo apt-get install clang-format-8
+        run: sudo apt-get install clang-format-10
       - name: clang-format
-        run: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-8 --color always ./developers/"
+        run: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-10 --color always ./developers/"
   # compilation on linux/osx:
   compile_test:
     name: ${{ matrix.os }} - ${{ matrix.compiler }} - ${{ matrix.build_type }}

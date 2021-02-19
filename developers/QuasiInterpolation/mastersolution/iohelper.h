@@ -9,17 +9,18 @@
 #ifndef IOHELPER_H_
 #define IOHELPER_H_
 
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
 #include <string>
 
-#include <Eigen/Core>
-
 namespace QuasiInterpolation {
 
-const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
+const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
+                                       Eigen::DontAlignCols, ", ", "\n");
 
-void writeCSV(const Eigen::VectorXd &meshwidth, const Eigen::VectorXd &l2_error, const Eigen::VectorXd &h1_error, const std::string &filename) {
+void writeCSV(const Eigen::VectorXd &meshwidth, const Eigen::VectorXd &l2_error,
+              const Eigen::VectorXd &h1_error, const std::string &filename) {
   std::ofstream file;
   file.open(filename);
   file << meshwidth.transpose().format(CSVFormat) << std::endl;
@@ -29,11 +30,16 @@ void writeCSV(const Eigen::VectorXd &meshwidth, const Eigen::VectorXd &l2_error,
   std::cout << "Generated " CURRENT_BINARY_DIR "/" + filename << std::endl;
 }
 
-void printError(const Eigen::VectorXd &meshwidth, const Eigen::VectorXd &l2_error, const Eigen::VectorXd &h1_error, const std::string &title) {
+void printError(const Eigen::VectorXd &meshwidth,
+                const Eigen::VectorXd &l2_error,
+                const Eigen::VectorXd &h1_error, const std::string &title) {
   std::cout << title << std::endl;
-  std::cout << "meshwidth: " << meshwidth.transpose().format(CSVFormat) << std::endl;
-  std::cout << "L2-error:  " << l2_error.transpose().format(CSVFormat) << std::endl;
-  std::cout << "H1-error:  " << h1_error.transpose().format(CSVFormat) << std::endl;
+  std::cout << "meshwidth: " << meshwidth.transpose().format(CSVFormat)
+            << std::endl;
+  std::cout << "L2-error:  " << l2_error.transpose().format(CSVFormat)
+            << std::endl;
+  std::cout << "H1-error:  " << h1_error.transpose().format(CSVFormat)
+            << std::endl;
 }
 
 }  // namespace QuasiInterpolation

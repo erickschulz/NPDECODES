@@ -6,18 +6,16 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include "../avgvalboundary.h"
+
 #include <gtest/gtest.h>
-
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../avgvalboundary.h"
+#include <Eigen/Core>
+#include <memory>
 
 namespace AvgValBoundary::test {
 

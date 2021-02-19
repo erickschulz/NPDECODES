@@ -1,8 +1,8 @@
+#include "tria_mesh_2D.h"
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
-
-#include "tria_mesh_2D.h"
 
 namespace SimpleLinearFiniteElements {
 

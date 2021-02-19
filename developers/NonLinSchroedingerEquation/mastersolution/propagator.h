@@ -9,11 +9,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <complex>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#include <complex>
 
 namespace NonLinSchroedingerEquation {
 

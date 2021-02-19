@@ -5,7 +5,7 @@
  *  @copyright Developed at SAM, ETH Zurich
  */
 
-#include "fisherkpp.cc"
+#include <lf/io/io.h>
 
 #include <cstdlib>
 #include <iostream>
@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-#include <lf/io/io.h>
+#include "fisherkpp.cc"
 
 using namespace FisherKPP;
 

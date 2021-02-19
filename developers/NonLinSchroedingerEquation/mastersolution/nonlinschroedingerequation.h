@@ -9,10 +9,10 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <lf/mesh/mesh.h>
+
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
-
-#include <lf/mesh/mesh.h>
 
 namespace NonLinSchroedingerEquation {
 

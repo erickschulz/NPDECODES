@@ -13,7 +13,6 @@
 #include <lf/mesh/mesh.h>
 
 #include <Eigen/Core>
-
 #include <cmath>
 
 namespace UpwindFiniteVolume {

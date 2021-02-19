@@ -9,13 +9,12 @@
 #ifndef SIMPLELINEARFINITEELEMENTS_H_
 #define SIMPLELINEARFINITEELEMENTS_H_
 
+#include <Eigen/Dense>
+#include <Eigen/SparseLU>
 #include <cmath>
 #include <functional>
 #include <string>
 #include <tuple>
-
-#include <Eigen/Dense>
-#include <Eigen/SparseLU>
 
 #include "tria_mesh_2D.h"
 

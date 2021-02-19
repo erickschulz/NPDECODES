@@ -1,8 +1,7 @@
-#include <memory>
+#include <lf/mesh/mesh.h>
 
 #include <Eigen/SparseCore>
-
-#include <lf/mesh/mesh.h>
+#include <memory>
 
 namespace IncidenceMatrices {
 

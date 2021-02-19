@@ -16,7 +16,6 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-
 #include <cmath>
 #include <iostream>
 #include <memory>

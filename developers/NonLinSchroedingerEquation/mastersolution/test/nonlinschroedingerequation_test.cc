@@ -6,18 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <complex>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include "../nonlinschroedingerequation.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../nonlinschroedingerequation.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <complex>
+
 #include "../propagator.h"
 
 namespace NonLinSchroedingerEquation::test {

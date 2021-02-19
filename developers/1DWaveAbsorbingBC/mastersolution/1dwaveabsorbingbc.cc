@@ -8,13 +8,12 @@
 
 #include "1dwaveabsorbingbc.h"
 
-#include <cmath>
-#include <utility>
-#include <vector>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#include <cmath>
+#include <utility>
+#include <vector>
 
 namespace WaveAbsorbingBC1D {
 

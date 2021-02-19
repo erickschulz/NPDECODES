@@ -6,17 +6,17 @@
  */
 
 #include "../sdirkmethodoflines.h"
-#include "../sdirkmethodoflines_ode.cc"
 
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-
 #include <cmath>
 #include <iostream>
 #include <utility>
 #include <vector>
+
+#include "../sdirkmethodoflines_ode.cc"
 
 namespace SDIRKMethodOfLines::test {
 

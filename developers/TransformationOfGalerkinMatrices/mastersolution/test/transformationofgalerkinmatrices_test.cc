@@ -1,8 +1,8 @@
+#include "../transformationofgalerkinmatrices.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/SparseCore>
-
-#include "../transformationofgalerkinmatrices.h"
 
 namespace TransformationOfGalerkinMatrices::test {
 

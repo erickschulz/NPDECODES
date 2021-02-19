@@ -17,11 +17,9 @@ double godnfn(double v, double w) {
   auto f = [](double u) { return std::exp(u) - u; };
 #if SOLUTION
   if (v < w) {
-    if (0.0 < v)
-      return f(v);
-    if (w < 0.0)
-      return f(w);
-    return 1.0; // = f(0.0)
+    if (0.0 < v) return f(v);
+    if (w < 0.0) return f(w);
+    return 1.0;  // = f(0.0)
   } else {
     return f(w) < f(v) ? f(v) : f(w);
   }
@@ -37,4 +35,4 @@ double godnfn(double v, double w) {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace ConsLawWithSource
+}  // namespace ConsLawWithSource

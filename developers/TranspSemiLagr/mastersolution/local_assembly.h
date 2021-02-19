@@ -6,14 +6,13 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
+#include <memory>
 
 #ifndef LOCAL_ASSEMBLY_H
 #define LOCAL_ASSEMBLY_H

@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "finitevolumesineconslaw.h"
-
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "finitevolumesineconslaw.h"
 
 using namespace FiniteVolumeSineConsLaw;
 

@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "burgersequation.h"
-
+#include <Eigen/Core>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "burgersequation.h"
 
 int main() {
   /* SAM_LISTING_BEGIN_1 */

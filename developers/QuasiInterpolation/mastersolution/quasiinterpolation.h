@@ -9,18 +9,17 @@
 #ifndef QUASIINTERPOLATION_H_
 #define QUASIINTERPOLATION_H_
 
-#include <cmath>
-#include <memory>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <memory>
+#include <utility>
+#include <vector>
 
 namespace QuasiInterpolation {
 
@@ -55,9 +54,9 @@ findKp(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
  */
 /* SAM_LISTING_BEGIN_1 */
 template <typename MESHFUNCTION>
-Eigen::VectorXd
-quasiInterpolate(const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space,
-                 MESHFUNCTION &&v_mf) {
+Eigen::VectorXd quasiInterpolate(
+    const lf::uscalfe::FeSpaceLagrangeO1<double> &fe_space,
+    MESHFUNCTION &&v_mf) {
   // Get quadrature points and weights on the reference triangle for a
   // quadrature rule that integrates quadratic polynomials exactly
   lf::quad::QuadRule quadrule =
@@ -168,6 +167,6 @@ void interpolationError(
   }
 }
 
-} // namespace QuasiInterpolation
+}  // namespace QuasiInterpolation
 
-#endif // #ifndef QUASIINTERPOLATION_H_
+#endif  // #ifndef QUASIINTERPOLATION_H_

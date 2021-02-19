@@ -9,10 +9,9 @@
 #ifndef CONSLAWWITHSOURCE_H_
 #define CONSLAWWITHSOURCE_H_
 
+#include <Eigen/Core>
 #include <cmath>
 #include <utility>
-
-#include <Eigen/Core>
 
 namespace ConsLawWithSource {
 
@@ -41,7 +40,6 @@ double godnfn(double v, double w);
 template <typename FunctionF, typename SourceFunction>
 Eigen::VectorXd fluxdiffsource(const Eigen::VectorXd &mu, FunctionF &&F,
                                SourceFunction &&s, double h) {
-
 #if SOLUTION
   unsigned n = mu.size();
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);
@@ -61,13 +59,13 @@ Eigen::VectorXd fluxdiffsource(const Eigen::VectorXd &mu, FunctionF &&F,
   // ADAPT THE CODE below so that it handels the source function s correctly
   //====================
 
-  unsigned n = mu.size();                        // length of state vector
-  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n); // return vector
+  unsigned n = mu.size();                         // length of state vector
+  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);  // return vector
 
   // constant continuation of data for \Blue{$x\leq a$}!
   fd[0] = F(mu[0], mu[1]) - F(mu[0], mu[0]);
   for (unsigned j = 1; j < n - 1; ++j) {
-    fd[j] = F(mu[j], mu[j + 1]) - F(mu[j - 1], mu[j]); // see \eqref{eq:2pcf}
+    fd[j] = F(mu[j], mu[j + 1]) - F(mu[j - 1], mu[j]);  // see \eqref{eq:2pcf}
   }
   // constant continuation of data for \Blue{$x\geq b$}!
   fd[n - 1] = F(mu[n - 1], mu[n - 1]) - F(mu[n - 2], mu[n - 1]);
@@ -102,12 +100,12 @@ Eigen::VectorXd traceMass(U0Functor &&u0, unsigned int N) {
 #if SOLUTION
   // Get timestep size and number by CLF condition
   double h = (b - a) / N;
-  double s_max = std::exp(1.0) - 1.0; // since \Blue{$0\leq u_0(x)\leq 1$}
-  double tau = h / s_max;             // stencil \Blue{$m=1$}
+  double s_max = std::exp(1.0) - 1.0;  // since \Blue{$0\leq u_0(x)\leq 1$}
+  double tau = h / s_max;              // stencil \Blue{$m=1$}
   double T = 3.0;
-  // Total number of timesteps 
+  // Total number of timesteps
   int M = (int)std::ceil(T / tau);
-  tau = 3.0 / M; // Timestep size 
+  tau = 3.0 / M;  // Timestep size
 
   // Compute solution and total masses at different times
   auto totalMass = [h](const Eigen::VectorXd &mu) { return (mu * h).sum(); };
@@ -132,6 +130,6 @@ Eigen::VectorXd traceMass(U0Functor &&u0, unsigned int N) {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace ConsLawWithSource
+}  // namespace ConsLawWithSource
 
-#endif // #define CONSLAWWITHSOURCE
+#endif  // #define CONSLAWWITHSOURCE

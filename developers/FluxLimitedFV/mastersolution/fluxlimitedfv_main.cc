@@ -8,10 +8,8 @@
 
 #define _USE_MATH_DEFINES
 
-#include <cmath>
-
 #include <Eigen/Core>
-
+#include <cmath>
 #include <fstream>
 #include <iostream>
 
@@ -21,7 +19,7 @@ typedef std::numeric_limits<double> dbl;
 
 using namespace FluxLimitedFV;
 
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int /*argc*/, char** /*argv*/) {
   std::cout.precision(dbl::max_digits10);
 
   /* ADVECTION PROBLEM */
@@ -85,7 +83,6 @@ int main(int /*argc*/, char ** /*argv*/) {
     double sum_A = 0.0;
     double sum_B = 0.0;
     for (int j = 0; j < N; j++) {
-
       sum_A = sum_A +
               std::abs(h * (fluxlimAdvection_sol_A(j) - mu0_A_fn(j * h - T)));
       sum_B = sum_B +
@@ -127,7 +124,8 @@ int main(int /*argc*/, char ** /*argv*/) {
   const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");
   std::ofstream fluxlimAdvection_sol_A_csv;
-  fluxlimAdvection_sol_A_csv.open(CURRENT_BINARY_DIR "/fluxlimAdvection_sol_A.csv");
+  fluxlimAdvection_sol_A_csv.open(CURRENT_BINARY_DIR
+                                  "/fluxlimAdvection_sol_A.csv");
   fluxlimAdvection_sol_A_csv << x_advection.transpose().format(CSVFormat)
                              << std::endl;
   fluxlimAdvection_sol_A_csv
@@ -140,7 +138,8 @@ int main(int /*argc*/, char ** /*argv*/) {
               "/fluxlimAdvection_sol_A.eps");
 
   std::ofstream fluxlimAdvection_sol_B_csv;
-  fluxlimAdvection_sol_B_csv.open(CURRENT_BINARY_DIR "/fluxlimAdvection_sol_B.csv");
+  fluxlimAdvection_sol_B_csv.open(CURRENT_BINARY_DIR
+                                  "/fluxlimAdvection_sol_B.csv");
   fluxlimAdvection_sol_B_csv << x_advection.transpose().format(CSVFormat)
                              << std::endl;
   fluxlimAdvection_sol_B_csv
@@ -172,7 +171,7 @@ int main(int /*argc*/, char ** /*argv*/) {
 
   Eigen::VectorXd mu0(N);
   for (int j = 0; j < N; j++) {
-    mu0(j) = mu0_fn(h*j);
+    mu0(j) = mu0_fn(h * j);
   }
 
   Eigen::VectorXd fluxlimBurgers_sol =
@@ -196,4 +195,4 @@ int main(int /*argc*/, char ** /*argv*/) {
               "/fluxlimBurgers_sol.csv " CURRENT_BINARY_DIR
               "/fluxlimBurgers_sol.eps");
 
-} // main
+}  // main

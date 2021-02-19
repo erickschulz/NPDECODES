@@ -6,17 +6,17 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include "mixedfemwave.h"
+#include <lf/io/io.h>
+#include <lf/refinement/mesh_hierarchy.h>
+#include <math.h>
 
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <math.h>
 #include <memory>
 #include <utility>
 
-#include <lf/io/io.h>
-#include <lf/refinement/mesh_hierarchy.h>
+#include "mixedfemwave.h"
 
 using namespace MixedFEMWave;
 
