@@ -30,13 +30,17 @@ do
   # Run solution if exists:
   if [[ -f "$cmd_mastersolution" ]]; then
     echo "Executing $cmd_mastersolution";
-    if ! [[ output=$(eval $cmd_mastersolution 2>&1) ]]; then
-      echo $output;
+    if ! output=$(eval $cmd_mastersolution 2>&1) ; then
+      printf "$output";
+      echo "";
       exit 1;
+    else
+      echo "--> Success";
     fi
   else
     echo "*** WARNING: No mastersolution found in $d ***";
   fi
+  
+  make clean;
   cd ../..;
-  # (&& make -j2 && eval $cmd && make clean);
 done
