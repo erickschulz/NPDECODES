@@ -15,7 +15,7 @@ do
   if [[ $d =~ /CMakeFiles/ ]]; then
     continue
   fi
-  if [[ $d =~ /TranspSemiLagr/ ]]; then
+  if ! [[ $d =~ /TranspSemiLagr/ ]]; then
     continue
   fi
   echo "-----------------------------------------------------------------------";
