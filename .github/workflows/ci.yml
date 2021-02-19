@@ -72,6 +72,5 @@ jobs:
         run: "./scripts/ci/run_cmake.sh"
       - name: compile and test
         run: |
-          cd Build/developers/
-          make -j${NUM_PROC:-2}
-          make test_developers_mastersolution
+          cd Build
+          ../scripts/ci/compile_test.sh
