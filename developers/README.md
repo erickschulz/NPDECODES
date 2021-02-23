@@ -47,7 +47,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 7-1 | `ExpFittedUpwind` | :heavy_check_mark: |:heavy_check_mark: | |needs LaTeX changes |
 | 7-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
 | 7-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
-| 7-4 | `UpwindFiniteVolume` | TO DO | | | |
+| 7-4 | `UpwindFiniteVolume` | :heavy_check_mark: | :heavy_check_mark: | | |
 | 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
