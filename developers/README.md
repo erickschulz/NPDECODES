@@ -8,6 +8,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 
 - A white check mark :white_check_mark: indicates that a stage is in progress.
 - A green check mark :heavy_check_mark: indicates that a stage is completed.
+- A red cross :x: indicates that the homework problem code needs to be revised.
 - Under 'Assignee for current stage' is found the name of the assistant currently working on the problem.
 
 | # | Problem name | Polished | Verified | Latex | Assignee (stage in progress)|
