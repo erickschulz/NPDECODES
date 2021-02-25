@@ -9,11 +9,11 @@
 #ifndef NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H
 #define NUMPDE_L2_ERROR_CR_DISCRETIZATION_DIRICHLET_BVP_H
 
-#include <cmath>
-#include <string>
-
 #include <lf/io/io.h>
 #include <lf/mesh/mesh.h>
+
+#include <cmath>
+#include <string>
 
 #include "crdirichletbvp.h"
 #include "crfespace.h"

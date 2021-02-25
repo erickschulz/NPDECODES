@@ -62,7 +62,7 @@ Eigen::SparseMatrix<double> computeB(const lf::assemble::DofHandler &dofh_V,
   const lf::uscalfe::size_type N_dofs_Q(dofh_Q.NumDofs());
   const lf::uscalfe::size_type N_dofs_V(dofh_V.NumDofs());
   // Sparse matrix to be returned
-  Eigen::SparseMatrix<double> B(N_dofs_Q,N_dofs_V);
+  Eigen::SparseMatrix<double> B(N_dofs_Q, N_dofs_V);
 
   // ========================================
   // Your code here
@@ -73,8 +73,8 @@ Eigen::SparseMatrix<double> computeB(const lf::assemble::DofHandler &dofh_V,
 /* SAM_LISTING_END_9 */
 
 /* SAM_LISTING_BEGIN_B */
-Eigen::Matrix<double, 2, 3>
-BElemMatProvider::Eval(const lf::mesh::Entity &tria) {
+Eigen::Matrix<double, 2, 3> BElemMatProvider::Eval(
+    const lf::mesh::Entity &tria) {
   // Obtain vertex coordinates of the triangle in a 2x3 matrix
   const auto vertices = lf::geometry::Corners(*(tria.Geometry()));
   LF_ASSERT_MSG((vertices.cols() == 3) && (vertices.rows() == 2),
@@ -89,4 +89,4 @@ BElemMatProvider::Eval(const lf::mesh::Entity &tria) {
 }
 /* SAM_LISTING_END_B */
 
-} // namespace MixedFEMWave
+}  // namespace MixedFEMWave

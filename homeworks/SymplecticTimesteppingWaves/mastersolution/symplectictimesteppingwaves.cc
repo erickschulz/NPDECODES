@@ -6,9 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <fstream>
-
 #include "symplectictimesteppingwaves.h"
+
+#include <fstream>
 
 namespace SymplecticTimesteppingWaves {
 

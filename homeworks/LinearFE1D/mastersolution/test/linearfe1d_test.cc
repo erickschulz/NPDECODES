@@ -6,12 +6,12 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include "../linearfe1d.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
-
-#include "../linearfe1d.h"
 
 // Test the solver functions
 TEST(LinearFE1D, solution_testA) {

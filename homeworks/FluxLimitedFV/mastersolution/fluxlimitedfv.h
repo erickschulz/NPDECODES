@@ -24,7 +24,7 @@ Eigen::VectorXd fluxlimAdvection(
   if (beta < 0) {
     throw std::domain_error("fluxlimAdvection: negative beta!");
   }
-  Eigen::VectorXd mu; // return vector
+  Eigen::VectorXd mu;  // return vector
 
   // The length of the vector passing the initial conditions also determines teh
   // number of spatial (dual) cells
@@ -71,7 +71,7 @@ Eigen::VectorXd fluxlimAdvection(
                    0.5 * beta * gamma * (1 - beta * gamma) *
                        (phi_1 * forward_diff - phi_2 * backward_diff);
     }
-    mu = mu_next; // step forward (loop update)
+    mu = mu_next;  // step forward (loop update)
   }
   return mu;
 };
@@ -88,8 +88,8 @@ template <typename FLUXLIM = std::function<double(double)>>
 Eigen::VectorXd fluxlimBurgers(
     const Eigen::VectorXd &mu0, double h, double tau, unsigned int nb_timesteps,
     FLUXLIM &&phi = [](double /*theta*/) { return 1.0; }) {
-  Eigen::VectorXd mu; // return vector
-  int N = mu0.size(); // Number of sptial dual cells
+  Eigen::VectorXd mu;  // return vector
+  int N = mu0.size();  // Number of sptial dual cells
   double gamma = tau / h;
   // Set initial conditions
   mu = mu0;
@@ -171,12 +171,12 @@ Eigen::VectorXd fluxlimBurgers(
     for (int j = 0; j < N; j++) {
       mu_next(j) = mu(j) - gamma * fluxdiff(j);
     }
-    mu = mu_next; // step forward (loop update)
+    mu = mu_next;  // step forward (loop update)
   }
   return mu;
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace FluxLimitedFV
+}  // namespace FluxLimitedFV
 
 #endif

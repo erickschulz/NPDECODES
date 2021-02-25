@@ -19,7 +19,7 @@ namespace NumPDESetup::test {
 TEST(NumPDESetup, dummyFunction) {
   double x = 1.0;
   int n = 2;
-  // Invoke the function to be tested 
+  // Invoke the function to be tested
   Eigen::Vector2d v = NumPDESetup::dummyFunction(x, n);
   // The expected solution
   Eigen::Vector2d v_ref = {1.0, 1.0};

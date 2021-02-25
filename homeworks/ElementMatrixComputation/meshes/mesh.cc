@@ -8,14 +8,13 @@
 
 #include "mesh.h"
 
-#include <array>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
+
+#include <Eigen/Core>
+#include <array>
+#include <memory>
 
 std::shared_ptr<lf::mesh::Mesh> Generate2DTestMesh() {
   using size_type = lf::mesh::Mesh::size_type;

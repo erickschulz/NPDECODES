@@ -3,9 +3,8 @@ This homework "TransformationOfGalerkinMatrices" consists of matrices
 transformation (change of Galerkin bases) using the triplet format.
  */
 
-#include <vector>
-
 #include <Eigen/Sparse>
+#include <vector>
 
 namespace TransformationOfGalerkinMatrices {
 

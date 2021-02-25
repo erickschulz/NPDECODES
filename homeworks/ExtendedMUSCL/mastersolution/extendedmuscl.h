@@ -9,8 +9,7 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "slopelimfluxdiff.h"
-
+#include <Eigen/Core>
 #include <cassert>
 #include <cmath>
 #include <fstream>
@@ -20,7 +19,7 @@
 #include <utility>
 #include <vector>
 
-#include <Eigen/Core>
+#include "slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL {
 

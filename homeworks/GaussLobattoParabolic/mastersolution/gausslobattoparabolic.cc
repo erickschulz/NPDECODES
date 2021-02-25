@@ -8,23 +8,21 @@
 
 #include "gausslobattoparabolic.h"
 
-#include <functional>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <functional>
+#include <memory>
+#include <utility>
 
 namespace GaussLobattoParabolic {
 
 /* SAM_LISTING_BEGIN_1 */
 lf::assemble::COOMatrix<double> initMbig(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space) {
-
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   // Diffusion coefficient =0, reaction coefficient = 1
   lf::mesh::utils::MeshFunctionConstant alpha(0.0), gamma(1.0);
@@ -53,7 +51,6 @@ lf::assemble::COOMatrix<double> initMbig(
 /* SAM_LISTING_BEGIN_2 */
 lf::assemble::COOMatrix<double> initAbig(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space) {
-
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   // Diffusion coefficient =1, reaction coefficient = 0
   lf::mesh::utils::MeshFunctionConstant alpha(1.0), gamma(0.0);
@@ -76,8 +73,7 @@ lf::assemble::COOMatrix<double> initAbig(
   A.setZero(pred);
   // Set "boundary block" to the identity matrix
   for (int i = 0; i < dofh.NumDofs(); ++i) {
-    if (bd_flags(dofh.Entity(i)))
-      A.AddToEntry(i, i, 1.0);
+    if (bd_flags(dofh.Entity(i))) A.AddToEntry(i, i, 1.0);
   }
 
   return A;
@@ -101,9 +97,9 @@ RHSProvider::RHSProvider(const lf::assemble::DofHandler &dofh,
 }
 
 Eigen::VectorXd RHSProvider::operator()(double t) const {
-  // Just rescale the stored vector 
+  // Just rescale the stored vector
   return g_(t) * zero_one_;
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace GaussLobattoParabolic
+}  // namespace GaussLobattoParabolic

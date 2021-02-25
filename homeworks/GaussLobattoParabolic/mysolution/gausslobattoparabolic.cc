@@ -8,23 +8,21 @@
 
 #include "gausslobattoparabolic.h"
 
-#include <functional>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <functional>
+#include <memory>
+#include <utility>
 
 namespace GaussLobattoParabolic {
 
 /* SAM_LISTING_BEGIN_1 */
 lf::assemble::COOMatrix<double> initMbig(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space) {
-
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   //====================
   // Your code goes here
@@ -40,7 +38,6 @@ lf::assemble::COOMatrix<double> initMbig(
 /* SAM_LISTING_BEGIN_2 */
 lf::assemble::COOMatrix<double> initAbig(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space) {
-
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   //====================
   // Your code goes here
@@ -71,4 +68,4 @@ Eigen::VectorXd RHSProvider::operator()(double t) const {
 }
 /* SAM_LISTING_END_3 */
 
-} // namespace GaussLobattoParabolic
+}  // namespace GaussLobattoParabolic

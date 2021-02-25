@@ -16,6 +16,7 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <Eigen/SparseLU>
 #include <cmath>
 #include <utility>

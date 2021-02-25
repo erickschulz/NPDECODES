@@ -6,17 +6,17 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include "mixedfemwave.h"
+#include <lf/io/io.h>
+#include <lf/refinement/mesh_hierarchy.h>
+#include <math.h>
 
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <math.h>
 #include <memory>
 #include <utility>
 
-#include <lf/io/io.h>
-#include <lf/refinement/mesh_hierarchy.h>
+#include "mixedfemwave.h"
 
 using namespace MixedFEMWave;
 
@@ -27,7 +27,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   unsigned int nb_timesteps = T * 500;
   auto f = [](Eigen::Vector2d x, double t) -> double {
     if (std::pow(x(0) - 1.0, 2) + std::pow(x(1) - 2.5, 2) < 0.25) {
-      return 15.0 * ((t < 0.5) ? std::sin(2.0 * M_PI * t) : 0.0);
+      return 15.0 * ((t < 0.5) ? std::sin(2.0 * lf::base::kPi * t) : 0.0);
     }
     return 0.0;
   };

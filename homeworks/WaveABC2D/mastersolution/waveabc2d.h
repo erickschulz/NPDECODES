@@ -14,9 +14,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/fe/fe.h>

@@ -5,11 +5,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "waveabc2d.h"
-
 #include <iostream>
 #include <memory>
 #include <string>
+
+#include "waveabc2d.h"
 // Eigen includes
 #include <Eigen/Core>
 // Lehrfem++ includes

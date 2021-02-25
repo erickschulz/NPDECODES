@@ -5,18 +5,17 @@
  *  @copyright Developed at SAM, ETH Zurich
  */
 
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/Sparse>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <memory>
+#include <utility>
 
 namespace FisherKPP {
 

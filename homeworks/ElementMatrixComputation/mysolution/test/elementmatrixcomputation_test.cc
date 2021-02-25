@@ -6,17 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <memory>
 
 #include "../../meshes/mesh.h"
 #include "../mylinearfeelementmatrix.h"

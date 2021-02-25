@@ -6,15 +6,14 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+
+#include <Eigen/Core>
 #include <cmath>
 #include <iostream>
 #include <memory>
 #include <utility>
-
-#include <Eigen/Core>
-
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
 
 #include "coupledsecondorderbvp.h"
 

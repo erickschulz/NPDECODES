@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "1dwaveabsorbingbc.h"
-
+#include <Eigen/Core>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "1dwaveabsorbingbc.h"
 
 using namespace WaveAbsorbingBC1D;
 

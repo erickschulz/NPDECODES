@@ -8,14 +8,13 @@
 
 #include "quasiinterpolation.h"
 
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-
-#include <lf/base/base.h> // nonstd::span
+#include <lf/base/base.h>  // nonstd::span
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
+#include <memory>
+#include <utility>
 
 namespace QuasiInterpolation {
 
@@ -51,9 +50,9 @@ findKp(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
     //====================
     // Your code goes here
     //====================
-  } // end of loop over triangles
+  }  // end of loop over triangles
   return KpMeshDataSet;
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace QuasiInterpolation
+}  // namespace QuasiInterpolation

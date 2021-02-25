@@ -8,13 +8,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 namespace RadauThreeTimestepping {
 
@@ -128,7 +128,7 @@ class TrapRuleLinFEElemVecProvider {
 
 // Deduction guide for TrapRuleLinFEElemVecProvider
 template <typename FUNCTOR>
-TrapRuleLinFEElemVecProvider(FUNCTOR)->TrapRuleLinFEElemVecProvider<FUNCTOR>;
+TrapRuleLinFEElemVecProvider(FUNCTOR) -> TrapRuleLinFEElemVecProvider<FUNCTOR>;
 
 // TrapRuleLinFEElemVecProvider
 /* Implementing member function Eval of class TrapRuleLinFEElemVecProvider*/

@@ -6,13 +6,12 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Core>
+#include "../conslawwithsource.h"
 
 #include <gtest/gtest.h>
 
-#include "../conslawwithsource.h"
+#include <Eigen/Core>
+#include <cmath>
 
 namespace ConsLawWithSource::test {
 
@@ -28,7 +27,9 @@ TEST(ConsLawWithSource, godnfn) {
 
   // Reference Godunov flux
   Eigen::VectorXd Fvw_ref(N);
-  Fvw_ref << 1.0, 2.49071795328941, 2.13533528323661, 1.71828182845905, 1.10653065971263, 26.564100047397, 26.564100047397, 1.00517091807565, 32.998234443678, 1.10653065971263;
+  Fvw_ref << 1.0, 2.49071795328941, 2.13533528323661, 1.71828182845905,
+      1.10653065971263, 26.564100047397, 26.564100047397, 1.00517091807565,
+      32.998234443678, 1.10653065971263;
 
   double tol = 1.0e-8;
   ASSERT_NEAR(0.0, (Fvw_ref - Fvw).lpNorm<Eigen::Infinity>(), tol);
@@ -45,7 +46,7 @@ TEST(ConsLawWithSource, fluxdiffsource) {
   // Use Burgers equation with a central flux function
   auto f = [](double u) { return 0.5 * u * u; };
   auto F = [f](double v, double w) { return 0.5 * (f(v) + f(w)); };
-  auto s = [] (double u) { return -u; };
+  auto s = [](double u) { return -u; };
 
   // Cell size
   double h = (x(N - 1) - x(0)) / N;
@@ -55,10 +56,13 @@ TEST(ConsLawWithSource, fluxdiffsource) {
 
   // Reference fluxdiffsource
   Eigen::VectorXd fluxdiffsource_values_ref(N);
-  fluxdiffsource_values_ref << 0.1875, -0.628709713905398, -1.0037097139054, 0.0, 1.0037097139054, 0.628709713905398, 0.0, -0.628709713905398, -1.0037097139054, -0.1875;
+  fluxdiffsource_values_ref << 0.1875, -0.628709713905398, -1.0037097139054,
+      0.0, 1.0037097139054, 0.628709713905398, 0.0, -0.628709713905398,
+      -1.0037097139054, -0.1875;
 
   double tol = 1.0e-8;
-  Eigen::VectorXd difference = fluxdiffsource_values_ref - fluxdiffsource_values;
+  Eigen::VectorXd difference =
+      fluxdiffsource_values_ref - fluxdiffsource_values;
   ASSERT_NEAR(0.0, difference.lpNorm<Eigen::Infinity>(), tol);
 }
 

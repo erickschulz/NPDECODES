@@ -1,10 +1,16 @@
 /**
  * @file gausslobattoparabolic_run.cc
- * @brief Main file for conducting convergence studies 
+ * @brief Main file for conducting convergence studies
  * @author Oliver Rietmann
  * @date 22.07.2020
  * @copyright Developed at SAM, ETH Zurich
  */
+
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/test_utils/test_meshes.h>
+#include <lf/mesh/utils/utils.h>
+#include <lf/refinement/refinement.h>
 
 #include <algorithm>
 #include <cmath>
@@ -13,12 +19,6 @@
 #include <vector>
 
 #include "gausslobattoparabolic.h"
-
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/test_utils/test_meshes.h>
-#include <lf/mesh/utils/utils.h>
-#include <lf/refinement/refinement.h>
 
 constexpr double PI = 3.14159265358979323846;
 
@@ -36,8 +36,8 @@ double maxLength(const nonstd::span<const lf::mesh::Entity *const> &edges) {
 int main() {
   // Load the mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
-                                  "/../meshes/hex_hybrid.msh");
+  const lf::io::GmshReader reader(
+      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/hex_hybrid.msh");
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = reader.mesh();
   auto fe_space =
       std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);

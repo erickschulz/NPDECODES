@@ -5,9 +5,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "boundarywave.h"
-
 #include <fstream>
+
+#include "boundarywave.h"
 
 using namespace BoundaryWave;
 

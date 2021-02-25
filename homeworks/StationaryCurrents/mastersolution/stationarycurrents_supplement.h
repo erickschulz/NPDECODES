@@ -8,15 +8,16 @@
 #ifndef DMXBCS_H_
 #define DMXBCS_H_
 
-#include <array>
-#include <iomanip>
-#include <iostream>
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/fe/fe.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <array>
+#include <iomanip>
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -49,15 +50,14 @@ Eigen::MatrixXd exteriorCellNormals(const Eigen::MatrixXd &corners);
  * @return Edge-indeed array containing edge-length-weighted normals for every
  * edge on the boundary , the zero vector for internal edges
  */
-lf::mesh::utils::CodimMeshDataSet<Eigen::Vector2d>
-exteriorEdgeWeightedNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+lf::mesh::utils::CodimMeshDataSet<Eigen::Vector2d> exteriorEdgeWeightedNormals(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 // A debugging function
 bool validateNormals(const lf::mesh::Mesh &mesh);
 void printNodeTags(const lf::mesh::Mesh &mesh,
                    lf::mesh::utils::CodimMeshDataSet<int> &nodeids);
 
-  
 /** @brief Evaluation of boundary formula for contact flux
  *
  * @tparam SIGMAFUNCTION functor type for diffusion coefficient
@@ -146,10 +146,10 @@ double contactFlux(
         }
       }
     }
-  } // end loop over cells
+  }  // end loop over cells
   std::cout << "Summed flux for " << ed_cnt << " edges." << std::endl;
   return s;
-} // end contact flux
+}  // end contact flux
 /* SAM_LISTING_END_2 */
 
 /** @brief Volume based formula for the evaluation of contact fluxes
@@ -240,7 +240,7 @@ double stabFluxMF(
         return lf::quad::make_QuadRule(e.RefEl(), 2);
       })(0, 0);
   return s;
-} // end stabFluxMF
+}  // end stabFluxMF
 /* SAM_LISTING_END_5 */
 
 /** @see @ref stabFlux
@@ -325,9 +325,9 @@ double stabFluxTRF(
     const lf::geometry::Geometry &geo{*cell->Geometry()};
     // Fetch the transformation matrix for gradients
     const Eigen::MatrixXd JinvT{geo.JacobianInverseGramian(zeta_ref)};
-    LF_ASSERT_MSG((JinvT.rows() == 2) && (JinvT.cols() == 2),
-                  "JinvT is " << JinvT.rows() << " x " << JinvT.cols()
-                              << "-matrix!");
+    LF_ASSERT_MSG(
+        (JinvT.rows() == 2) && (JinvT.cols() == 2),
+        "JinvT is " << JinvT.rows() << " x " << JinvT.cols() << "-matrix!");
     // Compute the gradients of the local shape functions by transformation
     const auto grad_lsf{JinvT * ref_lsf_grads.transpose()};
     // Compute the area of the triangle
@@ -353,6 +353,6 @@ double stabFluxTRF(
 }
 /* SAM_LISTING_END_G */
 
-} // namespace dmxbc
+}  // namespace dmxbc
 
 #endif

@@ -9,12 +9,11 @@
 #ifndef GAUSSLOBATTOPARABOLIC_H_
 #define GAUSSLOBATTOPARABOLIC_H_
 
-#include <functional>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <functional>
 
 namespace GaussLobattoParabolic {
 
@@ -38,7 +37,7 @@ lf::assemble::COOMatrix<double> initAbig(
 
 /* SAM_LISTING_BEGIN_3 */
 class RHSProvider {
-public:
+ public:
   // Disabled constructors
   RHSProvider() = delete;
   RHSProvider(const RHSProvider &) = delete;
@@ -54,7 +53,7 @@ public:
   // Evaluation operator for right-hand-side vector
   Eigen::VectorXd operator()(double t) const;
 
-private:
+ private:
   std::function<double(double)> g_;
   Eigen::VectorXd zero_one_;
 };
@@ -139,6 +138,6 @@ Eigen::VectorXd evolveIBVPGaussLobatto(
 }
 /* SAM_LISTING_END_4 */
 
-} // namespace GaussLobattoParabolic
+}  // namespace GaussLobattoParabolic
 
-#endif // #define GAUSSLOBATTOPARABOLIC_H_
+#endif  // #define GAUSSLOBATTOPARABOLIC_H_

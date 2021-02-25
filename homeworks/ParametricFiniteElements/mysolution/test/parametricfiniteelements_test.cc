@@ -12,7 +12,6 @@
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-
 #include <vector>
 
 namespace ParametricFiniteElements::test {

@@ -9,10 +9,9 @@
 #ifndef CONSLAWWITHSOURCE_H_
 #define CONSLAWWITHSOURCE_H_
 
+#include <Eigen/Core>
 #include <cmath>
 #include <utility>
-
-#include <Eigen/Core>
 
 namespace ConsLawWithSource {
 
@@ -41,7 +40,6 @@ double godnfn(double v, double w);
 template <typename FunctionF, typename SourceFunction>
 Eigen::VectorXd fluxdiffsource(const Eigen::VectorXd &mu, FunctionF &&F,
                                SourceFunction &&s, double h) {
-
   unsigned n = mu.size();
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);
 
@@ -82,12 +80,12 @@ Eigen::VectorXd traceMass(U0Functor &&u0, unsigned int N) {
 
   // Get timestep size and number by CLF condition
   double h = (b - a) / N;
-  double s_max = std::exp(1.0) - 1.0; // since \Blue{$0\leq u_0(x)\leq 1$}
-  double tau = h / s_max;             // stencil \Blue{$m=1$}
+  double s_max = std::exp(1.0) - 1.0;  // since \Blue{$0\leq u_0(x)\leq 1$}
+  double tau = h / s_max;              // stencil \Blue{$m=1$}
   double T = 3.0;
-  // Total number of timesteps 
+  // Total number of timesteps
   int M = (int)std::ceil(T / tau);
-  tau = 3.0 / M; // Timestep size 
+  tau = 3.0 / M;  // Timestep size
 
   // Compute solution and total masses at different times
   auto totalMass = [h](const Eigen::VectorXd &mu) { return (mu * h).sum(); };
@@ -103,6 +101,6 @@ Eigen::VectorXd traceMass(U0Functor &&u0, unsigned int N) {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace ConsLawWithSource
+}  // namespace ConsLawWithSource
 
-#endif // #define CONSLAWWITHSOURCE
+#endif  // #define CONSLAWWITHSOURCE

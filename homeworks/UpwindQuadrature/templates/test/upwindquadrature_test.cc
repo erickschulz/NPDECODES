@@ -6,17 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
+#include "../upwindquadrature.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 
-#include "../upwindquadrature.h"
+#include <Eigen/Core>
+#include <memory>
 
 namespace UpwindQuadrature::test {
 

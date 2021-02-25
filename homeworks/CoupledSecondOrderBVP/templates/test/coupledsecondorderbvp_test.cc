@@ -6,16 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <memory>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include "../coupledsecondorderbvp.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/io/io.h>
@@ -23,7 +16,12 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../coupledsecondorderbvp.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <cmath>
+#include <memory>
+#include <utility>
+#include <vector>
 
 namespace CoupledSecondOrderBVP::test {
 

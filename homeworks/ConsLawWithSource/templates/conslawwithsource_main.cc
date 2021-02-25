@@ -6,14 +6,12 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include <iostream>
-
 #include <Eigen/Core>
+#include <iostream>
 
 #include "conslawwithsource.h"
 
 int main() {
-
   // Initial data
   auto u0 = [](double x) { return (0.0 <= x && x < 1.0) ? 1.0 : 0.0; };
 
@@ -22,7 +20,7 @@ int main() {
   Eigen::VectorXi N(samples);
   N(0) = 10;
   for (int i = 1; i < samples; ++i) N(i) = 2 * N(i - 1);
-  
+
   // Compute total masses at endtime T=3
   Eigen::VectorXd m3(samples);
   for (int i = 0; i < samples; ++i) {

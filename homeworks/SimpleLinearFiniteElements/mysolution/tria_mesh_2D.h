@@ -9,9 +9,8 @@
 #ifndef TRIAMESH2D_H_
 #define TRIAMESH2D_H_
 
-#include <string>
-
 #include <Eigen/Core>
+#include <string>
 
 namespace SimpleLinearFiniteElements {
 

@@ -10,13 +10,14 @@
 // Eigen includes
 #include <gtest/gtest.h>
 
-#include <Eigen/Core>
-#include <unsupported/Eigen/KroneckerProduct>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <unsupported/Eigen/KroneckerProduct>
 
 #include "../zienkiewiczzhuestimator.h"
 

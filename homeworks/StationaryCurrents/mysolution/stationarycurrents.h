@@ -9,15 +9,16 @@
 #ifndef DMXBC_H_
 #define DMXBC_H_
 
-#include <array>
-#include <iomanip>
-#include <iostream>
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/fe/fe.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <array>
+#include <iomanip>
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -32,8 +33,8 @@ namespace dmxbc {
  * of a 2x3 matrix.
  *
  */
-Eigen::Matrix<double, 2, 3>
-GradsBaryCoords(Eigen::Matrix<double, 2, 3> vertices);
+Eigen::Matrix<double, 2, 3> GradsBaryCoords(
+    Eigen::Matrix<double, 2, 3> vertices);
 
 /** @brief Reading mesh from Gmsh file and flagging edges on contact boundary
  *         parts
@@ -59,9 +60,9 @@ readMeshWithTags(std::string filename);
  *
  * If an edge carries a positive id, then this id is set for both its endpoints.
  */
-lf::mesh::utils::CodimMeshDataSet<int>
-tagNodes(std::shared_ptr<const lf::mesh::Mesh> mesh_p,
-         lf::mesh::utils::CodimMeshDataSet<int> edgeids);
+lf::mesh::utils::CodimMeshDataSet<int> tagNodes(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p,
+    lf::mesh::utils::CodimMeshDataSet<int> edgeids);
 
 /** @brief Solving mixed BVP based on lowest-order Lagrangian finite elements
  *
@@ -109,12 +110,12 @@ Eigen::VectorXd solveMixedBVP(
 
   // Solve linear system using Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-  solver.compute(A_crs); // LU decomposition
+  solver.compute(A_crs);  // LU decomposition
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
   Eigen::VectorXd sol_vec = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
   return sol_vec;
-} // end solveMixedBVP
+}  // end solveMixedBVP
 
 /* SAM_LISTING_END_1 */
 
@@ -123,10 +124,9 @@ Eigen::VectorXd solveMixedBVP(
 
 /* SAM_LISTING_BEGIN_G */
 template <typename SIGMAFUNCTION, typename PSIGRAD>
-double
-stabFlux(std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-         const Eigen::VectorXd &sol_vec, SIGMAFUNCTION &&sigma,
-         PSIGRAD &&gradpsi) {
+double stabFlux(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+    const Eigen::VectorXd &sol_vec, SIGMAFUNCTION &&sigma, PSIGRAD &&gradpsi) {
   // Underlying FE mesh
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
   // Local-to-Global map for local/global shape function indices
@@ -156,6 +156,6 @@ stabFlux(std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
  */
 std::tuple<double, double, double> computePotential(std::string basename);
 
-} // namespace dmxbc
+}  // namespace dmxbc
 
 #endif

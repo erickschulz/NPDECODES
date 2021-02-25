@@ -25,4 +25,4 @@ double godnfn(double v, double w) {
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace ConsLawWithSource
+}  // namespace ConsLawWithSource

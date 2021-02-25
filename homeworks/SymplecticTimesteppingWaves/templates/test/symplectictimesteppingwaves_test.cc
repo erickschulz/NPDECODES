@@ -7,19 +7,18 @@
  */
 
 #include "../symplectictimesteppingwaves.h"
-#include "../symplectictimesteppingwaves_assemble.h"
-#include "../symplectictimesteppingwaves_ode.h"
 
 #include <gtest/gtest.h>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
-#include <utility>
-
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <utility>
+
+#include "../symplectictimesteppingwaves_assemble.h"
+#include "../symplectictimesteppingwaves_ode.h"
 
 namespace SymplecticTimesteppingWaves::test {
 

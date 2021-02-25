@@ -6,13 +6,14 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Dense>
-#include <array>
-
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"
 #include "lf/geometry/geometry.h"
 #include "lf/mesh/mesh.h"
+
+// Eigen includes
+#include <Eigen/Dense>
+#include <array>
 
 namespace LFPPDofHandling {
 

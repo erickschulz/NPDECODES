@@ -13,6 +13,7 @@
 #include <lf/mesh/utils/utils.h>
 
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
 #include <utility>

@@ -129,7 +129,7 @@ static auto psi = [](Eigen::Vector2d x) -> double {
     return 1.0;
   else if (x[0] < 2)
     return 0.0;
-  const double p = std::cos((3.0 - x[0]) * M_PI / 2);
+  const double p = std::cos((3.0 - x[0]) * lf::base::kPi / 2);
   return (p * p);
 };
 
@@ -137,8 +137,8 @@ static auto psi = [](Eigen::Vector2d x) -> double {
 static auto psi_grad = [](Eigen::Vector2d x) -> Eigen::Vector2d {
   double gx = 0.0;
   if ((x[0] > 2.0) && (x[0] < 3.0)) {
-    const double a = (3.0 - x[0]) * M_PI / 2;
-    gx = M_PI * std::cos(a) * std::sin(a);
+    const double a = (3.0 - x[0]) * lf::base::kPi / 2;
+    gx = lf::base::kPi * std::cos(a) * std::sin(a);
   }
   return Eigen::Vector2d(gx, 0.0);
 };

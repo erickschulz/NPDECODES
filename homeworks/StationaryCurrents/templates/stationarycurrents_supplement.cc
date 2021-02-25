@@ -6,8 +6,9 @@
  */
 
 #include "stationarycurrents_supplement.h"
+
 #include "stationarycurrents.h"
 
 namespace dmxbc {
 
-} // namespace dmxbc
+}  // namespace dmxbc

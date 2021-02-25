@@ -8,17 +8,15 @@
 
 #include "../stableevaluationatapoint.h"
 
-#include <cmath>
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
+#include <gtest/gtest.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 
-#include <gtest/gtest.h>
+#include <Eigen/Core>
+#include <cmath>
+#include <iostream>
+#include <memory>
 
 TEST(StableEvaluationAtAPoint, PSL) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);

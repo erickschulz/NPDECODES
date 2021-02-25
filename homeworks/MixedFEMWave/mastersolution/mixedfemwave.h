@@ -9,15 +9,15 @@
 #ifndef MIXEDFEMWAVE_H_
 #define MIXEDFEMWAVE_H_
 
-#include <cmath>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/LU>
+#include <cmath>
 
 namespace MixedFEMWave {
 
@@ -27,9 +27,9 @@ lf::quad::QuadRule make_TriaQR_TrapezoidalRule();
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FFUNCTION>
-Eigen::VectorXd
-computeRHS(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
-           FFUNCTION &&f, double t) {
+Eigen::VectorXd computeRHS(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
+    FFUNCTION &&f, double t) {
   // TOOLS AND DATA
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh_V{fe_space_V->LocGlobMap()};
@@ -80,8 +80,8 @@ computeRHS(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
 
 // Auxiliary function: Determine combined areas of cells adjacent to the nodes
 // of a mesh
-lf::mesh::utils::CodimMeshDataSet<double>
-areasOfAdjacentCells(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
+lf::mesh::utils::CodimMeshDataSet<double> areasOfAdjacentCells(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 // Another way to implement the function: used for debugging
 /* SAM_LISTING_BEGIN_4 */
@@ -114,7 +114,7 @@ Eigen::VectorXd computeRHS_alt(
     // vector to zero
     if (bd_node_flags(*node)) {
       rhs_vec[dof_no] = 0.0;
-    } else { // Interior node
+    } else {  // Interior node
       // Obtain position vector of node
       const Eigen::Vector2d node_pos{
           lf::geometry::Corners(*(node->Geometry())).col(0)};
@@ -132,9 +132,9 @@ Eigen::SparseMatrix<double> computeMQ(const lf::assemble::DofHandler &dofh_Q);
 
 /* SAM_LISTING_BEGIN_6 */
 template <typename RHOFUNCTION>
-Eigen::SparseMatrix<double>
-computeMV(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
-          RHOFUNCTION &&rho) {
+Eigen::SparseMatrix<double> computeMV(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
+    RHOFUNCTION &&rho) {
   // TOOLS AND DATA
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_V->Mesh();
   const lf::assemble::DofHandler &dofh_V{fe_space_V->LocGlobMap()};
@@ -204,7 +204,7 @@ Eigen::SparseMatrix<double> computeMV_alt(
 /* SAM_LISTING_END_7 */
 
 class BElemMatProvider {
-public:
+ public:
   explicit BElemMatProvider() = default;
   virtual bool isActive(const lf::mesh::Entity & /*cell*/) { return true; }
   Eigen::Matrix<double, 2, 3> Eval(const lf::mesh::Entity &tria);
@@ -257,10 +257,10 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> leapfrogMixedWave(
   Eigen::VectorXd mu;
   Eigen::VectorXd kappa;
   std::cout << "Evolution using the leapfrog timestepping scheme." << std::endl;
-  Eigen::VectorXd mu_cur = mu_init;       // $\vec{\mubf}^{(j)}$
-  Eigen::VectorXd kappa_cur = kappa_init; // $\vec{\kappabf}^{(j+\frac12)}$
-  Eigen::VectorXd mu_next;                // $\vec{\mubf}^{(j+1)}$
-  Eigen::VectorXd kappa_next;             // $\vec{\kappabf}^{(j+\frac32)}$
+  Eigen::VectorXd mu_cur = mu_init;        // $\vec{\mubf}^{(j)}$
+  Eigen::VectorXd kappa_cur = kappa_init;  // $\vec{\kappabf}^{(j+\frac12)}$
+  Eigen::VectorXd mu_next;                 // $\vec{\mubf}^{(j+1)}$
+  Eigen::VectorXd kappa_next;              // $\vec{\kappabf}^{(j+\frac32)}$
   Eigen::VectorXd kappa_avg;
   for (int j = 0; j < nb_timesteps; j++) {
     // Right hand side vector $\vec{\varphibf}(\tau(j+\frac12))$
@@ -281,13 +281,13 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> leapfrogMixedWave(
     // Prepare next timestep
     mu_cur = mu_next;
     kappa_cur = kappa_next;
-  } // end timestepping loop
+  }  // end timestepping loop
   mu = mu_cur;
   kappa = kappa_avg;
   return {mu, kappa};
 }
 /* SAM_LISTING_END_L */
 
-} // namespace MixedFEMWave
+}  // namespace MixedFEMWave
 
 #endif

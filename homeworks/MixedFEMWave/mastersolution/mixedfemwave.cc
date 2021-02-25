@@ -37,8 +37,8 @@ lf::quad::QuadRule make_TriaQR_TrapezoidalRule() {
 /* SAM_LISTING_BEGIN_5 */
 // Auxiliary function: Determine combined areas of cells adjacent to the nodes
 // of a mesh
-lf::mesh::utils::CodimMeshDataSet<double>
-areasOfAdjacentCells(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
+lf::mesh::utils::CodimMeshDataSet<double> areasOfAdjacentCells(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   const lf::mesh::Mesh &mesh{*mesh_p};
   // The areas are stored in a node-indexed (codim == 2) array
   lf::mesh::utils::CodimMeshDataSet<double> areas(mesh_p, 2, 0.0);
@@ -95,7 +95,7 @@ Eigen::SparseMatrix<double> computeB(const lf::assemble::DofHandler &dofh_V,
   const lf::uscalfe::size_type N_dofs_Q(dofh_Q.NumDofs());
   const lf::uscalfe::size_type N_dofs_V(dofh_V.NumDofs());
   // Sparse matrix to be returned
-  Eigen::SparseMatrix<double> B(N_dofs_Q,N_dofs_V);
+  Eigen::SparseMatrix<double> B(N_dofs_Q, N_dofs_V);
 
   // ASSEMBLY
   lf::assemble::COOMatrix<double> B_COO(N_dofs_Q, N_dofs_V);
@@ -121,8 +121,8 @@ Eigen::SparseMatrix<double> computeB(const lf::assemble::DofHandler &dofh_V,
 /* SAM_LISTING_END_9 */
 
 /* SAM_LISTING_BEGIN_B */
-Eigen::Matrix<double, 2, 3>
-BElemMatProvider::Eval(const lf::mesh::Entity &tria) {
+Eigen::Matrix<double, 2, 3> BElemMatProvider::Eval(
+    const lf::mesh::Entity &tria) {
   // Obtain vertex coordinates of the triangle in a 2x3 matrix
   const auto vertices = lf::geometry::Corners(*(tria.Geometry()));
   LF_ASSERT_MSG((vertices.cols() == 3) && (vertices.rows() == 2),
@@ -132,13 +132,13 @@ BElemMatProvider::Eval(const lf::mesh::Entity &tria) {
   Eigen::Matrix<double, 2, 3> elmat;
   // Compute the gradients of the barycentric coordinate functions
   // and store them in the columns of a 2x3 matrix grad\_bary\_coords
-  Eigen::Matrix<double, 3, 3> X; // temporary matrix
+  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
-  X.block<3, 2>(0, 1) = vertices.transpose(); // area of triangular cell
+  X.block<3, 2>(0, 1) = vertices.transpose();  // area of triangular cell
   const double area = 0.5 * std::abs(X.determinant());
   // This matrix contains the barycentric coordinate functions in its columns
-  const Eigen::Matrix<double, 2, 3> grad_bary_coords{
-      X.inverse().block<2, 3>(1, 0)};
+  auto inv = X.inverse().eval();
+  const Eigen::Matrix<double, 2, 3> grad_bary_coords{inv.block<2, 3>(1, 0)};
   // Since the local shape function for the finite element space $Q_h$ are
   // Cartesian coordinate vectors, we just need to scale the components of the
   // gradients of the barycentric coordinate functions with the area of the
@@ -148,4 +148,4 @@ BElemMatProvider::Eval(const lf::mesh::Entity &tria) {
 }
 /* SAM_LISTING_END_B */
 
-} // namespace MixedFEMWave
+}  // namespace MixedFEMWave

@@ -9,13 +9,12 @@
 #ifndef GAUSSLOBATTOPARABOLIC_S_H_
 #define GAUSSLOBATTOPARABOLIC_S_H_
 
-#include <functional>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
+#include <functional>
+
 namespace GaussLobattoParabolic {
 
-} // namespace GaussLobattoParabolic
+}  // namespace GaussLobattoParabolic

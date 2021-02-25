@@ -9,15 +9,15 @@
 #ifndef MIXEDFEMWAVE_H_
 #define MIXEDFEMWAVE_H_
 
-#include <cmath>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/LU>
+#include <cmath>
 
 namespace MixedFEMWave {
 
@@ -27,9 +27,9 @@ lf::quad::QuadRule make_TriaQR_TrapezoidalRule();
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FFUNCTION>
-Eigen::VectorXd
-computeRHS(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
-           FFUNCTION &&f, double t) {
+Eigen::VectorXd computeRHS(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
+    FFUNCTION &&f, double t) {
   // TOOLS AND DATA
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh_V{fe_space_V->LocGlobMap()};
@@ -84,9 +84,9 @@ Eigen::SparseMatrix<double> computeMQ(const lf::assemble::DofHandler &dofh_Q);
 
 /* SAM_LISTING_BEGIN_6 */
 template <typename RHOFUNCTION>
-Eigen::SparseMatrix<double>
-computeMV(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
-          RHOFUNCTION &&rho) {
+Eigen::SparseMatrix<double> computeMV(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
+    RHOFUNCTION &&rho) {
   // TOOLS AND DATA
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_V->Mesh();
   const lf::assemble::DofHandler &dofh_V{fe_space_V->LocGlobMap()};
@@ -103,7 +103,7 @@ computeMV(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_V,
 
 
 class BElemMatProvider {
-public:
+ public:
   explicit BElemMatProvider() = default;
   virtual bool isActive(const lf::mesh::Entity & /*cell*/) { return true; }
   Eigen::Matrix<double, 2, 3> Eval(const lf::mesh::Entity &tria);
@@ -148,6 +148,6 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> leapfrogMixedWave(
 }
 /* SAM_LISTING_END_L */
 
-} // namespace MixedFEMWave
+}  // namespace MixedFEMWave
 
 #endif

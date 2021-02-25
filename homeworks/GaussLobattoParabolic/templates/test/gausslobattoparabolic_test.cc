@@ -6,17 +6,15 @@
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include <cmath>
-#include <memory>
-
-#include <Eigen/Core>
+#include "../gausslobattoparabolic.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../gausslobattoparabolic.h"
+#include <Eigen/Core>
+#include <cmath>
+#include <memory>
 
 namespace GaussLobattoParabolic::test {
 
@@ -24,9 +22,14 @@ Eigen::Matrix<double, 10, 10> getM() {
   int N = 10;
   Eigen::MatrixXd M = Eigen::MatrixXd::Zero(N, N);
 
-  M.row(0) << 0.888888888888889, 0.0902777777777778, 0.131944444444444, 0.0277777777777778, 0.0, 0.0, 0.0416666666666667, 0.215277777777778, 0.25, 0.1875;
-  M.row(1) << 0.0902777777777778, 0.375, 0.0833333333333334, 0.111111111111111, 0.104166666666667, 0.0, 0.0, 0.0, 0.0, 0.0277777777777778;
-  M.row(2) << 0.131944444444444, 0.0833333333333334, 0.625, 0.0, 0.104166666666667, 0.145833333333333, 0.159722222222222, 0.0416666666666667, 0.0, 0.0;
+  M.row(0) << 0.888888888888889, 0.0902777777777778, 0.131944444444444,
+      0.0277777777777778, 0.0, 0.0, 0.0416666666666667, 0.215277777777778, 0.25,
+      0.1875;
+  M.row(1) << 0.0902777777777778, 0.375, 0.0833333333333334, 0.111111111111111,
+      0.104166666666667, 0.0, 0.0, 0.0, 0.0, 0.0277777777777778;
+  M.row(2) << 0.131944444444444, 0.0833333333333334, 0.625, 0.0,
+      0.104166666666667, 0.145833333333333, 0.159722222222222,
+      0.0416666666666667, 0.0, 0.0;
 
   return M;
 }
@@ -35,9 +38,13 @@ Eigen::Matrix<double, 10, 10> getA() {
   int N = 10;
   Eigen::MatrixXd A = Eigen::MatrixXd::Zero(N, N);
 
-  A.row(0) << 4.16763791763792, -1.11363636363636, -0.637820512820513, 0.0757575757575758, 0.0, 0.0, -0.64957264957265, -0.637820512820513, -1.08333333333333, -0.121212121212121;
-  A.row(1) << -1.11363636363636, 4.29545454545455, -0.75, -0.363636363636364, -0.75, 0.0, 0.0, 0.0, 0.0, -1.31818181818182;
-  A.row(2) << -0.637820512820513, -0.75, 3.58173076923077, 0.0, -0.75, -0.75, -0.525641025641026, -0.168269230769231, 0.0, 0.0;
+  A.row(0) << 4.16763791763792, -1.11363636363636, -0.637820512820513,
+      0.0757575757575758, 0.0, 0.0, -0.64957264957265, -0.637820512820513,
+      -1.08333333333333, -0.121212121212121;
+  A.row(1) << -1.11363636363636, 4.29545454545455, -0.75, -0.363636363636364,
+      -0.75, 0.0, 0.0, 0.0, 0.0, -1.31818181818182;
+  A.row(2) << -0.637820512820513, -0.75, 3.58173076923077, 0.0, -0.75, -0.75,
+      -0.525641025641026, -0.168269230769231, 0.0, 0.0;
 
   for (int i = 3; i < N; ++i) A(i, i) = 1.0;
 
@@ -45,8 +52,10 @@ Eigen::Matrix<double, 10, 10> getA() {
 }
 
 TEST(GaussLobattoParabolic, initMbig) {
-  std::shared_ptr<lf::mesh::Mesh> mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
-  auto fe_space = std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  std::shared_ptr<lf::mesh::Mesh> mesh_p =
+      lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+  auto fe_space =
+      std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
   Eigen::MatrixXd M = initMbig(fe_space).makeDense();
 
@@ -64,8 +73,10 @@ TEST(GaussLobattoParabolic, initMbig) {
 }
 
 TEST(GaussLobattoParabolic, initAbig) {
-  std::shared_ptr<lf::mesh::Mesh> mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
-  auto fe_space = std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  std::shared_ptr<lf::mesh::Mesh> mesh_p =
+      lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+  auto fe_space =
+      std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
   Eigen::MatrixXd A = initAbig(fe_space).makeDense();
 
@@ -83,10 +94,13 @@ TEST(GaussLobattoParabolic, initAbig) {
 }
 
 TEST(GaussLobattoParabolic, RHSProvider) {
-  std::shared_ptr<lf::mesh::Mesh> mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
-  auto fe_space = std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  std::shared_ptr<lf::mesh::Mesh> mesh_p =
+      lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+  auto fe_space =
+      std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
-  RHSProvider rhs_provider(fe_space->LocGlobMap(), (double(*)(double))&std::sin);
+  RHSProvider rhs_provider(fe_space->LocGlobMap(),
+                           (double (*)(double)) & std::sin);
 
   Eigen::VectorXd phi = rhs_provider(1.0);
   int N = phi.size();
@@ -96,7 +110,9 @@ TEST(GaussLobattoParabolic, RHSProvider) {
 
   if (N == N_ref) {
     Eigen::VectorXd phi_ref(N_ref);
-    phi_ref << 0.0, 0.0, 0.0, 0.841470984807897, 0.841470984807897, 0.841470984807897, 0.841470984807897, 0.841470984807897, 0.841470984807897, 0.841470984807897;
+    phi_ref << 0.0, 0.0, 0.0, 0.841470984807897, 0.841470984807897,
+        0.841470984807897, 0.841470984807897, 0.841470984807897,
+        0.841470984807897, 0.841470984807897;
 
     double tol = 1.0e-8;
     double error = (phi - phi_ref).lpNorm<Eigen::Infinity>();
@@ -105,8 +121,10 @@ TEST(GaussLobattoParabolic, RHSProvider) {
 }
 
 TEST(GaussLobattoParabolic, evolveIBVPGaussLobatto) {
-  std::shared_ptr<lf::mesh::Mesh> mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh();
-  auto fe_space = std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  std::shared_ptr<lf::mesh::Mesh> mesh_p =
+      lf::mesh::test_utils::GenerateHybrid2DTestMesh();
+  auto fe_space =
+      std::make_shared<const lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
   double T = 1.0;
   unsigned int M = 100;
@@ -118,7 +136,8 @@ TEST(GaussLobattoParabolic, evolveIBVPGaussLobatto) {
 
   int N = 10;
   Eigen::VectorXd mu_ref(N);
-  mu_ref << 0.606154338132087, 0.732422646475846, 0.655377750264433, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+  mu_ref << 0.606154338132087, 0.732422646475846, 0.655377750264433, 1.0, 1.0,
+      1.0, 1.0, 1.0, 1.0, 1.0;
 
   double tol = 1.0e-6;
   double error = (mu - mu_ref).lpNorm<Eigen::Infinity>();
