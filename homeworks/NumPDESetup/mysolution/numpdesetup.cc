@@ -18,7 +18,6 @@ Eigen::VectorXd dummyFunction(double x, int n) {
   // Appears only in mysolution and templates
   std::cout << "NumPDESetup: student solution code" << std::endl;
   // This is not a meaningful solution
-  // Added code
   std::cout << "Arguments: x= " << x << ", n = " << n << std::endl;
   return Eigen::Vector2d::Zero();
 }
