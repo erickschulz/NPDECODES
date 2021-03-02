@@ -7,6 +7,7 @@ project(homeworks)
 include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
 
+add_subdirectory(DebuggingWithLLDB)
 add_subdirectory(1DWaveAbsorbingBC)
 add_subdirectory(AdvectionFV2D)
 add_subdirectory(AvgValBoundary)
@@ -43,7 +44,7 @@ add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumannProblem)
 add_subdirectory(SDIRKMethodOfLines)
 add_subdirectory(SimpleLinearFiniteElements)
-# add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
+add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
 add_subdirectory(SymplecticTimesteppingWaves)
 add_subdirectory(TestQuadratureRules)
 add_subdirectory(TransformationOfGalerkinMatrices)

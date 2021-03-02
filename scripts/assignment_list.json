@@ -4,7 +4,8 @@
   "homework_dir" : "../homeworks/",
 
   "Problems" :
-  [
+    [
+    "DebuggingWithLLDB/",	
     "1DWaveAbsorbingBC/",
     "AdvectionFV2D/",
     "AvgValBoundary/",

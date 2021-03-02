@@ -8,3 +8,7 @@
 
 #include <Eigen/Core>
 #include <iostream>
+
+#include "XXX.h"
+
+int main(int /*argc*/, char** /*argv*/) { return 0; }

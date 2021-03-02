@@ -6,6 +6,7 @@ project(developers)
 include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
 
+add_subdirectory(DebuggingWithLLDB)
 add_subdirectory(1DWaveAbsorbingBC)
 add_subdirectory(AdvectionFV2D) # under construction
 add_subdirectory(AvgValBoundary)

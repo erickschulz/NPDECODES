@@ -17,6 +17,8 @@ namespace NumPDESetup {
 Eigen::VectorXd dummyFunction(double x, int n) {
   // Appears only in mysolution and templates
   std::cout << "NumPDESetup: student solution code" << std::endl;
+  // This is not a meaningful solution
+  // Please remove this line and put your code here!
   return Eigen::Vector2d::Zero();
 }
 /* SAM_LISTING_END_1 */
