@@ -14,7 +14,7 @@
 #include "ode45.h"
 
 /* SAM_LISTING_BEGIN_0 */
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int /*argc*/, char** /*argv*/) {
   // Types to be used for a scalar ODE with state space \Blue{$\bbR$}
   using StateType = double;
   using RhsType = std::function<StateType(StateType)>;
@@ -34,7 +34,8 @@ int main(int /*argc*/, char ** /*argv*/) {
   // Output information accumulation during numerical integration
   integrator.options.do_statistics = true;
   integrator.print();
-
+  // Output norm of discretization error in nodes of adaptively generated
+  // temporal mesh
   for (auto state : states) {
     std::cout << "t = " << state.second << ", y = " << state.first
               << ", |err| = " << fabs(state.first - y(state.second))
