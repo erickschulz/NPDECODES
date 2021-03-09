@@ -10,12 +10,14 @@
 
 namespace SimpleLinearFiniteElements {
 
+/* SAM_LISTING_BEGIN_9 */
 double getArea(const Eigen::Matrix<double, 2, 3> &triangle) {
   return std::abs(
       0.5 *
       ((triangle(0, 1) - triangle(0, 0)) * (triangle(1, 2) - triangle(1, 1)) -
        (triangle(0, 2) - triangle(0, 1)) * (triangle(1, 1) - triangle(1, 0))));
 }
+/* SAM_LISTING_END_9 */
 
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(
     const Eigen::Matrix<double, 2, 3> &triangle) {
