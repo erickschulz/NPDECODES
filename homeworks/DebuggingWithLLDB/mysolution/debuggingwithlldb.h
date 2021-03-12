@@ -17,5 +17,5 @@
 namespace DebuggingWithLLDB {
 /** @brief LehrFEM++ demo function: reading and outputting a mesh
  */
-  void ReadAndOutputMesh(const char *filename);
+void ReadAndOutputMesh(const char *filename);
 }  // namespace DebuggingWithLLDB
