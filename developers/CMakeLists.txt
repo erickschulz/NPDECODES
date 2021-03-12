@@ -26,6 +26,7 @@ add_subdirectory(FiniteVolumeRobin)
 add_subdirectory(FiniteVolumeSineConsLaw)
 #add_subdirectory(FisherKPP) # missing unit tests
 add_subdirectory(IncidenceMatrices)
+add_subdirectory(InitCondLV)
 add_subdirectory(IPDGFEM)
 #add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
 add_subdirectory(LengthOfBoundary)
