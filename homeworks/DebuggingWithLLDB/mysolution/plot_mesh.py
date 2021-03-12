@@ -3,8 +3,8 @@ from sys import argv
 import matplotlib.pyplot as plt
 import numpy as np
 
-if len(argv) < 2:
-    print('usage: python plot_mesh.py mesh.csv')
+if len(argv) < 3:
+    print('usage: python plot_mesh.py mesh.csv plot.eps')
     exit(-1)
 
 vertices = []
@@ -100,4 +100,4 @@ plot_cells(triangles)
 plot_cells(quads)
 
 plt.axis('off')
-plt.show()
+plt.savefig(argv[2])
