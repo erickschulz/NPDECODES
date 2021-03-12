@@ -48,7 +48,8 @@ void ReadAndOutputMesh(const char *filename) {
     // Wite mesh data to file for visualization with Python script
     lf::io::writeMatplotlib(mesh, "ljoint.csv");
     std::cout << "Wrote " CURRENT_BINARY_DIR "/ljoint.csv" << std::endl;
-    std::system("python3 " CURRENT_SOURCE_DIR "/plot_mesh.py " CURRENT_BINARY_DIR
+    std::system("python3 " CURRENT_SOURCE_DIR
+                "/plot_mesh.py " CURRENT_BINARY_DIR
                 "/ljoint.csv " CURRENT_BINARY_DIR "/mesh.eps");
   }
 }
