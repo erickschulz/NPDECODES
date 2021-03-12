@@ -53,6 +53,7 @@ add_subdirectory(SimpleLinearFiniteElements)
 add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
 add_subdirectory(SymplecticTimesteppingWaves)
 add_subdirectory(SystemODE)
+add_subdirectory(TaylorODE)
 add_subdirectory(TestQuadratureRules)
 add_subdirectory(TransformationOfGalerkinMatrices)
 add_subdirectory(TranspSemiLagr)
