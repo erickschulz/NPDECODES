@@ -1,7 +1,6 @@
+#include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
-
-#include <Eigen/Dense>
 
 #include "contourplot.h"
 
