@@ -16,12 +16,13 @@ namespace NLMatODE {
 
 /* SAM_LISTING_BEGIN_0 */
 // Solver for polynomial linear least squares data fitting problem
-// data points passed in t and y, 'order' = degree of polynomial 
-Eigen::VectorXd polyfit(const Eigen::VectorXd& t, const Eigen::VectorXd& y, const unsigned& order) {
+// data points passed in t and y, 'order' = degree of polynomial
+Eigen::VectorXd polyfit(const Eigen::VectorXd& t, const Eigen::VectorXd& y,
+                        const unsigned& order) {
   // A = [1 t_1 t_1^2 ... ]
   //     [ ...        ... ]
   //     [1 t_n t_n^2 ... ]
-  Eigen::MatrixXd A = Eigen::MatrixXd::Ones(t.size(),order+1);
+  Eigen::MatrixXd A = Eigen::MatrixXd::Ones(t.size(), order + 1);
   for (unsigned j = 1; j <= order; ++j) {
     A.col(j) = A.col(j - 1).cwiseProduct(t);
   }
@@ -33,4 +34,4 @@ Eigen::VectorXd polyfit(const Eigen::VectorXd& t, const Eigen::VectorXd& y, cons
 
 }  // namespace NLMatODE
 
-# endif  // #define POLYFIT_H_
+#endif  // #define POLYFIT_H_

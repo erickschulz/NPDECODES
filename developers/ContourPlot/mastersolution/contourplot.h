@@ -1,9 +1,8 @@
+#include <Eigen/Dense>
 #include <cmath>
 #include <limits>
 #include <utility>
 #include <vector>
-
-#include <Eigen/Dense>
 
 #include "ode45.h"
 

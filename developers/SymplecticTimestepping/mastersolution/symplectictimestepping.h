@@ -1,8 +1,6 @@
+#include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
-
-#include <Eigen/Dense>
-
 
 namespace SymplecticTimestepping {
 
@@ -29,7 +27,7 @@ void sympTimestep(double tau, Eigen::Vector2d &pq_j) {
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d sympTimesteppingHarmonicOscillatorODE(unsigned int m) {
   Eigen::Vector2d approx_sol;
-  approx_sol << 0.0, 1.0; // initial conditions
+  approx_sol << 0.0, 1.0;  // initial conditions
   double tau = 2.0 * PI / m;
   for (int i = 0; i < m; i++) {
     sympTimestep(tau, approx_sol);
@@ -39,12 +37,12 @@ Eigen::Vector2d sympTimesteppingHarmonicOscillatorODE(unsigned int m) {
 
 void sympTimesteppingODETest() {
   // TO DO: (0-5.b)
-  int nIter = 7;  // total number of iterations
-  unsigned int m; // number of equidistant steps
+  int nIter = 7;   // total number of iterations
+  unsigned int m;  // number of equidistant steps
   // Evaluating the error at the final step between the approx solutions as
   // given by the symplectic method and the exact solution computed from
   // the anlytic formula.
-  double errors[nIter]; // errors vector for all approx. sols
+  double errors[nIter];  // errors vector for all approx. sols
   for (int k = 0; k < nIter; k++) {
     m = 10 * std::pow(2, k);
 #if SOLUTION
@@ -84,8 +82,8 @@ Eigen::MatrixXd simulateHamiltonianDynamics(const Eigen::VectorXd &p0,
   Eigen::VectorXd pj(p0), qj(q0);
   PQ.col(0) << pj, qj;
 #if SOLUTION
-  for (int j = 1; j <= M; j++) {  // integrate
-    for (int k = 0; k < 3; k++) { // one step
+  for (int j = 1; j <= M; j++) {   // integrate
+    for (int k = 0; k < 3; k++) {  // one step
       // f(q) = - 4 * |q|^2 * q
       pj -= tau * b(k) * 4. * qj.squaredNorm() * qj;
       // g(p) = p
