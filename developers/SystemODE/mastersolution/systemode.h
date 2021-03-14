@@ -94,12 +94,13 @@ double testcvgRK4() {
 #if SOLUTION
   // For reference, calculate solution using $N=2^{12}$ steps.
   int N_exact = std::pow(2, 12);
-  double h = T / N_exact; // step size
+  double h = T / N_exact;  // step size
   Eigen::VectorXd yT_exact = y0;
   for (int step = 0; step < N_exact; step++) {
     // yT_exact is the solution at time t=h*step
     Eigen::VectorXd y_tmp;
-    rk4step<std::function<Eigen::VectorXd(Eigen::VectorXd)>, Eigen::VectorXd>(f, h, yT_exact, y_tmp);
+    rk4step<std::function<Eigen::VectorXd(Eigen::VectorXd)>, Eigen::VectorXd>(
+        f, h, yT_exact, y_tmp);
     yT_exact = y_tmp;
   }
 
@@ -107,14 +108,15 @@ double testcvgRK4() {
   int kmax = 10;
   Eigen::VectorXd Error(kmax);
   for (int k = 0; k < kmax; k++) {
-    int N = std::pow(2, k + 1); // number of steps
-    double h = T / N;           // step size
+    int N = std::pow(2, k + 1);  // number of steps
+    double h = T / N;            // step size
     Eigen::VectorXd yT = y0;
     // Take N RK4 steps:
     for (int step = 0; step < N; step++) {
       // yT is the solution at time t=h*step
       Eigen::VectorXd y_tmp;
-      rk4step<std::function<Eigen::VectorXd(Eigen::VectorXd)>, Eigen::VectorXd>(f, h, yT, y_tmp);
+      rk4step<std::function<Eigen::VectorXd(Eigen::VectorXd)>, Eigen::VectorXd>(
+          f, h, yT, y_tmp);
       yT = y_tmp;
     }
     Error(k) = (yT - yT_exact).norm();
@@ -123,7 +125,8 @@ double testcvgRK4() {
 
   // Estimate convergence rate
   // Get natural logarithm of N by log(N) = log(2)*log2(N).
-  Eigen::VectorXd logN = std::log(2) * Eigen::VectorXd::LinSpaced(kmax, 1, kmax);
+  Eigen::VectorXd logN =
+      std::log(2) * Eigen::VectorXd::LinSpaced(kmax, 1, kmax);
   Eigen::VectorXd coeffs = polyfit(logN, Error.array().log(), 1);
   conv_rate = -coeffs(0);
 #else

@@ -26,7 +26,9 @@ TEST(NLMatODE, matode) {
   Eigen::Matrix3d result = matode(getY0(), T);
 
   Eigen::Matrix3d reference;
-  reference << 1.11716931299301, 1.06478104796037, -0.317650596136641, 0.858539684847355, 5.24544384944894, 2.58701323916895, 0.121829194605173, 2.5202302578692, 1.09839006062383;
+  reference << 1.11716931299301, 1.06478104796037, -0.317650596136641,
+      0.858539684847355, 5.24544384944894, 2.58701323916895, 0.121829194605173,
+      2.5202302578692, 1.09839006062383;
 
   double tol = 1.0e-8;
   double error = (reference - result).lpNorm<Eigen::Infinity>();
@@ -34,7 +36,7 @@ TEST(NLMatODE, matode) {
 }
 
 TEST(NLMatODE, checkinvariant) {
-	bool result = checkinvariant(getY0(), T); // ode45 does not preserve the norm
+  bool result = checkinvariant(getY0(), T);  // ode45 does not preserve the norm
   ASSERT_TRUE(!result);
 }
 

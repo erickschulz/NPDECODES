@@ -1,6 +1,5 @@
 #include <Eigen/Core>
 #include <Eigen/QR>
-
 #include <iomanip>
 #include <iostream>
 #include <limits>

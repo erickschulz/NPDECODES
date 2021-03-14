@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "../rkintegrator.h"
-
-#include <vector>
-
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
+#include <vector>
+
+#include "../rkintegrator.h"
 
 namespace RK3Prey::test {
 
@@ -22,10 +21,12 @@ TEST(RK3Prey, RKIntegrator) {
   Eigen::Vector2d b(0.5, 0.5);
   RKIntegrator<Eigen::VectorXd> rkintegrator(A, b);
 
-	double T = 2.0;
+  double T = 2.0;
   int N = 10;
   Eigen::Vector2d y0(-1.0, 1.0);
-  auto f = [] (Eigen::VectorXd y) { return Eigen::Vector2d(-0.5 * y(0), y(0) * y(1)); };
+  auto f = [](Eigen::VectorXd y) {
+    return Eigen::Vector2d(-0.5 * y(0), y(0) * y(1));
+  };
   std::vector<Eigen::VectorXd> result = rkintegrator.solve(f, T, y0, N);
 
   std::vector<Eigen::VectorXd> reference(N + 1);
