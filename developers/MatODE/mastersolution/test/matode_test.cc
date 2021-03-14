@@ -1,8 +1,8 @@
 /**
- * @file burgersequation_test_mastersolution.cc
- * @brief NPDE homework BurgersEquation code
+ * @file matode_test.cc
+ * @brief NPDE homework MatODE code
  * @author Oliver Rietmann
- * @date 15.04.2019
+ * @date 14.03.2021
  * @copyright Developed at ETH Zurich
  */
 
@@ -18,10 +18,6 @@
 #include <Eigen/Core>
 
 namespace MatODE::test {
-
-const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
-
-// const std::vector<double> h = {0.05, 0.1, 0.3, 0.5, 1.0};
 
 std::vector<Eigen::Matrix3d> applyTimestepper(std::function<Eigen::Matrix3d(Eigen::Matrix3d, Eigen::Matrix3d, double)> eulstep, std::vector<double> h) {
   Eigen::Matrix3d A;
