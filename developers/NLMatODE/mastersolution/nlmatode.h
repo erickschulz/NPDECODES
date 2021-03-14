@@ -19,7 +19,7 @@ Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
   // TO DO (12-5.a): use the ode45 class to find an approximation
   // of the matrix IVP $Y' = -(Y-Y')*Y$ at time $T$
   Eigen::MatrixXd YT;
-  // START
+#if SOLUTION
   // Define the RHS
   auto F = [](const Eigen::MatrixXd &M) { return -(M - M.transpose()) * M; };
   ode45<Eigen::MatrixXd> O(F);
@@ -31,7 +31,11 @@ Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
   // Return only matrix at $T$, (solution is vector
   // of pairs $(y(t_k), t_k)$ for each step k
   YT = O.solve(Y0, T).back().first;
-  // END
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return YT;
 }
 /* SAM_LISTING_END_1 */
@@ -41,16 +45,20 @@ Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
 /* SAM_LISTING_BEGIN_2 */
 bool checkinvariant(const Eigen::MatrixXd &M, double T) {
   // TO DO (12-5.c): check if $Y'*Y$ is preserved at the time $T$ by matode.
-  // START
+#if SOLUTION
   Eigen::MatrixXd N = matode(M, T);
 
   if ((N.transpose() * N - M.transpose() * M).norm() <
       10 * std::numeric_limits<double>::epsilon() * M.norm()) {
     return true;
-  } else {
-    return false;
   }
-  // END
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+
+  return false;
 }
 /* SAM_LISTING_END_2 */
 
@@ -59,7 +67,7 @@ double cvgDiscreteGradientMethod(void) {
   // TO DO (12-5.d): compute the fitted convergence rate of the Discrete
   // gradient method. Also tabulate the values M and the errors.
   double conv_rate;
-  // START
+#if SOLUTION
   double T = 1.0;
   // initial value
   Eigen::MatrixXd Y0 = Eigen::MatrixXd::Zero(5, 5);
@@ -99,7 +107,11 @@ double cvgDiscreteGradientMethod(void) {
   // compute fitted rate
   Eigen::VectorXd coeffs = polyfit(MM.log(), err.log(), 1);
   conv_rate = -coeffs(0);
-  // END
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return conv_rate;
 }
 /* SAM_LISTING_END_3 */
