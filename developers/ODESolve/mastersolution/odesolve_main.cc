@@ -1,79 +1,55 @@
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <iostream>
 #include <vector>
 
 #include "odesolve.h"
 
 int main() {
-  auto f = [](const Eigen::VectorXd &y) -> Eigen::VectorXd {
-    return Eigen::VectorXd::Ones(1) + y * y;
+  auto Psi = [] (double h, const Eigen::VectorXd & y0) -> Eigen::VectorXd { 
+    return (1+h)*y0; 
   };
-  Eigen::VectorXd y0 = Eigen::VectorXd::Zero(1);
-  double T = 1.;
-  auto y_ex = [](double t) -> Eigen::VectorXd {
-    Eigen::VectorXd y(1);
-    y << tan(t);
-    return y;
-  };
-
-  unsigned p = 1;
-
-  auto Psi = [&f](double h, const Eigen::VectorXd &y0) -> Eigen::VectorXd {
-    return y0 + h * f(y0);
-  };
-  auto PsiTilde = [&Psi, &f, &p](double h,
-                                 const Eigen::VectorXd &y0) -> Eigen::VectorXd {
-    return ODESolve::psitilde(Psi, p, h, y0);
-  };
-
-  /* SAM_LISTING_BEGIN_2 */
-  //// Subproblem d
-  std::cout << "*** SUBPROBLEM d:" << std::endl;
-
-#if SOLUTION
-  std::cout << "Error table for equidistant steps:" << std::endl;
-  std::cout << "N"
-            << "\t"
-            << "Error" << std::endl;
-  for (int N = 4; N < 4096; N = N << 1) {
-    std::vector<Eigen::VectorXd> Y = ODESolve::odeintequi(PsiTilde, T, y0, N);
-    double err = (Y.back() - y_ex(1)).norm();
-    std::cout << N << "\t" << err << std::endl;
+  
+  Eigen::VectorXd y0(1);
+  y0 << 1.0;
+  double T = 1.0;
+  // Test psitilde
+  Eigen::VectorXd y1 = ODESolve::psitilde(Psi, 1, 0.1, y0);
+  std::cout << "Test psitilde\n" << y1 << std::endl;
+  
+  std::cout << "Enter 1 to test equidistant integration\n" <<
+              "Enter 2 to test adaptive integration\n" <<
+              "Enter 0 to exit\n";
+  unsigned int flag;
+  std::cin >> flag;
+  switch (flag) {
+    case 1 : 
+    { 
+      unsigned int N = 8;
+      
+      std::cout << "Test equidistant integration" << std::endl;
+      std::vector<Eigen::VectorXd> Y1 = ODESolve::odeintequi(Psi, T, y0, N);
+      for (int i = 0; i < N; ++i) {
+         std::cout << Y1[i](0) << std::endl;
+      }
+      double rate = ODESolve::testcvpExtrapolatedEuler();
+      std::cout << "\nRate = " << rate << std::endl;
+      break;
+    }
+              
+    case 2 : 
+    {
+      std::cout << "\n\nTest adaptive integration" << std::endl;
+      std::vector<Eigen::VectorXd> mysol =
+                ODESolve::odeintssctrl(Psi, T, y0, 0.01, 1, 10e-5, 10e-5, 10e-5);
+      for (int i = 0; i < 8; ++i) {
+        std::cout << mysol[i](0) << std::endl;
+      }
+      
+      ODESolve::solveTangentIVP();
+      break;
+    }
+    default: break;
   }
-#else   // TEMPLATE
-  // TODO: determine order of convergence of PsiTilde using odeintequi
-#endif  // TEMPLATE
-        /* SAM_LISTING_END_2 */
-
-  //// Subproblem e
-  std::cout << "*** SUBPROBLEM e:" << std::endl;
-
-  double h0 = 1. / 100.;
-  std::vector<Eigen::VectorXd> Y;
-  double err = 0;
-
-#if SOLUTION
-  Y = ODESolve::odeintssctrl(Psi, T, y0, h0, p, 10e-4, 10e-4, 10e-5);
-  err = (Y.back() - y_ex(1)).norm();
-  std::cout << "Adaptive error control results:" << std::endl;
-  std::cout << "Error"
-            << "\t"
-            << "No. Steps"
-            << "\t"
-            << "y(1)"
-            << "\t"
-            << "y(ex)" << std::endl;
-  std::cout << err << "\t" << Y.size() << "\t" << Y.back() << "\t" << y_ex(1)
-            << std::endl;
-#else   // TEMPLATE
-  // TODO: uncomment following lines to test ODESolve::odeintssctrl
-//    Y = ODESolve::odeintssctrl(Psi, T, y0, h0, p, 10e-4, 10e-4, 10e-5);
-//    err = (Y.back() - y_ex(1)).norm();
-//    std::cout << "Adaptive error control results:" << std::endl;
-//    std::cout << "Error" << "\t\t" << "No. Steps" << "\t" << "y(1)" << "\t" <<
-//    "y(ex)" << std::endl; std::cout << err << "\t" << Y.size() << "\t" <<
-//    Y.back() << "\t" << y_ex(1) << std::endl;
-#endif  // TEMPLATE
 
   return 0;
 }

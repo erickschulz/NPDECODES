@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include "polyfit.h"
+
 namespace ODESolve {
 
 //! \brief Evolves the vector y0 using the evolution operator \tilde{\Psi} with
@@ -58,6 +60,55 @@ std::vector<Eigen::VectorXd> odeintequi(const DiscEvlOp& Psi, double T,
   return Y;
 }
 /* SAM_LISTING_END_1 */
+
+/* SAM_LISTING_BEGIN_2 */
+double testcvpExtrapolatedEuler(void) {
+  double conv_rate;
+  double T = 1.;
+  Eigen::VectorXd y0 = Eigen::VectorXd::Zero(1);
+  auto f = [] (const Eigen::VectorXd &y) -> Eigen::VectorXd { return Eigen::VectorXd::Ones(1) + y*y; };
+  // TO DO (12-3.d): tabulate the values of the error corresponding to 
+  // \tilde{\psi}, where \psi is the explicit Euler method. 
+  // return the empirical convergence rate using polyfit.
+  // Hint: first define a lambda for \psi. Then use psitilde to obtain a
+  // suitable input for odeintequi.
+
+#if SOLUTION
+  auto Psi = [&f] (double h, const Eigen::VectorXd & y0) -> Eigen::VectorXd { 
+    return y0 + h*f(y0); 
+  };
+  unsigned p = 1;
+  // lambda corresponding to \tilde{\psi}
+  auto PsiTilde = [&Psi, &f, &p] (double h, const Eigen::VectorXd & y0) -> Eigen::VectorXd {  
+    return psitilde(Psi, p, h, y0); 
+  };
+
+  // exact value
+  Eigen::VectorXd y_ex1(1);
+  y_ex1(0) = std::tan(T);
+  // values for convergence study
+  Eigen::ArrayXd err(11); 
+  Eigen::ArrayXd N(11);
+
+  std::cout << "Error table for equidistant steps:" << std::endl;
+  std::cout << "N" << "\t" << "Error" << std::endl;
+  for(int i = 0; i < 11; ++i ) {
+    N(i) = std::pow(2, i + 2);
+    Eigen::VectorXd yT = odeintequi(PsiTilde, T, y0, N(i)).back();
+    err(i) = (yT - y_ex1).norm();
+    std::cout << N(i) << "\t" << err(i) << std::endl;
+  }
+  // compute fitted rate
+  Eigen::VectorXd coeffs = polyfit(N.log(),err.log(),1);
+  conv_rate = -coeffs(0);
+#else
+  // ===================
+  // Your code goes here
+  // ===================
+#endif
+  return conv_rate;
+}
+/* SAM_LISTING_END_2 */
 
 //! \brief Evolves the vector y0 using the evolution operator from time 0 to T
 //! using adaptive error control \tparam DiscEvlOp type for evolution operator
@@ -117,5 +168,55 @@ std::vector<Eigen::VectorXd> odeintssctrl(const DiscEvlOp& Psi, unsigned int p,
   return Y;
 }
 /* SAM_LISTING_END_3 */
+
+/* SAM_LISTING_BEGIN_4 */
+void solveTangentIVP(void)
+{
+  auto f = [] (const Eigen::VectorXd &y) -> Eigen::VectorXd { return Eigen::VectorXd::Ones(1) + y*y; };
+  Eigen::VectorXd y0 = Eigen::VectorXd::Zero(1);
+  // TO DO (12-3.f): run the adaptive integration algorithm and plot the 
+  // resulting values of y(t). 
+  // Hint: you might use a loop to convert a std::vector<Vector> into a
+  // std::vector<double>, since each Eigen::VectorXd has size 1 
+  
+#if SOLUTION
+  double T = 1.5;
+  unsigned p = 1;
+  double h0 = 1./100.;
+  
+  auto Psi = [&f] (double h, const Eigen::VectorXd & y0) -> Eigen::VectorXd { return y0 + h*f(y0); };
+  //run adaptive algoritm
+  std::vector<Eigen::VectorXd> Y
+                = odeintssctrl(Psi, T, y0, h0, p, 10e-4, 10e-6, 10e-5);
+  // convert type for plot
+  std::vector<double> y(Y.size());
+  for (unsigned i = 0; i < Y.size(); ++i) {
+    y[i] = Y[i](0);
+  }
+  
+  /* REPLACE THIS BY A PYTHON SCRIPT !!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // plotting results
+  plt::figure();
+  plt::plot(t, y, "+", {{"label", "approx IVP"}});
+  // exact solution 
+  Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(100,0.0,T);
+  Eigen::VectorXd exact = x.array().tan();
+  plt::plot(x, exact, {{"label", "tangent"}}  );
+  plt::legend();
+
+  plt::title("Approximate vs exact solution");
+  plt::xlabel("t");
+  plt::ylabel("y");
+  plt::grid("True");
+  
+  plt::savefig("./cx_out/tangent.png");
+  */
+#else
+  // ===================
+  // Your code goes here
+  // ===================
+#endif
+}
+/* SAM_LISTING_END_4 */
 
 }  // namespace ODESolve

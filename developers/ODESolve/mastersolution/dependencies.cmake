@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/odesolve_main.cc
   ${DIR}/odesolve.h
+  ${DIR}/polyfit.h
 )
 
 set(LIBRARIES
