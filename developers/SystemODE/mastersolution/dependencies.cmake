@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/systemode_main.cc
   ${DIR}/systemode.h
+  ${DIR}/polyfit.h
   ${DIR}/rkintegrator.h
 )
 
