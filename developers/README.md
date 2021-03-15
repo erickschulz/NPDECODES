@@ -37,6 +37,10 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-11 | `StableEvaluationAtAPoint` | :heavy_check_mark: | :heavy_check_mark: |  | Need checking by Ralf |
 | 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | | check unitest |
+| 3-13 | `StationaryCurrents` |  |  | | |
+| 3-14 | `QuasiInterpolation` |  |  | | |
+| 6-1 | `MatODE` |  |  | | |
+| 6-1 | `MatODE` |  |  | | |
 | 6-1 | `MatODE` |  |  | | |
 | 6-2 | `RK3Prey` |  |  | | |
 | 6-3 | `ODESolve` |  |  | | |
