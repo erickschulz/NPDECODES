@@ -39,7 +39,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | | check unitest |
 | 3-13 | `StationaryCurrents` |  |  | | |
 | 3-14 | `QuasiInterpolation` |  |  | | |
-| 6-1 | `MatODE` | :white_check_mark: (Erick) |  | | |
+| 6-1 | `MatODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
 | 6-2 | `RK3Prey` |  |  | | |
 | 6-3 | `ODESolve` |  |  | | |
 | 6-4 | `SystemSolve` |  |  | | |
