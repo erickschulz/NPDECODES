@@ -37,24 +37,46 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-11 | `StableEvaluationAtAPoint` | :heavy_check_mark: | :heavy_check_mark: |  | Need checking by Ralf |
 | 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | | check unitest |
-| 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
-| 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
-| 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 7-1 | `ExpFittedUpwind` | :heavy_check_mark: |:heavy_check_mark: | |needs LaTeX changes |
-| 7-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
-| 7-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
-| 7-4 | `UpwindFiniteVolume` | :heavy_check_mark: | :heavy_check_mark: | | |
-| 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 6-1 | `MatODE` |  |  | | |
+| 6-2 | `RK3Prey` |  |  | | |
+| 6-3 | `ODESolve` |  |  | | |
+| 6-4 | `SystemSolve` |  |  | | |
+| 6-5 | `NLMatOde` |  |  | | |
+| 6-6 | `OrdNotAll` |  |  | | |
+| 6-7 | `InitCondLV` |  |  | | |
+| 6-8 | `TaylorODE` |  |  | | |
+| 6-9 | `ContourPlot` |  |  | | |
+| 6-10 | `SymplecticTimestepping` |  |  | | |
+| 7-1 | `ImplRK3Prey' |  |  | | |
+| 7-2 | `CrossProd` |  |  | | |
+| 7-3 | `SDIRK` |  |  | | |
+| 7-4 | `SemIMpRK` |  |  | | |
+| 7-5 | `ExponentialIntegrator` |  |  | | |
+| 7-6 | `MIRK` |  |  | | |
+| 7-7 | `StabRK3` |  |  | | |
+| 7-8 | `GradientFlow` |  |  | | |
+| 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 8-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
+| 8-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-10| `MixedFEMWave` |  |  | | |
+| 8-11 | `GaussLobattoParabolic` |  |  | | |
+| 9-1 | `ExpFittedUpwind` | :heavy_check_mark: |:heavy_check_mark: | |needs LaTeX changes |
+| 9-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
+| 9-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
+| 9-4 | `UpwindFiniteVolume` | :heavy_check_mark: | :heavy_check_mark: | | |
+| 10-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  |  |
+| 10-9 | `ConsLawWith` |  |  | | |
+| 10-10 | `FluxLimitedFV` |  |  | | |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |
