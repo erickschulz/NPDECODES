@@ -9,7 +9,7 @@
 Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t& vertices) {
   Eigen::Matrix<double, 3, 3> X;
   // Argument \texttt{vertices} passes the vertex positions of the triangle
-  // as the \textbf{rows} of a $3\times 2$-matrix, , see
+  // as the \textbf{columns} of a $2\times 3$-matrix, , see
   // \cref{cpp:getVtCoords}. The function returns the components of the
   // gradients as the \textbf{columns} of a $2\times 3$-matrix
 
