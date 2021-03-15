@@ -93,6 +93,7 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Plotting: C++ --> Python (do it in `main()`, copy-paste from `BurgersEquation`)
 * Move code to a dedicated .cc if possible (until now, they use header files only)
 * Compare to problem statement: Is everything there and is there unused code (if so, remove)
+* Add unit tests if missing, check if every function that is edited by the students has unit tests or is tested via plotting/terminal output
 
 ## General Remarks
 
