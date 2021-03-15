@@ -86,11 +86,11 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
  * Problem 7.6: Upwind Finite Volume Method ?
 
-## Porting ald NumCSE problems (deadline: end of March)
+## Porting old NumCSE problems (deadline: end of March)
 
 * Adapt Code to our guidelines
 * Make Code simpler
-* Plotting: C++ --> Python (do it in `main()`)
+* Plotting: C++ --> Python (do it in `main()`, copy-paste from `BurgersEquation`)
 * Move code to a dedicated .cc if possible (until now, they use header files only)
 * Compare to problem statement: Is everything there and is there unused code (if so, remove)
 
