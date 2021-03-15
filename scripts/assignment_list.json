@@ -57,6 +57,7 @@
     "GaussLobattoParabolic/",
     "MixedFEMWave/",
     "QuasiInterpolation/",
-    "StationaryCurrents/"
+    "StationaryCurrents/",
+    "MatODE/"
   ]
 }

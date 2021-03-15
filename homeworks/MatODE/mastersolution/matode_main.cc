@@ -19,7 +19,6 @@ int main() {
   Eigen::Matrix3d M;
   M << 8, 1, 6, 3, 5, 7, 9, 9, 2;
 
-#if SOLUTION
   // Build A
   Eigen::Matrix3d A;
   A << 0, 1, 1, -1, 0, 1, -1, -1, 0;
@@ -58,11 +57,6 @@ int main() {
               << std::endl;
   }
 
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   /* SAM_LISTING_END_6 */
 }
