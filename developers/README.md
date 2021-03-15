@@ -40,8 +40,6 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-13 | `StationaryCurrents` |  |  | | |
 | 3-14 | `QuasiInterpolation` |  |  | | |
 | 6-1 | `MatODE` |  |  | | |
-| 6-1 | `MatODE` |  |  | | |
-| 6-1 | `MatODE` |  |  | | |
 | 6-2 | `RK3Prey` |  |  | | |
 | 6-3 | `ODESolve` |  |  | | |
 | 6-4 | `SystemSolve` |  |  | | |
