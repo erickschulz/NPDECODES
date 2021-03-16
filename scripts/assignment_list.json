@@ -58,6 +58,7 @@
     "MixedFEMWave/",
     "QuasiInterpolation/",
     "StationaryCurrents/",
-    "MatODE/"
+    "MatODE/",
+    "RK3Prey"
   ]
 }
