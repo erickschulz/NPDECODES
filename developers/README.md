@@ -42,7 +42,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-1 | `MatODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
 | 6-2 | `RK3Prey` | :white_check_mark: |  | | Erick |
 | 6-3 | `ODESolve` |  |  | | |
-| 6-4 | `SystemSolve` |  |  | | |
+| 6-4 | `SystemSolve` | :white_check_mark:  |  | | Erick |
 | 6-5 | `NLMatOde` |  |  | | |
 | 6-6 | `OrdNotAll` |  |  | | |
 | 6-7 | `InitCondLV` |  |  | | |
