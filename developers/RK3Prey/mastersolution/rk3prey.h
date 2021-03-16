@@ -67,6 +67,7 @@ std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
 
   // RK looping tools
   Eigen::VectorXd incr(dim);
+  incr.setZero();
   std::vector<Eigen::VectorXd> k;
   k.reserve(s_);
 
@@ -74,13 +75,13 @@ std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
   Eigen::VectorXd step(dim);
   for (int iter = 0; iter < M; ++iter) {
     // clear looping variables
-    incr.setZero();
     step.setZero();
     k.clear();
     // explicit RK
     k.push_back(f(sol.at(iter)));
     step = step + b_(0) * k.at(0);
     for (int i = 1; i < s_; ++i) {
+      incr.setZero();
       for (int j = 0; j < i; ++j) {
         incr = incr + A_(i, j) * k.at(j);
       }

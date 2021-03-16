@@ -67,9 +67,6 @@ int main() {
     errold = err;
     std::cout << std::endl;
   }
-  std::cout.precision(dbl::max_digits10);
-  std::cout << "Solution at time T = 10: " << std::endl;
-  std::cout << sol.back() << std::endl;
 #else
   //====================
   // Your code goes here
