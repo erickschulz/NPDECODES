@@ -55,5 +55,6 @@ add_subdirectory(ZienkiewiczZhuEstimator)
 add_subdirectory(NumPDESetup)
 add_subdirectory(MatODE)
 add_subdirectory(RK3Prey)
+add_subdirectory(SystemODE)
 
 #end of CMakeLists.txt in folder 'homeworks'

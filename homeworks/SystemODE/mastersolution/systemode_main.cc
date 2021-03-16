@@ -31,7 +31,6 @@ int main() {
   double conv_rate = 0;
   std::cout << std::setw(8) << "M" << std::setw(20) << "Error" << std::endl;
 
-#if SOLUTION
   // IMPLEMENTATION OF RIGHT-HAND SIDE f
   // Build tridiagonal C matrix
   Eigen::SparseMatrix<double> C(n, n);
@@ -96,11 +95,6 @@ int main() {
       std::log(2) * Eigen::VectorXd::LinSpaced(kmax, 1, kmax);
   Eigen::VectorXd coeffs = polyfit(logM, Error.array().log(), 1);
   conv_rate = coeffs(0);
-#else
-  //====================
-  // Your code goes here
-  //====================
-#endif
 
   std::cout << "Convergence rate: "
             << std::round(std::abs(conv_rate)) << std::endl;
