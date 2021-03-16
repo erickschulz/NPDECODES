@@ -8,7 +8,7 @@
 
 set(SOURCES
   ${DIR}/test/rk3prey_test.cc
-  ${DIR}/rkintegrator.h
+  ${DIR}/rk3prey.h
 )
 
 set(LIBRARIES
