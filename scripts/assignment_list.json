@@ -59,6 +59,7 @@
     "QuasiInterpolation/",
     "StationaryCurrents/",
     "MatODE/",
-    "RK3Prey"
+    "RK3Prey",
+    "SystemODE"
   ]
 }

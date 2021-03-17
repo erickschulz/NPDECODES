@@ -42,13 +42,13 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-1 | `MatODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
 | 6-2 | `RK3Prey` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
 | 6-3 | `ODESolve` | :white_check_mark: |  | |Philippe |
-| 6-4 | `SystemSolve` | :white_check_mark:  |  | | Erick |
-| 6-5 | `NLMatOde` |  |  | | |
+| 6-4 | `SystemODE` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  |
+| 6-5 | `NLMatOde` | :white_check_mark: |  | | Tobias |
 | 6-6 | `OrdNotAll` |  |  | | |
-| 6-7 | `InitCondLV` |  |  | | |
+| 6-7 | `InitCondLV` | :white_check_mark: |  | | Erick |
 | 6-8 | `TaylorODE` |  |  | | |
-| 6-9 | `ContourPlot` |  |  | | |
-| 6-10 | `SymplecticTimestepping` |  |  | | |
+| 6-9 | `ContourPlot` |  |  | | Oliver |
+| 6-10 | `SymplecticTimestepping` | :white_check_mark:  |  | | Erick |
 | 7-1 | `ImplRK3Prey` |  |  | | |
 | 7-2 | `CrossProd` |  |  | | |
 | 7-3 | `SDIRK` |  |  | | |

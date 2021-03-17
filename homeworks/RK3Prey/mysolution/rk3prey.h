@@ -21,7 +21,7 @@ class RKIntegrator {
 
   // Explicit Runge-Kutta numerical integrator
   template <class Function>
-  std::vector<Eigen::VectorXd> solve(const Function &f, double T,
+  std::vector<Eigen::VectorXd> solve(Function &&f, double T,
                                      const Eigen::VectorXd &y0, int M) const;
 
  private:
@@ -36,7 +36,7 @@ class RKIntegrator {
  * constructor. Performs N equidistant steps up to time T */
 /* SAM_LISTING_BEGIN_1 */
 template <typename Function>
-std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
+std::vector<Eigen::VectorXd> RKIntegrator::solve(Function &&f, double T,
                                                  const Eigen::VectorXd &y0,
                                                  int M) const {
   int dim = y0.size();  // dimension
