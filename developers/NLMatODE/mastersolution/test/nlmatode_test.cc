@@ -30,7 +30,7 @@ TEST(NLMatODE, matode) {
       0.858539684847355, 5.24544384944894, 2.58701323916895, 0.121829194605173,
       2.5202302578692, 1.09839006062383;
 
-  double tol = 1.0e-8;
+  double tol = 1.0e-7;
   double error = (reference - result).lpNorm<Eigen::Infinity>();
   ASSERT_NEAR(0.0, error, tol);
 }
@@ -38,6 +38,11 @@ TEST(NLMatODE, matode) {
 TEST(NLMatODE, checkinvariant) {
   bool result = checkinvariant(getY0(), T);  // ode45 does not preserve the norm
   ASSERT_TRUE(!result);
+}
+
+TEST(NLMatODE, cvgDiscreteGradientMethod) {
+    double conv_rate = cvgDiscreteGradientMethod();
+    ASSERT_NEAR(conv_rate, 2, 0.1);
 }
 
 }  // namespace NLMatODE::test
