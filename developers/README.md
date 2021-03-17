@@ -45,7 +45,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-4 | `SystemODE` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  |
 | 6-5 | `NLMatOde` | :white_check_mark: |  | | Tobias |
 | 6-6 | `OrdNotAll` |  |  | | |
-| 6-7 | `InitCondLV` |  |  | | |
+| 6-7 | `InitCondLV` | :white_check_mark: |  | | Erick |
 | 6-8 | `TaylorODE` |  |  | | |
 | 6-9 | `ContourPlot` |  |  | | |
 | 6-10 | `SymplecticTimestepping` | :white_check_mark:  |  | | Erick |
