@@ -8,18 +8,21 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+
 #include "rk3prey.h"
 
 typedef std::numeric_limits<double> dbl;
 
 int main() {
   /* SAM_LISTING_BEGIN_0 */
-  // Implementation of butcher scheme
+  // Data for the Butcher scheme describing the explicit 3-stage Runge-Kutta
+  // method
   Eigen::Matrix3d A;
   Eigen::Vector3d b;
   A << 0, 0, 0, 1.0 / 3.0, 0, 0, 0, 2.0 / 3.0, 0;
   b << 0.25, 0, 0.75;
 
+  // Right-hand-side vectorfield for predator-prey model
   auto f = [](Eigen::VectorXd y) {
     double alpha1 = 3.0, alpha2 = 2.0, beta1 = 0.1, beta2 = 0.1;
     Eigen::Vector2d eval = y;

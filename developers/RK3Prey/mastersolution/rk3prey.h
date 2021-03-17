@@ -30,7 +30,7 @@ class RKIntegrator {
 
   // Explicit Runge-Kutta numerical integrator
   template <class Function>
-  std::vector<Eigen::VectorXd> solve(const Function &f, double T,
+  std::vector<Eigen::VectorXd> solve(Function &&f, double T,
                                      const Eigen::VectorXd &y0, int M) const;
 
  private:
@@ -52,7 +52,7 @@ class RKIntegrator {
  * constructor. Performs N equidistant steps up to time T */
 /* SAM_LISTING_BEGIN_1 */
 template <typename Function>
-std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
+std::vector<Eigen::VectorXd> RKIntegrator::solve(Function &&f, double T,
                                                  const Eigen::VectorXd &y0,
                                                  int M) const {
   int dim = y0.size();  // dimension
@@ -66,9 +66,8 @@ std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
 
   // RK looping tools
   Eigen::VectorXd incr(dim);
-  incr.setZero();
   std::vector<Eigen::VectorXd> k;
-  k.reserve(s_);
+  k.reserve(s_); // Runge-Kutta Increments 
 
   // Stepping
   Eigen::VectorXd step(dim);
@@ -78,18 +77,18 @@ std::vector<Eigen::VectorXd> RKIntegrator::solve(const Function &f, double T,
     k.clear();
     // explicit RK
     k.push_back(f(sol.at(iter)));
-    step = step + b_(0) * k.at(0);
+    step = step + b_[0] * k[0];
     for (int i = 1; i < s_; ++i) {
       incr.setZero();
       for (int j = 0; j < i; ++j) {
-        incr = incr + A_(i, j) * k.at(j);
+        incr += A_(i, j) * k[j];
       }
       k.push_back(f(sol.at(iter) + h * incr));
-      step = step + b_(i) * k.back();
+      step += b_[i] * k.back();
     }
 
     // step forward
-    sol.push_back(sol.at(iter) + h * step);
+    sol.push_back(sol[iter] + h * step);
   }
 #else
   //====================
