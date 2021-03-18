@@ -48,7 +48,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-7 | `InitCondLV` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 6-8 | `TaylorODE` |  |  | | |
 | 6-9 | `ContourPlot` |  |  | | Oliver |
-| 6-10 | `SymplecticTimestepping` | :white_check_mark:  |  | | Erick |
+| 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 7-1 | `ImplRK3Prey` |  |  | | |
 | 7-2 | `CrossProd` |  |  | | |
 | 7-3 | `SDIRK` |  |  | | |
