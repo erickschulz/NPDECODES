@@ -18,43 +18,17 @@ int main() {
   Eigen::Vector2d y(3, 2);  // Initial guess
   double T = 5;             // Period
 
-#if SOLUTION
-  // Compute Phi and W from initial guess
-  std::pair<Eigen::Vector2d, Eigen::Matrix2d> PaW = InitCondLV::PhiAndW(y(0), y(1), T);
-  Eigen::Vector2d F = PaW.first - y;  // Value of F at initial guess
-  Eigen::Matrix2d DF;                 // Declare Jacobian of F
-
-  // Until stopping condition
-  while (F.norm() > 1e-5) {  // Residual based termination
-    // Calculate Jacobian
-    DF = PaW.second - Eigen::MatrixXd::Identity(2, 2);
-    // Use Newton iteration
-    y = y - DF.lu().solve(F);
-    // Test current guess
-    PaW = InitCondLV::PhiAndW(y(0), y(1), T);
-    // Get value of F at the current guess
-    F = PaW.first - y;
-  }
-#else
   //====================
   // Your code goes here
   //====================
-#endif
 
   // Calculate the evolution of the Lotka-Volterra ODE up to
   // time 100, using the initial value y, found by the Newton iterations above.
   // If the evolution is indeed 5-periodic, then the solution at time 100
   // should have the value y. Print a warning message if this is not the case.
-#if SOLUTION
-  PaW = InitCondLV::PhiAndW(y(0), y(1), 100);
-  if ((y - PaW.first).norm() > 1e-5) {
-    std::cout << "Warning: Solution not periodic, y(100) != y(0)" << std::endl;
-  }
-#else
   //====================
   // Your code goes here
   //====================
-#endif
 
   // Testing obtained solution against reference "exact" solution
   Eigen::Vector2d ref(3.1098751029156, 2.08097564048345);
