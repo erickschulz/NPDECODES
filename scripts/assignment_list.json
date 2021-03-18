@@ -62,6 +62,7 @@
     "RK3Prey",
     "SystemODE",
     "InitCondLV",
-    "SymplecticTimestepping"
+    "SymplecticTimestepping",
+    "NLMatODE"
   ]
 }
