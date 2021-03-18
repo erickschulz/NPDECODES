@@ -56,5 +56,9 @@ add_subdirectory(NumPDESetup)
 add_subdirectory(MatODE)
 add_subdirectory(RK3Prey)
 add_subdirectory(SystemODE)
+add_subdirectory(InitCondLV)
+add_subdirectory(SymplecticTimestepping)
+add_subdirectory(NLMatODE)
+
 
 #end of CMakeLists.txt in folder 'homeworks'

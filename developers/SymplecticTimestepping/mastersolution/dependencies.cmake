@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/symplectictimestepping_main.cc
   ${DIR}/symplectictimestepping.h
+  ${DIR}/symplectictimestepping.cc
 )
 
 set(LIBRARIES
