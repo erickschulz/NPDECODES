@@ -57,5 +57,6 @@ add_subdirectory(MatODE)
 add_subdirectory(RK3Prey)
 add_subdirectory(SystemODE)
 add_subdirectory(InitCondLV)
+add_subdirectory(SymplecticTimestepping)
 
 #end of CMakeLists.txt in folder 'homeworks'
