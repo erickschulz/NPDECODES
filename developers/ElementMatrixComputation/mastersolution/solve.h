@@ -37,9 +37,9 @@ namespace ElementMatrixComputation {
  * @return     The solution vector
  */
 /* SAM_LISTING_BEGIN_1 */
-template <class ELMAT_BUILDER, class ELVEC_BUILDER>
-Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
-                      ELVEC_BUILDER &elvec_provider) {
+template <class ELMAT_PROVIDER, class ELVEC_PROVIDER>
+Eigen::VectorXd solve(ELMAT_PROVIDER &elmat_provider,
+                      ELVEC_PROVIDER &elvec_provider) {
   // Use one of LehrFEM++'s default meshes. Try different meshes by changing the
   // function index parameter. See the documentation of that function for
   // details ablut the available meshes
@@ -76,9 +76,11 @@ Eigen::VectorXd solve(ELMAT_BUILDER &elmat_provider,
   // Solve linear system using Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_crs);
+  // Make sure LU-decomposition could be computed 
   if (solver.info() != Eigen::Success) {
     throw std::runtime_error("Could not decompose the matrix");
   }
+  // Backward substitution 
   sol_vec = solver.solve(phi);
 #else
   //====================

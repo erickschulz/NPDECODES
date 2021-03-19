@@ -1,8 +1,8 @@
 # define executable
 set(ode45sources ode45test.cc ode45.h)
-
 add_executable(lecturecodes.ode45test ${ode45sources})
+target_link_libraries(lecturecodes.ode45test PUBLIC Eigen3::Eigen)
 
-target_link_libraries(lecturecodes.ode45test
-  PUBLIC Eigen3::Eigen
-)
+set(odeintssctrlsources odeintssctrltest.cc odeintssctrl.h)
+add_executable(lecturecodes.odeintssctrltest ${odeintssctrlsources})
+target_link_libraries(lecturecodes.odeintssctrltest PUBLIC Eigen3::Eigen)
