@@ -13,7 +13,7 @@ namespace NLMatODE {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
-  // TO DO (6-5.a): use the ode45 class to find an approximation
+  // Use the ode45 class to find an approximation
   // of the matrix IVP $Y' = -(Y-Y')*Y$ at time $T$
   Eigen::MatrixXd YT;
   // Define the RHS
@@ -34,7 +34,7 @@ Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
 
 /* SAM_LISTING_BEGIN_2 */
 bool checkinvariant(const Eigen::MatrixXd &M, double T) {
-  // TO DO (6-5.c): check if $Y'*Y$ is preserved at the time $T$ by matode.
+  // Check if $Y'*Y$ is preserved at the time $T$ by matode.
   Eigen::MatrixXd N = matode(M, T);
 
   if ((N.transpose() * N - M.transpose() * M).norm() <
@@ -48,7 +48,7 @@ bool checkinvariant(const Eigen::MatrixXd &M, double T) {
 
 /* SAM_LISTING_BEGIN_3 */
 double cvgDiscreteGradientMethod() {
-  // TO DO (6-5.d): compute the fitted convergence rate of the Discrete
+  // Compute the fitted convergence rate of the Discrete
   // gradient method. Also tabulate the values M and the errors.
   double conv_rate = 0;
   double T = 1.0;
