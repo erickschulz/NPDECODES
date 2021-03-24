@@ -38,21 +38,21 @@ double TestCvpExtrapolatedEuler() {
 
   // values for convergence study
   Eigen::ArrayXd err(11);
-  Eigen::ArrayXd N(11);
+  Eigen::ArrayXd M(11);
 
   std::cout << "Error table for equidistant steps:" << std::endl;
-  std::cout << "N"
+  std::cout << "M"
             << "\t"
             << "Error" << std::endl;
 
   for (int i = 0; i < 11; ++i) {
-    N(i) = std::pow(2, i + 2);
-    double yT = OdeIntEqui(Psi_tilde, T, y0, N(i)).back();
+    M(i) = std::pow(2, i + 2);
+    double yT = OdeIntEqui(Psi_tilde, T, y0, M(i)).back();
     err(i) = std::abs(yT - y_ex1);
-    std::cout << N(i) << "\t" << err(i) << std::endl;
+    std::cout << M(i) << "\t" << err(i) << std::endl;
   }
   // compute fitted rate
-  Eigen::VectorXd coeffs = polyfit(N.log(), err.log(), 1);
+  Eigen::VectorXd coeffs = polyfit(M.log(), err.log(), 1);
   conv_rate = -coeffs(0);
 #else
   // TODO : tabulate the values of the error corresponding to
