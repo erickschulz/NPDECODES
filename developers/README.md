@@ -46,12 +46,12 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-5 | `NLMatOde` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 6-6 | `OrdNotAll` | :white_check_mark: |  | | Tobias |
 | 6-7 | `InitCondLV` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
-| 6-8 | `TaylorODE` |  |  | | Philippe |
+| 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | |  |
 | 6-9 | `ContourPlot` |  |  | | Oliver |
 | 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 7-1 | `ImplRK3Prey` |  |  | | |
 | 7-2 | `CrossProd` |  |  | | |
-| 7-3 | `SDIRK` |  |  | | |
+| 7-3 | `SDIRK` |  |  | | Philippe |
 | 7-4 | `SemIMpRK` |  |  | | |
 | 7-5 | `ExponentialIntegrator` |  |  | | |
 | 7-6 | `MIRK` |  |  | | |
