@@ -1,101 +1,69 @@
-#include <utility>
+#ifndef TAYLORODE_H
+#define TAYLORODE_H
+/**
+ * @file taylorode.h
+ * @brief NPDE homework TaylorODE
+ * @author ?, Philippe Peter
+ * @date 24.03.2021
+ * @copyright Developed at ETH Zurich
+ */
+
+#include <Eigen/Dense>
 #include <vector>
 
 namespace TaylorODE {
 
-//! \file tylorintegrator.hpp Implementation of TaylorIntegrator class.
-
-/*!
- *! \brief Implements an autonomous ODE integrator based on Taylor expansion
- *! \tparam State a type representing the space in which the solution lies,
- *! e.g. R^d, represented by e.g. Eigen::VectorXd.
+/**
+ * @brief Helper class for the evaluation of f, df and d2f of a predator-prey
+ * model
  */
-/* SAM_LISTING_BEGIN_1 */
-template <class State>
-class TaylorIntegrator {
+class PredPreyModel {
  public:
-  /*!
-   *! \brief Perform the solution of the ODE
-   *! Solve an autonomous ODE $y' = f(y)$, $y(0) = y0$,
-   *! using a Taylor expansion method constructor. Performs $N$
-   *! equidistant steps upto time $T$ with initial data $y_0$
-   *! \tparam Function type for function implementing the
-   *! rhs function (and its derivatives).
-   *! \param[in] 'odefun' function handle for rhs $f$ and its derivatives
-   *! \param[in] $T$ final time $T$
-   *! \param[in] $y_0$ initial data $y(0) = y0$ for $y' = f(y)$
-   *! \param[in] $N$ number of steps to perform. Step size is $h = T / N$.
-   *! Steps are equidistant.
-   *! \return vector containing all steps $y^n$ (for each $n$) including
-   *! initial and final value
-   */
-  template <class Function>
-  std::vector<State> solve(const Function &odefun, double T, const State &y0,
-                           unsigned int N) const {
-    std::vector<State> res;
-#if SOLUTION
-    // Iniz step size
-    double h = T / N;
+  /** @brief Construct a predator-prey model based on model parameters */
+  PredPreyModel(double alpha1, double alpha2, double beta1, double beta2)
+      : alpha1_{alpha1}, alpha2_{alpha2}, beta1_{beta1}, beta2_{beta2} {}
 
-    // Will contain all steps, reserve memory for efficiency
-    res.reserve(N);
+  /** @brief Evaluate f(y) */
+  Eigen::Vector2d f(const Eigen::Vector2d& y) const;
 
-    // Store initial data
-    res.push_back(y0);
+  /** @brief Evaluate df(y)*z */
+  Eigen::Vector2d df(const Eigen::Vector2d& y, const Eigen::Vector2d& z) const;
 
-    // Initialize some memory to store temporary values
-    State ytemp1 = y0;
-    State ytemp2 = y0;
-    // Pointers to swap previous value
-    State *yold = &ytemp1;
-    State *ynew = &ytemp2;
-
-    // Loop over all fixed steps
-    for (unsigned int k = 0; k < N; ++k) {
-      // Compute, save and swap next step
-      step(odefun, h, *yold, *ynew);
-      res.push_back(*ynew);
-      std::swap(yold, ynew);
-    }
-#else   // TEMPLATE
-        // TODO: implement solver from $0$ to $T$,
-        // calling function step appropriately
-#endif  // TEMPLATE
-    return res;
-  }
+  /** @brief Evaluate d2f(y)(z,z) (second derivative bilinear mapping)*/
+  Eigen::Vector2d d2f(const Eigen::Vector2d& y, const Eigen::Vector2d& z) const;
 
  private:
-  /*!
-   *! \brief Perform a single step of the Taylor expansion for
-   *! the solution of the autonomous ODE
-   *! Compute a single explicit step $y^{n+1} = y_n + \sum \dots$
-   *! starting from value $y_0$ and storing next value in $y_1$
-   *! \tparam Function type for function implementing the rhs
-   *! and its derivatives.
-   *! \param[in] 'odefun' function handle for rhs $f$ and the derivatives
-   *! \param[in] $h$ step size
-   *! \param[in] $y_0$ initial state
-   *! \param[out] $y_1$ next step $y^{n+1} = y^n + \dots$
-   */
-  template <class Function>
-  void step(const Function &odefun, double h, const State &y0,
-            State &y1) const {
-#if SOLUTION
-    // Compute values for Taylor expansion,
-    // including Jacobian and Hessian matrix
-    auto fy0 = odefun.f(y0);
-    auto dfy0fy0 = odefun.df(y0, fy0);
-    auto df2y0fy0 = odefun.df(y0, dfy0fy0);
-    auto d2fy0fy0 = odefun.d2f(y0, fy0);
-
-    // Plug values into Taylor expansion for next step
-    y1 = y0 + fy0 * h + dfy0fy0 * h * h / 2. +
-         (df2y0fy0 + d2fy0fy0) * h * h * h / 6.;
-#else   // TEMPLATE
-        // TODO: implement a single step of the Taylor expansion
-#endif  // TEMPLATE
-  }
+  const double alpha1_;
+  const double alpha2_;
+  const double beta1_;
+  const double beta2_;
 };
-/* SAM_LISTING_END_1 */
+
+/**
+ * @brief Compute the solution of the predator-prey ode
+ * @param model Predator-prey model, allows evaluation of f, df, d2f
+ * @param T Final time
+ * @param y0 Initial state
+ * @param M Number of equidistant timesteps
+ * @return Vector containing all values y^m (including initial and final value)
+ */
+std::vector<Eigen::Vector2d> SolvePredPreyTaylor(const PredPreyModel& model,
+                                                 double T,
+                                                 const Eigen::Vector2d& y0,
+                                                 unsigned int M);
+
+/**
+ * @brief Determine the order of convergence for the Taylor expansion method
+ * applied to the predator-prey model
+ * @return  Empiric rate of convergence determined by linear regression
+ */
+double TestCvgTaylorMethod();
+
+/**
+ * @brief Helper function that prints an error table
+ */
+void PrintErrorTable(const Eigen::ArrayXd& M, const Eigen::ArrayXd& error);
 
 }  // namespace TaylorODE
+
+#endif  // TAYLORODE_H
