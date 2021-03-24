@@ -1,0 +1,15 @@
+- Remark: Change `RKIntegrator<VectorXd>` -> `RKIntegrator<double>`
+- Remark: Typo "fi nal" -> "final"
+- Remark: Change `std::vector<VectorXd>` -> `std::vector<double>`
+- (6-6.a): Say that $f: \mathbb{R} \to \mathbb{R}$ and $y0 \in \mathbb{R}$ instead of $\mathbb{R}^n$
+- (6-6.a): Change function signature to `double testCvgRKSSM(const Function &f, double T, double y0, const MatrixXd &a, const VectorXd &b);`
+- (6-6.a): Mention that the function has to be implemented in `ordnotall.cc`
+- (6-6.a): k goes from 1 to 12, not from 1 to 15
+- (6-6.a): Input `f` takes a double, not a VectorXd
+- (6-6.a): Take into account results for which the error is larger than 10^(-14)
+- (6-6.a) Solution: k goes from 1 to 12 and not from 1 to 15
+- (6-6.a) Solution: E_{M_k} > 10^{-14} and not the stuff written there
+- (6-6.c): Typo `testcvgRKSSM()` -> `testCvgRKSSM()`
+- (6-6.c): Mention that the function has to be implemented in `ordnotall.cc`
+- (6-6.c) Use the final time T = 1 instead of T = 0.1
+- (6-6.c) Solution: Insert output from the mastersolution
