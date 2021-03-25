@@ -33,9 +33,9 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePoints(
 #if SOLUTION
   // Adaptive explicit Runge-Kutta method
   ode45<Eigen::Vector2d> integrator(rhs);
-  // Set tolerances for timestep control
-  integrator.options.rtol = 1e-7;
-  integrator.options.atol = 1e-9;
+  // Set tolerances for timestep control (optional)
+  integrator.options.rtol = 1e-6;
+  integrator.options.atol = 1e-8;
   // Perform explicit timestepping
   std::vector<std::pair<Eigen::Vector2d, double>> sol = integrator.solve(y0, T);
   // Convert output into requested format: points on isoline arranged into the

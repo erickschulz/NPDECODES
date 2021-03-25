@@ -15,9 +15,10 @@
 const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision, Eigen::DontAlignCols, ", ", "\n");
 
 constexpr double Square(double x) { return x * x; }
-constexpr double Cube(double x) { return x * x; }
+constexpr double Cube(double x) { return x * x * x; }
 
 int main() {
+/* SAM_LISTING_BEGIN_0 */
   // Compute isolines using gradF and computeIsolinePoints(...)
   Eigen::MatrixXd isolinePoints = ContourPlot::crookedEgg();
 
@@ -25,8 +26,8 @@ int main() {
   auto F = [] (Eigen::Vector2d x) {
     return Square(x.squaredNorm()) - Cube(x[0]) - Cube(x[1]);
   };
-  Eigen::Vector2d y0(1.5, 0.0);
-  double T = 10.0;
+  Eigen::Vector2d y0(2.0, 0.0);
+  double T = 12.0;
   Eigen::MatrixXd isolinePointsDQ = ContourPlot::computeIsolinePointsDQ(F, y0, T);
 
   // Write .csv file with 4 columns containg the x and y coordinates of the two isolines
@@ -39,6 +40,7 @@ int main() {
 
   // Call the Python script to plot the isolines
   std::system("python3 " CURRENT_SOURCE_DIR "/contourplot.py " CURRENT_BINARY_DIR "/contourplot.csv " CURRENT_BINARY_DIR "/contourplot.eps");
+/* SAM_LISTING_END_0 */
 
   return 0;
 }
