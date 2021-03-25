@@ -1,3 +1,11 @@
+/**
+ * @file contourplot.cc
+ * @brief NPDE homework ContourPlot code
+ * @author Unknown, Oliver Rietmann
+ * @date 25.03.2021
+ * @copyright Developed at ETH Zurich
+ */
+
 #include "contourplot.h"
 
 #include <Eigen/Core>

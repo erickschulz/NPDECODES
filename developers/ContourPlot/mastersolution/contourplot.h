@@ -1,3 +1,11 @@
+/**
+ * @file contourplot.h
+ * @brief NPDE homework ContourPlot code
+ * @author Oliver Rietmann
+ * @date 25.03.2021
+ * @copyright Developed at ETH Zurich
+ */
+
 #include <Eigen/Core>
 #include <cmath>
 #include <limits>
@@ -26,7 +34,7 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePoints(
   // Adaptive explicit Runge-Kutta method
   ode45<Eigen::Vector2d> integrator(rhs);
   // Set tolerances for timestep control
-  integrator.options.rtol = 0.00001;
+  integrator.options.rtol = 1e-7;
   integrator.options.atol = 1e-9;
   // Perform explicit timestepping
   std::vector<std::pair<Eigen::Vector2d, double>> sol = integrator.solve(y0, T);
