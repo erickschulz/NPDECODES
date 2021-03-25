@@ -11,7 +11,6 @@
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
 #include <vector>
 
 namespace ODESolve::test {

@@ -41,8 +41,8 @@ TEST(NLMatODE, checkinvariant) {
 }
 
 TEST(NLMatODE, cvgDiscreteGradientMethod) {
-    double conv_rate = cvgDiscreteGradientMethod();
-    ASSERT_NEAR(conv_rate, 2, 0.1);
+  double conv_rate = cvgDiscreteGradientMethod();
+  ASSERT_NEAR(conv_rate, 2, 0.1);
 }
 
 }  // namespace NLMatODE::test

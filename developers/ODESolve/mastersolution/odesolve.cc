@@ -6,13 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
+#include "odesolve.h"
 
+#include <Eigen/Core>
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "odesolve.h"
 #include "polyfit.h"
 
 namespace ODESolve {

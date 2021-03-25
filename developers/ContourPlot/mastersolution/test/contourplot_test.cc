@@ -26,7 +26,8 @@ Eigen::VectorXd errorAlongIsoline(const Eigen::MatrixXd &isolinePoints) {
   int M = isolinePoints.cols();
   Eigen::VectorXd errors(M);
   for (int m = 0; m < M; ++m) {
-    Eigen::Vector2d x = Eigen::Vector2d(isolinePoints(0, m), isolinePoints(1, m));
+    Eigen::Vector2d x =
+        Eigen::Vector2d(isolinePoints(0, m), isolinePoints(1, m));
     errors(m) = F(x) - 2.0;
   }
   return errors;

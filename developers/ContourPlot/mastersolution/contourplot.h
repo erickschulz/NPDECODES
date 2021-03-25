@@ -62,7 +62,6 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePoints(
 template <typename FFunctor>
 Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePointsDQ(
     FFunctor &&F, Eigen::Vector2d y0, double T) {
-
 #if SOLUTION
   // Get gradient of F by symmetric difference quotients with
   // a span given by the root of the machine precision in order
@@ -71,7 +70,8 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePointsDQ(
   auto gradF = [h, F](Eigen::Vector2d x) -> Eigen::Vector2d {
     Eigen::Vector2d dx(h, 0.0);
     Eigen::Vector2d dy(0.0, h);
-    return Eigen::Vector2d(F(x + dx) - F(x - dx), F(x + dy) - F(x - dy)) / (2.0 * h);
+    return Eigen::Vector2d(F(x + dx) - F(x - dx), F(x + dy) - F(x - dy)) /
+           (2.0 * h);
   };
 
   return computeIsolinePoints(gradF, y0, T);

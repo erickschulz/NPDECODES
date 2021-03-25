@@ -40,7 +40,7 @@ void sympTimesteppingODETest() {
   // Initial conditions
   Eigen::Vector2d init_cond;
   init_cond << 0.0, 1.0;  // initial conditions
-  
+
   // Evaluating the error at the final step between the approx solutions as
   // given by the symplectic method and the exact solution computed from
   // the anlytic formula.
@@ -59,9 +59,9 @@ void sympTimesteppingODETest() {
     errors[k] = std::abs(std::sin(2.0 * PI) - approx_sol[0]) +
                 std::abs(std::cos(2.0 * PI) - approx_sol[1]);
 #else
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
 #endif
   }
   // Printing results

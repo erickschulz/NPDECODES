@@ -1,3 +1,5 @@
+#include "nlmatode.h"
+
 #include <Eigen/Core>
 #include <Eigen/LU>
 #include <cmath>
@@ -6,8 +8,6 @@
 
 #include "ode45.h"
 #include "polyfit.h"
-#include "nlmatode.h"
-
 
 namespace NLMatODE {
 
@@ -36,7 +36,6 @@ Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
   return YT;
 }
 /* SAM_LISTING_END_1 */
-
 
 /* SAM_LISTING_BEGIN_2 */
 bool checkinvariant(const Eigen::MatrixXd &M, double T) {
@@ -112,4 +111,4 @@ double cvgDiscreteGradientMethod() {
 }
 /* SAM_LISTING_END_3 */
 
-}
+}  // namespace NLMatODE

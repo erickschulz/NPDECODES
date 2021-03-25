@@ -20,7 +20,8 @@ int main() {
 
 #if SOLUTION
   // Compute Phi and W from initial guess
-  std::pair<Eigen::Vector2d, Eigen::Matrix2d> PaW = InitCondLV::PhiAndW(y(0), y(1), T);
+  std::pair<Eigen::Vector2d, Eigen::Matrix2d> PaW =
+      InitCondLV::PhiAndW(y(0), y(1), T);
   Eigen::Vector2d F = PaW.first - y;  // Value of F at initial guess
   Eigen::Matrix2d DF;                 // Declare Jacobian of F
 
@@ -64,8 +65,8 @@ int main() {
     std::cout
         << " Error w.r.t. to reference solution is GREATER than tol=1.0e-8."
         << std::endl;
-  }else{
-        std::cout
+  } else {
+    std::cout
         << " Error w.r.t. to reference solution is SMALLER than tol=1.0e-8."
         << std::endl;
   }
