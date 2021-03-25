@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/contourplot_main.cc
   ${DIR}/contourplot.h
+  ${DIR}/contourplot.cc
   ${DIR}/ode45.h
 )
 
