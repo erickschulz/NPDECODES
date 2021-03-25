@@ -33,7 +33,7 @@ void sympTimesteppingODETest() {
   // Initial conditions
   Eigen::Vector2d init_cond;
   init_cond << 0.0, 1.0;  // initial conditions
-  
+
   // Evaluating the error at the final step between the approx solutions as
   // given by the symplectic method and the exact solution computed from
   // the anlytic formula.
@@ -41,9 +41,9 @@ void sympTimesteppingODETest() {
   double tau;
   for (int k = 0; k < nIter; k++) {
     m = 10 * std::pow(2, k);
-  //====================
-  // Your code goes here
-  //====================
+    //====================
+    // Your code goes here
+    //====================
   }
   // Printing results
   std::cout << "Convergence of Symplectic Time Stepping Method:\n";

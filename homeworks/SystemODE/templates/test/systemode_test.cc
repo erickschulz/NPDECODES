@@ -13,15 +13,15 @@
 namespace SystemODE::test {
 
 TEST(SystemODE, rk4step) {
-  double h = 0.5; // stepsize
+  double h = 0.5;  // stepsize
 
   // Right-hand side of ode
   auto f = [](Eigen::VectorXd y) {
-      Eigen::VectorXd eval(3);
-      eval << y(1) * y(2), y(0) * y(1), 3.0 * y(2);
-  return eval;
+    Eigen::VectorXd eval(3);
+    eval << y(1) * y(2), y(0) * y(1), 3.0 * y(2);
+    return eval;
   };
-  
+
   // Initial value
   Eigen::VectorXd y0(3);
   y0 << -1.0, 1.0, 2.0;

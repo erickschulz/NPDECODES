@@ -4,12 +4,12 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../rk3prey.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
 #include <vector>
-
-#include "../rk3prey.h"
 
 namespace RK3Prey::test {
 

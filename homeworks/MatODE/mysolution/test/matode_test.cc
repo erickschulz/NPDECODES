@@ -15,7 +15,6 @@
 
 namespace MatODE::test {
 
-
 TEST(MatODE, eeulstep) {
   // Tools
   Eigen::VectorXd h(5);
@@ -25,9 +24,9 @@ TEST(MatODE, eeulstep) {
   const Eigen::Matrix3d Id = Eigen::Matrix3d::Identity();
 
   std::vector<Eigen::Matrix3d> result(5);
-  for (int i = 0; i < 5; ++i){
-  result[i] = MatODE::eeulstep(A, Id, h[i]);
-}
+  for (int i = 0; i < 5; ++i) {
+    result[i] = MatODE::eeulstep(A, Id, h[i]);
+  }
 
   std::vector<Eigen::Matrix3d> reference(5);
   reference[0] << 1.0, 0.05, 0.0, 0.05, 1.0, 0.05, 0.05, 0.05, 1.0;
@@ -54,9 +53,9 @@ TEST(MatODE, ieulstep) {
   const Eigen::Matrix3d Id = Eigen::Matrix3d::Identity();
 
   std::vector<Eigen::Matrix3d> result(5);
-  for (int i = 0; i < 5; ++i){
-  result[i] = MatODE::ieulstep(A, Id, h[i]);
-}
+  for (int i = 0; i < 5; ++i) {
+    result[i] = MatODE::ieulstep(A, Id, h[i]);
+  }
 
   std::vector<Eigen::Matrix3d> reference(5);
   reference[0] << 1.00263852242744, 0.0502575700464882, 0.00251287850232441,
@@ -72,7 +71,7 @@ TEST(MatODE, ieulstep) {
       2.66666666666667, 1.33333333333333, 2.0, 2.0, 2.0;
   reference[4] << 0.0, -0.5, -0.5, -1.0, -0.5, -0.5, -1.0, -1.0, -0.0;
 
-   Eigen::VectorXd error(5);
+  Eigen::VectorXd error(5);
   for (int i = 0; i < 5; ++i) {
     error[i] = (reference[i] - result[i]).lpNorm<Eigen::Infinity>();
   }
@@ -90,9 +89,9 @@ TEST(MatODE, impstep) {
   const Eigen::Matrix3d Id = Eigen::Matrix3d::Identity();
 
   std::vector<Eigen::Matrix3d> result(5);
-  for (int i = 0; i < 5; ++i){
-  result[i] = MatODE::impstep(A, Id, h[i]);
-}
+  for (int i = 0; i < 5; ++i) {
+    result[i] = MatODE::impstep(A, Id, h[i]);
+  }
 
   std::vector<Eigen::Matrix3d> reference(5);
   reference[0] << 1.00128287363695, 0.0500633614418248, 0.00125158403604562,
@@ -110,7 +109,7 @@ TEST(MatODE, impstep) {
   reference[4] << 3.0, 2.66666666666667, 1.33333333333333, 4.0,
       4.33333333333333, 2.66666666666667, 4.0, 4.0, 3.0;
 
-   Eigen::VectorXd error(5);
+  Eigen::VectorXd error(5);
   for (int i = 0; i < 5; ++i) {
     error[i] = (reference[i] - result[i]).lpNorm<Eigen::Infinity>();
   }

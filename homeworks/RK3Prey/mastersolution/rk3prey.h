@@ -52,7 +52,7 @@ std::vector<Eigen::VectorXd> RKIntegrator::solve(Function &&f, double T,
   // RK looping tools
   Eigen::VectorXd incr(dim);
   std::vector<Eigen::VectorXd> k;
-  k.reserve(s_); // Runge-Kutta Increments 
+  k.reserve(s_);  // Runge-Kutta Increments
 
   // Stepping
   Eigen::VectorXd step(dim);

@@ -12,9 +12,8 @@ constexpr double PI = 3.14159265358979323846;
 
 namespace SymplecticTimestepping::test {
 
-
 TEST(SymplectictimeStepping, sympTimestep) {
-Eigen::Vector2d pq0, pq1;
+  Eigen::Vector2d pq0, pq1;
   pq0 << 0., 1.;
   pq1 << 0.96357170038053707728, 0.12823014413913069731;
   double tol = 1E-8;
@@ -42,10 +41,11 @@ TEST(SymplectictimeStepping, simulateHamiltonianDynamics) {
       0.6484357449813002, 0.596106795554733, 0.502260275823015;
 
   double tol = 1.0e-4;
-  ASSERT_NEAR(0.0, (PQsol -
-       SymplecticTimestepping::simulateHamiltonianDynamics(p0, q0, T, M))
-          .norm(), tol);
+  ASSERT_NEAR(0.0,
+              (PQsol - SymplecticTimestepping::simulateHamiltonianDynamics(
+                           p0, q0, T, M))
+                  .norm(),
+              tol);
 }
-
 
 }  // namespace SymplecticTimestepping::test

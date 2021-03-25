@@ -34,7 +34,7 @@ void sympTimesteppingODETest() {
   // Initial conditions
   Eigen::Vector2d init_cond;
   init_cond << 0.0, 1.0;  // initial conditions
-  
+
   // Evaluating the error at the final step between the approx solutions as
   // given by the symplectic method and the exact solution computed from
   // the anlytic formula.

@@ -9,7 +9,6 @@
 #include "symplectictimestepping.h"
 
 int main() {
-
   SymplecticTimestepping::sympTimesteppingODETest();
 
   return 0;

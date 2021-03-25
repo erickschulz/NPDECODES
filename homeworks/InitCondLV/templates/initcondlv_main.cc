@@ -38,8 +38,8 @@ int main() {
     std::cout
         << " Error w.r.t. to reference solution is GREATER than tol=1.0e-8."
         << std::endl;
-  }else{
-        std::cout
+  } else {
+    std::cout
         << " Error w.r.t. to reference solution is SMALLER than tol=1.0e-8."
         << std::endl;
   }

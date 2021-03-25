@@ -7,10 +7,9 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 #include "systemode.h"
 
@@ -35,8 +34,8 @@ int main() {
   // Your code goes here
   //====================
 
-  std::cout << "Convergence rate: "
-            << std::round(std::abs(conv_rate)) << std::endl;
+  std::cout << "Convergence rate: " << std::round(std::abs(conv_rate))
+            << std::endl;
 
   return 0;
 }

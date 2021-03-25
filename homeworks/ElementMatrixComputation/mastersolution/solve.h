@@ -75,11 +75,11 @@ Eigen::VectorXd solve(ELMAT_PROVIDER &elmat_provider,
   // Solve linear system using Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_crs);
-  // Make sure LU-decomposition could be computed 
+  // Make sure LU-decomposition could be computed
   if (solver.info() != Eigen::Success) {
     throw std::runtime_error("Could not decompose the matrix");
   }
-  // Backward substitution 
+  // Backward substitution
   sol_vec = solver.solve(phi);
   /* SAM_LISTING_END_1 */
 

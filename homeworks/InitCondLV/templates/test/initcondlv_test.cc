@@ -37,5 +37,4 @@ TEST(InitCondLV, PhiAndW) {
   ASSERT_NEAR(0.0, error, tol);
 }
 
-
 }  // namespace InitCondLV::test

@@ -16,6 +16,6 @@ void sympTimesteppingODETest();
 
 Eigen::MatrixXd simulateHamiltonianDynamics(const Eigen::VectorXd &p0,
                                             const Eigen::VectorXd &q0, double T,
-                                            unsigned int M); 
+                                            unsigned int M);
 
 }  // namespace SymplecticTimestepping

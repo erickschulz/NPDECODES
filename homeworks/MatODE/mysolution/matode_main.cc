@@ -10,7 +10,7 @@
 
 #include "matode.h"
 
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int /*argc*/, char** /*argv*/) {
   /* SAM_LISTING_BEGIN_6 */
   double h = 0.01;  // stepsize
   Eigen::Vector3d norms;

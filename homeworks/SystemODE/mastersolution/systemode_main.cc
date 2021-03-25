@@ -7,10 +7,9 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 #include "systemode.h"
 
@@ -62,9 +61,9 @@ int main() {
 
   // COMPUTE AN "EXACT" SOLUTION
   // Use N=2^12 steps to calculate an approximate "exact" solution.
-  int N_exact = std::pow(2, 12); // number of steps
-  double h = T / N_exact;  // step size
-  Eigen::VectorXd yT_exact = y0; // initial value
+  int N_exact = std::pow(2, 12);  // number of steps
+  double h = T / N_exact;         // step size
+  Eigen::VectorXd yT_exact = y0;  // initial value
   Eigen::VectorXd y_next;
   for (int step = 0; step < N_exact; step++) {
     y_next = SystemODE::rk4step(f, h, yT_exact);
@@ -76,9 +75,9 @@ int main() {
   int kmax = 10;
   Eigen::VectorXd Error(kmax);
   for (int k = 0; k < kmax; k++) {
-    int M = std::pow(2, k + 1); // number of steps
-    double h = T / M;  // step size
-    Eigen::VectorXd yT = y0;  // initial value    
+    int M = std::pow(2, k + 1);  // number of steps
+    double h = T / M;            // step size
+    Eigen::VectorXd yT = y0;     // initial value
     // Take N RK4 steps:
     for (int step = 0; step < M; step++) {
       // yT is the solution at time t=h*step
@@ -96,8 +95,8 @@ int main() {
   Eigen::VectorXd coeffs = polyfit(logM, Error.array().log(), 1);
   conv_rate = coeffs(0);
 
-  std::cout << "Convergence rate: "
-            << std::round(std::abs(conv_rate)) << std::endl;
+  std::cout << "Convergence rate: " << std::round(std::abs(conv_rate))
+            << std::endl;
 
   return 0;
 }
