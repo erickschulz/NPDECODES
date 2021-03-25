@@ -7,12 +7,13 @@
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/ordnotall_main.cc
-  ${DIR}/ordnotall.h
-  ${DIR}/ordnotall.cc
-  ${DIR}/rkintegrator.h
+  ${DIR}/taylorode.h
+  ${DIR}/taylorode.cc
+  ${DIR}/test/taylorode_test.cc
 )
+
 
 set(LIBRARIES
   Eigen3::Eigen
+  GTest::gtest_main
 )
