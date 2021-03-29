@@ -26,6 +26,7 @@ add_subdirectory(ExtendedMUSCL)
 add_subdirectory(FiniteVolumeRobin)
 add_subdirectory(FiniteVolumeSineConsLaw)
 #add_subdirectory(FisherKPP) # missing unit tests
+add_subdirectory(ImplRK3Prey)
 add_subdirectory(IncidenceMatrices)
 add_subdirectory(InitCondLV)
 add_subdirectory(IPDGFEM)
