@@ -41,12 +41,12 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-14 | `QuasiInterpolation` |  |  | | |
 | 6-1 | `MatODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
 | 6-2 | `RK3Prey` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
-| 6-3 | `ODESolve` | :heavy_check_mark: | :heavy_check_mark:  | | |
+| 6-3 | `ODESolve` | :heavy_check_mark: | :heavy_check_mark:  | :white_check_mark:| |
 | 6-4 | `SystemODE` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  |
 | 6-5 | `NLMatOde` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: |  |
-| 6-6 | `OrdNotAll` | :heavy_check_mark: |  | |  |
+| 6-6 | `OrdNotAll` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark:|  |
 | 6-7 | `InitCondLV` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
-| 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | |  |
+| 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark: |  |
 | 6-9 | `ContourPlot` |  |  | | Oliver |
 | 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 7-1 | `ImplRK3Prey` |  |  | | |
