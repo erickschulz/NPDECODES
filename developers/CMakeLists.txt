@@ -51,6 +51,7 @@ add_subdirectory(ProjectionOntoGradients)
 add_subdirectory(RadauThreeTimestepping)
 add_subdirectory(RegularizedNeumannProblem)
 add_subdirectory(RK3Prey)
+add_subdirectory(SDIRK)
 add_subdirectory(SDIRKMethodOfLines)
 add_subdirectory(SimpleLinearFiniteElements)
 add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
