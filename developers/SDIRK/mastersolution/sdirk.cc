@@ -13,13 +13,13 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+
 #include "polyfit.h"
 
 namespace SDIRK {
 
 /* SAM_LISTING_BEGIN_0 */
 Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
- 
   Eigen::Vector2d res;
   // TO DO (13-3.f): compute one timestep of the ODE
 #if SOLUTION
@@ -46,7 +46,9 @@ Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0, unsigned int N, double T, double gamma) {
+std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
+                                        unsigned int N, double T,
+                                        double gamma) {
   // Solution vector
   std::vector<Eigen::Vector2d> res(N + 1);
   // TO DO (13-3.g): solve the ODE with uniform timesteps using the SDIRK method
@@ -83,8 +85,8 @@ double cvgSDIRK() {
   // Mesh sizes
   Eigen::ArrayXd err(10);
   Eigen::ArrayXd N(10);
-  N << 20 , 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240;
-  
+  N << 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240;
+
   // Exact solution (only y(t)) given z0 = [y(0), y'(0)] and t
   auto yex = [&z0](double t) {
     return 1. / 3. * std::exp(-t / 2.) *
@@ -103,20 +105,19 @@ double cvgSDIRK() {
     // Get solution
     auto sol = sdirkSolve(z0, n, T, gamma);
     // Compute error
-    err(i)= std::abs(sol.back()(0) - yex(T));
+    err(i) = std::abs(sol.back()(0) - yex(T));
 
     // Print table
     std::cout << std::setw(15) << n << std::setw(15) << err(i);
-    if (i > 0)
-      std::cout << std::setw(15) << std::log2(errold / err(i));
+    if (i > 0) std::cout << std::setw(15) << std::log2(errold / err(i));
     std::cout << std::endl;
 
     // Store old error
     errold = err(i);
   }
-  //Eigen::VectorXd Neig(N.data());
-  //Eigen::VectorXd erreig (err.data());
-  Eigen::VectorXd coeffs = polyfit(N.log(),err.log(),1);
+  // Eigen::VectorXd Neig(N.data());
+  // Eigen::VectorXd erreig (err.data());
+  Eigen::VectorXd coeffs = polyfit(N.log(), err.log(), 1);
   conv_rate = -coeffs(0);
 #else
   //====================
@@ -127,4 +128,4 @@ double cvgSDIRK() {
 }
 /* SAM_LISTING_END_2 */
 
-}  // SDIRK
+}  // namespace SDIRK
