@@ -15,6 +15,7 @@
     "ConsLawWithSource/",
     "ContourPlot/",
     "CoupledSecondOrderBVP/",
+    "CrossProd/",
     "DebuggingFEM/",
     "DebuggingWithLLDB/",	
     "DiscontinuousGalerkin1D/",
