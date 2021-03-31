@@ -16,6 +16,7 @@
 
 namespace TaylorODE {
 
+/* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d PredPreyModel::f(const Eigen::Vector2d& y) const {
   //====================
   // Your code goes here
@@ -51,6 +52,7 @@ std::vector<Eigen::Vector2d> SolvePredPreyTaylor(const PredPreyModel& model,
   //====================
   return res;
 }
+/* SAM_LISTING_END_1 */
 
 double TestCvgTaylorMethod() {
   // initialize parameters for the model:
