@@ -54,6 +54,7 @@ std::vector<Eigen::Vector2d> SolvePredPreyTaylor(const PredPreyModel& model,
 }
 /* SAM_LISTING_END_1 */
 
+/* SAM_LISTING_BEGIN_2 */
 double TestCvgTaylorMethod() {
   // initialize parameters for the model:
   double T = 10;               // final time
@@ -86,6 +87,7 @@ double TestCvgTaylorMethod() {
   //====================
   return 0.0;
 }
+/* SAM_LISTING_END_2 */
 
 void PrintErrorTable(const Eigen::ArrayXd& M, const Eigen::ArrayXd& error) {
   std::cout << std::setw(15) << "M" << std::setw(15) << "error" << std::setw(15)
