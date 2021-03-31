@@ -83,6 +83,7 @@ double TestCvpExtrapolatedEuler();
  *
  * @return pair of vectors (t_k,y_k)
  */
+/* SAM_LISTING_BEGIN_3 */
 template <class DiscEvlOp>
 std::pair<std::vector<double>, std::vector<double>> OdeIntSsCtrl(
     const DiscEvlOp& Psi, unsigned int p, double y0, double T, double h0,
