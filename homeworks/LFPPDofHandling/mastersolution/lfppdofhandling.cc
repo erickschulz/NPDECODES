@@ -71,10 +71,16 @@ double integrateLinearFEFunction(
   double I = 0;
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
   for (const auto *cell : mesh->Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kQuad()) {
+        throw "Only triangular meshes are allowed!";
+    }    
     // check if we the FE space is really $\Cs_1^0$
     if (dofhandler.NumLocalDofs(*cell) != 3) {
-      throw "Not a S_1^0 FE space!";
+      throw "Not a S_1^0 FE space on a triangular mesh!";
     }
+    // Retrieve area of the triangle by calling
+    // a LehrFEM++ utility function
+    const double area = lf::geometry::Volume(*(cell->Geometry()));
     // iterate over dofs
     auto int_dofs = dofhandler.GlobalDofIndices(*cell);
     for (auto dof_idx_p = int_dofs.begin(); dof_idx_p < int_dofs.end();
@@ -82,7 +88,7 @@ double integrateLinearFEFunction(
       // local integral of the basis function associated with this dof:
       // in linear Lagrangian FE, the integral over the basis functions over
       // a triangle K is: 1/3*vol(K)
-      const double I_bary = 1.0 / 3.0 * lf::geometry::Volume(*(cell->Geometry()));
+      const double I_bary = 1.0 / 3.0 * area;
       // multiply by the value at the dof to get local contribution
       I += I_bary * mu(*dof_idx_p);
     }
