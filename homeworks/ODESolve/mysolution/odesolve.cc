@@ -13,7 +13,7 @@
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace ODESolve {
 

@@ -6,8 +6,6 @@
 
 #include <Eigen/Dense>
 
-#include "polyfit.h"
-
 namespace SystemODE {
 
 // Single step of RK4 for the ODE y' = f(y)
