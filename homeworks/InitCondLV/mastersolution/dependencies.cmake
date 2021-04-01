@@ -6,7 +6,6 @@ set(SOURCES
   ${DIR}/initcondlv_main.cc
   ${DIR}/initcondlv.h
   ${DIR}/initcondlv.cc
-  ${DIR}/ode45.h
 )
 
 set(LIBRARIES

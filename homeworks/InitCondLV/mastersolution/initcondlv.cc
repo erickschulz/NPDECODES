@@ -11,7 +11,7 @@
 #include <iostream>
 #include <utility>
 
-#include "ode45.h"
+#include "../../../lecturecodes/Ode45/ode45.h"
 
 namespace InitCondLV {
 
@@ -38,7 +38,7 @@ std::pair<Eigen::Vector2d, Eigen::Matrix2d> PhiAndW(double u0, double v0,
   w0 << u0, v0, 1., 0, 0, 1.;
 
   // Construct ode solver with r.h.s
-  ode45<Eigen::VectorXd> O(f);
+  Ode45<Eigen::VectorXd> O(f);
   // Set options
   O.options.rtol = 1e-14;
   O.options.atol = 1e-12;

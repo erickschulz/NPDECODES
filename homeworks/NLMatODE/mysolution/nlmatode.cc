@@ -6,14 +6,14 @@
 #include <iostream>
 #include <limits>
 
-#include "ode45.h"
-#include "polyfit.h"
+#include "../../../lecturecodes/Ode45/ode45.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace NLMatODE {
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::MatrixXd matode(const Eigen::MatrixXd &Y0, double T) {
-  // Use the ode45 class to find an approximation
+  // Use the Ode45 class to find an approximation
   // of the matrix IVP $Y' = -(Y-Y')*Y$ at time $T$
   Eigen::MatrixXd YT;
   //====================

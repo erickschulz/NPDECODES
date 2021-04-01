@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "ode45.h"
+#include "../../../lecturecodes/Ode45/ode45.h"
 
 namespace ContourPlot {
 
@@ -32,7 +32,7 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> computeIsolinePoints(
 
 #if SOLUTION
   // Adaptive explicit Runge-Kutta method
-  ode45<Eigen::Vector2d> integrator(rhs);
+  Ode45<Eigen::Vector2d> integrator(rhs);
   // Set tolerances for timestep control (optional)
   integrator.options.rtol = 1e-6;
   integrator.options.atol = 1e-8;

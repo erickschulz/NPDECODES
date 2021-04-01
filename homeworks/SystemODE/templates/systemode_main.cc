@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 #include "systemode.h"
 
 /* SAM_LISTING_BEGIN_0 */

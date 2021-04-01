@@ -25,7 +25,7 @@ plt.legend()
 plt.xlabel("t")
 plt.ylabel("y")
 plt.title("Approximate and Exact Solution")
-plt.savefig(output_dir + "/tangent.png")
+plt.savefig(output_dir + "/tangent.eps")
 
 
 #Plot showing evolution of time against number of
@@ -34,7 +34,7 @@ plt.plot(t)
 plt.xlabel("idx")
 plt.ylabel("t")
 plt.title("Time vs. Index of Timestep ")
-plt.savefig(output_dir + "/time.png")
+plt.savefig(output_dir + "/time.eps")
 
 #Plot showing timestep size against time.
 plt.figure()
@@ -42,6 +42,6 @@ plt.plot(t[0:-1],t[1:] - t[0:-1])
 plt.xlabel("t")
 plt.ylabel("h")
 plt.title("Timestep size vs. Time")
-plt.savefig(output_dir + "/timesteps.png")
+plt.savefig(output_dir + "/timesteps.eps")
 
 

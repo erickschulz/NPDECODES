@@ -6,8 +6,6 @@ set(SOURCES
   ${DIR}/odesolve_main.cc
   ${DIR}/odesolve.h
   ${DIR}/odesolve.cc
-  ${DIR}/polyfit.h
-  ${DIR}/polyfit.cc
 )
 
 set(LIBRARIES

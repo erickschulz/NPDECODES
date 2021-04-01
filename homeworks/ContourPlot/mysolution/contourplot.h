@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "ode45.h"
+#include "../../../lecturecodes/Ode45/ode45.h"
 
 namespace ContourPlot {
 
