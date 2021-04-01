@@ -44,7 +44,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-3 | `ODESolve` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:| |
 | 6-4 | `SystemODE` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  |
 | 6-5 | `NLMatOde` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: |  |
-| 6-6 | `OrdNotAll` | :heavy_check_mark: | :heavy_check_mark: | :white_check_mark:|  |
+| 6-6 | `OrdNotAll` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
 | 6-7 | `InitCondLV` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
 | 6-9 | `ContourPlot` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
