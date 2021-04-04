@@ -53,6 +53,7 @@ add_subdirectory(RegularizedNeumannProblem)
 add_subdirectory(RK3Prey)
 add_subdirectory(SDIRK)
 add_subdirectory(SDIRKMethodOfLines)
+add_subdirectory(SemImpRK)
 add_subdirectory(SimpleLinearFiniteElements)
 add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
 add_subdirectory(SymplecticTimestepping)
