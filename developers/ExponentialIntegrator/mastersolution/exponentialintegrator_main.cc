@@ -7,8 +7,8 @@
  */
 
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <vector>
 /**
  * @file exponentialintegrator_main.cc
@@ -18,15 +18,13 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-#include <Eigen/Core>
-
 #include "exponentialintegrator.h"
-
 
 int main() {
   /* SAM_LISTING_BEGIN_0 */
@@ -36,10 +34,8 @@ int main() {
   Eigen::VectorXd y0(1);
   y0 << 0.1;
   // Function and Jacobian and exact solution
-  auto f = [] (const Eigen::VectorXd &y) {
-    return y(0) * (1.0 - y(0));
-  };
-  auto df = [] (const Eigen::VectorXd &y) {
+  auto f = [](const Eigen::VectorXd &y) { return y(0) * (1.0 - y(0)); };
+  auto df = [](const Eigen::VectorXd &y) {
     Eigen::VectorXd dfy(1);
     dfy << 1.0 - 2.0 * y(0);
     return dfy;
@@ -50,8 +46,8 @@ int main() {
   std::vector<double> error(15);
 
   // Test many step sizes
-  for (int j=0; j < 15; ++j) {
-    int N = std::pow(2,j+1);
+  for (int j = 0; j < 15; ++j) {
+    int N = std::pow(2, j + 1);
     Eigen::VectorXd y = y0;
     double h = T / N;
 #if SOLUTION
@@ -59,25 +55,22 @@ int main() {
       y = ExponentialIntegrator::exponentialEulerStep(y, f, df, h);
     }
 #else
-  //====================
-  // Your code goes here
-  // TODO: Perform N timesteps with inital data y0 and store the result in y.
-  //====================
+    //====================
+    // Your code goes here
+    // TODO: Perform N timesteps with inital data y0 and store the result in y.
+    //====================
 #endif
 
     error[j] = std::abs(y(0) - exactyT);
-    std::cout << std::left << std::setfill(' ')
-              << std::setw(3) << "N = "
-              << std::setw(7) << N
-              << std::setw(8) << "Error = "
-              << std::setw(13) << error[j];
+    std::cout << std::left << std::setfill(' ') << std::setw(3)
+              << "N = " << std::setw(7) << N << std::setw(8)
+              << "Error = " << std::setw(13) << error[j];
     if (j > 0) {
-      std::cout << std::left << std::setfill(' ')
-                << std::setw(10) << "Approximated order = "
-                << std::log2( error[j - 1] / error[j] )
+      std::cout << std::left << std::setfill(' ') << std::setw(10)
+                << "Approximated order = " << std::log2(error[j - 1] / error[j])
                 << std::endl;
-    }
-    else std::cout << std::endl;
+    } else
+      std::cout << std::endl;
   }
   /* SAM_LISTING_END_0 */
   return 0;

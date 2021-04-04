@@ -25,9 +25,10 @@ Eigen::MatrixXd phim(const Eigen::MatrixXd &Z);
 //! \return A single step of the Exponential Euler method
 /* SAM_LISTING_BEGIN_0 */
 template <class Function, class Jacobian>
-Eigen::VectorXd exponentialEulerStep(const Eigen::VectorXd &y0, Function &&f, Jacobian &&df, double h) {
+Eigen::VectorXd exponentialEulerStep(const Eigen::VectorXd &y0, Function &&f,
+                                     Jacobian &&df, double h) {
 #if SOLUTION
-  return  y0 + h * phim(h * df(y0)) * f(y0);
+  return y0 + h * phim(h * df(y0)) * f(y0);
 #else
   //====================
   // Your code goes here
