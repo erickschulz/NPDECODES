@@ -58,6 +58,7 @@ add_subdirectory(SDIRKMethodOfLines)
 add_subdirectory(SemImpRK)
 add_subdirectory(SimpleLinearFiniteElements)
 add_subdirectory(StableEvaluationAtAPoint) # needs checking by Ralf
+add_subdirectory(StabRK3)
 add_subdirectory(SymplecticTimestepping)
 add_subdirectory(SymplecticTimesteppingWaves)
 add_subdirectory(SystemODE)
