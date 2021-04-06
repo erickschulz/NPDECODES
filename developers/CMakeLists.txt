@@ -6,8 +6,6 @@ project(developers)
 include("../cmake/modules/custom_targets.cmake")
 get_custom_test_targets()
 
-#add_subdirectory(FisherKPP) # missing unit tests
-#add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
 add_subdirectory(1DWaveAbsorbingBC)
 add_subdirectory(AdvectionFV2D) # under construction
 add_subdirectory(AvgValBoundary)
@@ -30,6 +28,7 @@ add_subdirectory(ExponentialIntegrator)
 add_subdirectory(ExtendedMUSCL)
 add_subdirectory(FiniteVolumeRobin)
 add_subdirectory(FiniteVolumeSineConsLaw)
+# add_subdirectory(FisherKPP) # missing unit tests
 add_subdirectory(FluxLimitedFV)
 add_subdirectory(GaussLobattoParabolic)
 add_subdirectory(GradientFlow)
@@ -37,6 +36,7 @@ add_subdirectory(ImplRK3Prey)
 add_subdirectory(IncidenceMatrices)
 add_subdirectory(InitCondLV)
 add_subdirectory(IPDGFEM)
+# add_subdirectory(LaxWendroffScheme) # test_mastersolution takes too long
 add_subdirectory(LengthOfBoundary)
 add_subdirectory(LFPPDofHandling)
 add_subdirectory(LinearFE1D)
@@ -79,4 +79,3 @@ add_subdirectory(UpwindFiniteVolume) # Under construction
 add_subdirectory(UpwindQuadrature)
 add_subdirectory(WaveABC2D)
 add_subdirectory(ZienkiewiczZhuEstimator)
-
