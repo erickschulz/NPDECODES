@@ -43,4 +43,4 @@ void cmpCvgRKSSM() {
 }
 /* SAM_LISTING_END_2 */
 
-}   // namespace OrdNotAll
+}  // namespace OrdNotAll

@@ -91,9 +91,7 @@ void cmpCvgRKSSM() {
   std::cout << std::endl
             << "2. ODE y' = |1.1 - y| + 1, y(0)=1" << std::endl
             << std::endl;
-  auto f2 = [](double y) {
-    return std::abs(1.1 - y) + 1.;
-  };
+  auto f2 = [](double y) { return std::abs(1.1 - y) + 1.; };
   y0 = 1;
 
   std::cout << "Explicit Euler" << std::endl << std::endl;
@@ -107,4 +105,4 @@ void cmpCvgRKSSM() {
 }
 /* SAM_LISTING_END_2 */
 
-}   // namespace OrdNotAll
+}  // namespace OrdNotAll
