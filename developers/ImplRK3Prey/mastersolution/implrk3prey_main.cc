@@ -6,17 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <vector>
-
 #include <Eigen/Core>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <vector>
 
 #include "implrk3prey.h"
 
 int main() {
-
   /* SAM_LISTING_BEGIN_0 */
   // Definition of coefficients in Butcher scheme
   unsigned int s = 2;

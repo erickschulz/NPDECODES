@@ -18,12 +18,14 @@ TEST(ImplRK3Prey, solve) {
   // Set up ODE for predator/prey model
   Eigen::Vector2d alpha(3.0, 2.0);
   Eigen::Vector2d beta(0.1, 0.1);
-  auto f = [alpha, beta] (Eigen::Vector2d y) -> Eigen::Vector2d {
-    return Eigen::Vector2d(y(0) * (alpha(0) - beta(0) * y(1)), y(1) * (-alpha(1) + beta(1) * y(0)));
+  auto f = [alpha, beta](Eigen::Vector2d y) -> Eigen::Vector2d {
+    return Eigen::Vector2d(y(0) * (alpha(0) - beta(0) * y(1)),
+                           y(1) * (-alpha(1) + beta(1) * y(0)));
   };
-  auto Jf = [alpha, beta] (Eigen::Vector2d y) -> Eigen::Matrix2d {
-	  Eigen::Matrix2d J;
-    J << alpha(0) - beta(0) * y(1), -beta(0) * y(0), beta(1) * y(1), -alpha(1) + beta(1) * y(0);
+  auto Jf = [alpha, beta](Eigen::Vector2d y) -> Eigen::Matrix2d {
+    Eigen::Matrix2d J;
+    J << alpha(0) - beta(0) * y(1), -beta(0) * y(0), beta(1) * y(1),
+        -alpha(1) + beta(1) * y(0);
     return J;
   };
 

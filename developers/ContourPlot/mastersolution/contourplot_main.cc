@@ -18,7 +18,7 @@ const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
 constexpr double Square(double x) { return x * x; }
 constexpr double Cube(double x) { return x * x * x; }
 
-int main(int /*argc*/, char **/*argv*/) {
+int main(int /*argc*/, char ** /*argv*/) {
   /* SAM_LISTING_BEGIN_0 */
   // Compute isolines using gradF and computeIsolinePoints(...)
   Eigen::MatrixXd isolinePoints = ContourPlot::crookedEgg();

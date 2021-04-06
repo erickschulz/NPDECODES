@@ -72,10 +72,10 @@ std::vector<Eigen::Vector2d> SolvePredPreyTaylor(const PredPreyModel& model,
 
   for (unsigned int k = 0; k < M; ++k) {
     // evaluate terms for taylor step.
-    auto fy = model.f(y);              
-    auto dfyfy = model.df(y, fy);      
-    auto df2yfy = model.df(y, dfyfy);  
-    auto d2fyfy = model.d2f(y, fy);    
+    auto fy = model.f(y);
+    auto dfyfy = model.df(y, fy);
+    auto df2yfy = model.df(y, dfyfy);
+    auto d2fyfy = model.d2f(y, fy);
 
     // evaluate taylor expansion to compute update
     y = y + h * fy + 0.5 * h * h * dfyfy +

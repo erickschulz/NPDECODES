@@ -9,11 +9,10 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <cassert>
 #include <utility>
 #include <vector>
-
-#include <Eigen/Core>
 
 #include "dampnewton.h"
 
@@ -45,7 +44,7 @@ Eigen::MatrixXd kron(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B) {
  *! given Butcher tableau for autonomous ODEs.
  */
 class implicitRKIntegrator {
-public:
+ public:
   /*!
    *! \brief Constructor for the implicit RK method.
    *! Performs size checks and copies A and b into internal storage.
@@ -81,7 +80,9 @@ public:
    *! including initial and final value
    */
   template <class Function, class Jacobian>
-  std::vector<Eigen::VectorXd> solve(Function &&f, Jacobian &&Jf, double T, const Eigen::VectorXd &y0, unsigned int N) const {
+  std::vector<Eigen::VectorXd> solve(Function &&f, Jacobian &&Jf, double T,
+                                     const Eigen::VectorXd &y0,
+                                     unsigned int N) const {
     // Iniz step size
     double h = T / N;
 
@@ -110,7 +111,7 @@ public:
     return res;
   }
 
-private:
+ private:
   /*!
    *! \brief Perform a single step of the RK method for the
    *! solution of the autonomous ODE
@@ -122,14 +123,14 @@ private:
    *! Must have Eigen::MatrixXd operator()(Eigen::VectorXd x)
    *! \param[in] f function handle for ths f, s.t. y' = f(y)
    *! \param[in] Jf function handle for Jf, e.g. implemented using lambda
-   *function 
-   *! \param[in] h step size ! \param[in] y0 initial Eigen::VectorXd 
+   *function
+   *! \param[in] h step size ! \param[in] y0 initial Eigen::VectorXd
    *! \param[out] y1 next step y^{n+1} = y^n + ...
    */
-/* SAM_LISTING_BEGIN_0 */
+  /* SAM_LISTING_BEGIN_0 */
   template <class Function, class Jacobian>
-  void step(Function &&f, Jacobian &&Jf, double h, const Eigen::VectorXd &y0, Eigen::VectorXd &y1) const {
-
+  void step(Function &&f, Jacobian &&Jf, double h, const Eigen::VectorXd &y0,
+            Eigen::VectorXd &y1) const {
     int d = y0.size();
     const Eigen::MatrixXd eye = Eigen::MatrixXd::Identity(d, d);
 
@@ -161,18 +162,17 @@ private:
 
     // Calculate y1
     Eigen::MatrixXd K(d, s);
-    for (int j = 0; j < s; j++)
-      K.col(j) = f(y0 + gv.segment(j * d, d));
+    for (int j = 0; j < s; j++) K.col(j) = f(y0 + gv.segment(j * d, d));
     y1 = y0 + h * K * b;
 #else
-  //====================
-  // Your code goes here
-  // Use the function dampnewton(...) in dampnewton.h
-  // to solve the non-linear system of equations.
-  //====================
+    //====================
+    // Your code goes here
+    // Use the function dampnewton(...) in dampnewton.h
+    // to solve the non-linear system of equations.
+    //====================
 #endif
   }
-/* SAM_LISTING_END_0 */
+  /* SAM_LISTING_END_0 */
   //<! Matrix A in Butcher scheme
   const Eigen::MatrixXd A;
   //<! Vector b in Butcher scheme
