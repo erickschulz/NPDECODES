@@ -6,26 +6,30 @@ namespace OrdNotAll {
 template <class Function>
 void testCvgRKSSM(const Function &f, double T, double y0,
                   const Eigen::MatrixXd &A, const Eigen::VectorXd &b) {
+  // Helper object carrying out the actual explicit RK-SSM
   RKIntegrator<double> rk(A, b);
-
+  // Vector for collecting errors
   std::vector<double> error(15);
 #if SOLUTION
+  // Vector for storing rate estimates 
   std::vector<double> order(14);
 
   double sum = 0;
   int count = 0;
   bool test = true;
-
+  // Reference numerical solution obtained with $2^{15}$ timesteps
   std::vector<double> y_exact = rk.solve(f, T, y0, std::pow(2, 15));
 
   for (int k = 0; k < 12; k++) {
-    int N = std::pow(2, k + 1);
-    std::vector<double> y1 = rk.solve(f, T, y0, N);
-
-    error[k] = std::abs(y1[N] - y_exact[std::pow(2, 15)]);
-
+    // Number of timesteps 
+    int M = std::pow(2, k + 1);
+    // Solve IVP
+    std::vector<double> y1 = rk.solve(f, T, y0, M);
+    // Error at final time 
+    error[k] = std::abs(y1[M] - y_exact[std::pow(2, 15)]);
+    
     std::cout << std::left << std::setfill(' ') << std::setw(3)
-              << "N = " << std::setw(7) << N << std::setw(8)
+              << "M = " << std::setw(7) << M << std::setw(8)
               << "Error = " << std::setw(13) << error[k];
 
     if (error[k] < 1e-14) {
