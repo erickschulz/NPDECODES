@@ -23,7 +23,7 @@ TEST(SDIRK, sdirkStep) {
   Eigen::Vector2d z0(1.0, 0.0);
 
   double h = T / N;
-  Eigen::Vector2d zT = sdirkStep(z0, h, gamma);
+  Eigen::Vector2d zT = SdirkStep(z0, h, gamma);
 
   Eigen::Vector2d zT_reference(0.999516810128635, -0.0307616782094714);
 
@@ -37,7 +37,7 @@ TEST(SDIRK, sdirkSolve) {
   double gamma = (3.0 + std::sqrt(3.0)) / 6.0;
   Eigen::Vector2d z0(1.0, 0.0);
 
-  Eigen::Vector2d zT = sdirkSolve(z0, N, T, gamma).back();
+  Eigen::Vector2d zT = SdirkSolve(z0, N, T, gamma).back();
 
   Eigen::Vector2d zT_reference(-0.00216997617476873, -0.0053856854265896);
 
