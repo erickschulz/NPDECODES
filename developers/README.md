@@ -49,7 +49,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
 | 6-9 | `ContourPlot` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
-| 7-1 | `ImplRK3Prey` |  |  | | |
+| 7-1 | `ImplRK3Prey` | :white_check_mark: | :white_check_mark: | | Erick |
 | 7-2 | `CrossProd` |  |  | | |
 | 7-3 | `SDIRK` |  |  | | Philippe |
 | 7-4 | `SemIMpRK` |  |  | | |
