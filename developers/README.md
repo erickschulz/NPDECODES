@@ -54,7 +54,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: | |  |
 | 7-4 | `SemImpRK` |  |  | | |
 | 7-5 | `ExponentialIntegrator` | :heavy_check_mark: |  | |  |
-| 7-6 | `MIRK` |  |  | | |
+| 7-6 | `MIRK` | :white_check_mark: |  | |Philippe |
 | 7-7 | `StabRK3` | :heavy_check_mark: | :heavy_check_mark: | | |
 | 7-8 | `GradientFlow` |  |  | | |
 | 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
