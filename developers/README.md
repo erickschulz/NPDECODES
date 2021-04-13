@@ -53,7 +53,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 7-2 | `CrossProd` | :white_check_mark:  |  | | Erick |
 | 7-3 | `SDIRK` |  |  | | Philippe |
 | 7-4 | `SemIMpRK` |  |  | | |
-| 7-5 | `ExponentialIntegrator` |  |  | | |
+| 7-5 | `ExponentialIntegrator` | :white_check_mark: |  | | Tobias |
 | 7-6 | `MIRK` |  |  | | |
 | 7-7 | `StabRK3` |  |  | | |
 | 7-8 | `GradientFlow` |  |  | | |
