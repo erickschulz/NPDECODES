@@ -1,7 +1,7 @@
 /**
  * @file stabrk3_test.cc
  * @brief NPDE homework StabRK3 code
- * @author Philippe PEter
+ * @author Philippe Peter
  * @date 13.04.2021
  * @copyright Developed at ETH Zurich
  */

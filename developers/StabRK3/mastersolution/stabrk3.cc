@@ -9,6 +9,8 @@
 #include "stabrk3.h"
 
 #include <Eigen/Core>
+
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
