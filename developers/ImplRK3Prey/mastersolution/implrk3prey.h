@@ -18,17 +18,9 @@
 
 namespace ImplRK3Prey {
 
-/*!
- *! \file implicit_rkintegrator.hpp A header only file implementing a
- *! implicit runge kutta integrator.
- */
-
-/*!
- *! \brief Compute the Kronecker product $C = A \otimes B$.
- *! \param[in] A Matrix $m \times n$.
- *! \param[in] B Matrix $l \times k$.
- *! \return Kronecker product of A and B of dim $ml \times nk$.
- */
+ // Compute the Kronecker product $C = A \otimes B$
+ // A is m x n matrix, B is l x k matrix
+ // return Kronecker product of A and B: dim is m*l x n*k
 Eigen::MatrixXd kron(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B) {
   Eigen::MatrixXd C(A.rows() * B.rows(), A.cols() * B.cols());
   for (unsigned int i = 0; i < A.rows(); ++i) {
@@ -39,46 +31,27 @@ Eigen::MatrixXd kron(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B) {
   return C;
 }
 
-/*!
- *! \brief Implements a Runge-Kutta implicit solver for a
- *! given Butcher tableau for autonomous ODEs.
- */
+// Implements a Runge-Kutta implicit solver for a given Butcher tableau
+// for autonomous ODEs.
+/* SAM_LISTING_BEGIN_1 */
 class implicitRKIntegrator {
  public:
-  /*!
-   *! \brief Constructor for the implicit RK method.
-   *! Performs size checks and copies A and b into internal storage.
-   *! \param[in] A Matrix containing coefficents of Butcher tableau.
-   *! \param[in] b Vector containing coefficients of
-   *! lower part of Butcher tableau.
-   */
+   // Constructor
+   // A is a  matrix containing coefficents of Butcher tableau
+   // b is a vector containing coefficients of lower part of Butcher tableau
   implicitRKIntegrator(const Eigen::MatrixXd &A, const Eigen::VectorXd &b)
       : A(A), b(b), s(b.size()) {
     assert(A.cols() == A.rows() && "Matrix must be square.");
     assert(A.cols() == b.size() && "Incompatible matrix/vector size.");
   }
 
-  /*!
-   *! \brief Perform the solution of the ODE.
-   *! Solve an autonomous ODE y' = f(y), y(0) = y0, using an
-   *! implicit RK scheme given in the Butcher tableau provided in the
-   *! constructor. Performs N equidistant steps upto time T
-   *! with initial data y0.
-   *! \tparam Function type for function implementing the rhs function.
-   *! Must have Eigen::VectorXd operator()(Eigen::VectorXd x)
-   *! \tparam Function2 type for function implementing the Jacobian of f.
-   *! Must have Eigen::MatrixXd operator()(Eigen::VectorXd x)
-   *! \param[in] f function handle for rhs in y' = f(y), e.g.
-   *! implemented using lambda funciton
-   *! \param[in] Jf function handle for Jf, e.g.
-   *! implemented using lambda funciton
-   *! \param[in] T final time T
-   *! \param[in] y0 initial data y(0) = y0 for y' = f(y)
-   *! \param[in] N number of steps to perform.
-   *! Step size is h = T / N. Steps are equidistant.
-   *! \return vector containing all steps y^n (for each n)
-   *! including initial and final value
-   */
+  
+   /* Performs the solution of the ODE.
+   * Solve an autonomous ODE y' = f(y), y(0) = y0, using an
+   * implicit RK scheme given in the Butcher tableau provided in the
+   * constructor. Performs N equidistant steps of size h = T / N up to 
+   * time T with initial condition y0.
+   * Returns a vector containing all steps y^n (for each n) inclu. y0 */
   template <class Function, class Jacobian>
   std::vector<Eigen::VectorXd> solve(Function &&f, Jacobian &&Jf, double T,
                                      const Eigen::VectorXd &y0,
@@ -112,21 +85,7 @@ class implicitRKIntegrator {
   }
 
  private:
-  /*!
-   *! \brief Perform a single step of the RK method for the
-   *! solution of the autonomous ODE
-   *! Compute a single explicit RK step y^{n+1} = y_n + \sum ...
-   *! starting from value y0 and storing next value in y1
-   *! \tparam Function type for function implementing the rhs.
-   *! Must have Eigen::VectorXd operator()(Eigen::VectorXd x)
-   *! \tparam Jacobian type for function implementing the Jacobian of f.
-   *! Must have Eigen::MatrixXd operator()(Eigen::VectorXd x)
-   *! \param[in] f function handle for ths f, s.t. y' = f(y)
-   *! \param[in] Jf function handle for Jf, e.g. implemented using lambda
-   *function
-   *! \param[in] h step size ! \param[in] y0 initial Eigen::VectorXd
-   *! \param[out] y1 next step y^{n+1} = y^n + ...
-   */
+  /* Perform a single step of the RK method for the for of the autonomous ODE
   /* SAM_LISTING_BEGIN_0 */
   template <class Function, class Jacobian>
   void step(Function &&f, Jacobian &&Jf, double h, const Eigen::VectorXd &y0,
@@ -180,6 +139,7 @@ class implicitRKIntegrator {
   //<! Size of Butcher matrix and vector A and b
   unsigned int s;
 };
+/* SAM_LISTING_END_1 */
 
 }  // namespace ImplRK3Prey
 
