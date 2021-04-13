@@ -21,7 +21,7 @@ int main() {
   double T = 1.0;
   Eigen::Vector2d y0(100.0, T);
   Eigen::Vector2d yT_reference = StabRK3::PredPrey(y0, T, std::pow(2, 14));
-  std::cout << "Solution Computed by predPrey(): "
+  std::cout << "Solution Computed by PredPrey(): "
             << yT_reference.transpose().format(CSVFormat) << std::endl;
 
   // Convergence study
