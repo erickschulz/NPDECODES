@@ -21,7 +21,7 @@ void tab_crossprod() {
   // defined in solve_imp_mid. Tabulate the norms of the results at all steps.
 #if SOLUTION
   double T = 10.;
-  int N = 128;
+  int M = 128;
   // set data
   double c = 1.;
   Eigen::Vector3d y0(1., 1., 1.);
@@ -46,14 +46,14 @@ void tab_crossprod() {
     return temp;
   };
 
-  std::vector<Eigen::VectorXd> res_imp = solve_imp_mid(f, Jf, T, y0, N);
+  std::vector<Eigen::VectorXd> res_imp = solve_imp_mid(f, Jf, T, y0, M);
 
   std::cout << "1. Implicit midpoint method" << std::endl;
   std::cout << std::setw(10) << "t" << std::setw(15) << "norm(y(t))"
             << std::endl;
 
-  for (int i = 0; i < N + 1; ++i) {
-    std::cout << std::setw(10) << T * i / N << std::setw(15)
+  for (int i = 0; i < M + 1; ++i) {
+    std::cout << std::setw(10) << T * i / M << std::setw(15)
               << res_imp[i].norm() << std::endl;
   }
 #else
@@ -67,13 +67,12 @@ void tab_crossprod() {
   // TO DO (13-1.g): solve the cross-product ODE with the implicit RK method
   // defined in solve_lin_mid. Tabulate the norms of the results at all steps.
 #if SOLUTION
-  std::vector<Eigen::VectorXd> res_lin = solve_lin_mid(f, Jf, T, y0, N);
-
+  std::vector<Eigen::VectorXd> res_lin = solve_lin_mid(f, Jf, T, y0, M);
   std::cout << "\n2. Linear implicit midpoint method" << std::endl;
   std::cout << std::setw(10) << "t" << std::setw(15) << "norm(y(t))"
             << std::endl;
-  for (int i = 0; i < N + 1; ++i) {
-    std::cout << std::setw(10) << T * i / N << std::setw(15)
+  for (int i = 0; i < M + 1; ++i) {
+    std::cout << std::setw(10) << T * i / M << std::setw(15)
               << res_lin[i].norm() << std::endl;
   }
 #else

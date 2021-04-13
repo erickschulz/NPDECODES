@@ -39,6 +39,8 @@ Eigen::VectorXd exponentialEulerStep(const Eigen::VectorXd &y0, Function &&f,
 }
 /* SAM_LISTING_END_0 */
 
+void testExpEulerLogODE();
+
 }  // namespace ExponentialIntegrator
 
 #endif  // #ifndef EXPONENTIALINTEGRATOR_H_
