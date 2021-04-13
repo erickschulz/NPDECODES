@@ -51,11 +51,11 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 7-1 | `ImplRK3Prey` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark:  | |
 | 7-2 | `CrossProd` | :white_check_mark:  |  | | Erick |
-| 7-3 | `SDIRK` |  |  | | Philippe |
+| 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: | |  |
 | 7-4 | `SemIMpRK` |  |  | | |
 | 7-5 | `ExponentialIntegrator` | :white_check_mark: |  | | Tobias |
 | 7-6 | `MIRK` |  |  | | |
-| 7-7 | `StabRK3` |  |  | | |
+| 7-7 | `StabRK3` | :white_check_mark: |  | | Philippe|
 | 7-8 | `GradientFlow` |  |  | | |
 | 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 8-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
