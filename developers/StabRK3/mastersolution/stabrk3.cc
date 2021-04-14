@@ -18,8 +18,8 @@
 namespace StabRK3 {
 
 /* SAM_LISTING_BEGIN_0 */
-Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int N) {
-  double h = T / N;
+Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int M) {
+  double h = T / M;
   Eigen::Vector2d y = y0;
 
 #if SOLUTION
@@ -27,7 +27,7 @@ Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int N) {
     return {(1 - y(1)) * y(0), (y(0) - 1) * y(1)};
   };
 
-  for (int j = 0; j < N; ++j) {
+  for (int j = 0; j < M; ++j) {
     Eigen::Vector2d k1 = f(y);
     Eigen::Vector2d k2 = f(y + h * k1);
     Eigen::Vector2d k3 = f(y + (h / 4.) * k1 + (h / 4.) * k2);
@@ -54,17 +54,17 @@ void SimulatePredPrey() {
   Eigen::Vector2d y_ref = PredPrey(y0, T, std::pow(2, 14));
 
   Eigen::ArrayXd error(12);
-  Eigen::ArrayXd N(12);
-  N << 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192;
+  Eigen::ArrayXd M(12);
+  M << 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192;
 
   // Compute errors
-  for (int i = 0; i < N.size(); ++i) {
-    Eigen::Vector2d y = PredPrey(y0, T, N(i));
+  for (int i = 0; i < M.size(); ++i) {
+    Eigen::Vector2d y = PredPrey(y0, T, M(i));
     error(i) = (y - y_ref).norm();
   }
 
   // Print error table
-  PrintErrorTable(N, error);
+  PrintErrorTable(M, error);
 #else
   //====================
   // Your code goes here
@@ -72,12 +72,12 @@ void SimulatePredPrey() {
 #endif
 }
 
-void PrintErrorTable(const Eigen::ArrayXd& N, const Eigen::ArrayXd& error) {
+void PrintErrorTable(const Eigen::ArrayXd& M, const Eigen::ArrayXd& error) {
   std::cout << std::setw(15) << "N" << std::setw(15) << "error" << std::setw(15)
             << "rate" << std::endl;
 
-  for (unsigned int i = 0; i < N.size(); ++i) {
-    std::cout << std::setw(15) << N(i) << std::setw(15) << error(i);
+  for (unsigned int i = 0; i < M.size(); ++i) {
+    std::cout << std::setw(15) << M(i) << std::setw(15) << error(i);
     if (i > 0) {
       std::cout << std::setw(15) << std::log2(error(i - 1) / error(i));
     }

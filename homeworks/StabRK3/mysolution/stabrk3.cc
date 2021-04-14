@@ -18,8 +18,8 @@
 namespace StabRK3 {
 
 /* SAM_LISTING_BEGIN_0 */
-Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int N) {
-  double h = T / N;
+Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int M) {
+  double h = T / M;
   Eigen::Vector2d y = y0;
 
   //====================
@@ -37,12 +37,12 @@ void SimulatePredPrey() {
   //====================
 }
 
-void PrintErrorTable(const Eigen::ArrayXd& N, const Eigen::ArrayXd& error) {
+void PrintErrorTable(const Eigen::ArrayXd& M, const Eigen::ArrayXd& error) {
   std::cout << std::setw(15) << "N" << std::setw(15) << "error" << std::setw(15)
             << "rate" << std::endl;
 
-  for (unsigned int i = 0; i < N.size(); ++i) {
-    std::cout << std::setw(15) << N(i) << std::setw(15) << error(i);
+  for (unsigned int i = 0; i < M.size(); ++i) {
+    std::cout << std::setw(15) << M(i) << std::setw(15) << error(i);
     if (i > 0) {
       std::cout << std::setw(15) << std::log2(error(i - 1) / error(i));
     }
