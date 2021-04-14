@@ -24,22 +24,21 @@ int main() {
   // Exact solution at t = T = 1
   const double yex = tan(T);
 
-  //// PROBLEM h: TEST
-  std::cout << "*** PROBLEM h:" << std::endl;
+  std::cout << "Convergence MIRK for IVP y' = 1+y^2 " << std::endl;
 #if SOLUTION
   // Table header
-  std::cout << "N"
+  std::cout << "M"
             << "\t"
             << "yend"
             << "\t"
             << "err" << std::endl;
-  for (unsigned int N = 4; N < 512; N = N << 1) {
-    // Solve up to time T = 1, using N equidistant steps
-    double yend = MIRK::mirkSolve(f, df, y0, T, N);
+  for (unsigned int M = 4; M <= 512; M *= 2) {
+    // Solve up to time T = 1, using M equidistant steps
+    double yend = MIRK::MIRKSolve(f, df, y0, T, M);
     // Compute error
     double err = std::abs(yex - yend);
     // Print table
-    std::cout << N << "\t" << yend << "\t" << err << std::endl;
+    std::cout << M << "\t" << yend << "\t" << err << std::endl;
   }
 #else
   //====================

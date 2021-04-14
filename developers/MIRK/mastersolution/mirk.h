@@ -9,25 +9,20 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <Eigen/LU>
 
 namespace MIRK {
 
-//! \brief Perform 2 steps of newton method applied to F and its jacobian DF
-//! \tparam Function type for function F
-//! \tparam Jacobian type for Jacobian DF of F
-//! \param[in] F function F, for which F(z) = 0 is needed
-//! \param[in] DF Jacobian DF of the function F
-//! \param[in] z0 initial guess
-//! \return final approximation for z such that F(z) = 0
+/** Perform 2 steps of the Newton method applied to F and its Jacobian DF */
 /* SAM_LISTING_BEGIN_0 */
-template <class Function, class Jacobian>
-Eigen::VectorXd newton2steps(Function &&F, Jacobian &&DF, Eigen::VectorXd z) {
+template <class Func, class Jac>
+Eigen::VectorXd Newton2Steps(Func &&F, Jac &&DF, Eigen::VectorXd z) {
 #if SOLUTION
   // First Newton step
-  Eigen::VectorXd znew = z - DF(z).lu().solve(F(z));
+  z = z - DF(z).lu().solve(F(z));
   // Second Newton step
-  z = znew - DF(znew).lu().solve(F(znew));
+  z = z - DF(z).lu().solve(F(z));
 #else
   //====================
   // Your code goes here
@@ -37,14 +32,11 @@ Eigen::VectorXd newton2steps(Function &&F, Jacobian &&DF, Eigen::VectorXd z) {
 }
 /* SAM_LISTING_END_0 */
 
-//! \brief Perform a single step of the MIRK scheme applied to the scalar ODE y'
-//! = f(y) \tparam Function type for function f \tparam Jacobian type for
-//! jacobian df of f \param[in] f function f, as in y' = f(y) \param[in] df
-//! Jacobian df of the function f \param[in] y0 previous value \param[in] h
-//! step-size \return value y1 at next step
+/** Perform a single step of the MIRK scheme applied to the scalar ODE
+ * y' = f(y) */
 /* SAM_LISTING_BEGIN_1 */
-template <class Function, class Jacobian>
-double mirkStep(Function &&f, Jacobian &&df, double y0, double h) {
+template <class Func, class Jac>
+double MIRKStep(Func &&f, Jac &&df, double y0, double h) {
   // Coefficients of MIRK
   const double v1 = 1.0;
   const double v2 = 344.0 / 2025.0;
@@ -72,9 +64,10 @@ double mirkStep(Function &&f, Jacobian &&df, double y0, double h) {
   };
   // Initial Guess for Newton steps
   Eigen::Vector3d z(0.0, 0.0, y0);
-  // Approximate z, s.t. F(z) = 0
 
-  return newton2steps(F, DF, z)(2);
+  // Approximate z, s.t. F(z) = 0
+  z = Newton2Steps(F, DF, z);
+  return z(2);
 #else
   //====================
   // Your code goes here
@@ -85,31 +78,22 @@ double mirkStep(Function &&f, Jacobian &&df, double y0, double h) {
 }
 /* SAM_LISTING_END_1 */
 
-//! \brief Solve an ODE y' = f(y) using MIRK scheme on equidistant steps
-//! \tparam Function type for function f
-//! \tparam Jacobian type for jacobian df of f
-//! \param[in] f function f, as in y' = f(y)
-//! \param[in] df Jacobian df of the function f
-//! \param[in] y0 initial value
-//! \param[in] T final time
-//! \param[in] N number of steps
-//! \return value approximating y(T)
+/** Solve an ODE y' = f(y) using MIRK scheme on equidistant steps,
+ * return the approximation of y(T)*/
 /* SAM_LISTING_BEGIN_2 */
-template <class Function, class Jacobian>
-double mirkSolve(Function &&f, Jacobian &&df, double y0, double T,
-                 unsigned int N) {
+template <class Func, class Jac>
+double MIRKSolve(Func &&f, Jac &&df, double y0, double T, unsigned int M) {
 #if SOLUTION
   // Step size
-  const double h = T / N;
+  const double h = T / M;
   // Will contain next step
-  double ynext = y0;
-  for (unsigned int i = 0; i < N; ++i) {
-    // Do one step
-    ynext = mirkStep(std::forward<Function>(f), std::forward<Jacobian>(df),
-                     ynext, h);
+  double y = y0;
+  // Perform N quidistant steps
+  for (unsigned int i = 0; i < M; ++i) {
+    y = MIRKStep(f, df, y, h);
   }
   // Return final value at t = T
-  return ynext;
+  return y;
 #else
   //====================
   // Your code goes here
