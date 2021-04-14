@@ -6,7 +6,6 @@ set(SOURCES
   ${DIR}/sdirk_main.cc
   ${DIR}/sdirk.h
   ${DIR}/sdirk.cc
-  ${DIR}/polyfit.h
 )
 
 set(LIBRARIES

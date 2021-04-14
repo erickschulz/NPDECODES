@@ -50,12 +50,12 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 6-9 | `ContourPlot` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
 | 7-1 | `ImplRK3Prey` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark:  | |
-| 7-2 | `CrossProd` | :white_check_mark:  |  | | Erick |
-| 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: | |  |
-| 7-4 | `SemIMpRK` |  |  | | |
-| 7-5 | `ExponentialIntegrator` | :heavy_check_mark: |  | |  |
-| 7-6 | `MIRK` |  |  | | |
-| 7-7 | `StabRK3` | :white_check_mark: |  | | Philippe|
+| 7-2 | `CrossProd` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  | |
+| 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:  |  |
+| 7-4 | `SemImpRK` |  |  | | |
+| 7-5 | `ExponentialIntegrator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
+| 7-6 | `MIRK` | :white_check_mark: |  | |Philippe |
+| 7-7 | `StabRK3` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: ||
 | 7-8 | `GradientFlow` |  |  | | |
 | 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 8-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |

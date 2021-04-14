@@ -4,8 +4,8 @@
 /**
  * @file stabrk3.h
  * @brief NPDE homework StabRK3 code
- * @author Oliver Rietmann
- * @date 04.04.2021
+ * @author Oliver Rietmann, Philippe Peter
+ * @date 13.04.2021
  * @copyright Developed at ETH Zurich
  */
 
@@ -14,10 +14,14 @@
 
 namespace StabRK3 {
 
-Eigen::Vector2d predPrey(Eigen::Vector2d y0, double T, unsigned N);
+// Solve the predator-prey IVP using the RK-SSM and uniform timesteps.
+Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned N);
 
-std::vector<Eigen::Vector2d> simulatePredPrey(
-    const std::vector<unsigned int> &N_list);
+// Study the asymptotic convergence behavior of the method.
+void SimulatePredPrey();
+
+// Helper function, prints an error table.
+void PrintErrorTable(const Eigen::ArrayXd& N, const Eigen::ArrayXd& error);
 
 }  // namespace StabRK3
 

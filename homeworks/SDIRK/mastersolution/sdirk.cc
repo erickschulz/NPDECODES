@@ -8,18 +8,18 @@
 
 #include "sdirk.h"
 
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace SDIRK {
 
 /* SAM_LISTING_BEGIN_0 */
-Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
+Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
   Eigen::Vector2d res;
   // TO DO (13-3.f): compute one timestep of the ODE
   // Matrix A for evaluation of f
@@ -40,26 +40,26 @@ Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
-                                        unsigned int N, double T,
+std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
+                                        unsigned int M, double T,
                                         double gamma) {
   // Solution vector
-  std::vector<Eigen::Vector2d> res(N + 1);
+  std::vector<Eigen::Vector2d> res(M + 1);
   // TO DO (13-3.g): solve the ODE with uniform timesteps using the SDIRK method
   // Equidistant step size
-  const double h = T / N;
+  const double h = T / M;
   // Push initial data
-  res.at(0) = z0;
+  res[0] = z0;
   // Main loop
-  for (unsigned int i = 1; i <= N; ++i) {
-    res.at(i) = sdirkStep(res.at(i - 1), h, gamma);
+  for (unsigned int i = 1; i <= M; ++i) {
+    res[i] = SdirkStep(res[i - 1], h, gamma);
   }
   return res;
 }
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double cvgSDIRK() {
+double CvgSDIRK() {
   double conv_rate;
   // TO DO (13-3.g) study the convergence rate of the method.
   // Initial data z0 = [y(0), y'(0)]
@@ -71,8 +71,8 @@ double cvgSDIRK() {
   const double gamma = (3. + std::sqrt(3.)) / 6.;
   // Mesh sizes
   Eigen::ArrayXd err(10);
-  Eigen::ArrayXd N(10);
-  N << 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240;
+  Eigen::ArrayXd M(10);
+  M << 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240;
 
   // Exact solution (only y(t)) given z0 = [y(0), y'(0)] and t
   auto yex = [&z0](double t) {
@@ -84,27 +84,26 @@ double cvgSDIRK() {
 
   // Store old error for rate computation
   double errold = 0;
-  std::cout << std::setw(15) << "n" << std::setw(15) << "maxerr"
+  std::cout << std::setw(15) << "m" << std::setw(15) << "maxerr"
             << std::setw(15) << "rate" << std::endl;
   // Loop over all meshes
-  for (unsigned int i = 0; i < N.size(); ++i) {
-    int n = N(i);
+  for (unsigned int i = 0; i < M.size(); ++i) {
+    int m = M(i);
     // Get solution
-    auto sol = sdirkSolve(z0, n, T, gamma);
+    auto sol = SdirkSolve(z0, m, T, gamma);
     // Compute error
     err(i) = std::abs(sol.back()(0) - yex(T));
 
     // Print table
-    std::cout << std::setw(15) << n << std::setw(15) << err(i);
+    std::cout << std::setw(15) << m << std::setw(15) << err(i);
     if (i > 0) std::cout << std::setw(15) << std::log2(errold / err(i));
     std::cout << std::endl;
 
     // Store old error
     errold = err(i);
   }
-  // Eigen::VectorXd Neig(N.data());
-  // Eigen::VectorXd erreig (err.data());
-  Eigen::VectorXd coeffs = polyfit(N.log(), err.log(), 1);
+
+  Eigen::VectorXd coeffs = polyfit(M.log(), err.log(), 1);
   conv_rate = -coeffs(0);
   return conv_rate;
 }
