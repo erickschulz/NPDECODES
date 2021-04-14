@@ -15,28 +15,27 @@
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace SemImpRK {
 
 /* SAM_LISTING_BEGIN_0 */
-double cvgRosenbrock() {
+double CvgRosenbrock() {
   double cvgRate = 0.0;
-  // TO DO: (13-2.d) Use polyfit() to estimate the rate of convergence
-  // for solveRosenbrock().
+  // Use polyfit to estimate the rate of convergence
+  // for SolveRosenbrock.
 #if SOLUTION
   // Final time
   const double T = 10.0;
   // Mesh sizes h=2^{-k} for k in K.
   const Eigen::ArrayXd K = Eigen::ArrayXd::LinSpaced(7, 4, 10);
-
   // Initial data
   Eigen::Vector2d y0(1., 1.);
+
   // Parameter and useful matrix for f
   const double lambda = 1;
   Eigen::Matrix2d R;
   R << 0.0, -1.0, 1.0, 0.0;
-
   // Function and its Jacobian
   auto f = [&R, &lambda](Eigen::Vector2d y) {
     return R * y + lambda * (1.0 - y.squaredNorm()) * y;
@@ -49,31 +48,39 @@ double cvgRosenbrock() {
     return J;
   };
 
-  // Reference mesh size
-  const int N_ref = 10 * std::pow(2, 12);
+  // Reference mesh size h=2^{-12} => M = T*2^{12}
+  const int M_ref = T * std::pow(2, 12);
   // Reference solution
-  std::vector<Eigen::VectorXd> solref = solveRosenbrock(f, df, y0, N_ref, T);
+  std::vector<Eigen::VectorXd> solref = SolveRosenbrock(f, df, y0, M_ref, T);
 
   Eigen::ArrayXd Error(K.size());
-  std::cout << std::setw(15) << "N" << std::setw(16) << "maxerr\n";
-  // Main loop: loop over all meshes
+  Eigen::ArrayXd M(K.size());
+
+  // Loop over all meshes
   for (unsigned int i = 0; i < K.size(); ++i) {
-    // h = 2^{-k} => N = T*h = T*2^k
-    int N = T * std::pow(2, K[i]);
-    // Get solution
-    std::vector<Eigen::VectorXd> sol = solveRosenbrock(f, df, y0, N, T);
+    // h = 2^{-k} => M = T*h = T*2^k
+    M(i) = T * std::pow(2, K[i]);
+
+    // Compute solution
+    std::vector<Eigen::VectorXd> sol = SolveRosenbrock(f, df, y0, M(i), T);
+
     // Compute error
     double maxerr = 0;
     for (unsigned int j = 0; j < sol.size(); ++j) {
-      maxerr =
-          std::max(maxerr, (sol.at(j) - solref.at((j * N_ref) / N)).norm());
+      maxerr = std::max(maxerr, (sol[j] - solref[j * M_ref / M(i)]).norm());
     }
-
-    Error[i] = maxerr;
-    std::cout << std::setw(15) << N << std::setw(16) << maxerr << std::endl;
+    Error(i) = maxerr;
   }
-  // Use log(N)=log(T*2^k)=log(T)+log(2)*k to get natural logarithm of N.
-  cvgRate = -polyfit(std::log(2.0) * K, Error.log(), 1)(0);
+
+  // Print Error table
+  std::cout << std::setw(15) << "M" << std::setw(16) << "maxerr \n";
+  for (int i = 0; i < M.size(); ++i) {
+    std::cout << std::setw(15) << M(i) << std::setw(15) << Error(i)
+              << std::endl;
+  }
+
+  // Estimate convergence rate
+  cvgRate = -polyfit(M.log(), Error.log(), 1)(0);
 #else
   //====================
   // Your code goes here

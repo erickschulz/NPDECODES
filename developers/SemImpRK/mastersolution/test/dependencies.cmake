@@ -8,6 +8,7 @@
 
 set(SOURCES
   ${DIR}/test/semimprk_test.cc
+  ${DIR}/semimprk.h
 )
 
 set(LIBRARIES
