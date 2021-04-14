@@ -31,10 +31,10 @@ Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
 
 /* SAM_LISTING_BEGIN_1 */
 std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
-                                        unsigned int N, double T,
+                                        unsigned int M, double T,
                                         double gamma) {
   // Solution vector
-  std::vector<Eigen::Vector2d> res(N + 1);
+  std::vector<Eigen::Vector2d> res(M + 1);
   // TO DO (13-3.g): solve the ODE with uniform timesteps using the SDIRK method
   //====================
   // Your code goes here

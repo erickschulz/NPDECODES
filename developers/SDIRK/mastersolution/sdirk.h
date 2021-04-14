@@ -14,24 +14,10 @@
 
 namespace SDIRK {
 
-/**
- * @brief  Compute one step of  the IVP y'' + y' + y = 0 using a SDIRK method
- * @param z0 initial state z0 = [y(0), y'(0)]
- * @param h size of the step
- * @param gamma parameter of the scheme
- * @return next step z1
- */
+// Compute one step of  the IVP y'' + y' + y = 0 using a SDIRK method
 Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma);
 
-/**
- * @brief Solve autonomous IVP y'' + y' + y = 0, [y(0), y'(0)] = z0 using SDIRK
- * method with N equidistant steps
- * @param z0  initial data z0 = [y(0), y'(0)]
- * @param N number of equidistant steps
- * @param T final time
- * @param gamma parameter of the scheme
- * @return vector containing each step z_k (y and y')
- */
+// Solve autonomous IVP y'' + y' + y = 0, [y(0), y'(0)] = z0 using SDIRK
 std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
                                         unsigned int N, double T, double gamma);
 
