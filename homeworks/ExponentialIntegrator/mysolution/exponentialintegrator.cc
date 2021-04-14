@@ -19,8 +19,8 @@
 
 namespace ExponentialIntegrator {
 
-//! \brief Function $\phi$ used in the Exponential Euler
-//! single step method for an autonomous ODE.
+// Function $\phi$ used in the Exponential Euler
+// single step method for an autonomous ODE.
 Eigen::MatrixXd phim(const Eigen::MatrixXd &Z) {
   int n = Z.cols();
   assert(n == Z.rows() && "Matrix must be square.");
@@ -50,9 +50,9 @@ void testExpEulerLogODE() {
 
   // Test many step sizes
   for (int j = 0; j < 15; ++j) {
-    int N = std::pow(2, j + 1);
+    int M = std::pow(2, j + 1);
     Eigen::VectorXd y = y0;
-    double h = T / N;
+    double h = T / M;
     //====================
     // Your code goes here
     // TODO: Perform N timesteps with inital data y0 and store the result in y.
@@ -60,7 +60,7 @@ void testExpEulerLogODE() {
 
     error[j] = std::abs(y(0) - exactyT);
     std::cout << std::left << std::setfill(' ') << std::setw(3)
-              << "N = " << std::setw(7) << N << std::setw(8)
+              << "M = " << std::setw(7) << M << std::setw(8)
               << "Error = " << std::setw(13) << error[j];
     if (j > 0) {
       std::cout << std::left << std::setfill(' ') << std::setw(10)

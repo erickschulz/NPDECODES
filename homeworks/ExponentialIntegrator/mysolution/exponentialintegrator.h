@@ -15,14 +15,7 @@ namespace ExponentialIntegrator {
 
 Eigen::MatrixXd phim(const Eigen::MatrixXd &Z);
 
-//! \brief Calculate a single step of the exponential Euler method.
-//! \tparam Function function object for r.h.s. function
-//! \tparam Jacobian function object for Jacobian of r.h.s.
-//! \param[in] y0 The initial state
-//! \param[in] f The r.h.s function $f$
-//! \param[in] df The Jacobian of $f$
-//! \param[in] h The stepsize of the method.
-//! \return A single step of the Exponential Euler method
+// Calculate a single step of the exponential Euler method.
 /* SAM_LISTING_BEGIN_0 */
 template <class Function, class Jacobian>
 Eigen::VectorXd exponentialEulerStep(const Eigen::VectorXd &y0, Function &&f,
