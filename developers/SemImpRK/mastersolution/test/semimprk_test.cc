@@ -27,7 +27,8 @@ TEST(SemImpRK, SolveRosenbrock) {
   unsigned int M = 10;
   double T = 2.0;
 
-  Eigen::Vector3d yT = SemImpRK::SolveRosenbrock(f, df, y0, M, T).back();
+  Eigen::VectorXd yT = SemImpRK::SolveRosenbrock(f, df, y0, M, T).back();
+  ASSERT_EQ(yT.size(), 3);
 
   Eigen::Vector3d yT_reference(9.96045385183506, 6.18376651950963e-08,
                                -84.2367784891471);
