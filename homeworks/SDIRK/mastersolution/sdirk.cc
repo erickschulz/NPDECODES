@@ -8,18 +8,18 @@
 
 #include "sdirk.h"
 
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace SDIRK {
 
 /* SAM_LISTING_BEGIN_0 */
-Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
+Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
   Eigen::Vector2d res;
   // TO DO (13-3.f): compute one timestep of the ODE
   // Matrix A for evaluation of f
@@ -40,7 +40,7 @@ Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
+std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
                                         unsigned int N, double T,
                                         double gamma) {
   // Solution vector
@@ -49,17 +49,17 @@ std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
   // Equidistant step size
   const double h = T / N;
   // Push initial data
-  res.at(0) = z0;
+  res[0] = z0;
   // Main loop
   for (unsigned int i = 1; i <= N; ++i) {
-    res.at(i) = sdirkStep(res.at(i - 1), h, gamma);
+    res[i] = SdirkStep(res[i - 1], h, gamma);
   }
   return res;
 }
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double cvgSDIRK() {
+double CvgSDIRK() {
   double conv_rate;
   // TO DO (13-3.g) study the convergence rate of the method.
   // Initial data z0 = [y(0), y'(0)]
@@ -90,7 +90,7 @@ double cvgSDIRK() {
   for (unsigned int i = 0; i < N.size(); ++i) {
     int n = N(i);
     // Get solution
-    auto sol = sdirkSolve(z0, n, T, gamma);
+    auto sol = SdirkSolve(z0, n, T, gamma);
     // Compute error
     err(i) = std::abs(sol.back()(0) - yex(T));
 
@@ -102,8 +102,7 @@ double cvgSDIRK() {
     // Store old error
     errold = err(i);
   }
-  // Eigen::VectorXd Neig(N.data());
-  // Eigen::VectorXd erreig (err.data());
+
   Eigen::VectorXd coeffs = polyfit(N.log(), err.log(), 1);
   conv_rate = -coeffs(0);
   return conv_rate;

@@ -3,9 +3,9 @@
 # PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/sdirk_test.cc
-  ${DIR}/sdirk.h 
-  ${DIR}/sdirk.cc
+  ${DIR}/test/stabrk3_test.cc
+  ${DIR}/stabrk3.h 
+  ${DIR}/stabrk3.cc
 )
 
 set(LIBRARIES

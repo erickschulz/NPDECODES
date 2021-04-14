@@ -8,18 +8,18 @@
 
 #include "sdirk.h"
 
-#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace SDIRK {
 
 /* SAM_LISTING_BEGIN_0 */
-Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
+Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
   Eigen::Vector2d res;
   // TO DO (13-3.f): compute one timestep of the ODE
   //====================
@@ -30,7 +30,7 @@ Eigen::Vector2d sdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
+std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
                                         unsigned int N, double T,
                                         double gamma) {
   // Solution vector
@@ -44,7 +44,7 @@ std::vector<Eigen::Vector2d> sdirkSolve(const Eigen::Vector2d &z0,
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double cvgSDIRK() {
+double CvgSDIRK() {
   double conv_rate;
   // TO DO (13-3.g) study the convergence rate of the method.
   //====================
