@@ -52,9 +52,9 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 7-1 | `ImplRK3Prey` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark:  | |
 | 7-2 | `CrossProd` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  | |
 | 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:  |  |
-| 7-4 | `SemImpRK` |  |  | | |
+| 7-4 | `SemImpRK` | :white_check_mark:  |  | | Philippe |
 | 7-5 | `ExponentialIntegrator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
-| 7-6 | `MIRK` | :white_check_mark: |  | |Philippe |
+| 7-6 | `MIRK` | :heavy_check_mark: |  :heavy_check_mark: | | |
 | 7-7 | `StabRK3` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: ||
 | 7-8 | `GradientFlow` |  |  | | |
 | 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
