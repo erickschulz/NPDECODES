@@ -6,7 +6,6 @@ set(SOURCES
   ${DIR}/semimprk_main.cc
   ${DIR}/semimprk.h
   ${DIR}/semimprk.cc
-  ${DIR}/polyfit.h
 )
 
 set(LIBRARIES

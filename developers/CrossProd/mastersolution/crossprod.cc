@@ -17,7 +17,7 @@ namespace CrossProd {
 
 /* SAM_LISTING_BEGIN_0 */
 void tab_crossprod() {
-  // TO DO (13-1.e): solve the cross-product ODE with the implicit RK method
+  // Solve the cross-product ODE with the implicit RK method
   // defined in solve_imp_mid. Tabulate the norms of the results at all steps.
 #if SOLUTION
   double T = 10.;
@@ -64,7 +64,7 @@ void tab_crossprod() {
   /* SAM_LISTING_END_0 */
 
   /* SAM_LISTING_BEGIN_1 */
-  // TO DO (13-1.g): solve the cross-product ODE with the implicit RK method
+  // Solve the cross-product ODE with the implicit RK method
   // defined in solve_lin_mid. Tabulate the norms of the results at all steps.
 #if SOLUTION
   std::vector<Eigen::VectorXd> res_lin = solve_lin_mid(f, Jf, T, y0, M);

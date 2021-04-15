@@ -14,7 +14,7 @@
 
 namespace SemImpRK::test {
 
-TEST(SemImpRK, solveRosenbrock) {
+TEST(SemImpRK, SolveRosenbrock) {
   auto f = [](Eigen::Vector3d y) -> Eigen::Vector3d {
     return Eigen::Vector3d(y(0) * y(1), y(1) * y(2), y(2) - y(0));
   };
@@ -24,10 +24,11 @@ TEST(SemImpRK, solveRosenbrock) {
     return J;
   };
   Eigen::Vector3d y0(1.0, 2.0, 3.0);
-  unsigned int N = 10;
+  unsigned int M = 10;
   double T = 2.0;
 
-  Eigen::Vector3d yT = SemImpRK::solveRosenbrock(f, df, y0, N, T).back();
+  Eigen::VectorXd yT = SemImpRK::SolveRosenbrock(f, df, y0, M, T).back();
+  ASSERT_EQ(yT.size(), 3);
 
   Eigen::Vector3d yT_reference(9.96045385183506, 6.18376651950963e-08,
                                -84.2367784891471);
@@ -36,8 +37,8 @@ TEST(SemImpRK, solveRosenbrock) {
   ASSERT_NEAR(0.0, (yT - yT_reference).lpNorm<Eigen::Infinity>(), tol);
 }
 
-TEST(SemImpRK, numexpBurgersGodunov) {
-  double convergenceRate = SemImpRK::cvgRosenbrock();
+TEST(SemImpRK, NumexpBurgersGodunov) {
+  double convergenceRate = SemImpRK::CvgRosenbrock();
   double convergenceRate_reference = 2.0246142474178366;
 
   double tol = 1.0e-2;

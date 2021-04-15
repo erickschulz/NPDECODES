@@ -21,7 +21,7 @@ namespace SDIRK {
 /* SAM_LISTING_BEGIN_0 */
 Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
   Eigen::Vector2d res;
-  // TO DO (13-3.f): compute one timestep of the ODE
+  // Compute one timestep of the SDIRK implicit RK-SSM for the linear ODE
   //====================
   // Your code goes here
   //====================
@@ -35,7 +35,7 @@ std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
                                         double gamma) {
   // Solution vector
   std::vector<Eigen::Vector2d> res(M + 1);
-  // TO DO (13-3.g): solve the ODE with uniform timesteps using the SDIRK method
+  // Solve the ODE with uniform timesteps using the SDIRK method
   //====================
   // Your code goes here
   //====================
@@ -46,7 +46,7 @@ std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
 /* SAM_LISTING_BEGIN_2 */
 double CvgSDIRK() {
   double conv_rate;
-  // TO DO (13-3.g) study the convergence rate of the method.
+  // Study the convergence rate of the method.
   //====================
   // Your code goes here
   //====================

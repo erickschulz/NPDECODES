@@ -27,7 +27,7 @@ std::vector<Eigen::VectorXd> solve_imp_mid(Function &&f, Jacobian &&Jf,
                                            double T, const Eigen::VectorXd &y0,
                                            unsigned int M) {
   std::vector<Eigen::VectorXd> res(M + 1);
-  // TO DO (13-1.e): Construct the implicit mid-point method with the class
+  // Construct the implicit mid-point method with the class
   // implicit_RKIntegrator and execute the .solve() method.
   // Return the vector containing all steps including initial and final value.
   //====================
@@ -43,7 +43,7 @@ std::vector<Eigen::VectorXd> solve_lin_mid(Function &&f, Jacobian &&Jf,
                                            double T, const Eigen::VectorXd &y0,
                                            unsigned int M) {
   std::vector<Eigen::VectorXd> res;
-  // TO DO (13-1.g): Implement the linear implicit mid-point method for
+  // Implement the linear implicit mid-point method for
   // an autonomous ODE y' = f(y), y(0) = y0. Return the vector containing
   // all steps including initial and final value.
   //====================

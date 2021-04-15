@@ -15,15 +15,15 @@
 #include <iostream>
 #include <vector>
 
-#include "polyfit.h"
+#include "../../../lecturecodes/helperfiles/polyfit.h"
 
 namespace SemImpRK {
 
 /* SAM_LISTING_BEGIN_0 */
-double cvgRosenbrock() {
+double CvgRosenbrock() {
   double cvgRate = 0.0;
-  // TO DO: (13-2.d) Use polyfit() to estimate the rate of convergence
-  // for solveRosenbrock().
+  // Use polyfit to estimate the rate of convergence
+  // for SolveRosenbrock.
   //====================
   // Your code goes here
   //====================

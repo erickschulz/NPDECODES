@@ -16,7 +16,6 @@
 #include <unsupported/Eigen/MatrixFunctions>
 #include <vector>
 
-
 namespace ExponentialIntegrator {
 
 // Function $\phi$ used in the Exponential Euler

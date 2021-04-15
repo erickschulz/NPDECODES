@@ -21,14 +21,14 @@ int main() {
     return J;
   };
   Eigen::Vector3d y0(1.0, 2.0, 3.0);
-  unsigned int N = 10;
+  unsigned int M = 10;
   double T = 2.0;
 
-  std::cout << "Test of solveRosenbrock():"
-            << SemImpRK::solveRosenbrock(f, df, y0, N, T).back().transpose()
+  std::cout << "Test of SolveRosenbrock():"
+            << SemImpRK::SolveRosenbrock(f, df, y0, M, T).back().transpose()
             << std::endl;
 
-  double cvgRate = SemImpRK::cvgRosenbrock();
+  double cvgRate = SemImpRK::CvgRosenbrock();
   std::cout << "Convergence rate: " << cvgRate << std::endl;
 
   return 0;
