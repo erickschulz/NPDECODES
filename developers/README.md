@@ -56,7 +56,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 7-5 | `ExponentialIntegrator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
 | 7-6 | `MIRK` | :heavy_check_mark: |  :heavy_check_mark: | | |
 | 7-7 | `StabRK3` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: ||
-| 7-8 | `GradientFlow` |  |  | | |
+| 7-8 | `GradientFlow` | :white_check_mark: | :white_check_mark:  | |Philippe |
 | 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
 | 8-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 8-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
