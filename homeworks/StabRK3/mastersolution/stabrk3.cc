@@ -25,7 +25,7 @@ Eigen::Vector2d PredPrey(Eigen::Vector2d y0, double T, unsigned int M) {
   auto f = [](Eigen::Vector2d y) -> Eigen::Vector2d {
     return {(1 - y(1)) * y(0), (y(0) - 1) * y(1)};
   };
-  // Main taimstepping loop: uniform stepsize
+  // Main timstepping loop: uniform stepsize
   for (int j = 0; j < M; ++j) {
     // Compute increments and updates according to \lref{def:rk} for the method
     // described by the Butcher scheme \prbeqref{eq:rkesv}
