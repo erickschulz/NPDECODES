@@ -16,10 +16,10 @@
 
 namespace SemImpRK {
 
-/** Solve the autonomous IVP y' =f(y), y(0) = y0 using the Rosenbrock method.*/
+// Solve the autonomous IVP y' = f(y), y(0) = y0 using the Rosenbrock method
 /* SAM_LISTING_BEGIN_0 */
-template <class Function, class Jacobian>
-std::vector<Eigen::VectorXd> SolveRosenbrock(Function &&f, Jacobian &&df,
+template <class Func, class Jac>
+std::vector<Eigen::VectorXd> SolveRosenbrock(Func &&f, Jac &&df,
                                              const Eigen::VectorXd &y0,
                                              unsigned int M, double T) {
   // Will contain all time steps

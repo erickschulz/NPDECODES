@@ -9,7 +9,6 @@
 #include "stabrk3.h"
 
 #include <Eigen/Core>
-
 #include <cmath>
 #include <iomanip>
 #include <iostream>
@@ -40,7 +39,7 @@ void SimulatePredPrey() {
 void PrintErrorTable(const Eigen::ArrayXd& M, const Eigen::ArrayXd& error) {
   std::cout << std::setw(15) << "N" << std::setw(15) << "error" << std::setw(15)
             << "rate" << std::endl;
-
+  // Formatted output in C++
   for (unsigned int i = 0; i < M.size(); ++i) {
     std::cout << std::setw(15) << M(i) << std::setw(15) << error(i);
     if (i > 0) {

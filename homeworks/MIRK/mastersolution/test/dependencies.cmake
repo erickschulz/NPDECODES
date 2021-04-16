@@ -3,8 +3,8 @@
 # PROBLEM_NAME and DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/test/semimprk_test.cc
-  ${DIR}/semimprk.h
+  ${DIR}/test/mirk_test.cc
+  ${DIR}/mirk.h
 )
 
 set(LIBRARIES

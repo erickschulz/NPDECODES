@@ -21,19 +21,19 @@ namespace SDIRK {
 /* SAM_LISTING_BEGIN_0 */
 Eigen::Vector2d SdirkStep(const Eigen::Vector2d &z0, double h, double gamma) {
   Eigen::Vector2d res;
-  // TO DO (13-3.f): compute one timestep of the ODE
+  // Compute one timestep of the SDIRK implicit RK-SSM for the linear ODE
   // Matrix A for evaluation of f
   Eigen::Matrix2d A;
   A << 0., 1., -1., -1.;
-  // Reuse factorization
+  // Precompute and reuse factorization
   auto A_lu = (Eigen::Matrix2d::Identity() - h * gamma * A).partialPivLu();
   Eigen::Vector2d az = A * z0;
 
-  // Increments
+  // Increments according to \prbeqref{eq:ies}
   Eigen::Vector2d k1 = A_lu.solve(az);
   Eigen::Vector2d k2 = A_lu.solve(az + h * (1 - 2 * gamma) * A * k1);
 
-  // Next step
+  // Updated state
   res = z0 + h * 0.5 * (k1 + k2);
   return res;
 }
@@ -45,7 +45,7 @@ std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
                                         double gamma) {
   // Solution vector
   std::vector<Eigen::Vector2d> res(M + 1);
-  // TO DO (13-3.g): solve the ODE with uniform timesteps using the SDIRK method
+  // Solve the ODE with uniform timesteps using the SDIRK method
   // Equidistant step size
   const double h = T / M;
   // Push initial data
@@ -61,7 +61,7 @@ std::vector<Eigen::Vector2d> SdirkSolve(const Eigen::Vector2d &z0,
 /* SAM_LISTING_BEGIN_2 */
 double CvgSDIRK() {
   double conv_rate;
-  // TO DO (13-3.g) study the convergence rate of the method.
+  // Study the convergence rate of the method.
   // Initial data z0 = [y(0), y'(0)]
   Eigen::Vector2d z0;
   z0 << 1, 0;
