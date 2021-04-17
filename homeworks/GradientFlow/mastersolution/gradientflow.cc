@@ -30,39 +30,39 @@ Eigen::MatrixXd ButcherMatrix() {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::VectorXd> solveGradientFlow(const Eigen::VectorXd &d,
+std::vector<Eigen::VectorXd> SolveGradientFlow(const Eigen::VectorXd &d,
                                                double lambda,
-                                               const Eigen::VectorXd &y,
-                                               double T, unsigned int N) {
-  std::vector<Eigen::VectorXd> Y(N + 1);
-  // TO DO (0-2.h)
+                                               const Eigen::VectorXd &y0,
+                                               double T, unsigned int M) {
+  // initialize solution vector
+  std::vector<Eigen::VectorXd> sol(M + 1, Eigen::VectorXd::Zero(y0.size()));
+
   // Define the right hand side of the ODE y' = f(y), and the Jacobian of f.
-  auto f = [d, lambda](const Eigen::VectorXd &yt) {
+  auto f = [d, lambda](const Eigen::VectorXd &y) {
     Eigen::VectorXd val =
-        -2. * std::cos(yt.squaredNorm()) * yt - 2. * lambda * d.dot(yt) * d;
+        -2. * std::cos(y.squaredNorm()) * y - 2. * lambda * d.dot(y) * d;
     return val;
   };
-  auto J = [d, lambda](const Eigen::VectorXd &yt) {
-    int dim = yt.size();
-    Eigen::MatrixXd term1 =
-        4. * std::sin(yt.squaredNorm()) * yt * yt.transpose();
+  auto df = [d, lambda](const Eigen::VectorXd &y) {
+    int dim = y.size();
+    Eigen::MatrixXd term1 = 4. * std::sin(y.squaredNorm()) * y * y.transpose();
     Eigen::MatrixXd term2 =
-        -2. * std::cos(yt.squaredNorm()) * Eigen::MatrixXd::Identity(dim, dim);
+        -2. * std::cos(y.squaredNorm()) * Eigen::MatrixXd::Identity(dim, dim);
     Eigen::MatrixXd term3 = -2. * lambda * d * d.transpose();
-    Eigen::MatrixXd Jval = term1 + term2 + term3;
-    return Jval;
+    Eigen::MatrixXd dfval = term1 + term2 + term3;
+    return dfval;
   };
 
-  // Split the interval [0,T] into N intervals of size h.
-  double h = T / N;
-  Eigen::VectorXd yt = y;
-  Y.at(0) = y;
+  // Split the interval [0,T] into M intervals of size h.
+  double h = T / M;
+  Eigen::VectorXd y = y0;
+  sol[0] = y;
   // Evolve up to time T:
-  for (int i = 1; i <= N; i++) {
-    yt = discEvolSDIRK(f, J, yt, h);
-    Y.at(i) = yt;
+  for (int i = 1; i <= M; i++) {
+    y = DiscEvolSDIRK(f, df, y, h);
+    sol[i] = y;
   }
-  return Y;
+  return sol;
 }
 /* SAM_LISTING_END_1 */
 

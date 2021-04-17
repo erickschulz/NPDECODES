@@ -30,7 +30,7 @@ TEST(GradientFlow, computeStages) {
   double h = 0.5;
   Eigen::Vector2d y0(1.0, 0.5);
 
-  std::array<Eigen::VectorXd, 5> stages = computeStages(f, df, y0, h);
+  std::array<Eigen::VectorXd, 5> stages = ComputeStages(f, df, y0, h);
   Eigen::MatrixXd G(5, 2);
   for (int i = 0; i < stages.size(); ++i) {
     G.row(i) = stages[i];
@@ -45,11 +45,12 @@ TEST(GradientFlow, computeStages) {
   ASSERT_NEAR(0.0, (G - G_reference).lpNorm<Eigen::Infinity>(), tol);
 }
 
-TEST(GradientFlow, discEvolSDIRK) {
+TEST(GradientFlow, DiscEvolSDIRK) {
   double h = 0.5;
   Eigen::Vector2d y0(1.0, 0.5);
 
-  Eigen::Vector2d yh = discEvolSDIRK(f, df, y0, h);
+  Eigen::VectorXd yh = DiscEvolSDIRK(f, df, y0, h);
+  ASSERT_EQ(yh.size(), 2);
 
   Eigen::Vector2d yh_reference(2.04447583358, 0.915950635186);
 
@@ -59,20 +60,20 @@ TEST(GradientFlow, discEvolSDIRK) {
 
 constexpr double SQRT2 = 1.41421356237309504880;
 
-TEST(GradientFlow, solveGradientFlow) {
+TEST(GradientFlow, SolveGradientFlow) {
   Eigen::Vector2d d(0.5 * SQRT2, 0.5 * SQRT2);
   double lambda = 8.5;
   Eigen::Vector2d y0(1.0, 0.0);
   double T = 0.5;
-  int N = 10;
+  int M = 10;
 
-  std::vector<Eigen::VectorXd> yvector = solveGradientFlow(d, lambda, y0, T, N);
-  Eigen::MatrixXd Y(N + 1, 2);
+  std::vector<Eigen::VectorXd> yvector = SolveGradientFlow(d, lambda, y0, T, M);
+  Eigen::MatrixXd Y(M + 1, 2);
   for (int i = 0; i < yvector.size(); ++i) {
     Y.row(i) = yvector[i];
   }
 
-  Eigen::MatrixXd Y_reference(N + 1, 2);
+  Eigen::MatrixXd Y_reference(M + 1, 2);
   Y_reference << 1.0, 0.0, 0.661574350863, -0.265183334169, 0.500522309998,
       -0.345715652452, 0.415074659032, -0.354835307771, 0.36129317252,
       -0.337895066294, 0.321645925272, -0.312568326946, 0.289168885473,

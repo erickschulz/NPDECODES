@@ -22,34 +22,28 @@ template <class Func, class Jac>
 std::vector<Eigen::VectorXd> SolveRosenbrock(Func &&f, Jac &&df,
                                              const Eigen::VectorXd &y0,
                                              unsigned int M, double T) {
-  // Will contain all time steps
+  // Will contain all states computed by the ROW-SSM
   std::vector<Eigen::VectorXd> res(M + 1);
-
 #if SOLUTION
-  res[0] = y0;  // Push initial data
-  const double h = T / M;
+  res[0] = y0;             // Push initial data
+  const double h = T / M;  // stepsize
   const double a = 1. / (std::sqrt(2) + 2.);
-
   // Some temporary variables
   Eigen::VectorXd k1, k2;
   Eigen::MatrixXd J, W;
-
-  // Main loop: perform M steps
+  // Main loop: conduct M timesteps
   for (unsigned int i = 1; i <= M; ++i) {
+    // Current state
     Eigen::VectorXd &yprev = res[i - 1];
-
-    // Jacobian computation
+    // Fetch Jacobian, which is supposed to be an Eigen matrix type
     J = df(yprev);
     W = Eigen::MatrixXd::Identity(J.rows(), J.cols()) - a * h * J;
-
-    // Reuse factorization
+    // LU-factorize Jacobian only once!
     auto W_lu = W.partialPivLu();
-
-    // Increments
+    // Compute the increments by solving linear systems
     k1 = W_lu.solve(f(yprev));
     k2 = W_lu.solve(f(yprev + 0.5 * h * k1) - a * h * J * k1);
-
-    // Push new step
+    // Compute the next state and store it
     res[i] = yprev + h * k2;
   }
 #else
