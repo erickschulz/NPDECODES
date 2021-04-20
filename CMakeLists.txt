@@ -51,6 +51,10 @@ find_package(lehrfempp CONFIG REQUIRED)
 # Get Google Test
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
+
+# Get Boost Program Options
+hunter_add_package(Boost COMPONENTS program_options)
+find_package(Boost CONFIG REQUIRED program_options)
 ###############################################################################
 
 # Add switches
