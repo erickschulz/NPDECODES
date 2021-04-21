@@ -20,6 +20,7 @@
 
 namespace po = boost::program_options;
 
+// Code conduting empiric convergence studies for 1D FEM for 2-point BVPs
 int main(int argc, char *argv[]) {
   po::options_description desc("Allowed options");
   // clang-format off
@@ -42,13 +43,13 @@ int main(int argc, char *argv[]) {
   const auto [quad_points, quad_weights] =
       lf::quad::GaussLegendre(num_quad_points);
 
-  // Load function
+  // Right-hand side source function
   const auto f = [](double x) {
     return -4 * M_PI *
            (std::cos(2 * M_PI * x * x) -
             4 * M_PI * x * x * std::sin(2 * M_PI * x * x));
   };
-  // Analytic solution
+  // Smooth analytic solution
   const auto u = [](double x) { return std::sin(2 * M_PI * x * x); };
   // Gradient of analytic solution
   const auto u_grad = [](double x) {
@@ -56,12 +57,14 @@ int main(int argc, char *argv[]) {
   };
 
   Eigen::MatrixXd results(M_max / dM, 4);
+  // Loop over equidistant meshes of increasing resolution
   for (int M = dM; M <= M_max; M += dM) {
     // The mesh width
     const double h = 1. / M;
 
-    // Generate the stiffness matrix for an equidistant mesh on [0, 1] with M
-    // cells and first order lagrangian finite elements
+    // Generate the stiffness matrix for negative second derivative on an
+    // equidistant mesh on [0, 1] with M cells and p.w. linear Lagrangian finite
+    // elements. See Section 2.3 for derivation of the formulas.
     Eigen::SparseMatrix<double> A(M + 1, M + 1);
     A.reserve(3 * (M + 1));
     // Fill the diagonal

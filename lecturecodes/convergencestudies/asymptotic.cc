@@ -20,6 +20,9 @@
 
 namespace po = boost::program_options;
 
+// Code for empiric exploration of asymptotic convergence of norms of the
+// discretization error for 1D finite element discretization of a 2-point BVP.
+// Special example with a highly oscillatory solution
 int main(int argc, char *argv[]) {
   po::options_description desc("Allowed options");
   // clang-format off
@@ -46,7 +49,7 @@ int main(int argc, char *argv[]) {
     return 10000 * M_PI * M_PI * x * x * std::sin(50 * M_PI * x * x) -
            100 * M_PI * std::cos(50 * M_PI * x * x);
   };
-  // Analytic solution
+  // Analytic solution (highly oscillatory)
   const auto u = [](double x) { return std::sin(50 * M_PI * x * x); };
   // Gradient of analytic solution
   const auto u_grad = [](double x) {
@@ -54,12 +57,14 @@ int main(int argc, char *argv[]) {
   };
 
   Eigen::MatrixXd results(M_max / dM, 4);
+  // Loop over meshes with increasing numbers of cells
   for (int M = dM; M <= M_max; M += dM) {
     // The mesh width
     const double h = 1. / M;
 
-    // Generate the stiffness matrix for an equidistant mesh on [0, 1] with M
-    // cells and first order lagrangian finite elements
+    // Generate the tri-diagonal stiffness matrix for an equidistant
+    // mesh on [0, 1] with M cells and p.w. linear Lagrangian finite elements
+    // Formulas are explained in Section 2.3 of the lecture document
     Eigen::SparseMatrix<double> A(M + 1, M + 1);
     A.reserve(3 * (M + 1));
     // Fill the diagonal
