@@ -24,8 +24,7 @@ int main() {
   // Exact solution at t = T = 1
   const double yex = tan(T);
 
-  //// PROBLEM h: TEST
-  std::cout << "*** PROBLEM h:" << std::endl;
+  std::cout << "Convergence MIRK for IVP y' = 1+y^2 " << std::endl;
   //====================
   // Your code goes here
   // TODO: problem h: solve IVP y' = f(y) up to T

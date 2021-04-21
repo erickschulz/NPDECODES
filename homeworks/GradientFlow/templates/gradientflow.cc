@@ -30,16 +30,17 @@ Eigen::MatrixXd ButcherMatrix() {
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-std::vector<Eigen::VectorXd> solveGradientFlow(const Eigen::VectorXd &d,
+std::vector<Eigen::VectorXd> SolveGradientFlow(const Eigen::VectorXd &d,
                                                double lambda,
-                                               const Eigen::VectorXd &y,
-                                               double T, unsigned int N) {
-  std::vector<Eigen::VectorXd> Y(N + 1);
-  // TO DO (0-2.h)
+                                               const Eigen::VectorXd &y0,
+                                               double T, unsigned int M) {
+  // initialize solution vector
+  std::vector<Eigen::VectorXd> sol(M + 1, Eigen::VectorXd::Zero(y0.size()));
+
   //====================
   // Your code goes here
   //====================
-  return Y;
+  return sol;
 }
 /* SAM_LISTING_END_1 */
 
