@@ -26,16 +26,17 @@ double CvgRosenbrock() {
   // for SolveRosenbrock.
   // Final time
   const double T = 10.0;
-  // Mesh sizes h=2^{-k} for k in K.
+  // Timestep sizes h=2^{-k} for which discretization erorrs should be computed
   const Eigen::ArrayXd K = Eigen::ArrayXd::LinSpaced(7, 4, 10);
-  // Initial data
+  // Initial state vector
   Eigen::Vector2d y0(1., 1.);
 
   // Parameter and useful matrix for f
   const double lambda = 1;
   Eigen::Matrix2d R;
   R << 0.0, -1.0, 1.0, 0.0;
-  // Function and its Jacobian
+  // Lambda functions giving the right-hand side function f
+  // and its Jacobian df
   auto f = [&R, &lambda](Eigen::Vector2d y) {
     return R * y + lambda * (1.0 - y.squaredNorm()) * y;
   };
@@ -47,15 +48,15 @@ double CvgRosenbrock() {
     return J;
   };
 
-  // Reference mesh size h=2^{-12} => M = T*2^{12}
+  // timestep size h=2^{-12} (=> M = T*2^{12}) used to compute a reference
+  // solution
   const int M_ref = T * std::pow(2, 12);
   // Reference solution
   std::vector<Eigen::VectorXd> solref = SolveRosenbrock(f, df, y0, M_ref, T);
-
+  // Arrays for recording error norms and numbers of timesteps
   Eigen::ArrayXd Error(K.size());
   Eigen::ArrayXd M(K.size());
-
-  // Loop over all meshes
+  // Loop over all temporal meshes
   for (unsigned int i = 0; i < K.size(); ++i) {
     // h = 2^{-k} => M = T*h = T*2^k
     M(i) = T * std::pow(2, K[i]);
@@ -70,15 +71,14 @@ double CvgRosenbrock() {
     }
     Error(i) = maxerr;
   }
-
   // Print Error table
   std::cout << std::setw(15) << "M" << std::setw(16) << "maxerr \n";
   for (int i = 0; i < M.size(); ++i) {
     std::cout << std::setw(15) << M(i) << std::setw(15) << Error(i)
               << std::endl;
   }
-
-  // Estimate convergence rate
+  // Estimate convergence rate using linear regression provided by the auxiliary
+  // function polyfit()
   cvgRate = -polyfit(M.log(), Error.log(), 1)(0);
   return cvgRate;
 }

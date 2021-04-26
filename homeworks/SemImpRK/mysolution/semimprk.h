@@ -22,9 +22,8 @@ template <class Func, class Jac>
 std::vector<Eigen::VectorXd> SolveRosenbrock(Func &&f, Jac &&df,
                                              const Eigen::VectorXd &y0,
                                              unsigned int M, double T) {
-  // Will contain all time steps
+  // Will contain all states computed by the ROW-SSM
   std::vector<Eigen::VectorXd> res(M + 1);
-
   //====================
   // Your code goes here
   //====================
