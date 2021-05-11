@@ -76,9 +76,9 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 10-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 10-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 10-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 10-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: |  |  |
-| 10-9 | `ConsLawWith` |  |  | | |
-| 10-10 | `FluxLimitedFV` |  |  | | |
+| 10-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 10-9 | `ConsLawWith` | :heavy_check_mark:  | :heavy_check_mark:  |:heavy_check_mark:  | |
+| 10-10 | `FluxLimitedFV` | :heavy_check_mark:  | :heavy_check_mark:  |:heavy_check_mark: | |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |

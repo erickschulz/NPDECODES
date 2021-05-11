@@ -62,15 +62,9 @@ int main() {
     }
   };
 
-  // Task 8-8.o
-  // Generate a mesh hierarchy
   double T = 1.0;
-
-  //////////////////////////////////////////////////////////////////////////////
-  // TODO inconsistancy: g vs. G
-  //////////////////////////////////////////////////////////////////////////////
+  // Generate a mesh hierarchy
   auto mesh_p = lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
-
   auto mesh_seq_p{
       lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
 

@@ -34,7 +34,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 }
 /* SAM_LISTING_END_1 */
 
-// Task 8-8.g
+
 /* SAM_LISTING_BEGIN_2 */
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
@@ -94,7 +94,7 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 }
 /* SAM_LISTING_END_2 */
 
-// Task 8-8.h
+
 /* SAM_LISTING_BEGIN_3 */
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<std::array<const lf::mesh::Entity *, 4>>>
@@ -162,7 +162,7 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
 }
 /* SAM_LISTING_END_4 */
 
-// Task 8-8.l
+
 /* SAM_LISTING_BEGIN_5 */
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   // Vector to store the distances between cells

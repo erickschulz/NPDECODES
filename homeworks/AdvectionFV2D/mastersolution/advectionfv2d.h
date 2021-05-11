@@ -32,9 +32,7 @@ std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
-////////////////////////////////////////////////////////////////////////////////
-// TODO: Inconsistenent file name in solution (getAdjacentDofIndex())
-////////////////////////////////////////////////////////////////////////////////
+
 /**
  * @brief Find the neighbor cells to each cell in the mesh.
  *
@@ -63,7 +61,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
  */
 Eigen::Vector2d barycenter(const Eigen::MatrixXd corners);
 
-// Task 8-8.i
+
 /**
  * @brief Setup MOLODE Matrix
  *
@@ -265,10 +263,6 @@ Eigen::VectorXd solveAdvection2D(
 }
 /* SAM_LISTING_END_2 */
 
-////////////////////////////////////////////////////////////////////////////////
-// TODO: Problem description Vector2d?? -> changed to VectorXd
-////////////////////////////////////////////////////////////////////////////////
-// Task 8-8.n
 /**
  * @brief Function computes the initial bump vector and the number of
  * required timesteps and also calls solveAdvection2D()
