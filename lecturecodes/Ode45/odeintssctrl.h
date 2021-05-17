@@ -38,7 +38,7 @@ odeintssctrl(DiscEvolOp &&Psilow, unsigned int p, DiscEvolOp &&Psihigh,
     if (est < tol)  { // step \Magenta{accepted} \Label[line]{ssctrl:7}\Label[line]{ssctrl:6}
       states.push_back({t = t+std::min(T-t,h),y = yh}); // store next approximate state 
       }
-    h = h*std::max(0.5,std::min(2.,std::pow(tol/est,1./(p+1)))); // \Label[line]{ssctrl:6b}
+    h *= std::max(0.5,std::min(2., 0.9 * std::pow(tol/est,1./(p+1)))); // \Label[line]{ssctrl:6b}
     if (h < hmin) {
       std::cerr
           << "Warning: Failure at t=" << states.back().first

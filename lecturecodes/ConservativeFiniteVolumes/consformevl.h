@@ -63,7 +63,7 @@ VectorXd consformevl(double a, double b, unsigned N, FunctionU0 u0, double T,
   VectorXd x = VectorXd::LinSpaced(N, a + 0.5 * h, b - 0.5 * h);
 
   // vector \Blue{$\vec{\mubf}_0$} of initial cell averages
-  // obtained by point sampling of \Blue{$u_0$} in grid points
+  // obtained by point sampling of \Blue{$u_0$} in cell centers 
   VectorXd mu0 = x.unaryExpr(u0);
 
   // right hand side function for ode solver
@@ -78,8 +78,7 @@ VectorXd consformevl(double a, double b, unsigned N, FunctionU0 u0, double T,
   // std::vector<double> t;  Returns temporal grid
   // std::vector<Eigen::VectorXd> MU; Returns states  \Blue{$\vec{\mubf}^{(k)}$}
   // Use this C++17 syntax only, if you are well aware of the return types
-  auto [t, MU] = ode45(odefun, 0, T, mu0, abstol,
-                       reltol);  // \Label[line]{cle:ode45}
+  auto [t, MU] = ode45(odefun, 0, T, mu0, abstol, reltol);  // \Label[line]{cle:ode45}
   // Retrieve approximate state at final time.
   return MU.back();
 }

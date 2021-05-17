@@ -11,6 +11,10 @@ set(odeintssctrlsources odeintssctrltest.cc odeintssctrl.h)
 add_executable(lecturecodes.odeintssctrltest ${odeintssctrlsources})
 target_link_libraries(lecturecodes.odeintssctrltest PUBLIC Eigen3::Eigen)
 
+set(embeddedrkssm embeddedrkssm.cc)
+add_executable(lecturecodes.embeddedrkssm ${embeddedrkssm})
+target_link_libraries(lecturecodes.embeddedrkssm PUBLIC Eigen3::Eigen)
+
 #set(odeintadaptsources odeintadapttest.cc odeintadapt.h)
 #add_executable(lecturecodes.odeintadapt ${odeintadaptsources})
 #target_link_libraries(lecturecodes.odeintadapt PUBLIC Eigen3::Eigen)
