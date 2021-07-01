@@ -1,3 +1,6 @@
+#ifndef CONVECTION_EMP_H
+#define CONVECTION_EMP_H
+
 /**
  * @file convection_emp.h
  * @brief EMP for a convection term based on linear FE and the trapezoidal rule
@@ -82,3 +85,5 @@ Eigen::Matrix3d ConvectionElementMatrixProvider<FUNCTOR>::Eval(
 }
 
 } //namespace ConvectionDiffusion
+
+#endif //CONVECTIOIN_EMP_H

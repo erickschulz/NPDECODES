@@ -16,8 +16,6 @@
 #include <vector>
 
 
-
-
 namespace UpwindQuadrature {
 
 
