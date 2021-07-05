@@ -24,6 +24,7 @@
 #include "convection_emp.h"
 #include "sample_meshfunction.h"
 #include "solve_upwind.h"
+#include "streamline_upwind.h"
 
 int main(){
     //parameter functions:
@@ -31,12 +32,10 @@ int main(){
     const auto g = [](const Eigen::Vector2d &x) {
        return x(0) > x(1)? 1.0:0.0;
     };
-     // velocity field
+    // velocity field
     const auto v = [](const Eigen::Vector2d &x) {
-        return Eigen::Vector2d(1.0,0.5);
+        return Eigen::Vector2d(1.0,1.0);
     };
-
-    //parameter functors:
     const auto eps = [](const Eigen::Vector2d &x) {
        return std::pow(10,-10);
     };
@@ -46,10 +45,11 @@ int main(){
     };
 
     //construct mesh:
-    int M = 49;
+    int M = 49*2;
 
      // MESH CONSTRUCTION
     // construct a triangular tensor product mesh on the unit square
+/*  
     std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
         std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
@@ -58,6 +58,11 @@ int main(){
         .setNumXCells(M)
         .setNumYCells(M);
     std::shared_ptr<lf::mesh::Mesh> mesh_p = builder.Build();
+*/
+    std::string mesh_file = "../../../lecturecodes/ConvectionDiffusion/mesh_square.gmsh";
+    auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
+    lf::io::GmshReader reader(std::move(mesh_factory),mesh_file);
+    auto mesh_p = reader.mesh();
 
     // DOF HANDLER & FINITE ELEMENT SPACE
     // Construct dofhanlder for linear finite elements on the mesh.
@@ -70,8 +75,15 @@ int main(){
     Eigen::VectorXd sol_stable = ConvectionDiffusion::SolveCDBVPUpwind(fe_space,eps,v,f,g);
     lf::fe::MeshFunctionFE sol_upwind_mf(fe_space, sol_stable);
 
+    Eigen::VectorXd sol_supg = ConvectionDiffusion::SolveCDBVPSupg(fe_space,eps,v,f,g);
+    lf::fe::MeshFunctionFE sol_supg_mf(fe_space, sol_supg);
+
+
     auto gamma = [](double t){ return Eigen::Vector2d(t,1-t);};
     ConvectionDiffusion::SampleMeshFunction("standard_galerkin.txt", mesh_p, gamma, sol_standard_mf, 100);
     ConvectionDiffusion::SampleMeshFunction("upwind.txt", mesh_p, gamma, sol_upwind_mf, 100);
+    ConvectionDiffusion::SampleMeshFunction("supg.txt", mesh_p, gamma, sol_supg_mf, 100);
+
+    
     return 0;
 }
