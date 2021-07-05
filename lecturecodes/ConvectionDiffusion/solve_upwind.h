@@ -58,7 +58,8 @@ Eigen::VectorXd SolveCDBVPUpwind(const std::shared_ptr<lf::uscalfe::FeSpaceLagra
   // RIGHT-HAND SIDE VECTOR
   Eigen::VectorXd phi(dofh.NumDofs());
   phi.setZero();
-  //TODO: Corect assembly lhs
+  lf::uscalfe::ScalarLoadElementVectorProvider elvec_provider(fe_space,mf_f);
+  lf::assemble::AssembleVectorLocally(0,dofh,elvec_provider,phi);
 
 
   // IMPOSE DIRICHLET BC

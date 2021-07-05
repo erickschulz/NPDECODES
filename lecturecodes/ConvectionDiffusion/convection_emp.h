@@ -49,7 +49,7 @@ class ConvectionElementMatrixProvider {
 
   /** @brief Default implementation: all cells are active */
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
-
+  
  private:
   FUNCTOR v_;  // functor for the velocity field.
 };

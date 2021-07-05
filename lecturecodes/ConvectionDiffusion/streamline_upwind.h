@@ -23,6 +23,7 @@
 #include <Eigen/LU>
 #include <memory>
 #include <vector>
+#include <limits>
 
 namespace ConvectionDiffusion{
 
@@ -34,6 +35,17 @@ double Diameter(const lf::geometry::Geometry& geo){
     Eigen::Vector2d e1 = corners.col(2) - corners.col(1);
     Eigen::Vector2d e2 = corners.col(0) - corners.col(1);
     return std::max(e0.norm(), std::max(e1.norm(), e2.norm()));
+
+}
+
+double MeshWidth(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
+    double h = 0.0;
+    for(const lf::mesh::Entity* entity_p: mesh_p->Entities(0)){
+        //compute geometric information about the cell
+        const lf::geometry::Geometry* geo_p = entity_p->Geometry();
+        h = std::max(h,Diameter(*geo_p));
+    }
+    return h;
 
 }
 
@@ -146,8 +158,8 @@ Eigen::VectorXd SolveCDBVPSupg(const std::shared_ptr<lf::uscalfe::FeSpaceLagrang
   // RIGHT-HAND SIDE VECTOR
   Eigen::VectorXd phi(dofh.NumDofs());
   phi.setZero();
-  //TODO: Corect assembly lhs
-
+  lf::uscalfe::ScalarLoadElementVectorProvider elvec_provider(fe_space,mf_f);
+  lf::assemble::AssembleVectorLocally(0,dofh,elvec_provider,phi);
   // IMPOSE DIRICHLET BC
   // Obtain specification for shape functions on edges
   const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
