@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 #-*- codin:utf-8 -*-
 
-
-
 import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from mpltools import annotation
-
-
-
 
 
 input_file = os.path.abspath(sys.argv[1])
@@ -39,14 +34,5 @@ plt.legend()
 plt.xlabel('h')
 plt.ylabel('Error Norms')
 plt.grid()
-plt.show()
 
-
-#plt.loglog(N, norm_max, 'o', markersize=1, label='maximum norm')
-#plt.loglog(N, norm_L2, 'o', markersize=1, label='$L^2$ norm')
-#plt.loglog(N, norm_H1, 'o', markersize=1, label='$H^1$ semi-norm')
-#plt.legend(loc='upper right')
-#plt.grid()
-#plt.xlabel('M')
-#plt.ylabel('error norms')
-#plt.savefig(os.path.join(output_folder, 'linfe1dosclog.eps'))
+plt.savefig(os.path.join(output_folder, 'convergence.eps'))

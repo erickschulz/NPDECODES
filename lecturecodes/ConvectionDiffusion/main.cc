@@ -80,9 +80,9 @@ int main(){
 
 
     auto gamma = [](double t){ return Eigen::Vector2d(t,1-t);};
-    ConvectionDiffusion::SampleMeshFunction("standard_galerkin.txt", mesh_p, gamma, sol_standard_mf, 100);
-    ConvectionDiffusion::SampleMeshFunction("upwind.txt", mesh_p, gamma, sol_upwind_mf, 100);
-    ConvectionDiffusion::SampleMeshFunction("supg.txt", mesh_p, gamma, sol_supg_mf, 100);
+    ConvectionDiffusion::SampleMeshFunction("results_standard_FEM.txt", mesh_p, gamma, sol_standard_mf, 100);
+    ConvectionDiffusion::SampleMeshFunction("results_upwind.txt", mesh_p, gamma, sol_upwind_mf, 100);
+    ConvectionDiffusion::SampleMeshFunction("results_supg.txt", mesh_p, gamma, sol_supg_mf, 100);
 
     
     return 0;

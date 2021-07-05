@@ -110,7 +110,7 @@ int main(){
     unsigned L = multi_mesh.NumLevels();
 
     //Output  file
-    std::string file_name = "errors.txt";
+    std::string file_name = "results_errors.txt";
     std::ofstream file;
     file.open(file_name); 
     file << "h, $L^2$-Error u (FEM), $L^2$-Error u (Upwind), $L^2$-Error u (SUPG) \n";
