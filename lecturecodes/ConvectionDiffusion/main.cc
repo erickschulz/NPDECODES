@@ -22,7 +22,7 @@
 
 #include "standard_galerkin.h"
 #include "convection_emp.h"
-#include "sample_meshfunction.h"
+#include "cd_tools.h"
 #include "solve_upwind.h"
 #include "streamline_upwind.h"
 
@@ -80,9 +80,9 @@ int main(){
 
 
     auto gamma = [](double t){ return Eigen::Vector2d(t,1-t);};
-    ConvectionDiffusion::SampleMeshFunction("results_standard_FEM.txt", mesh_p, gamma, sol_standard_mf, 100);
-    ConvectionDiffusion::SampleMeshFunction("results_upwind.txt", mesh_p, gamma, sol_upwind_mf, 100);
-    ConvectionDiffusion::SampleMeshFunction("results_supg.txt", mesh_p, gamma, sol_supg_mf, 100);
+    ConvectionDiffusion::SampleMeshFunction("results_standard_FEM.txt", mesh_p, gamma, sol_standard_mf, 1000);
+    ConvectionDiffusion::SampleMeshFunction("results_upwind.txt", mesh_p, gamma, sol_upwind_mf, 1000);
+    ConvectionDiffusion::SampleMeshFunction("results_supg.txt", mesh_p, gamma, sol_supg_mf, 1000);
 
     
     return 0;

@@ -20,10 +20,11 @@
 #include <Eigen/SparseLU>
 #include <cmath>
 #include <memory>
+#include <fstream>
+
 
 #include "standard_galerkin.h"
 #include "convection_emp.h"
-#include "sample_meshfunction.h"
 #include "solve_upwind.h"
 #include "streamline_upwind.h"
 

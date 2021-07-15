@@ -2,7 +2,7 @@
 add_custom_target(convectiondiffusion_run)
 
 
-add_executable(lecturecodes.convectiondiffusion.main main.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
+add_executable(lecturecodes.convectiondiffusion.main main.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
 target_link_libraries(lecturecodes.convectiondiffusion.main
     PUBLIC Eigen3::Eigen
     Boost::program_options
@@ -18,7 +18,7 @@ target_link_libraries(lecturecodes.convectiondiffusion.main
 )
 
 
-add_executable(lecturecodes.convectiondiffusion.convergence convergence.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
+add_executable(lecturecodes.convectiondiffusion.convergence convergence.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
 target_link_libraries(lecturecodes.convectiondiffusion.convergence
     PUBLIC Eigen3::Eigen
     Boost::program_options

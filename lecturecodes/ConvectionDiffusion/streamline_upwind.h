@@ -25,32 +25,13 @@
 #include <vector>
 #include <limits>
 
+#include "cd_tools.h"
+
 namespace ConvectionDiffusion{
 
-double Diameter(const lf::geometry::Geometry& geo){
-    Eigen::MatrixXd corners = lf::geometry::Corners(geo);
 
-    //diameter of a triangle corresponds to the longest edge
-    Eigen::Vector2d e0 = corners.col(1) - corners.col(0);
-    Eigen::Vector2d e1 = corners.col(2) - corners.col(1);
-    Eigen::Vector2d e2 = corners.col(0) - corners.col(1);
-    return std::max(e0.norm(), std::max(e1.norm(), e2.norm()));
-
-}
-
-double MeshWidth(std::shared_ptr<const lf::mesh::Mesh> mesh_p){
-    double h = 0.0;
-    for(const lf::mesh::Entity* entity_p: mesh_p->Entities(0)){
-        //compute geometric information about the cell
-        const lf::geometry::Geometry* geo_p = entity_p->Geometry();
-        h = std::max(h,Diameter(*geo_p));
-    }
-    return h;
-
-}
-
-double Delta(const lf::geometry::Geometry& geo, double eps, Eigen::Vector2d v){
-    double h = Diameter(geo);
+double Delta(const lf::mesh::Entity& entity, double eps, Eigen::Vector2d v){
+    double h = Diameter(entity);
     double v_norm = v.lpNorm<Eigen::Infinity>();
 
     if( v_norm * h / (2*eps) <= 1.0){
@@ -106,7 +87,7 @@ Eigen::Matrix3d SupgStabilizationEMP<FUNCTOR_EPS,FUNCTOR_V,FUNCTOR_F>::Eval(cons
   const Eigen::MatrixXd grad_basis = grad_helper.inverse().bottomRows(2);
 
   //Local control parameter
-  const double delta =  Delta(*geo_ptr, eps_(corners.col(0)), v_(corners.col(0)));
+  const double delta =  Delta(entity, eps_(corners.col(0)), v_(corners.col(0)));
 
   //weight for the local trapezoidal rule:
   const double weight = delta * lf::geometry::Volume(*geo_ptr) / 3.0;
