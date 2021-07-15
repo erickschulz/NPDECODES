@@ -2,7 +2,7 @@
 add_custom_target(convectiondiffusion_run)
 
 
-add_executable(lecturecodes.convectiondiffusion.main main.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
+add_executable(lecturecodes.convectiondiffusion.main layer_main.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
 target_link_libraries(lecturecodes.convectiondiffusion.main
     PUBLIC Eigen3::Eigen
     Boost::program_options
