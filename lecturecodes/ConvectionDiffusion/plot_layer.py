@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- codin:utf-8 -*-
+
 import sys
 import os
 import numpy as np
@@ -21,6 +24,6 @@ for i in range(len(input_filenames)):
     plt.xlabel("$t$")
     plt.ylabel("$u(\gamma(t))$")
     plt.title(titles[i])
-    plt.savefig(os.path.join(output_folder,output_filenames[i]), dpi=200, bbox_inches="tight")
+    plt.savefig(os.path.join(output_folder,output_filenames[i]), bbox_inches="tight")
     plt.gcf().clear()
 

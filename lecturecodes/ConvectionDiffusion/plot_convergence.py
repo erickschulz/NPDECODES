@@ -38,4 +38,4 @@ plt.xlabel('h')
 plt.ylabel('Error Norms')
 plt.grid()
 
-plt.savefig(os.path.join(output_folder, 'convergence.eps'), dpi=200)
+plt.savefig(os.path.join(output_folder, 'convergence.eps'))

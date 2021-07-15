@@ -20,8 +20,8 @@
 #include <cmath>
 #include <memory>
 
-#include "upwindquadrature.h"
 #include "../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
+#include "upwindquadrature.h"
 
 int main() {
   // PARAMETERS
@@ -110,7 +110,6 @@ int main() {
   solver.compute(A_crs);
   Eigen::VectorXd sol_vec = solver.solve(phi);
 
-  std::cout << sol_vec.norm() << std::endl;
   // OUTPUT RESULTS TO VTK FILe
   // construct mesh function representing finite element solution
   lf::fe::MeshFunctionFE mf_sol(fe_space, sol_vec);

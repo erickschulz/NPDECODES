@@ -60,11 +60,11 @@ int main() {
   // Output solution along the curve gamma
   auto gamma = [](double t) { return Eigen::Vector2d(t, 1 - t); };
   ConvectionDiffusion::SampleMeshFunction("results_standard_FEM.txt", mesh_p,
-                                          gamma, sol_standard_mf, 250);
+                                          gamma, sol_standard_mf, 3000);
   ConvectionDiffusion::SampleMeshFunction("results_upwind.txt", mesh_p, gamma,
-                                          sol_upwind_mf, 250);
+                                          sol_upwind_mf, 300);
   ConvectionDiffusion::SampleMeshFunction("results_supg.txt", mesh_p, gamma,
-                                          sol_supg_mf, 250);
+                                          sol_supg_mf, 300);
 
   // Plot
   std::system("python3 " CURRENT_SOURCE_DIR

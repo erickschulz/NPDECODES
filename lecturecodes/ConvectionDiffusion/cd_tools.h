@@ -22,12 +22,12 @@
 namespace ConvectionDiffusion {
 
 /**
- *@brief Computes the diameter of a Triangular mesh entity
+ *@brief Computes the diameter of a TRIANGULAR mesh entity
  */
 double Diameter(const lf::mesh::Entity& entity);
 
 /**
- *@brief Computes the mesh width of a Triangular mesh
+ *@brief Computes the mesh width of a TRIANGULAR mesh
  */
 double MeshWidth(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
@@ -58,7 +58,7 @@ double EvaluateMeshFunction(std::shared_ptr<const lf::mesh::Mesh> mesh_p, MF mf,
   return 0.0;
 }
 /**
- * @brief Evaluates a MeshFunction at  points specified by their global
+ * @brief Evaluates a MeshFunction at points specified by their global
  * coordinates
  */
 template <typename MF>

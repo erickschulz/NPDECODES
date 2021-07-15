@@ -15,9 +15,7 @@
 #include <memory>
 #include <vector>
 
-
 namespace UpwindQuadrature {
-
 
 // At any vertex a^j of a triangle, the vector field -v(a^j) may either point
 // into the triangle, along an edge of the triangle or outside the triangle.
