@@ -5,22 +5,17 @@
  * @file convection_emp.h
  * @brief EMP for a convection term based on linear FE and the trapezoidal rule
  * @author Philippe Peter
- * @date June 2021
+ * @date July 2021
  * @copyright Developed at SAM, ETH Zurich
  */
-
 
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
-#include <lf/mesh/utils/utils.h>
 
 #include <Eigen/Core>
-#include <Eigen/LU>
-#include <memory>
-#include <vector>
 
-namespace ConvectionDiffusion{
+namespace ConvectionDiffusion {
 
 /**
  * @headerfile convection_emp.h
@@ -49,7 +44,7 @@ class ConvectionElementMatrixProvider {
 
   /** @brief Default implementation: all cells are active */
   bool isActive(const lf::mesh::Entity & /*entity*/) const { return true; }
-  
+
  private:
   FUNCTOR v_;  // functor for the velocity field.
 };
@@ -84,6 +79,6 @@ Eigen::Matrix3d ConvectionElementMatrixProvider<FUNCTOR>::Eval(
   return loc_mat;
 }
 
-} //namespace ConvectionDiffusion
+}  // namespace ConvectionDiffusion
 
-#endif //CONVECTIOIN_EMP_H
+#endif  // CONVECTIOIN_EMP_H
