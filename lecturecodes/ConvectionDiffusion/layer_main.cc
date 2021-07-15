@@ -34,11 +34,8 @@ int main() {
   // source function
   const auto f = [](const Eigen::Vector2d &x) { return 0.0; };
 
-  // construct mesh:
-  int M = 49 * 2;
-
   // Read Mesh from file
-  std::string mesh_file = CURRENT_SOURCE_DIR "/meshes/mesh_squre.msh";
+  std::string mesh_file = CURRENT_SOURCE_DIR "/meshes/mesh_square.msh";
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh_p = reader.mesh();
@@ -47,9 +44,9 @@ int main() {
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
 
-  // Solve
+  // Compute solutions using Standard FE, Upwind, SUPG method
   Eigen::VectorXd sol_standard =
-      ConvectionDiffusion::SolveCDBVPStandardGalerkin(fe_space, eps, v, f, g);
+      ConvectionDiffusion::SolveCDBVPStandardFem(fe_space, eps, v, f, g);
   lf::fe::MeshFunctionFE sol_standard_mf(fe_space, sol_standard);
 
   Eigen::VectorXd sol_stable =
@@ -63,11 +60,14 @@ int main() {
   // Output solution along the curve gamma
   auto gamma = [](double t) { return Eigen::Vector2d(t, 1 - t); };
   ConvectionDiffusion::SampleMeshFunction("results_standard_FEM.txt", mesh_p,
-                                          gamma, sol_standard_mf, 1000);
+                                          gamma, sol_standard_mf, 250);
   ConvectionDiffusion::SampleMeshFunction("results_upwind.txt", mesh_p, gamma,
-                                          sol_upwind_mf, 1000);
+                                          sol_upwind_mf, 250);
   ConvectionDiffusion::SampleMeshFunction("results_supg.txt", mesh_p, gamma,
-                                          sol_supg_mf, 1000);
+                                          sol_supg_mf, 250);
 
+  // Plot
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_layer.py " CURRENT_BINARY_DIR);
   return 0;
 }
