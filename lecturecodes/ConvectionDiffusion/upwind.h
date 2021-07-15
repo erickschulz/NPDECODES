@@ -3,7 +3,7 @@
 
 /**
  *  @file upwind.h
- * @brief Solves the CD BVP based on an upwind quadrature method
+ * @brief Solves the CD BVP based on the upwind quadrature method
  * @author Philippe Peter
  * @date July 2021
  * @copyright Developed at SAM, ETH Zurich
@@ -23,8 +23,10 @@
 
 namespace ConvectionDiffusion {
 
-// Solves the Convection-Diffusion BVP with nonhomogeneous Dirichlet boundary
-// conditions using an upwind qudrature
+/**
+ * @brief Solves the Convection-Diffusion BVP with nonhomogeneous Dirichlet
+ * boundary conditions using the upwind qudrature method
+ */
 template <typename DIFFUSION_COEFF, typename CONVECTION_COEFF,
           typename FUNCTOR_F, typename FUNCTOR_G>
 Eigen::VectorXd SolveCDBVPUpwind(

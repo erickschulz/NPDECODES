@@ -2,8 +2,8 @@
 add_custom_target(convectiondiffusion_run)
 
 
-add_executable(lecturecodes.convectiondiffusion.main layer_main.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
-target_link_libraries(lecturecodes.convectiondiffusion.main
+add_executable(lecturecodes.convectiondiffusion.layer layer_main.cc cd_tools.cc ../../homeworks/UpwindQuadrature/mastersolution/upwindquadrature.cc)
+target_link_libraries(lecturecodes.convectiondiffusion.layer
     PUBLIC Eigen3::Eigen
     Boost::program_options
     LF::lf.assemble
@@ -35,11 +35,11 @@ target_link_libraries(lecturecodes.convectiondiffusion.convergence
 )
 
 
-add_custom_target(lecturecodes.convectiondiffusion.main_run
-    COMMAND lecturecodes.convectiondiffusion.main -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_layer.py ${CMAKE_CURRENT_BINARY_DIR}
+add_custom_target(lecturecodes.convectiondiffusion.layer_run
+    COMMAND lecturecodes.convectiondiffusion.layer -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_layer.py ${CMAKE_CURRENT_BINARY_DIR}
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plot_layer.py
 )
-add_dependencies(convectiondiffusion_run lecturecodes.convectiondiffusion.main_run)
+add_dependencies(convectiondiffusion_run lecturecodes.convectiondiffusion.layer_run)
 
 add_custom_target(lecturecodes.convectiondiffusion.convergence_run
     COMMAND lecturecodes.convectiondiffusion.convergence -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_convergence.py ${CMAKE_CURRENT_BINARY_DIR}/results_errors.txt
