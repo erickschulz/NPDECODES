@@ -2,7 +2,7 @@
 #define UPWIND_H
 
 /**
- *  @file upwind.h
+ * @file upwind.h
  * @brief Solves the CD BVP based on the upwind quadrature method
  * @author Philippe Peter
  * @date July 2021

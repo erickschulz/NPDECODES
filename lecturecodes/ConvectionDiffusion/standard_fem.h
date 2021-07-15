@@ -1,42 +1,43 @@
-#ifndef STANDARD_GALERKIN_H
-#define STANDARD_GALERKIN_H
+#ifndef STANDARD_FEM_H
+#define STANDARD_FEM_H
 
 /**
- *  @file standard_galerkin.h
- * @brief Solve CD BVP based on a standard Galerkin approach (unstable!)
+ * @file standard_fem.h
+ * @brief Solves the CD BVP based on a standard FEM approach
  * @author Philippe Peter
  * @date June 2021
  * @copyright Developed at SAM, ETH Zurich
  */
 
-
 #include <lf/assemble/assemble.h>
-#include <lf/base/base.h>
 #include <lf/fe/fe.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
-#include <cmath>
 #include <memory>
 
 #include "convection_emp.h"
-namespace ConvectionDiffusion{
 
-template<typename DIFFUSION_COEFF, typename CONVECTION_COEFF, typename FUNCTOR_F,typename FUNCTOR_G>
-Eigen::VectorXd SolveCDBVPStandardGalerkin(const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space, DIFFUSION_COEFF eps, CONVECTION_COEFF v,FUNCTOR_F f, FUNCTOR_G g){
+namespace ConvectionDiffusion {
 
-  //Wrap functions into mesh functions
+/**
+ * @brief Solves the Convection-Diffusion BVP with nonhomogeneous Dirichlet
+ * boundary conditions using a standard FEM approach
+ */
+template <typename DIFFUSION_COEFF, typename CONVECTION_COEFF,
+          typename FUNCTOR_F, typename FUNCTOR_G>
+Eigen::VectorXd SolveCDBVPStandardFem(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
+    DIFFUSION_COEFF eps, CONVECTION_COEFF v, FUNCTOR_F f, FUNCTOR_G g) {
+  // Wrap functions into mesh functions
   lf::mesh::utils::MeshFunctionGlobal mf_g{g};
   lf::mesh::utils::MeshFunctionGlobal mf_eps{eps};
   lf::mesh::utils::MeshFunctionGlobal mf_f{f};
 
-  //mesh and dofhanlder
+  // mesh and dofhanlder
   auto mesh_p = fe_space->Mesh();
   const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
 
@@ -56,8 +57,8 @@ Eigen::VectorXd SolveCDBVPStandardGalerkin(const std::shared_ptr<lf::uscalfe::Fe
   // RIGHT-HAND SIDE VECTOR
   Eigen::VectorXd phi(dofh.NumDofs());
   phi.setZero();
-  lf::uscalfe::ScalarLoadElementVectorProvider elvec_provider(fe_space,mf_f);
-  lf::assemble::AssembleVectorLocally(0,dofh,elvec_provider,phi);
+  lf::uscalfe::ScalarLoadElementVectorProvider elvec_provider(fe_space, mf_f);
+  lf::assemble::AssembleVectorLocally(0, dofh, elvec_provider, phi);
 
   // IMPOSE DIRICHLET BC
   // Obtain specification for shape functions on edges
@@ -89,7 +90,6 @@ Eigen::VectorXd SolveCDBVPStandardGalerkin(const std::shared_ptr<lf::uscalfe::Fe
   return sol_vec;
 }
 
-} // namespace ConvectionDiffusion
+}  // namespace ConvectionDiffusion
 
-
-#endif //STANDARD_GALERKIN_H
+#endif  // STANDARD_GALERKIN_H

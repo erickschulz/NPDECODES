@@ -1,8 +1,8 @@
-#ifndef STREAMLINE_UPWIND_H
-#define STREAMLINE_UPWIND_H
+#ifndef SUPG_H
+#define SUPG_H
 
 /**
- * @file streamline_upwind.h
+ * @file supg.h
  * @brief Solves the CD BVP based on the SUPG method
  * @author Philippe Peter
  * @date July 2021
@@ -179,4 +179,4 @@ Eigen::VectorXd SolveCDBVPSupg(
 
 }  // namespace ConvectionDiffusion
 
-#endif  // STREAMLINe_UPWIND_H
+#endif  // SUPG_H
