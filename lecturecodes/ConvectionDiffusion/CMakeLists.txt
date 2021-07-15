@@ -36,13 +36,13 @@ target_link_libraries(lecturecodes.convectiondiffusion.convergence
 
 
 add_custom_target(lecturecodes.convectiondiffusion.main_run
-    COMMAND lecturecodes.convectiondiffusion.main -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_cut.py ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plot_cut.py
+    COMMAND lecturecodes.convectiondiffusion.main -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_layer.py ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plot_layer.py
 )
 add_dependencies(convectiondiffusion_run lecturecodes.convectiondiffusion.main_run)
 
 add_custom_target(lecturecodes.convectiondiffusion.convergence_run
-    COMMAND lecturecodes.convectiondiffusion.convergence -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/convergence_plot.py ${CMAKE_CURRENT_BINARY_DIR}/results_errors.txt
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/convergence_plot.py
+    COMMAND lecturecodes.convectiondiffusion.convergence -o ${CMAKE_CURRENT_BINARY_DIR}/ && python3 ${CMAKE_CURRENT_SOURCE_DIR}/plot_convergence.py ${CMAKE_CURRENT_BINARY_DIR}/results_errors.txt
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plot_convergence.py
 )
 add_dependencies(convectiondiffusion_run lecturecodes.convectiondiffusion.convergence_run)
