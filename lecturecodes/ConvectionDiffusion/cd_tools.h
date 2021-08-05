@@ -39,6 +39,9 @@ template <typename MF>
 double EvaluateMeshFunction(std::shared_ptr<const lf::mesh::Mesh> mesh_p, MF mf,
                             Eigen::Vector2d global, double tol = 10E-10) {
   for (const lf::mesh::Entity* entity_p : mesh_p->Entities(0)) {
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity_p->RefEl(),
+                  "Function only defined for triangular cells");
+
     // compute geometric information about the cell
     const lf::geometry::Geometry* geo_p = entity_p->Geometry();
     Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
@@ -60,6 +63,7 @@ double EvaluateMeshFunction(std::shared_ptr<const lf::mesh::Mesh> mesh_p, MF mf,
 /**
  * @brief Evaluates a MeshFunction at points specified by their global
  * coordinates
+ * @param mesh_p a TRIANGULAR mesh
  */
 template <typename MF>
 std::vector<double> EvaluateMeshFunction(
@@ -71,6 +75,10 @@ std::vector<double> EvaluateMeshFunction(
   unsigned counter = 0;
 
   for (const lf::mesh::Entity* entity_p : mesh_p->Entities(0)) {
+    // verify that entity_p is a triangle
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity_p->RefEl(),
+                  "Function only defined for triangular cells");
+
     // compute geometric information about the cell
     const lf::geometry::Geometry* geo_p = entity_p->Geometry();
     Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);

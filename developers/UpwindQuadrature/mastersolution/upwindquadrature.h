@@ -1,3 +1,6 @@
+#ifndef UPWIND_QUADRATURE_H
+#define UPWIND_QUADRATURE_H
+
 /**
  * @file upwindquadrature.h
  * @brief NPDE homework template
@@ -139,3 +142,5 @@ lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
     std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 }  // namespace UpwindQuadrature
+
+#endif  // UPWIND_QUADRATURE_H
