@@ -7,8 +7,6 @@
  */
 
 #include "../upwindquadrature.h"
-#include "../../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
-
 
 #include <gtest/gtest.h>
 #include <lf/geometry/geometry.h>
@@ -17,6 +15,8 @@
 
 #include <Eigen/Core>
 #include <memory>
+
+#include "../../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
 
 namespace UpwindQuadrature::test {
 
