@@ -5,7 +5,8 @@
  * @date 29/04/2020
  * @copyright Developed at ETH Zurich
  */
-/*
+
+
 #include "../stableevaluationatapoint.h"
 
 #include <gtest/gtest.h>
@@ -77,6 +78,7 @@ TEST(StableEvaluationAtAPoint, pointEval) {
   ASSERT_NEAR(std::abs(ref_error - error), 0.0, tol);
 }
 
+/*
 TEST(StableEvaluationAtAPoint, Jstar) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
@@ -91,6 +93,8 @@ TEST(StableEvaluationAtAPoint, Jstar) {
     return std::log((x + one).norm());
   };
 
+
+
   const Eigen::Vector2d x(0.3, 0.4);
 
   double val = StableEvaluationAtAPoint::Jstar(fe_space, u, x);
@@ -101,6 +105,7 @@ TEST(StableEvaluationAtAPoint, Jstar) {
 
   ASSERT_NEAR(std::abs(ref_val - val), 0.0, tol);
 }
+*/
 
 TEST(StableEvaluationAtAPoint, stab_pointEval) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);

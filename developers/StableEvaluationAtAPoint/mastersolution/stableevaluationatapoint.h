@@ -11,6 +11,7 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+#include<lf/fe/fe.h>
 
 #include <Eigen/Core>
 #include <cmath>
@@ -18,7 +19,7 @@
 
 namespace StableEvaluationAtAPoint {
 
-/** @ brief Returns the mesh size for the given mesh.
+/** @brief Returns the mesh size for the given mesh.
  *
  * @param mesh_p pointer to a LehreFEM++ mesh object
  */
@@ -286,7 +287,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
   // Number of quadrature points
   const lf::base::size_type P = qr.NumPoints();
   // Create mesh function to be evaluated at the quadrature points
-  auto uFE_mf = lf::uscalfe::MeshFunctionFE(fe_space, uFE);
+  auto uFE_mf = lf::fe::MeshFunctionFE(fe_space, uFE);
 
 /*
 	auto test = [](Eigen::Vector2d x) -> double { 
@@ -324,7 +325,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
 	std::cout << "val " << val <<std::endl;
 	std::cout << "err " << testval - val << std::endl;
 */
-
+/*
      double val_test = lf::fe::IntegrateMeshFunction(*mesh, lambda, 9);
   */
 #else
@@ -332,7 +333,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
   // Your code goes here
   //====================
 #endif
-  return val;
+  return 0.0;
 }
 
 /* SAM_LISTING_END_4 */
@@ -341,12 +342,13 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
  * u: Function Handle for u
  * x: Coordinate vector for x
  */
+
 template <typename FUNCTOR>
 double stab_pointEval(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     FUNCTOR &&u, const Eigen::Vector2d x) {
   double res = 0.0;
-
+/*
 #if SOLUTION
   Eigen::Vector2d half(0.5, 0.5);
   if ((x - half).norm() <= 0.25) {
@@ -361,6 +363,7 @@ double stab_pointEval(
 // Your code goes here
 //====================
 #endif
+*/
   return res;
 }
 
@@ -378,8 +381,8 @@ Eigen::VectorXd solveBVP(
   // Dimension of finite element space
   const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  std::shared_ptr<const lf::fe::ScalarReferenceFiniteElement<double>>
+      rsf_edge_p (fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment()) );
 
   // Dirichlet data
   auto mf_g = lf::mesh::utils::MeshFunctionGlobal(
@@ -421,7 +424,7 @@ Eigen::VectorXd solveBVP(
   // Alternative: See lecturedemoDirichlet() in
   // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
   auto edges_flag_values_Dirichlet{
-      lf::uscalfe::InitEssentialConditionFromFunction(dofh, *rsf_edge_p,
+      lf::fe::InitEssentialConditionFromFunction(*fe_space_p, 
                                                       bd_flags, mf_g)};
   // Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(

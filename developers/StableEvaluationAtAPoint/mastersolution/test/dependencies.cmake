@@ -16,5 +16,6 @@ set(LIBRARIES
   LF::lf.io
   LF::lf.mesh.hybrid2d
   LF::lf.mesh.utils
+  LF::lf.fe
 )
 
