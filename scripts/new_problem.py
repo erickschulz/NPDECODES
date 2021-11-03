@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
-
+# Sets up an empty file structure for a NumPDE homework problem
+# Invoke with: new_problem <ProblemName> <problemname>
 # author: Liaowang Huang
 
 import os

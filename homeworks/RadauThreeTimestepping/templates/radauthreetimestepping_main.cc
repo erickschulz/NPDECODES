@@ -6,17 +6,18 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "radauthreetimestepping.h"
-#include "radauthreetimesteppingode.h"
-
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
+#include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
+#include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <memory>
+
+#include "radauthreetimestepping.h"
+#include "radauthreetimesteppingode.h"
 
 using namespace RadauThreeTimestepping;
 
@@ -28,7 +29,7 @@ int main(int /*argc*/, char ** /*argv*/) {
 
   /* Solving the parabolic heat equation */
   // Create a Lehrfem++ square tensor product mesh
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(
+  lf::mesh::utils::TPTriagMeshBuilder builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
   // Set mesh parameters following the Builder pattern
   // Domain is the unit square

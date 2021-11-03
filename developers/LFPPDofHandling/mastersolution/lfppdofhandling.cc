@@ -8,10 +8,9 @@
 
 #include "lfppdofhandling.h"
 
+#include <Eigen/Dense>
 #include <array>
 #include <memory>
-
-#include <Eigen/Dense>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"
@@ -22,8 +21,8 @@
 namespace LFPPDofHandling {
 
 /* SAM_LISTING_BEGIN_1 */
-std::array<std::size_t, 3>
-countEntityDofs(const lf::assemble::DofHandler &dofhandler) {
+std::array<std::size_t, 3> countEntityDofs(
+    const lf::assemble::DofHandler &dofhandler) {
   std::array<std::size_t, 3> entityDofs;
 #if SOLUTION
   // Idea: iterate over entities in the mesh and get interior number of dofs for
@@ -85,10 +84,16 @@ double integrateLinearFEFunction(
 #if SOLUTION
   std::shared_ptr<const lf::mesh::Mesh> mesh = dofhandler.Mesh();
   for (const auto *cell : mesh->Entities(0)) {
+    if (cell->RefEl() == lf::base::RefEl::kQuad()) {
+        throw "Only triangular meshes are allowed!";
+    }    
     // check if we the FE space is really $\Cs_1^0$
     if (dofhandler.NumLocalDofs(*cell) != 3) {
-      throw "Not a S_1^0 FE space!";
+      throw "Not a S_1^0 FE space on a triangular mesh!";
     }
+    // Retrieve area of the triangle by calling
+    // a LehrFEM++ utility function
+    const double area = lf::geometry::Volume(*(cell->Geometry()));
     // iterate over dofs
     auto int_dofs = dofhandler.GlobalDofIndices(*cell);
     for (auto dof_idx_p = int_dofs.begin(); dof_idx_p < int_dofs.end();
@@ -96,7 +101,7 @@ double integrateLinearFEFunction(
       // local integral of the basis function associated with this dof:
       // in linear Lagrangian FE, the integral over the basis functions over
       // a triangle K is: 1/3*vol(K)
-      const double I_bary = 1.0 / 3.0 * lf::geometry::Volume(*(cell->Geometry()));
+      const double I_bary = 1.0 / 3.0 * area;
       // multiply by the value at the dof to get local contribution
       I += I_bary * mu(*dof_idx_p);
     }
@@ -144,16 +149,16 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
 /* SAM_LISTING_END_4 */
 
 /* SAM_LISTING_BEGIN_5 */
-Eigen::VectorXd
-convertDOFsLinearQuadratic(const lf::assemble::DofHandler &dofh_Linear_FE,
-                           const lf::assemble::DofHandler &dofh_Quadratic_FE,
-                           const Eigen::VectorXd &mu) {
+Eigen::VectorXd convertDOFsLinearQuadratic(
+    const lf::assemble::DofHandler &dofh_Linear_FE,
+    const lf::assemble::DofHandler &dofh_Quadratic_FE,
+    const Eigen::VectorXd &mu) {
   if (dofh_Linear_FE.Mesh() != dofh_Quadratic_FE.Mesh()) {
     throw "Underlying meshes must be the same for both DOF handlers!";
   }
   std::shared_ptr<const lf::mesh::Mesh> mesh =
-      dofh_Linear_FE.Mesh();                         // get the mesh
-  Eigen::VectorXd zeta(dofh_Quadratic_FE.NumDofs()); // initialise empty zeta
+      dofh_Linear_FE.Mesh();                          // get the mesh
+  Eigen::VectorXd zeta(dofh_Quadratic_FE.NumDofs());  // initialise empty zeta
   // safety guard: always set zero if you're not sure to set every entry later
   // on for us this shouldn't be a problem, but just to be sure
   zeta.setZero();
@@ -207,4 +212,4 @@ convertDOFsLinearQuadratic(const lf::assemble::DofHandler &dofh_Linear_FE,
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace LFPPDofHandling
+}  // namespace LFPPDofHandling

@@ -9,9 +9,8 @@
 #ifndef TRIAMESH2D_H_
 #define TRIAMESH2D_H_
 
-#include <string>
-
 #include <Eigen/Core>
+#include <string>
 
 namespace SimpleLinearFiniteElements {
 
@@ -22,9 +21,9 @@ namespace SimpleLinearFiniteElements {
 struct TriaMesh2D {
   // Constructor: reads mesh data from file
   TriaMesh2D(std::string filename);
-  // Retrieve location of vertices of a triangular cell 
+  // Retrieve location of vertices of a triangular cell
   Eigen::Matrix<double, 2, 3> operator[](int i) const;
- 
+
   void SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const;
 
   // Data members describing geometry and topolgy
@@ -33,7 +32,6 @@ struct TriaMesh2D {
 };
 /* SAM_LISTING_END_1 */
 
-} // namespace SimpleLinearFiniteElements
+}  // namespace SimpleLinearFiniteElements
 
-
-#endif // TRIAMESH2D_H_
+#endif  // TRIAMESH2D_H_

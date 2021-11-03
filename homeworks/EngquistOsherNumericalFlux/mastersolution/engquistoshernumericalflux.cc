@@ -8,10 +8,9 @@
 
 #include "engquistoshernumericalflux.h"
 
+#include <Eigen/Core>
 #include <algorithm>
 #include <cmath>
-
-#include <Eigen/Core>
 
 namespace EngquistOsherNumericalFlux {
 

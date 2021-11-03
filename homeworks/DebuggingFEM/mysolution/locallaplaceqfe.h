@@ -9,9 +9,9 @@
 #ifndef NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
 #define NPDECODES_DEBUGGINGFEM_LOCALLAPLACEQFE_H_
 
-#include <Eigen/Core>
-
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace DebuggingFEM {
 

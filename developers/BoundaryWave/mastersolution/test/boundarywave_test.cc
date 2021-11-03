@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <gtest/gtest.h>
+
 #include <memory>
 #include <utility>
-// Eigen includes
-#include <Eigen/Core>
 
-#include <gtest/gtest.h>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>

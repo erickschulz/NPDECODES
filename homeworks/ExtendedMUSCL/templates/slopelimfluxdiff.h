@@ -30,9 +30,9 @@ namespace ExtendedMUSCL {
 template <typename FunctionF, typename FunctionSlopes>
 Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF &&F,
                                  FunctionSlopes &&slopes) {
-  int n = mu.size(); // Number of active dual grid cells
-  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
-  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
+  int n = mu.size();  // Number of active dual grid cells
+  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
+  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);     // Flux differences
 
   // Computation of slopes \Blue{$\sigma_j$}, uses \Blue{$\mu_0=\mu_1$},
   // \Blue{$m_{N+1}=\mu_N$}, which amounts to constant extension of states
@@ -75,9 +75,9 @@ Eigen::VectorXd slopelimfluxdiff(const Eigen::VectorXd &mu, FunctionF &&F,
 template <typename FunctionF, typename FunctionSlopes>
 Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF &&F,
                                     FunctionSlopes &&slopes) {
-  int n = mu.size(); // Number of active dual grid cells
-  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n); // Vector of slopes
-  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);    // Flux differences
+  int n = mu.size();  // Number of active dual grid cells
+  Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
+  Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);     // Flux differences
 
   sigma[0] = slopes(mu[0], mu[0], mu[1]);
   for (int j = 1; j < n - 1; ++j)
@@ -99,6 +99,6 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF &&F,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL
 
-#endif // SLOPELIMFLUXDIFF_H_
+#endif  // SLOPELIMFLUXDIFF_H_

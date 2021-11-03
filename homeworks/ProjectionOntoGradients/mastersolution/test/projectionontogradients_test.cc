@@ -8,18 +8,17 @@
 
 #include "../projectionontogradients.h"
 
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <memory>
 
 namespace ProjectionOntoGradients::test {
 
@@ -67,7 +66,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_1) {
                                       my_vec_provider, phi);
 
   // project v onto the fe space
-  auto v_vec = lf::uscalfe::NodalProjection<double>(*fe_space, v_mf);
+  auto v_vec = lf::fe::NodalProjection<double>(*fe_space, v_mf);
 
   // evaluate linear form on projected function:
   auto product = (v_vec.transpose() * phi).eval();
@@ -97,7 +96,7 @@ TEST(ProjectionOntoGradients, GradProjRhsProvider_2) {
                                       my_vec_provider, phi);
 
   // project v onto the fe space
-  auto v_vec = lf::uscalfe::NodalProjection<double>(*fe_space, v_mf);
+  auto v_vec = lf::fe::NodalProjection<double>(*fe_space, v_mf);
 
   // evaluate linear form on projected function:
   auto product = (v_vec.transpose() * phi).eval();
@@ -136,7 +135,7 @@ TEST(ProjectionOntoGradients, div_free_test) {
 TEST(ProjectionOntoGradients, exact_sol_test) {
   // I. Construct the test mesh
   // mesh builder in a world of dimension 2
-  lf::mesh::hybrid2d::TPTriagMeshBuilder my_builder(
+  lf::mesh::utils::TPTriagMeshBuilder my_builder(
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2));
 
   // define the test mesh
@@ -184,20 +183,20 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
     // return the function value according to the definition in the
     // exercise
     switch (triang_idx) {
-    case 0:
-      return Eigen::Vector2d(2, 0);
-    case 1:
-      return Eigen::Vector2d(0, 2);
-    case 3:
-      return Eigen::Vector2d(2, -2);
-    case 4:
-      return Eigen::Vector2d(-2, 2);
-    case 6:
-      return Eigen::Vector2d(0, -2);
-    case 7:
-      return Eigen::Vector2d(-2, 0);
-    default:
-      return Eigen::Vector2d(0, 0);
+      case 0:
+        return Eigen::Vector2d(2, 0);
+      case 1:
+        return Eigen::Vector2d(0, 2);
+      case 3:
+        return Eigen::Vector2d(2, -2);
+      case 4:
+        return Eigen::Vector2d(-2, 2);
+      case 6:
+        return Eigen::Vector2d(0, -2);
+      case 7:
+        return Eigen::Vector2d(-2, 0);
+      default:
+        return Eigen::Vector2d(0, 0);
     }
   };
 
@@ -211,31 +210,30 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
     // value of c to ensure that the linear function evaluates to
     // one at the central node.
     switch (triang_idx) {
-    case 0:
-      return 2.0 * x(0);
-    case 1:
-      return 2.0 * x(1);
-    case 3:
-      return 2.0 * x(0) - 2.0 * x(1) + 1.0;
-    case 4:
-      return -2.0 * x(0) + 2.0 * x(1) + 1.0;
-    case 6:
-      return -2.0 * x(1) + 2.0;
-    case 7:
-      return -2.0 * x(0) + 2.0;
-    default:
-      return 0.0;
+      case 0:
+        return 2.0 * x(0);
+      case 1:
+        return 2.0 * x(1);
+      case 3:
+        return 2.0 * x(0) - 2.0 * x(1) + 1.0;
+      case 4:
+        return -2.0 * x(0) + 2.0 * x(1) + 1.0;
+      case 6:
+        return -2.0 * x(1) + 2.0;
+      case 7:
+        return -2.0 * x(0) + 2.0;
+      default:
+        return 0.0;
     }
   };
 
   // VI.Determine the coefficient vector of the tent function in
   // the FE space (perform a Nodal projection)
-  // The Function lf::uscalfe::NodalProjection requires a mesh function as its
+  // The Function lf::fe::NodalProjection requires a mesh function as its
   // second argument, so we first construct a meshFunction object which
   // describes the tent function.
   auto tentFunction_mf = lf::mesh::utils::MeshFunctionGlobal(tentFunction);
-  auto ref_vec =
-      lf::uscalfe::NodalProjection<double>(fe_space, tentFunction_mf);
+  auto ref_vec = lf::fe::NodalProjection<double>(fe_space, tentFunction_mf);
 
   // VII. Test your implementation
   const Eigen::VectorXd sol_vec =
@@ -243,4 +241,4 @@ TEST(ProjectionOntoGradients, exact_sol_test) {
   EXPECT_NEAR((sol_vec - ref_vec).norm(), 0.0, 1e-12);
 }
 
-} // namespace ProjectionOntoGradients::test
+}  // namespace ProjectionOntoGradients::test

@@ -6,22 +6,21 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "stableevaluationatapoint.h"
-
-#include <iostream>
-#include <string>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/mesh_hierarchy.h>
 
+#include <Eigen/Core>
+#include <fstream>
+#include <iostream>
+#include <string>
+
+#include "stableevaluationatapoint.h"
+
 using namespace StableEvaluationAtAPoint;
 
 int main(int /*argc*/, const char ** /*argv*/) {
-
   /* LOADING COARSE MESH */
   // Load mesh into a Lehrfem++ Mesh object. See Example 2.7.1.11 in lecture
   // document.
@@ -47,12 +46,12 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::Vector2d x(0.3, 0.4);
 
   // INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS
-  int N_meshes = 8; // total number of meshes (coarse + refinement)
+  int N_meshes = 8;  // total number of meshes (coarse + refinement)
   // Array for recording mesh widths
   Eigen::VectorXd mesh_sizes{Eigen::VectorXd::Zero(N_meshes)};
   mesh_sizes(0) = getMeshSize(mesh_p);
-  // Dimensions of (full) finite element spaces 
-  Eigen::VectorXd dofs{ Eigen::VectorXd::Zero(N_meshes)};
+  // Dimensions of (full) finite element spaces
+  Eigen::VectorXd dofs{Eigen::VectorXd::Zero(N_meshes)};
   dofs(0) = N_dofs;
 
   // Naive point evaluation
@@ -72,7 +71,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   ux(0) = stab_pointEval(fe_space, u, x);
   errors_stabEval(0) = std::abs(u(x) - ux(0));
 
-  for (int k = 1; k < N_meshes; k++) { // for each mesh refinement
+  for (int k = 1; k < N_meshes; k++) {  // for each mesh refinement
     // Load finer mesh
     std::string idx = std::to_string(k);
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);

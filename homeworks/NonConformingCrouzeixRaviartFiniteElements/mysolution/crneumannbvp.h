@@ -14,23 +14,21 @@
 
 #include "crfespace.h"
 
-namespace NonConformingCrouzeixRaviartFiniteElements
-{
+namespace NonConformingCrouzeixRaviartFiniteElements {
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename GAMMA_COEFF, typename F_FUNCTOR>
 Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
-                                  GAMMA_COEFF &&gamma, F_FUNCTOR &&f)
-{
-    Eigen::VectorXd sol;
+                                  GAMMA_COEFF &&gamma, F_FUNCTOR &&f) {
+  Eigen::VectorXd sol;
 // TODO: task 2-14.u)
   //====================
   // Your code goes here
   //====================
-    return sol;
+  return sol;
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_SOLVE_CR_NEUMANN_BVP_H
+#endif  // NUMPDE_SOLVE_CR_NEUMANN_BVP_H

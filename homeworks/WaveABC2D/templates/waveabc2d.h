@@ -14,11 +14,10 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
@@ -76,7 +75,6 @@ lf::assemble::COOMatrix<double> computeGalerkinMat(
   return galMat_COO;
 }
 
-
 class progress_bar {
   static const auto overhead = sizeof " [100%]";
   std::ostream &os;
@@ -84,10 +82,12 @@ class progress_bar {
   std::string message;
   const std::string full_bar;
 
-public:
+ public:
   progress_bar(std::ostream &os, std::size_t line_width, std::string message_,
                const char symbol = '.')
-      : os{os}, bar_width{line_width - overhead}, message{std::move(message_)},
+      : os{os},
+        bar_width{line_width - overhead},
+        message{std::move(message_)},
         full_bar{std::string(bar_width, symbol) + std::string(bar_width, ' ')} {
     if (message.size() + 1 >= bar_width || message.find('\n') != message.npos) {
       os << message << '\n';
@@ -107,43 +107,41 @@ public:
   }
 
   void write(double fraction);
-}; // class progress_bar
-
+};  // class progress_bar
 
 /** @brief class providing timestepping for WaveABC2D */
 /* SAM_LISTING_BEGIN_9 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 class WaveABC2DTimestepper {
-public:
+ public:
   // Main constructor; precomputations are done here
   WaveABC2DTimestepper(
       const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
       FUNC_RHO rho, unsigned int M, double T);
-  
+
   // Public member functions
   Eigen::VectorXd solveWaveABC2D(FUNC_MU0 mu0, FUNC_NU0 nu0);
   double energies();
 
-private:
-  double T_;         		// final time
-  unsigned int M_;         	// nb of steps
-  double step_size_; 		// time inverval
+ private:
+  double T_;          // final time
+  unsigned int M_;    // nb of steps
+  double step_size_;  // time inverval
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p_;
-  //====================
-  // Your code goes here
-  //====================
-}; // class WaveABC2DTimestepper
+//====================
+// Your code goes here
+//====================
+};  // class WaveABC2DTimestepper
 /* SAM_LISTING_END_9 */
 
 /* Implementing constructor of class WaveABC2DTimestepper */
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
-	const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     FUNC_RHO rho, unsigned int M, double T)
-    
-	: fe_space_p_(fe_space_p), M_(M), T_(T), step_size_(T / M) {
-  
+
+    : fe_space_p_(fe_space_p), M_(M), T_(T), step_size_(T / M) {
   /* Creating coefficient-functions as Lehrfem++ mesh functions */
   // Coefficient-functions used in the class template
   // ReactionDiffusionElementMatrixProvider and MassEdgeMatrixProvider
@@ -153,51 +151,46 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   auto one_mf = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d) -> double { return 1.0; });
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 }
 /* SAM_LISTING_END_1 */
 
 /* Implementing member functions of class WaveABC2DTimestepper */
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
-Eigen::VectorXd
-    WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::solveWaveABC2D(
-    FUNC_MU0 mu0, FUNC_NU0 nu0) {
-  
+Eigen::VectorXd WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0,
+                                     FUNC_NU0>::solveWaveABC2D(FUNC_MU0 mu0,
+                                                               FUNC_NU0 nu0) {
   std::cout << "\nSolving variational problem of WaveABC2D." << std::endl;
   Eigen::VectorXd sol;
 
   // Initial conditions
   auto mf_mu0 = lf::mesh::utils::MeshFunctionGlobal(mu0);
   auto mf_nu0 = lf::mesh::utils::MeshFunctionGlobal(nu0);
-  Eigen::VectorXd nu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_nu0);
-  Eigen::VectorXd mu0_nodal =
-      lf::uscalfe::NodalProjection(*fe_space_p_, mf_mu0);
+  Eigen::VectorXd nu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_nu0);
+  Eigen::VectorXd mu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_mu0);
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return sol;
-} // solveWaveABC2D
+}  // solveWaveABC2D
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_10 */
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
-double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() { 
-  
+double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() {
   double energy;
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
   return energy;
 }
 /* SAM_LISTING_END_10 */
 
-
-} // namespace WaveABC2D
+}  // namespace WaveABC2D
 
 #endif

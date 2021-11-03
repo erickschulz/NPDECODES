@@ -206,7 +206,7 @@ def parse_json(filename):
 
 if __name__ == "__main__":
     try:
-        subprocess.call(["unifdef", "--help"])
+        subprocess.call(["unifdef", "-h"])
     except FileNotFoundError:
         print("You must install 'unifdef'.")
         exit(-1)

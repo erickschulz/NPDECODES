@@ -10,9 +10,9 @@
 #undef SOLUTION
 #define SOLUTION 1
 
-#include <gtest/gtest.h>
-
 #include "../electrostaticforce.h"
+
+#include <gtest/gtest.h>
 
 #include <Eigen/Core>
 
@@ -40,8 +40,8 @@ TEST(ElectrostaticForce, computeForceDomainFunctional) {
       ElectrostaticForce::computeForceDomainFunctional(fe_space_p, approx_sol);
 
   double tol = 1.0e-4;
-  ASSERT_NEAR(13.0776, approx_force_domain_functional(0), tol);
-  ASSERT_NEAR(0.0, approx_force_domain_functional(1), tol);
+  ASSERT_NEAR(13.0711, approx_force_domain_functional(0), tol);
+  ASSERT_NEAR(0.01106, approx_force_domain_functional(1), tol);
 }
 
 TEST(ElectrostaticForce, computeForceBoundaryFunctional) {
@@ -60,8 +60,8 @@ TEST(ElectrostaticForce, computeForceBoundaryFunctional) {
                                                          approx_sol);
 
   double tol = 1.0e-3;
-  ASSERT_NEAR(13.0776, approx_force_boundary_functional(0), tol);
-  ASSERT_NEAR(0.0, approx_force_boundary_functional(1), tol);
+  ASSERT_NEAR(12.5894, approx_force_boundary_functional(0), tol);
+  ASSERT_NEAR(-0.0602, approx_force_boundary_functional(1), tol);
 }
 
 TEST(ElectrostaticForce, solvePoissonBVPBoundaryConditions) {

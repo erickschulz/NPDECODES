@@ -1,9 +1,7 @@
-#include <memory>
-
-#include <Eigen/SparseCore>
-
 #include <lf/mesh/mesh.h>
 
+#include <Eigen/SparseCore>
+#include <memory>
 
 namespace IncidenceMatrices {
 
@@ -18,14 +16,16 @@ std::shared_ptr<lf::mesh::Mesh> createDemoMesh();
  *        such as lf::mesh::hybrid2d::Mesh)
  * @return The edge-vertex incidence matrix as Eigen::SparseMatrix<int>
  */
-Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(const lf::mesh::Mesh& mesh);
+Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(
+    const lf::mesh::Mesh &mesh);
 
 /** @brief Compute the cell-edge incidence matrix D for a given mesh
  * @param mesh The input mesh of type lf::mesh::Mesh (or of derived type,
  *        such as lf::mesh::hybrid2d::Mesh)
  * @return The cell-edge incidence matrix as Eigen::SparseMatrix<int>
  */
-Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(const lf::mesh::Mesh& mesh);
+Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(
+    const lf::mesh::Mesh &mesh);
 
 /** @brief For a given mesh test if the product of cell-edge and edge-vertex
  *         incidence matrix is zero: D*G == 0?
@@ -33,6 +33,6 @@ Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(const lf::mesh::Mesh& me
  *        such as lf::mesh::hybrid2d::Mesh)
  * @return true, if the product is zero and false otherwise
  */
-bool testZeroIncidenceMatrixProduct(const lf::mesh::Mesh& mesh);
+bool testZeroIncidenceMatrixProduct(const lf::mesh::Mesh &mesh);
 
 }  // namespace IncidenceMatrices

@@ -10,38 +10,38 @@
 
 namespace ElectrostaticForce {
 
-Eigen::Matrix<double, 2, 3>
-gradbarycoordinates(const lf::mesh::Entity &entity) {
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(
+    const lf::mesh::Entity &entity) {
   LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
                 "Unsupported cell type " << entity.RefEl());
 
   // Get vertices of the triangle
   auto endpoints = lf::geometry::Corners(*(entity.Geometry()));
 
-  Eigen::Matrix<double, 3, 3> X; // temporary matrix
+  Eigen::Matrix<double, 3, 3> X;  // temporary matrix
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
   X.block<3, 2>(0, 1) = endpoints.transpose();
 
   return X.inverse().block<2, 3>(1, 0);
-} // gradbarycoordinates
+}  // gradbarycoordinates
 
 /* SAM_LISTING_BEGIN_1 */
 Eigen::Vector2d computeExactForce() {
-  Eigen::Vector2d force; // return vector
+  Eigen::Vector2d force;  // return vector
   // Real overkill quadrature!
-  unsigned int N = 1e6; // nb. of quadrature points
+  unsigned int N = 1e6;  // nb. of quadrature points
   // Data
-  double r = 4.0 / 15.0; // radius of the circle
+  double r = 4.0 / 15.0;  // radius of the circle
   Eigen::Vector2d a(-16.0 / 15.0, 0.0);
   Eigen::Vector2d b(-1.0 / 15.0, 0.0);
   // Auxiliary variables
-  Eigen::Vector2d x;    // euclidean coordinates
-  Eigen::Vector2d n;    // normal vector at the coordinates
-  Eigen::Vector2d grad; // gradient of the exact solution
-  double angle;         // interior angle
+  Eigen::Vector2d x;     // euclidean coordinates
+  Eigen::Vector2d n;     // normal vector at the coordinates
+  Eigen::Vector2d grad;  // gradient of the exact solution
+  double angle;          // interior angle
 
   // Compute the force using the trapezoidal rule
-  force.setZero(); // initially zero
+  force.setZero();  // initially zero
   for (unsigned int i = 0; i < N; i++) {
     // I. Find the euclidean coordinates of integration node
     angle = i * (2 * M_PI) / N;
@@ -58,12 +58,12 @@ Eigen::Vector2d computeExactForce() {
   // V. Scale the result of the summation
   force *= r * M_PI / N;
   return force;
-} // end computeExactForce
+}  // end computeExactForce
 /* SAM_LISTING_END_1 */
 
 Eigen::VectorXd solvePoissonBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p) {
-  Eigen::VectorXd approx_sol; // to return
+  Eigen::VectorXd approx_sol;  // to return
 
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -84,8 +84,8 @@ Eigen::VectorXd solvePoissonBVP(
   /* SAM_LISTING_BEGIN_3 */
   // I : ASSEMBLY
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Right hand side vector, must be initialized with 0!
@@ -106,8 +106,8 @@ Eigen::VectorXd solvePoissonBVP(
   // indicates that the edge or node lies on the boundary
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
   // Determine the fixed dofs on the boundary and their values
-  auto flag_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p, bd_flags, mf_bd_values)};
+  auto flag_values{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space_p, bd_flags, mf_bd_values)};
   // II.ii Eliminate Dirichlet dofs from the linear system
   lf::assemble::FixFlaggedSolutionCompAlt<double>(
       [&flag_values](lf::assemble::glb_idx_t dof_idx) {
@@ -129,13 +129,13 @@ Eigen::VectorXd solvePoissonBVP(
 
   LF_VERIFY_MSG(approx_sol.size() == N_dofs, "Solution has wrong size");
   return approx_sol;
-} // solvePoissonBVP
+}  // solvePoissonBVP
 
 /* SAM_LISTING_BEGIN_4 */
 Eigen::Vector2d computeForceBoundaryFunctional(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     Eigen::VectorXd approx_sol) {
-  Eigen::Vector2d approx_force; // to return
+  Eigen::Vector2d approx_force;  // to return
 
   // MESH AND FINITE ELEMENTS SPACE DATA
   // Pointer to current mesh
@@ -160,9 +160,9 @@ Eigen::Vector2d computeForceBoundaryFunctional(
   double edge_length;
   Eigen::VectorXd normal_vec;
   Eigen::Matrix2d rotation_mat;
-  rotation_mat << 0, 1, -1, 0;            // rotates a 2d vec by 90 deg.
-  Eigen::Matrix<double, 2, 3> elgrad_mat; // gradients of basis elements
-  Eigen::Vector2d loc_grad_approx_sol; // gradient expansion coeff FE solution
+  rotation_mat << 0, 1, -1, 0;             // rotates a 2d vec by 90 deg.
+  Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
+  Eigen::Vector2d loc_grad_approx_sol;  // gradient expansion coeff FE solution
 
   // PERFORMING INTEGRATION
   approx_force.setZero();
@@ -199,14 +199,14 @@ Eigen::Vector2d computeForceBoundaryFunctional(
   }
   approx_force *= 0.5;
   return approx_force;
-} // computeForceFunctional
+}  // computeForceFunctional
 /* SAM_LISTING_END_4 */
 
 /* SAM_LISTING_BEGIN_5 */
 Eigen::Vector2d computeForceDomainFunctional(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     Eigen::VectorXd approx_sol) {
-  Eigen::Vector2d approx_force; // to return
+  Eigen::Vector2d approx_force;  // to return
 
   // Pointer to current mesh
   std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
@@ -221,10 +221,10 @@ Eigen::Vector2d computeForceDomainFunctional(
   };
 
   // INTEGRATION TOOLS
-  Eigen::MatrixXd stress_tensor(2, 2);    // maxwell stress tensor
-  Eigen::MatrixXd mid_pts(2, 3);          // midpoints of the edges
-  Eigen::Matrix<double, 2, 3> elgrad_mat; // gradients of basis elements
-  Eigen::Vector2d loc_grad_approx_sol; // gradient expansion coeff FE solution
+  Eigen::MatrixXd stress_tensor(2, 2);     // maxwell stress tensor
+  Eigen::MatrixXd mid_pts(2, 3);           // midpoints of the edges
+  Eigen::Matrix<double, 2, 3> elgrad_mat;  // gradients of basis elements
+  Eigen::Vector2d loc_grad_approx_sol;  // gradient expansion coeff FE solution
   Eigen::MatrixXd Id = Eigen::Matrix<double, 2, 2>::Identity();
 
   // PERFORMING INTEGRATION
@@ -257,7 +257,7 @@ Eigen::Vector2d computeForceDomainFunctional(
                      grad_uExact(mid_pts.col(2)));
   }
   return approx_force;
-} // computeForceDomainFunctional
+}  // computeForceDomainFunctional
 /* SAM_LISTING_END_5 */
 
 /* SAM_LISTING_BEGIN_6 */
@@ -276,7 +276,7 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
     }
   }
   return mesh_size;
-}; // getMeshSize
+};  // getMeshSize
 /* SAM_LISTING_END_6 */
 
-} // namespace ElectrostaticForce
+}  // namespace ElectrostaticForce

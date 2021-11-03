@@ -8,22 +8,21 @@
 
 #include "mylinearloadvector.h"
 
-#include <functional>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
+#include <functional>
 
 namespace ElementMatrixComputation {
 
 namespace {
 
 /* SAM_LISTING_BEGIN_1 */
-Eigen::Vector4d
-computeLoadVector(const Eigen::MatrixXd &vertices,
-                  std::function<double(const Eigen::Vector2d &)> f) {
+Eigen::Vector4d computeLoadVector(
+    const Eigen::MatrixXd &vertices,
+    std::function<double(const Eigen::Vector2d &)> f) {
   // Number of nodes of the element: triangles = 3, rectangles = 4
   const int num_nodes = vertices.cols();
   // Vector for returning element vector
@@ -34,27 +33,27 @@ computeLoadVector(const Eigen::MatrixXd &vertices,
   // Midpoints of edges in the reference cell
   Eigen::MatrixXd midpoints(2, num_nodes);
   switch (num_nodes) {
-  case 3: {
-    // Compute cell area for triangles
-    area =
-        0.5 *
-        ((vertices(0, 1) - vertices(0, 0)) * (vertices(1, 2) - vertices(1, 0)) -
-         (vertices(1, 1) - vertices(1, 0)) * (vertices(0, 2) - vertices(0, 0)));
-    // clang-format off
+    case 3: {
+      // Compute cell area for triangles
+      area = 0.5 * ((vertices(0, 1) - vertices(0, 0)) *
+                        (vertices(1, 2) - vertices(1, 0)) -
+                    (vertices(1, 1) - vertices(1, 0)) *
+                        (vertices(0, 2) - vertices(0, 0)));
+      // clang-format off
       midpoints << vertices(0, 0) + vertices(0, 1),
 	vertices(0, 1) + vertices(0, 2),
 	vertices(0, 2) + vertices(0, 0),
 	vertices(1, 0) + vertices(1, 1),
 	vertices(1, 1) + vertices(1, 2),
 	vertices(1, 2) + vertices(1, 0);
-    // clang-format on
-    break;
-  }
-  case 4: {
-    // Compute cell area for rectangles
-    area =
-        (vertices(0, 1) - vertices(0, 0)) * (vertices(1, 3) - vertices(1, 0));
-    // clang-format off
+      // clang-format on
+      break;
+    }
+    case 4: {
+      // Compute cell area for rectangles
+      area =
+          (vertices(0, 1) - vertices(0, 0)) * (vertices(1, 3) - vertices(1, 0));
+      // clang-format off
       midpoints << vertices(0, 0) + vertices(0, 1),
 	vertices(0, 1) + vertices(0, 2),
 	vertices(0, 2) + vertices(0, 3),
@@ -63,15 +62,15 @@ computeLoadVector(const Eigen::MatrixXd &vertices,
 	vertices(1, 1) + vertices(1, 2),
 	vertices(1, 2) + vertices(1, 3),
 	vertices(1, 3) + vertices(1, 0);
-    // clang-format on
-    break;
-  }
-  default: {
-    LF_ASSERT_MSG(false, "Illegal entity type!");
-    break;
-  }
-  }                 // end switch
-  midpoints *= 0.5; // The factor 1/2
+      // clang-format on
+      break;
+    }
+    default: {
+      LF_ASSERT_MSG(false, "Illegal entity type!");
+      break;
+    }
+  }                  // end switch
+  midpoints *= 0.5;  // The factor 1/2
   // Evaluate f(x) at the quadrature points, i.e. the midpoints of the edges
   Eigen::VectorXd fvals = Eigen::VectorXd::Zero(4);
   for (int i = 0; i < num_nodes; ++i) {
@@ -97,7 +96,7 @@ computeLoadVector(const Eigen::MatrixXd &vertices,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace
+}  // namespace
 
 Eigen::Vector4d MyLinearLoadVector::Eval(const lf::mesh::Entity &cell) {
   // Topological type of the cell
@@ -114,4 +113,4 @@ Eigen::Vector4d MyLinearLoadVector::Eval(const lf::mesh::Entity &cell) {
   return computeLoadVector(vertices, f_);
 }
 
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation

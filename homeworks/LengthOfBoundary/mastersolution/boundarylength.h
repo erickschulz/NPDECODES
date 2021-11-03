@@ -9,10 +9,10 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include <lf/mesh/mesh.h>
+
 #include <memory>
 #include <string>
-
-#include <lf/mesh/mesh.h>
 
 namespace LengthOfBoundary {
 

@@ -1,0 +1,11 @@
+- Link to problem code folder is missing
+- Just after problem (a): `comp_gal_mat.h` -> `avgvalboundary.h` **(fixed)**
+- Function signature of `compGalerkinMatrix` is wrong. Templated arguments are taken by value
+- Typo in description of argument `lfe_dofh` to function `compGalerkinMatrix`: loca-to-global -> local to global **(fixed)**
+- In description of argument `lfe_dofh` to function `compGalerkinMatrix`: $S^0_1(M)$ should be highlighted blue **(fixed)**
+- Part (b): Mention that the function should be implemented in `avgvalboundary.cc` **(fixed)**
+- Part (c): Mention that the function should be implemented in `avgvalboundary.h` **(fixed)**
+- Description of part (c): Argument `fe_test` that is described does not exist **(fixed)**
+- Description of part (g): File was renamed `avg_val_boundary.cc` -> `avgvalboundary.cc` (Two occurences in the text) **(fixed)**
+- Part (g): Code solves problem for alpha = gamma = beta = 1, but the previous parts assumed alpha = gamma = 1, beta = 0 (I guess this should be changed in the code, as otherwise Thm. 3.1.7 cannot be applied?)
+- Part (h): Filename was changed `main.cc` -> `avgvalboundary_main.cc` **(fixed)**

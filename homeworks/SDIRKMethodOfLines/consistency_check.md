@@ -1,0 +1,22 @@
+- First sentence of problem description: in combination with what?
+- Equation (6.2.1): Make clear that c could depend on x
+- Remark: \rho should probably also depend on x
+- Solution to part (b): Typo: dissapears -> disappears
+- Part (c): Add [ depends on Sub-problem (6-2.a) ]
+- Part (c): Typo bilinearv -> bilinear
+- Part (e): Unresolved reference to lecture script
+- Part (f): Second argument to `assembleGalerkinMatrices` is called `cool_coeff` and not `c`
+- Part (f): Class was renamed: `LinFEMassEdgeMatProvider` -> `LinearMassEdgeMatrixProvider`
+- Solution to part (f): Also add solution codes for `LinearMassEdgeMatrixProvider` and `LinFEMassMatrixProvider`
+- Solution to part (g): Last paragraph: Missing a minus sign: ydot = -gamma y
+- Part (h): The code template is already completed
+- Part (h): Mention the function `sdirk2SteppingLinScalODE` either in the code or in the problem formulation
+- Part (h): The code computes the rates up to m = 5120
+- Solution to part (h): The formatting of the table is outdated
+- Part (k): Function signature of `thermalEnergy` is outdated
+- Part (l): Function is formatted differently than the others
+- Part (m): `main` is already completed
+- Part (m): The code initializes the temperature with 5 and not 1
+- Part (o): `main` is already completed
+- Solution to part (o): Two unresolved references
+- Solution to part (o): The code uses u_0 = 5, but the solution is plotted for u_0 = 1

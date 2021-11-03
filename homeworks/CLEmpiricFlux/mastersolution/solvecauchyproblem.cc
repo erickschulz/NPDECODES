@@ -7,11 +7,11 @@
  */
 
 #include "solvecauchyproblem.h"
-#include "uniformcubicspline.h"
-
-#include <cmath>
 
 #include <Eigen/Core>
+#include <cmath>
+
+#include "uniformcubicspline.h"
 
 namespace CLEmpiricFlux {
 

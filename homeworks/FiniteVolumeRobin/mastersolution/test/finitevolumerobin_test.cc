@@ -6,19 +6,18 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include "../finitevolumerobin.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../finitevolumerobin.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <memory>
 
 namespace FiniteVolumeRobin::test {
 
@@ -46,7 +45,7 @@ TEST(FiniteVolumeRobin, EdgeMatrixProvider) {
   Eigen::SparseMatrix<double> A_crs = A.makeSparse();
 
   // project v into the FEspace
-  auto v_vec = lf::uscalfe::NodalProjection<double>(*fe_space, v_mf);
+  auto v_vec = lf::fe::NodalProjection<double>(*fe_space, v_mf);
 
   // create a ones vector
   Eigen::VectorXd ones = Eigen::VectorXd::Ones(dofh.NumDofs());
@@ -89,4 +88,4 @@ TEST(FiniteVolumeRobin, EdgeVectorProvider) {
   EXPECT_NEAR(product(0, 0), 54.0, 1E-6);
 }
 
-} // namespace FiniteVolumeRobin::test
+}  // namespace FiniteVolumeRobin::test

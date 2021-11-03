@@ -23,15 +23,15 @@ set(comparison
 )
 
 
-add_executable(solve_triangular_FEM solve_triangular_FEM.cc ${sources})
+add_executable(lecturecodes.solve_triangular_FEM solve_triangular_FEM.cc ${sources})
 
-add_executable(compare_implementations compare_assembly_speed.cc ${comparison})
+add_executable(lecturecodes.compare_implementations compare_assembly_speed.cc ${comparison})
 
-target_link_libraries(solve_triangular_FEM
+target_link_libraries(lecturecodes.solve_triangular_FEM
   PUBLIC Eigen3::Eigen
 )
 
-target_link_libraries(compare_implementations
+target_link_libraries(lecturecodes.compare_implementations
   PUBLIC Eigen3::Eigen
 )
 

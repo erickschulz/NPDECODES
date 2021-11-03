@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../laxwendroffscheme.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../laxwendroffscheme.h"
 
 namespace LaxWendroffScheme::test {
 

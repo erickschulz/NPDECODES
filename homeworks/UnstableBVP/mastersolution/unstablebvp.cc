@@ -15,9 +15,10 @@
 // Eigen
 #include <Eigen/Core>
 #include <Eigen/SparseLU>
-//Lehrfempp
+// Lehrfempp
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/uscalfe/uscalfe.h>
@@ -43,10 +44,10 @@ std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
 
   // Define the nodes
   std::array<std::array<double, 2>, 3> node_coord{
-  	std::array<double, 2>({0.5, -0.5 + offset }),
-  	std::array<double, 2>({0  ,  0.5 + offset }),
-  	std::array<double, 2>({1  ,  0.5 + offset })};
-   
+      std::array<double, 2>({0.5, -0.5 + offset}),
+      std::array<double, 2>({0, 0.5 + offset}),
+      std::array<double, 2>({1, 0.5 + offset})};
+
   for (const auto &node : node_coord) {
     mesh_factory_ptr->AddPoint(Eigen::Vector2d({node[0], node[1]}));
   }
@@ -127,8 +128,8 @@ double solveTemperatureDistribution(
   // **********************************************************************
 
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   LF_ASSERT_MSG(rsf_edge_p != nullptr, "FE specification for edges missing");
 
   // Obtain an array of boolean flags for the edges (codim 1) of the mesh,
@@ -137,8 +138,8 @@ double solveTemperatureDistribution(
 
   // Fetch flags and values for degrees of freedom located on Dirichlet
   // edges.
-  auto ess_bdc_flags_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p,
+  auto ess_bdc_flags_values{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space,
       [&bd_flags](const lf::mesh::Entity &edge) -> bool {
         return (bd_flags(edge));
       },
@@ -170,17 +171,10 @@ double solveTemperatureDistribution(
   // Stage 5: Compute H1 seminorm
   // **********************************************************************
 
-  // Compute the difference to a function that's zero everywhere, hence
-  // just the gradient of the solution (which is encapsulated in the fe_space).
-  // We use this trick to avoid the manual computation and make use of the
-  // LehrFEM facilities :)
-  lf::uscalfe::MeshFunctionL2GradientDifference loc_comp(
-      fe_space, lf::mesh::utils::MeshFunctionConstant(Eigen::Vector2d(0.0, 0.0)),
-      2);
-
-  // Compute the norm of the ``difference'' (i.e. the norm of the gradient of
-  // the solution)
-  const double norm = lf::uscalfe::NormOfDifference(dofh, loc_comp, sol_vec);
+  // construct a mesh function that represent |grad(x)|^2 and integrate it over
+  // the mesh to get the H^1 semi-norm:
+  auto mf_norm = squaredNorm(lf::fe::MeshFunctionGradFE(fe_space, sol_vec));
+  const double norm = std::sqrt(IntegrateMeshFunction(*mesh_p, mf_norm, 2));
 
   return norm;
 }

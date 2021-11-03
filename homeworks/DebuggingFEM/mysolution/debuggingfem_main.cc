@@ -6,10 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "locallaplaceqfe.h"
-#include "qfeinterpolator.h"
-#include "qfeprovidertester.h"
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/refinement/refinement.h>
+#include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -18,12 +20,9 @@
 #include <memory>
 #include <vector>
 
-#include <Eigen/Core>
-
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/refinement/refinement.h>
-#include <lf/uscalfe/uscalfe.h>
+#include "locallaplaceqfe.h"
+#include "qfeinterpolator.h"
+#include "qfeprovidertester.h"
 
 using size_type = lf::base::size_type;
 

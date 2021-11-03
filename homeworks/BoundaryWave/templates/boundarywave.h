@@ -9,16 +9,19 @@
  */
 
 #include <iostream>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
 
 namespace BoundaryWave {
 

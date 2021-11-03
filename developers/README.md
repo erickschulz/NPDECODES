@@ -8,6 +8,7 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 
 - A white check mark :white_check_mark: indicates that a stage is in progress.
 - A green check mark :heavy_check_mark: indicates that a stage is completed.
+- A red cross :x: indicates that the homework problem code needs to be revised.
 - Under 'Assignee for current stage' is found the name of the assistant currently working on the problem.
 
 | # | Problem name | Polished | Verified | Latex | Assignee (stage in progress)|
@@ -17,15 +18,15 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 2-5 | `SimpleLinearFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-6 | `IncidenceMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-7 | `LengthOfBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | check unitest |
+| 2-8 | `ElementMatrixComputation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-9 | `LFPPDofHandling` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-10 | `ProjectionOntoGradients` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 2-12 | `TestQuadratureRules` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | This routine could be made better |
 | 2-13 | `ParametricElementMatrices` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-14 | `NonConformingCrouzeixRaviartFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 2-15 | `RegularizedNeumannProblem` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 2-16 | `DegenerateFiniteElementSpace` | TO DO |  |  | |
-| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |check unitest |
+| 3-1 | `AvgValBoundary` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-2 | `DebuggingFEM` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-3 | `PointEvaluationRhs` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
 | 3-4 | `UnstableBVP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
@@ -35,32 +36,64 @@ replace the old links by new ones pointing to the correct /NPDECODES/homeworks f
 | 3-9 | `ZienkiewiczZhuEstimator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-10 | `ParametricFiniteElements` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
 | 3-11 | `StableEvaluationAtAPoint` | :heavy_check_mark: | :heavy_check_mark: |  | Need checking by Ralf |
-| 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | :white_check_mark: (Erick) | check unitest |
-| 6-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
-| 6-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 6-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 6-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
-| 6-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 6-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| 7-1 | `ExpFittedUpwind` | TO DO | | | |
-| 7-2 | `UpwindQuadrature` | DONE |  |  | needs LaTeX changes by Ralf |
-| 7-3 | `TranspSemiLagr` | TO DO | | | Philippe Peter |
-| 7-4 | `UpwindFiniteVolume` | TO DO | | | |
-| 8-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-| 8-8 | `AdvectionFV2D` | TODO |  |  | Philipp Egg |
+| 3-12 | `ElectrostaticForce` | :heavy_check_mark:  | :heavy_check_mark: | |  |
+| 3-13 | `StationaryCurrents` |  |  | | |
+| 3-14 | `QuasiInterpolation` |  |  | | |
+| 6-1 | `MatODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
+| 6-2 | `RK3Prey` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:| |
+| 6-3 | `ODESolve` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:| |
+| 6-4 | `SystemODE` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  |
+| 6-5 | `NLMatOde` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: |  |
+| 6-6 | `OrdNotAll` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
+| 6-7 | `InitCondLV` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
+| 6-8 | `TaylorODE` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
+| 6-9 | `ContourPlot` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 6-10 | `SymplecticTimestepping` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark: |  |
+| 7-1 | `ImplRK3Prey` | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark:  | |
+| 7-2 | `CrossProd` | :heavy_check_mark:   | :heavy_check_mark:  |:heavy_check_mark:  | |
+| 7-3 | `SDIRK` | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:  |  |
+| 7-4 | `SemImpRK` | :heavy_check_mark:  | :heavy_check_mark: |:heavy_check_mark:  |  |
+| 7-5 | `ExponentialIntegrator` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:|  |
+| 7-6 | `MIRK` | :heavy_check_mark: |  :heavy_check_mark: | :heavy_check_mark: | |
+| 7-7 | `StabRK3` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: ||
+| 7-8 | `GradientFlow` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: | |
+| 8-1 | `RadauThreeTimestepping` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 8-2 | `SDIRKMethodOfLines` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-4 | `1DWaveAbsorbingBC` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-5 | `SymplecticTimesteppingWaves` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-6 | `BoundaryWave` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 8-7 | `WaveABC2d` | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark:  |  |
+| 8-8 | `NonLinSchroedingerEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-9 | `FisherKPP` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
+| 8-10| `MixedFEMWave` |  |  | | |
+| 8-11 | `GaussLobattoParabolic` |  |  | | |
+| 9-1 | `ExpFittedUpwind` | :heavy_check_mark: |:heavy_check_mark: | |needs LaTeX changes |
+| 9-2 | `UpwindQuadrature` | :heavy_check_mark: |  |  | needs LaTeX changes by Ralf |
+| 9-3 | `TranspSemiLagr` | :heavy_check_mark:| :heavy_check_mark: | | needs LaTeX changes |
+| 9-4 | `UpwindFiniteVolume` | :heavy_check_mark: | :heavy_check_mark: | | |
+| 10-1 | `BurgersEquation` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-2 | `EngquistOsherNumericalFlux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-3 | `FiniteVolumeSineConsLaw` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-6 | `CLEmpiricFLux` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-7| `ExtendedMUSCL` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
+| 10-8 | `AdvectionFV2D` | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |  |
+| 10-9 | `ConsLawWith` | :heavy_check_mark:  | :heavy_check_mark:  |:heavy_check_mark:  | |
+| 10-10 | `FluxLimitedFV` | :heavy_check_mark:  | :heavy_check_mark:  |:heavy_check_mark: | |
 | ? | `FiniteVolumeRobin` |  |  |  |  |
 | ? | `IPDGFEM` | |  |  |  |
 | ? | `LinFeReactDiff` |  |  |  |  |
 
 Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.pdf
- * Problem 7.5: Transport Problem?
  * Problem 7.6: Upwind Finite Volume Method ?
+
+## Porting old NumCSE problems (deadline: end of March)
+
+* Adapt Code to our guidelines
+* Make Code simpler
+* Plotting: C++ --> Python (do it in `main()`, copy-paste from `BurgersEquation`)
+* Move code to a dedicated .cc if possible (until now, they use header files only)
+* Compare to problem statement: Is everything there and is there unused code (if so, remove)
+* Add unit tests if missing, check if every function that is edited by the students has unit tests or is tested via plotting/terminal output
 
 ## General Remarks
 
@@ -69,7 +102,19 @@ Problems PDF: https://www.sam.math.ethz.ch/~grsam/NUMPDE/HOMEWORK/NPDEProblems.p
 * Not only the solutions, but also the corresponding templates need to compile and, if possible, run without crash. So be careful when setting the solution/template tags in `developers/mastersolution/`.
 * The bullets below are only a selection. If you spot additional issues, e.g. ugly or too complicated code, fix it.
 * Names of .cc and .h files: For example the files in the folder `./developers/MyHomeworkProblem/mastersolution/` should be called `myhomeworkproblem_main.cc`, `myhomeworkproblem.cc`, `myhomeworkproblem.h`, `myclass.h` (lowercase, no underlines except for the main file).
-* Only in Lehrfem exercises: Use `nostd::span` (C++20) instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
+* Only in Lehrfem exercises: Use Lehrfem's `nostd::span` instead of `ForwardIteraters` for iterating over objects contiguous in memory (used e.g. in `Mesh::Entities()`, `SubEntities()`, `DofHandler`).
+
+## Continuous Integration
+* For every commit a number of checks is run:
+  1) `clang-format-10` is used to check if the formatting of all files under the `./developers` folder conforms with the [Google C++ Style guide](https://google.github.io/styleguide/cppguide.html).
+  2) All the code under `./developer` is compiled with `g++-8` (Linux) and `clang++` (osx)
+  3) All the mastersolution tests run.
+* After you have made a commit, you can check the status of the continuous integration pipeline on [github actions](https://github.com/erickschulz/NPDECODES/actions)
+* If the clang format step fails, just reformat all files:
+  ```
+  cd ./developers/
+  find . -iname *.h -o -iname '*.cc' | xargs clang-format-10 -i
+  ```
 
 ## Polishing
 

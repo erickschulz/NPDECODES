@@ -1,29 +1,27 @@
 
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
+#include "../linfereactdiff.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../linfereactdiff.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <memory>
+#include <utility>
 
 namespace LinFeReactDiff::test {
 
 constexpr char mesh_file[] = CURRENT_SOURCE_DIR "/../../meshes/square.msh";
 
-TEST(LinFeReactDiff, TestSolveFe)
-{
+TEST(LinFeReactDiff, TestSolveFe) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
@@ -32,8 +30,7 @@ TEST(LinFeReactDiff, TestSolveFe)
   ASSERT_NEAR(mu(mu.size() - 2), 0.00145535, 0.00001);
 }
 
-TEST(LinFeReactDiff, TestEnergy)
-{
+TEST(LinFeReactDiff, TestEnergy) {
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory), mesh_file);
   auto mesh = reader.mesh();
@@ -65,17 +62,16 @@ TEST(LinFeReactDiff, TestEnergy)
 
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
   LF_ASSERT_MSG(rsf_edge_p != nullptr, "FE specification for edges missing");
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
-  auto ess_bdc_flags_values_findest{
-      lf::uscalfe::InitEssentialConditionFromFunction(
-          dofh, *rsf_edge_p,
-          [&bd_flags](const lf::mesh::Entity &edge) -> bool {
-            return bd_flags(edge);
-          },
-          mf_zero)};
+  auto ess_bdc_flags_values_findest{lf::fe::InitEssentialConditionFromFunction(
+      *fe_space,
+      [&bd_flags](const lf::mesh::Entity &edge) -> bool {
+        return bd_flags(edge);
+      },
+      mf_zero)};
 
   lf::assemble::FixFlaggedSolutionComponents<double>(
       [&ess_bdc_flags_values_findest](lf::assemble::glb_idx_t gdof_idx) {
@@ -94,4 +90,4 @@ TEST(LinFeReactDiff, TestEnergy)
   ASSERT_NEAR(energy, 0.0105153, 0.00001);
 }
 
-} // namespace LinFeReactDiff::test
+}  // namespace LinFeReactDiff::test

@@ -48,9 +48,9 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
 //====================
 // Your code goes here
 //====================
-  default:
-    LF_VERIFY_MSG(false, "Codimension out of range for triangle")
-    return 0;
+    default:
+      LF_VERIFY_MSG(false, "Codimension out of range for triangle")
+      return 0;
   }
 }
 
@@ -61,9 +61,9 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
 //====================
 // Your code goes here
 //====================
-  default:
-    LF_VERIFY_MSG(false, "Codimension out of range for triangle")
-    return 0;
+    default:
+      LF_VERIFY_MSG(false, "Codimension out of range for triangle")
+      return 0;
   }
 }
 /* SAM_LISTING_END_3 */
@@ -135,4 +135,4 @@ CRReferenceFiniteElement::NodalValuesToDofs(
 }
 /* SAM_LISTING_END_7 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements

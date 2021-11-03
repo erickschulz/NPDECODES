@@ -9,11 +9,9 @@
  */
 
 #include <iostream>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/Sparse>
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
@@ -21,7 +19,6 @@
 #include <lf/uscalfe/uscalfe.h>
 
 namespace OutputImpedanceBVP {
-
 
 // Library functions
 Eigen::VectorXd solveImpedanceBVP(
@@ -37,16 +34,15 @@ template <typename FUNCTOR_U>
 Eigen::VectorXd interpolateData(
     std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_p,
     FUNCTOR_U &&u) {
-
   // Generate Lehrfem++ mesh functions out of the functors
   auto mf_u = lf::mesh::utils::MeshFunctionGlobal(
       [&u](Eigen::Vector2d x) -> double { return u(x); });
 
-  Eigen::VectorXd dof_vector_u = lf::uscalfe::NodalProjection(*fe_space_p, mf_u);
+  Eigen::VectorXd dof_vector_u = lf::fe::NodalProjection(*fe_space_p, mf_u);
 
   return dof_vector_u;
 };
 
-} // namespace OutputImpedanceBVP
+}  // namespace OutputImpedanceBVP
 
 #endif

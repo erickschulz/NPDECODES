@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <complex>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <complex>
 
 namespace StableEvaluationAtAPoint {
 
@@ -46,7 +45,6 @@ double G(Eigen::Vector2d x, Eigen::Vector2d y) {
 
 /* Returns the gradient of G(x,y). */
 Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
-
   Eigen::Vector2d res;
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
   // Straightforward implementation
@@ -191,7 +189,6 @@ double Psi(const Eigen::Vector2d y) {
 
 /* Computes grad(Psi_x(y)). */
 Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
-
   Eigen::Vector2d gradPsi_xy;
 
   Eigen::Vector2d half(0.5, 0.5);
@@ -207,7 +204,6 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
     gradPsi_xy(1) = 0.0;
 
   } else {
-
     gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
                  std::sin(constant * (dist - 0.5)) * (constant / dist) *
                  (y - half);
@@ -286,7 +282,7 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
      }
      );
 
-     double val_test = lf::uscalfe::IntegrateMeshFunction(*mesh, lambda, 9);
+     double val_test = lf::fe::IntegrateMeshFunction(*mesh, lambda, 9);
   */
   return val;
 }
@@ -301,7 +297,6 @@ template <typename FUNCTOR>
 double stab_pointEval(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     FUNCTOR &&u, const Eigen::Vector2d x) {
-
   double res = 0.0;
 
   Eigen::Vector2d half(0.5, 0.5);

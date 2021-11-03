@@ -13,7 +13,6 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 
-
 namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */
@@ -21,7 +20,7 @@ double volumeOfDomain(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
   double volume = 0.0;
   // iterate over all cells (co-dimension = 0)
   for (const lf::mesh::Entity *cell : mesh_p->Entities(0)) {
-    lf::geometry::Geometry *geo_p = cell->Geometry();
+    const lf::geometry::Geometry *geo_p = cell->Geometry();
     volume += lf::geometry::Volume(*geo_p);
   }
 
@@ -40,7 +39,7 @@ double lengthOfBoundary(const std::shared_ptr<lf::mesh::Mesh> mesh_p) {
   for (const lf::mesh::Entity *cell : mesh_p->Entities(1)) {
     // check if edge is part of the boundary
     if (bd_flags(*cell)) {
-      lf::geometry::Geometry *geo_p = cell->Geometry();
+      const lf::geometry::Geometry *geo_p = cell->Geometry();
       length += lf::geometry::Volume(*geo_p);
     }
   }

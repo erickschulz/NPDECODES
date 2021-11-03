@@ -7,7 +7,6 @@
  */
 
 #include <gtest/gtest.h>
-
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
 
@@ -18,7 +17,7 @@ namespace TestQuadratureRules::test {
 using namespace TestQuadratureRules;
 
 TEST(TestQuadratureRules, TestQuadratureTria) {
-  constexpr unsigned int max_test_order = 15; // This CANNOT be changed
+  constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
   // and rows indices the expected order of the quadrature
@@ -81,7 +80,7 @@ TEST(TestQuadratureRules, TestQuadratureTria) {
 }
 
 TEST(TestQuadratureRules, TestQuadratureQuad) {
-  constexpr unsigned int max_test_order = 15; // This CANNOT be changed
+  constexpr unsigned int max_test_order = 15;  // This CANNOT be changed
 
   // Result boolean double array whose columns indices specify tested order
   // and rows indices the expected order of the quadrature
@@ -176,4 +175,4 @@ TEST(TestQuadratureRules, calcQuadOrder) {
   }
 }
 
-} // namespace TestQuadratureRules::test
+}  // namespace TestQuadratureRules::test

@@ -6,11 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "ipdgfem.h"
-
+#include <Eigen/Core>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "ipdgfem.h"
 
 const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                        Eigen::DontAlignCols, ", ", "\n");

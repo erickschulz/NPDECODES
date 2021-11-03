@@ -8,9 +8,8 @@
 
 #include "uniformcubicspline.h"
 
-#include <cassert>
-
 #include <Eigen/Core>
+#include <cassert>
 
 namespace {
 
@@ -36,8 +35,7 @@ constexpr double zeta(double a, double b, unsigned int n, double j) {
 
 namespace CLEmpiricFlux {
 
-UniformCubicSpline::UniformCubicSpline(double a, double b,
-                                       Eigen::VectorXd f,
+UniformCubicSpline::UniformCubicSpline(double a, double b, Eigen::VectorXd f,
                                        Eigen::VectorXd M)
     : _n(f.size() - 1), _a(a), _b(b), _f(std::move(f)), _M(std::move(M)) {
   assert(b >= a);

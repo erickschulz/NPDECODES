@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../burgersequation.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../burgersequation.h"
 
 namespace BurgersEquation::test {
 

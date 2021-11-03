@@ -16,7 +16,6 @@ namespace FisherKPP {
 template <typename DIFF_COEFF>
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh, DIFF_COEFF &&c) {
-
   std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>> A_M;
 #if SOLUTION
   // Obtain mesh and finite element space
@@ -82,7 +81,7 @@ StrangSplit::StrangSplit(
   xi_ = 1.0 - 0.5 * sqrt(2.0);
 #else
   //====================
-  // Your code goes here: initialization of data members 
+  // Your code goes here: initialization of data members
   //====================
 #endif
 }

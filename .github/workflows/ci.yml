@@ -1,0 +1,77 @@
+name: Continuous Integration
+
+# Run this workflow every time a new commit pushed to your repository
+on: [push, pull_request]
+
+env:
+  DEPS_DIR: ${{ github.workspace}}/deps
+  HUNTER_ROOT: ${{ github.workspace}}/hunter
+  
+jobs:
+  clang-format:
+    name: clang-format-10
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install clang-format
+        run: sudo apt-get install clang-format-10
+      - name: clang-format
+        run: "./scripts/ci/run-clang-format.py -r --clang-format-executable clang-format-10 --color always ./developers/"
+  # compilation on linux/osx:
+  compile_test:
+    name: ${{ matrix.os }} - ${{ matrix.compiler }} - ${{ matrix.build_type }}
+    #needs: clang-format
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-20.04
+            compiler: "g++-8"
+            packages: "g++-8"
+            build_type: "Debug"
+            cxxflags: "-Werror=cpp"
+          - os: ubuntu-20.04
+            compiler: "g++-8"
+            packages: "g++-8"
+            build_type: "Release"
+            cxxflags: "-Werror=cpp"
+          - os: macos-10.15
+            compiler: "clang++"
+            build_type: "Debug"
+            cxxflags: "-Werror=#warnings"
+    runs-on: ${{ matrix.os }}
+    env:
+      COMPILER: ${{ matrix.compiler }}
+      BUILD_TYPE: ${{ matrix.build_type }}
+      CXXFLAGS: ${{ matrix.cxxflags }}
+    steps:
+      - name: make space
+        if: runner.os == 'Linux'
+        run: |
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf /usr/share/swift
+          sudo rm -rf /usr/share/rust
+          sudo rm -rf /opt/ghc
+        # sudo du -h -d 3 /
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install packages
+        if: runner.os == 'Linux'
+        run: sudo apt-get install ${{ matrix.packages }}
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ env.DEPS_DIR }}
+            ${{ env.HUNTER_ROOT }}
+          key:  ${{ runner.os }}-${{ env.COMPILER }}-${{ env.BUILD_TYPE }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.COMPILER }}-${{ env.BUILD_TYPE }}-
+            ${{ runner.os }}-${{ env.COMPILER }}-
+      - name: build_dependencies
+        run: "./scripts/ci/run_cmake.sh"
+      - name: compile and test
+        run: |
+          cd Build
+          ../scripts/ci/compile_test.sh
+         

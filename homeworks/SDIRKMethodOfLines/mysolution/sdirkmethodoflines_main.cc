@@ -13,9 +13,7 @@
 
 using namespace SDIRKMethodOfLines;
 
-int main(int /*argc*/, char ** /*argv*/)
-{
- 
+int main(int /*argc*/, char ** /*argv*/) {
   /* SDIRK-2 ODE convergence */
   sdirk2ScalarODECvTest();
 
@@ -39,8 +37,8 @@ int main(int /*argc*/, char ** /*argv*/)
   // Your code goes here
   //====================
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
   return 0;
 }

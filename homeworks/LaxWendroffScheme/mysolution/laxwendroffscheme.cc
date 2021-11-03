@@ -8,9 +8,8 @@
 
 #include "laxwendroffscheme.h"
 
-#include <cmath>
-
 #include <Eigen/Core>
+#include <cmath>
 
 namespace LaxWendroffScheme {
 

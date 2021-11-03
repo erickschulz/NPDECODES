@@ -8,13 +8,12 @@
 
 #include "1dwaveabsorbingbc.h"
 
-#include <cmath>
-#include <utility>
-#include <vector>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#include <cmath>
+#include <utility>
+#include <vector>
 
 namespace WaveAbsorbingBC1D {
 
@@ -33,7 +32,7 @@ double g(double t) { return 0 <= t && t <= PI ? std::sin(t) : 0.0; }
 /* SAM_LISTING_BEGIN_7 */
 Eigen::SparseMatrix<double> getA_full(unsigned int N, double c, double h) {
   std::vector<Eigen::Triplet<double>> triplets;
-  triplets.reserve(3 * (N + 1) - 2); // that many triplets needed
+  triplets.reserve(3 * (N + 1) - 2);  // that many triplets needed
   const double scale = c * c / h;
   // store first row separately
   triplets.push_back(Eigen::Triplet<double>(0, 0, scale));
@@ -79,7 +78,7 @@ Eigen::SparseMatrix<double> getB_full(unsigned int N, double c) {
 /* SAM_LISTING_BEGIN_9 */
 Eigen::SparseMatrix<double> getM_full(unsigned int N, double h) {
   Eigen::SparseMatrix<double> M(N + 1, N + 1);
-  M.setIdentity(); // Supposed to be efficient
+  M.setIdentity();  // Supposed to be efficient
   M *= h;
   // Modify two entries; efficiency does not matter much
   M.coeffRef(0, 0) = h / 2;
@@ -99,8 +98,8 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   // row and column of that matrix amounts to dropping that basis function.
   // However, the efficiency of this block() operation in the case of sparse
   // matrices is in doubt, in particular, since the result is assigned to
-  // another sparse matrix, which foils Eigen's expression template optimization.
-  // The use of "auto" would be highly advisable here!
+  // another sparse matrix, which foils Eigen's expression template
+  // optimization. The use of "auto" would be highly advisable here!
   Eigen::SparseMatrix<double> A = getA_full(N, c, h).block(0, 0, N, N);
   Eigen::SparseMatrix<double> B = getB_full(N, c).block(0, 0, N, N);
   Eigen::SparseMatrix<double> M = getM_full(N, h).block(0, 0, N, N);
@@ -114,8 +113,8 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-std::pair<Eigen::VectorXd, Eigen::VectorXd>
-computeEnergies(const Eigen::MatrixXd &full_solution, double c, double tau) {
+std::pair<Eigen::VectorXd, Eigen::VectorXd> computeEnergies(
+    const Eigen::MatrixXd &full_solution, double c, double tau) {
   int m = full_solution.rows() - 1;
   int N = full_solution.cols() - 1;
   double h = 1.0 / N;
@@ -134,4 +133,4 @@ computeEnergies(const Eigen::MatrixXd &full_solution, double c, double tau) {
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace WaveAbsorbingBC1D
+}  // namespace WaveAbsorbingBC1D

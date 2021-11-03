@@ -8,10 +8,9 @@
 
 #include "maximumprinciple.h"
 
-#include <vector>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
+#include <vector>
 
 namespace MaximumPrinciple {
 

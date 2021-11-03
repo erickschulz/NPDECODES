@@ -8,15 +8,16 @@
 
 #include <memory>
 // Eigen includes
-#include <Eigen/Core>
-#include <unsupported/Eigen/KroneckerProduct>
-
 #include <gtest/gtest.h>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <unsupported/Eigen/KroneckerProduct>
 
 #include "../zienkiewiczzhuestimator.h"
 
@@ -70,13 +71,13 @@ TEST(ZienkiewiczZhuEstimator, GradientProjectionVectorProvider) {
   auto mu_x = [](Eigen::Vector2d x) -> double { return x[0]; };
   auto mf_mu_x = lf::mesh::utils::MeshFunctionGlobal(
       [&mu_x](Eigen::Vector2d x) -> double { return mu_x(x); });
-  auto mu_x_vec = lf::uscalfe::NodalProjection(*fe_space_p, mf_mu_x);
+  auto mu_x_vec = lf::fe::NodalProjection(*fe_space_p, mf_mu_x);
 
   // Solution vector 2:
   auto mu_y = [](Eigen::Vector2d x) -> double { return x[1]; };
   auto mf_mu_y = lf::mesh::utils::MeshFunctionGlobal(
       [&mu_y](Eigen::Vector2d x) -> double { return mu_y(x); });
-  auto mu_y_vec = lf::uscalfe::NodalProjection(*fe_space_p, mf_mu_y);
+  auto mu_y_vec = lf::fe::NodalProjection(*fe_space_p, mf_mu_y);
 
   // Retrieve unit triangle from mesh (see documentation of
   // GenerateHybrid2DTestMesh(3) on LF++)
@@ -119,13 +120,13 @@ TEST(ZienkiewiczZhuEstimator, computeLumpedProjection) {
   auto mu_x = [](Eigen::Vector2d x) -> double { return x[0]; };
   auto mf_mu_x = lf::mesh::utils::MeshFunctionGlobal(
       [&mu_x](Eigen::Vector2d x) -> double { return mu_x(x); });
-  auto mu_x_vec = lf::uscalfe::NodalProjection(*fe_space_p, mf_mu_x);
+  auto mu_x_vec = lf::fe::NodalProjection(*fe_space_p, mf_mu_x);
 
   // Solution vector 2:
   auto mu_y = [](Eigen::Vector2d x) -> double { return x[1]; };
   auto mf_mu_y = lf::mesh::utils::MeshFunctionGlobal(
       [&mu_y](Eigen::Vector2d x) -> double { return mu_y(x); });
-  auto mu_y_vec = lf::uscalfe::NodalProjection(*fe_space_p, mf_mu_y);
+  auto mu_y_vec = lf::fe::NodalProjection(*fe_space_p, mf_mu_y);
 
   // Student solutions
   auto sol_x = ZienkiewiczZhuEstimator::computeLumpedProjection(dofh, mu_x_vec,

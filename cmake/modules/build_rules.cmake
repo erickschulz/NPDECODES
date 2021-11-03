@@ -7,17 +7,15 @@ function(build_problem TARGET DIR OUTPUT_NAME)
   set_target_properties(${TARGET} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
   target_compile_definitions(${TARGET} PRIVATE CURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/${DIR}\")
   target_compile_definitions(${TARGET} PRIVATE CURRENT_BINARY_DIR=\"${CMAKE_CURRENT_BINARY_DIR}\")
-  target_link_libraries(${TARGET}
-	  ${LIBRARIES}
-  )
-
+  # For including all symbols in the executable: Does not work on Max OS X
+  # target_link_libraries(${TARGET} PUBLIC   "-Wl,--whole-archive" ${LIBRARIES} "-Wl,--no-whole-archive")
+  target_link_libraries(${TARGET} PUBLIC ${LIBRARIES})
+  
   add_library(${TARGET}.static STATIC ${SOURCES})
   set_target_properties(${TARGET}.static PROPERTIES OUTPUT_NAME ${OUTPUT_NAME}.static)
   target_compile_definitions(${TARGET}.static PRIVATE CURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/${DIR}\")
   target_compile_definitions(${TARGET}.static PRIVATE CURRENT_BINARY_DIR=\"${CMAKE_CURRENT_BINARY_DIR}\")
-  target_link_libraries(${TARGET}.static
-	  ${LIBRARIES}
-  )
+  target_link_libraries(${TARGET}.static PUBLIC ${LIBRARIES})
 endfunction(build_problem)
 
 # Build rule for tests
@@ -30,10 +28,7 @@ function(build_test TARGET TARGET_TO_TEST DIR OUTPUT_NAME)
   set_target_properties(${TARGET} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
   target_compile_definitions(${TARGET} PRIVATE CURRENT_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/${DIR}/test\")
   target_compile_definitions(${TARGET} PRIVATE CURRENT_BINARY_DIR=\"${CMAKE_CURRENT_BINARY_DIR}\")
-  target_link_libraries(${TARGET}
-    ${LIBRARIES}
-    ${TARGET_TO_TEST}.static
-  )
+  target_link_libraries(${TARGET} PUBLIC ${LIBRARIES} ${TARGET_TO_TEST}.static)
 
   gtest_discover_tests(${TARGET})
 endfunction(build_test)

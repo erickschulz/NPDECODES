@@ -6,25 +6,24 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-#include <memory>
-#include <string>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "finitevolumerobin.h"
 
 int main() {
-
   // coefficient functions
   auto g = [](const Eigen::Vector2d & /*x*/) { return 1.0; };
   auto gamma = [](const Eigen::Vector2d &x) { return 1.0 + x(0) * x(0); };
@@ -34,9 +33,9 @@ int main() {
   for (int i = 1; i <= 4; ++i) {
     // read mesh
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-    lf::io::GmshReader reader(std::move(mesh_factory),
-                              CURRENT_SOURCE_DIR "/../meshes/disk" +
-                                  std::to_string(i) + ".msh");
+    lf::io::GmshReader reader(
+        std::move(mesh_factory),
+        CURRENT_SOURCE_DIR "/../meshes/disk" + std::to_string(i) + ".msh");
     auto mesh_p = reader.mesh();
 
     // Construct dofhanlder for linear finite elements on the current mesh.
@@ -77,7 +76,7 @@ int main() {
 
     // OUTPUT RESULTS TO VTK FILE
     // construct mesh function representing the finite element solution
-    lf::uscalfe::MeshFunctionFE mf_sol(fe_space, sol_vec);
+    lf::fe::MeshFunctionFE mf_sol(fe_space, sol_vec);
     // construct vtk writer
     lf::io::VtkWriter vtk_writer(mesh_p, CURRENT_BINARY_DIR
                                              "/finite_volume_robin_solution_" +

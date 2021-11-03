@@ -6,22 +6,20 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <memory>
+
+#include "../../meshes/mesh.h"
 #include "../mylinearfeelementmatrix.h"
 #include "../mylinearloadvector.h"
 #include "../solve.h"
-#include "../../meshes/mesh.h"
 
 namespace ElementMatrixComputation::test {
 
@@ -115,8 +113,7 @@ TEST(SolvePoissonBVP, test) {
 //////////////////////
 // Test MyLinearLoadVector
 //////////////////////
-TEST(MyLinearLoadVector, testTriangles)
-{
+TEST(MyLinearLoadVector, testTriangles) {
   std::shared_ptr<lf::mesh::Mesh> mesh_p =
       lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
 
@@ -137,8 +134,7 @@ TEST(MyLinearLoadVector, testTriangles)
   }
 }
 
-TEST(MyLinearLoadVector, testQuads)
-{
+TEST(MyLinearLoadVector, testQuads) {
   auto mesh_p = Generate2DTestMesh();
 
   lf::mesh::utils::MeshFunctionGlobal mf_f{ElementMatrixComputation::f};
@@ -161,8 +157,7 @@ TEST(MyLinearLoadVector, testQuads)
 //////////////////////
 // Test MyLinearFEElementMatrix
 //////////////////////
-TEST(MyLinearFEElementMatrix, testTriangles)
-{
+TEST(MyLinearFEElementMatrix, testTriangles) {
   std::shared_ptr<lf::mesh::Mesh> mesh_p =
       lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
   auto fe_space =
@@ -187,8 +182,7 @@ TEST(MyLinearFEElementMatrix, testTriangles)
   }
 }
 
-TEST(MyLinearFEElementMatrix, testQuads)
-{
+TEST(MyLinearFEElementMatrix, testQuads) {
   // std::shared_ptr<lf::mesh::Mesh> mesh_p =
   //     lf::mesh::test_utils::GenerateHybrid2DTestMesh(0, 1.0 / 3.0);
   auto mesh_p = Generate2DTestMesh();
@@ -235,4 +229,4 @@ TEST(solveNeumannEq, test) {
   }
 }
 
-}  // ElementMatrixComputation::test
+}  // namespace ElementMatrixComputation::test

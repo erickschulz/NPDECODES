@@ -9,19 +9,18 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <iostream>
+#include <memory>
+#include <utility>
 
 namespace RegularizedNeumannProblem {
 
@@ -76,7 +75,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::VectorXd> getGalerkinLSE_dropDof(
 // ENTITY_VECTOR_PROVIDER to calculate vector c using LehrFEM assembly functions
 /* SAM_LISTING_BEGIN_6 */
 class VecHelper {
-public:
+ public:
   explicit VecHelper() {}
   bool isActive(const lf::mesh::Entity &entity) const { return true; }
   Eigen::Vector3d Eval(const lf::mesh::Entity &entity) {

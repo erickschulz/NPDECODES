@@ -9,7 +9,7 @@
 
 #include <memory>
 #include <string>
-//Lehrfempp
+// Lehrfempp
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 
@@ -23,7 +23,7 @@ namespace UnstableBVP {
  * @return A shared pointer to a lf::refinement::MeshHierarchy object
  */
 std::shared_ptr<lf::refinement::MeshHierarchy> createMeshHierarchy(
-    const int reflevels, const std::string& mesh_type = "top");
+    const int reflevels, const std::string &mesh_type = "top");
 
 /** @brief Solve source-free diffusion PDE with a potentially non-continuous
  *        boundary condition, depending on the x2 variable, and compute H1

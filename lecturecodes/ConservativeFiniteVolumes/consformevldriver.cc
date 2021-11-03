@@ -6,7 +6,7 @@
 #include "consformevl.h"
 #include "numexp_runner.h"
 
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int /*argc*/, char** /*argv*/) {
   std::cout << "Model problem: 1D Burgers equation" << std::endl;
   // Spatial computational domain. Note that the initial data are confined to
   // [0,1]. Therefore the maximal speed of propagation "to the right" will be 1.

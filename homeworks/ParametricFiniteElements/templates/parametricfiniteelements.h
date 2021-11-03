@@ -8,12 +8,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
+#include <Eigen/Sparse>
 #include <cmath>
 #include <complex>
 #include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/Sparse>
 
 namespace ParametricFiniteElements {
 
@@ -27,7 +26,6 @@ namespace ParametricFiniteElements {
 template <typename FUNCTOR>
 double integrationElement(unsigned int n, unsigned int j, unsigned int l,
                           FUNCTOR &&Psi, Eigen::Vector2d xhat) {
-
   // Mesh width
   double h = 1.0 / n;
   double detJ = 0.0;
@@ -51,7 +49,6 @@ template <typename FUNCTOR>
 Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
                                           unsigned int l, FUNCTOR &&Psi,
                                           Eigen::Vector2d xhat) {
-
   // Mesh width
   double h = 1.0 / n;
   // Inverse Jacobian transposed
@@ -66,7 +63,6 @@ Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
 
 /* Returns the basis functions on the Reference Element at node xhat */
 Eigen::Vector4d bhats(Eigen::Vector2d xhat) {
-
   Eigen::Vector4d res;
 
   res(0) = (1 - xhat(0)) * (1 - xhat(1));
@@ -80,7 +76,6 @@ Eigen::Vector4d bhats(Eigen::Vector2d xhat) {
 /* Returns the gradients of the basis functions on Reference Element at node
  * xhat */
 Eigen::MatrixXd bhats_grad(Eigen::Vector2d xhat) {
-
   Eigen::MatrixXd res(2, 4);
 
   res(0, 0) = xhat(1) - 1;
@@ -131,7 +126,6 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
 /* SAM_LISTING_BEGIN_4 */
 int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
                           unsigned int local_dof) {
-
   // Map local indices of basis functions to global indices
   int global_dof;
 
@@ -146,9 +140,9 @@ int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
 /* Computes the Galerkin matrix in triplet format based on Element matrix */
 /* SAM_LISTING_BEGIN_5 */
 template <typename FUNCTOR1, typename FUNCTOR2>
-std::vector<Eigen::Triplet<double>>
-assembleGeoTherm(unsigned int n, FUNCTOR1 &&alpha, FUNCTOR2 &&Psi) {
-
+std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n,
+                                                     FUNCTOR1 &&alpha,
+                                                     FUNCTOR2 &&Psi) {
   // Reserve triplets for Galerkin Matrix A
   std::vector<Eigen::Triplet<double>> triplets;
   triplets.reserve(4 * 4 * n * n);
@@ -166,7 +160,6 @@ assembleGeoTherm(unsigned int n, FUNCTOR1 &&alpha, FUNCTOR2 &&Psi) {
  */
 /* SAM_LISTING_BEGIN_6 */
 void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
-
 //====================
 // Your code goes here
 //====================
@@ -180,7 +173,6 @@ void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
 template <typename FUNCTOR1, typename FUNCTOR2>
 Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
                               FUNCTOR2 &&Psi) {
-
   // Total Number of dofs
   int N_dofs = (n + 1) * (n + 1);
 
@@ -203,7 +195,6 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
 template <typename FUNCTOR>
 double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
                        const Eigen::VectorXd &mu) {
-
   // Mesh width
   double h = 1.0 / n;
 

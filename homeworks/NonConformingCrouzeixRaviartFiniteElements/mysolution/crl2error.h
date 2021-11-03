@@ -15,14 +15,12 @@
 
 #include "crfespace.h"
 
-namespace NonConformingCrouzeixRaviartFiniteElements
-{
+namespace NonConformingCrouzeixRaviartFiniteElements {
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTION>
 double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
-                        const Eigen::VectorXd &mu, FUNCTION &&u)
-{
+                        const Eigen::VectorXd &mu, FUNCTION &&u) {
   double l2_error = 0.;
 
 // TODO: task 2-14.w)
@@ -33,6 +31,6 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
 }
 /* SAM_LISTING_END_1 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif // NUMPDE_COMPUTE_CR_L2_ERROR_H
+#endif  // NUMPDE_COMPUTE_CR_L2_ERROR_H

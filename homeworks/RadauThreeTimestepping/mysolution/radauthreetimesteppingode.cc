@@ -26,10 +26,10 @@ std::vector<double> twoStageRadauTimesteppingLinScalODE(unsigned int m) {
 
 /* SAM_LISTING_BEGIN_2 */
 void testConvergenceTwoStageRadauLinScalODE() {
-  constexpr int nIter = 10;    // total number of iterations
+  constexpr int nIter = 10;       // total number of iterations
   double max_norm_errors[nIter];  // errors vector for all approx. sols
-  double rates[nIter - 1];  // The rates of convergence
-  double avg_rate = 0.0;    // The average rate of convergence over all iterations
+  double rates[nIter - 1];        // The rates of convergence
+  double avg_rate = 0.0;  // The average rate of convergence over all iterations
 
   //====================
   // Your code goes here

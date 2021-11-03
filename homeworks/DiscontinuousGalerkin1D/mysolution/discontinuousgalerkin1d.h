@@ -6,14 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-
-
-#include <cmath>
-#include <utility>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
+#include <cmath>
+#include <iostream>
+#include <utility>
 
 namespace DiscontinuousGalerkin1D {
 
@@ -91,7 +88,8 @@ struct Solution {
     u_ = other.u_;
     std::cout << "Called copy contructor" << std::endl;
   }
-  Solution(Eigen::VectorXd x, Eigen::VectorXd u) : x_(std::move(x)), u_(std::move(u)) {}
+  Solution(Eigen::VectorXd x, Eigen::VectorXd u)
+      : x_(std::move(x)), u_(std::move(u)) {}
   Eigen::VectorXd x_;
   Eigen::VectorXd u_;
 };

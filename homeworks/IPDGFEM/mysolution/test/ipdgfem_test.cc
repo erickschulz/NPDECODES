@@ -10,11 +10,11 @@
 #undef SOLUTION
 #define SOLUTION 1
 
+#include "../ipdgfem.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../ipdgfem.h"
 
 namespace IPDGFEM::test {
 

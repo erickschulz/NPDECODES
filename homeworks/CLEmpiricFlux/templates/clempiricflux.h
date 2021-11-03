@@ -9,9 +9,9 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "uniformcubicspline.h"
-
 #include <Eigen/Core>
+
+#include "uniformcubicspline.h"
 
 namespace CLEmpiricFlux {
 

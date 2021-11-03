@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
-
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace FiniteVolumeRobin {
 
@@ -31,8 +31,9 @@ namespace FiniteVolumeRobin {
  * where $@fe$@f is a (boundary) edge of the mesh and @f$ gamma \f$ is a
  * scalar-valued coefficient function.
  */
-template <typename FUNCTOR, typename EDGESELECTOR> class EdgeMatrixProvider {
-public:
+template <typename FUNCTOR, typename EDGESELECTOR>
+class EdgeMatrixProvider {
+ public:
   /**
    * @brief
    * @param gamma coefficient function
@@ -68,14 +69,14 @@ public:
     return edge_sel_(edge);
   }
 
-private:
-  FUNCTOR gamma_;         // functor for the coefficient
-  EDGESELECTOR edge_sel_; // defines the active edges
+ private:
+  FUNCTOR gamma_;          // functor for the coefficient
+  EDGESELECTOR edge_sel_;  // defines the active edges
 };
 
 template <typename FUNCTOR, typename EDGESELECTOR>
-Eigen::Matrix2d
-EdgeMatrixProvider<FUNCTOR, EDGESELECTOR>::Eval(const lf::mesh::Entity &edge) {
+Eigen::Matrix2d EdgeMatrixProvider<FUNCTOR, EDGESELECTOR>::Eval(
+    const lf::mesh::Entity &edge) {
   LF_ASSERT_MSG(edge.RefEl() == lf::base::RefEl::kSegment(),
                 "Function only defined on segments");
   const lf::geometry::Geometry *geo_ptr = edge.Geometry();
@@ -105,8 +106,9 @@ EdgeMatrixProvider<FUNCTOR, EDGESELECTOR>::Eval(const lf::mesh::Entity &edge) {
  * where $@fe$@f is a (boundary) edge of the mesh and @f$ g \f$ is a
  * scalar-valued coefficient function.
  */
-template <typename FUNCTOR, typename EDGESELECTOR> class EdgeVectorProvider {
-public:
+template <typename FUNCTOR, typename EDGESELECTOR>
+class EdgeVectorProvider {
+ public:
   /**
    * @brief
    * @param g coefficient function
@@ -141,14 +143,14 @@ public:
     return edge_sel_(edge);
   }
 
-private:
-  FUNCTOR g_;             // functor for the coefficient
-  EDGESELECTOR edge_sel_; // defines the active edges
+ private:
+  FUNCTOR g_;              // functor for the coefficient
+  EDGESELECTOR edge_sel_;  // defines the active edges
 };
 
 template <typename FUNCTOR, typename EDGESELECTOR>
-Eigen::Vector2d
-EdgeVectorProvider<FUNCTOR, EDGESELECTOR>::Eval(const lf::mesh::Entity &edge) {
+Eigen::Vector2d EdgeVectorProvider<FUNCTOR, EDGESELECTOR>::Eval(
+    const lf::mesh::Entity &edge) {
   LF_ASSERT_MSG(edge.RefEl() == lf::base::RefEl::kSegment(),
                 "Function only defined on segments");
   const lf::geometry::Geometry *geo_ptr = edge.Geometry();
@@ -160,4 +162,4 @@ EdgeVectorProvider<FUNCTOR, EDGESELECTOR>::Eval(const lf::mesh::Entity &edge) {
   return loc_vec;
 }
 
-} // namespace FiniteVolumeRobin
+}  // namespace FiniteVolumeRobin

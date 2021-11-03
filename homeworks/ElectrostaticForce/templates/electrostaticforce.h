@@ -6,19 +6,23 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
 #include <math.h>
-// Eigen includes
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+
+#include <iostream>
+
 // Lehrfem++ includes
 #include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
 
 namespace ElectrostaticForce {
 
@@ -51,4 +55,4 @@ Eigen::Vector2d computeForceDomainFunctional(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
     Eigen::VectorXd approx_sol);
 
-} // namespace ElectrostaticForce
+}  // namespace ElectrostaticForce

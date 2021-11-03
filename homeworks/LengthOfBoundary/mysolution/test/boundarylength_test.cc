@@ -6,11 +6,10 @@
  * @ copyright Developed at ETH Zurich
  */
 
-#include <gtest/gtest.h>
-
-#include <lf/mesh/test_utils/test_meshes.h>
-
 #include "../boundarylength.h"
+
+#include <gtest/gtest.h>
+#include <lf/mesh/test_utils/test_meshes.h>
 
 namespace LengthOfBoundary::test {
 

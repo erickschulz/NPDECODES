@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-#include <complex>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <complex>
 
 namespace StableEvaluationAtAPoint {
 
@@ -326,6 +325,8 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
 	std::cout << "err " << testval - val << std::endl;
 */
 
+     double val_test = lf::fe::IntegrateMeshFunction(*mesh, lambda, 9);
+  */
 #else
   //====================
   // Your code goes here
@@ -340,10 +341,10 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
  * u: Function Handle for u
  * x: Coordinate vector for x
  */
-double
-stab_pointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-               Eigen::VectorXd uFE, const Eigen::Vector2d x) {
-
+template <typename FUNCTOR>
+double stab_pointEval(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+    FUNCTOR &&u, const Eigen::Vector2d x) {
   double res = 0.0;
 
 #if SOLUTION

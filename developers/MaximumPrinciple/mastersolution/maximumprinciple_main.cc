@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "maximumprinciple.h"
-
+#include <Eigen/Dense>
+#include <Eigen/SparseCholesky>
 #include <functional>
 #include <iostream>
 
-#include <Eigen/Dense>
-#include <Eigen/SparseCholesky>
+#include "maximumprinciple.h"
 
 using namespace MaximumPrinciple;
 

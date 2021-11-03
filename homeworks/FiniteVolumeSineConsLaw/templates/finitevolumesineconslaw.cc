@@ -8,9 +8,8 @@
 
 #include "finitevolumesineconslaw.h"
 
-#include <cmath>
-
 #include <Eigen/Core>
+#include <cmath>
 
 namespace FiniteVolumeSineConsLaw {
 

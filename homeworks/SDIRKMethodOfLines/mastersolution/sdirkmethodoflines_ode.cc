@@ -15,11 +15,11 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
   double step_size = 2.0 / m;  // "tau" in this example
   // Initial conditions
   sol_vec.push_back(1.0);
-  // Discrete evolution operator. For the SDIRK-2 method applied to the
-  // scalar linear ODE (d/dt)y = -y, this turns out to be a scalar valued
-  // function depending on the step_size. Since we take equidistant step sizes
-  // in this example, the action of the evolution operator is simply
-  // multiplication by a constant double
+// Discrete evolution operator. For the SDIRK-2 method applied to the
+// scalar linear ODE (d/dt)y = -y, this turns out to be a scalar valued
+// function depending on the step_size. Since we take equidistant step sizes
+// in this example, the action of the evolution operator is simply
+// multiplication by a constant double
   double lambda = 1.0 - 0.5 * sqrt(2.0);
   double evolution_op = 1.0 - step_size *
                                   (1.0 + step_size * std::pow(lambda, 2)) /
@@ -33,8 +33,8 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
 /* SAM_LISTING_END_1 */
 
 void sdirk2ScalarODECvTest() {
-  int nIter = 10;  // total number of iterations
-  unsigned int m;  // number of equidistant steps
+  const int nIter = 10;  // total number of iterations
+  unsigned int m;        // number of equidistant steps
 
   // Evaluating the maximal error (discrete infinity norm) between the approx
   // solutions as given by SDIRK-2 and the exact solution vector computed from

@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-#include <stdexcept>
-#include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCholesky>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCholesky>
+#include <memory>
+#include <stdexcept>
+#include <vector>
 
 namespace CoupledSecondOrderBVP {
 
@@ -33,7 +32,7 @@ class FeSpaceLagrangeO2 : public lf::uscalfe::UniformScalarFESpace<SCALAR> {
             mesh_p, std::make_shared<lf::uscalfe::FeLagrangeO2Tria<SCALAR>>(),
             std::make_shared<lf::uscalfe::FeLagrangeO2Quad<SCALAR>>(),
             std::make_shared<lf::uscalfe::FeLagrangeO2Segment<SCALAR>>(),
-            std::make_shared<lf::uscalfe::FeLagrangePoint<SCALAR>>(2)) {}
+            std::make_shared<lf::fe::FePoint<SCALAR>>(2)) {}
   ~FeSpaceLagrangeO2() override = default;
 };  // FeSpaceLagrangeO2
 
@@ -98,10 +97,9 @@ Eigen::VectorXd solveCoupledBVP(
                       &dofh](unsigned int idx) -> bool {
     if (dofh.Entity(idx).RefEl() == lf::base::RefElType::kPoint) {
       return nodes_bd_flags(dofh.Entity(idx));
-      
+
     } else {
       return edges_bd_flags(dofh.Entity(idx));
-      
     }
   };
 
@@ -166,7 +164,7 @@ Eigen::VectorXd solveCoupledBVP(
       phi(dof_idx[0]) = 0.0;
     }
   }
- 
+
   /* V : Assemble the full linear system matrix and right hand side vector */
   //                        _        _
   //       L (u  p)^T  :=  |  A0    M | (u  p)^T  = (f 0)^T           (*)

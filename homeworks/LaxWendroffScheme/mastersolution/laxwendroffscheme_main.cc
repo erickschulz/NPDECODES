@@ -6,10 +6,9 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
 #include <fstream>
 #include <iostream>
-
-#include <Eigen/Core>
 
 #include "laxwendroffscheme.h"
 
@@ -35,7 +34,8 @@ int main() {
   file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/convergence.csv" << std::endl;
 
-  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR "/plot.py " CURRENT_BINARY_DIR
+              "/convergence.csv " CURRENT_BINARY_DIR "/convergence.eps");
 
   return 0;
 }

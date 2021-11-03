@@ -21,13 +21,13 @@ int main() {
 
   // No linear reconstruction: for testing purposes
   auto zeroslope = [](double a, double b, double c) { return 0.0; };
-  
+
   // Minmod slope limiter for p.w. linear reconstruction
   // Arguments: mu_{j-1}/h, mu_j/h, mu_{j+1}/h
   auto minmod = [](double a, double b, double c) {
     return std::max(0., std::min(b - a, c - b));
   };
-  
+
   {
     auto evl = [&](double a, double b, double N, double T) -> Eigen::VectorXd {
       return ConsFV::highresevl(a, b, N, box, T, nfn_lf_burger, minmod);

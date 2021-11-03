@@ -9,23 +9,22 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <complex>
-
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
+#include <complex>
 
 namespace NonLinSchroedingerEquation {
 
 /** @brief Abstract interface for non-copyable propagator
  */
 class Propagator {
-public:
+ public:
   Propagator() = default;
   virtual ~Propagator() = default;
   virtual Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const = 0;
 
-private:
+ private:
   Propagator(const Propagator &) = delete;
   Propagator(Propagator &&) = delete;
   Propagator &operator=(const Propagator &) = delete;
@@ -39,7 +38,7 @@ class KineticPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
-public:
+ public:
   /** @brief Computes and caches the data necessary to
    *  perform a kinetic timestep of length tau using
    *  the implicit trapezoidal rule
@@ -57,7 +56,7 @@ public:
    */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   SparseMatrixXcd B_plus_;
   Eigen::SparseLU<SparseMatrixXcd> solver_;
 };
@@ -66,7 +65,7 @@ private:
  *  (i.e. non-linear) part if the NLSE
  */
 class InteractionPropagator : public Propagator {
-public:
+ public:
   /** @brief Computes and caches the data necessary to
    *  perform an interaction timestep of length tau using
    *  the analytic solution
@@ -81,7 +80,7 @@ public:
    */
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   // Componentwise Function that performs a timestep tau
   // when applied to mu.
   std::function<std::complex<double>(std::complex<double>)> phase_multiplier_;
@@ -95,7 +94,7 @@ class SplitStepPropagator : public Propagator {
   using SparseMatrixXcd = Eigen::SparseMatrix<std::complex<double>>;
   using SparseMatrixXd = Eigen::SparseMatrix<double>;
 
-public:
+ public:
   // @brief Forwards the arguments to the constructors of the underlying
   //  propagators KineticPropagator (semi-step) and InteractionPropagator
   //  (full-step).
@@ -114,7 +113,7 @@ public:
   //*
   Eigen::VectorXcd operator()(const Eigen::VectorXcd &mu) const override;
 
-private:
+ private:
   // Kinetic propagator for semi step $\Psi^{0,\frac{\tau}{2}}$
   KineticPropagator kineticPropagator_;
   // Interaction propagator for full step
@@ -122,6 +121,6 @@ private:
 };
 /* SAM_LISTING_END_3 */
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation
 
-#endif // PROPAGATOR_H_
+#endif  // PROPAGATOR_H_

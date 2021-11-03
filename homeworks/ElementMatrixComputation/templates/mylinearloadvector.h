@@ -9,16 +9,16 @@
 #ifndef MYLINEARLOADVECTOR_H_
 #define MYLINEARLOADVECTOR_H_
 
-#include <functional>
-#include <utility>
+#include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
-#include <lf/uscalfe/uscalfe.h>
+#include <functional>
+#include <utility>
 
 namespace ElementMatrixComputation {
 
 class MyLinearLoadVector {
-public:
+ public:
   /** @brief Constructor storing the right hand side function */
   explicit MyLinearLoadVector(std::function<double(const Eigen::Vector2d &)> f)
       : f_(std::move(f)) {}
@@ -36,12 +36,12 @@ public:
    */
   Eigen::Vector4d Eval(const lf::mesh::Entity &cell);
 
-private:
+ private:
   /** `f_(x)` where `x` is a 2D vector that provides the evaluation of the
    * source function */
   std::function<double(const Eigen::Vector2d &)> f_;
 };
 
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation
 
-#endif // MYLINEARLOADVECTOR_H_
+#endif  // MYLINEARLOADVECTOR_H_

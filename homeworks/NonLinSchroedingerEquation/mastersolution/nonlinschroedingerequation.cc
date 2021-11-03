@@ -8,13 +8,12 @@
 
 #include "nonlinschroedingerequation.h"
 
-#include <cmath>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
+#include <cmath>
 
 namespace NonLinSchroedingerEquation {
 
@@ -46,4 +45,4 @@ double InteractionEnergy(const Eigen::VectorXcd &mu,
 }
 /* SAM_LISTING_END_2 */
 
-} // namespace NonLinSchroedingerEquation
+}  // namespace NonLinSchroedingerEquation

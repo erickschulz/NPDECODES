@@ -11,7 +11,7 @@
 namespace SymplecticTimesteppingWaves {
 
 /* SAM_LISTING_BEGIN_1 */
-void sympTimestep(double tau, Eigen::Vector2d& pq_j) {
+void sympTimestep(double tau, Eigen::Vector2d &pq_j) {
   // Coefficients of the method
   Eigen::VectorXd a(3);
   a << 2. / 3., -2. / 3., 1.;
@@ -52,12 +52,12 @@ void sympTimesteppingODETest() {
     approx_sol = sympTimesteppingHarmonicOscillatorODE(m);
     // Computing the error in the maximum norm
     errors[k] = std::abs(sin(2.0 * M_PI) - approx_sol[0]) +
-	 			std::abs(cos(2.0 * M_PI) - approx_sol[1]);
+                std::abs(cos(2.0 * M_PI) - approx_sol[1]);
   }
   // Computing rates of convergence
   double rates[nIter - 1];
   double avg_rate = 0.0;
-    
+
   for (int k = 0; k < nIter - 1; k++) {
     rates[k] = log2(errors[k] / errors[k + 1]);
     avg_rate += rates[k];
@@ -67,29 +67,29 @@ void sympTimesteppingODETest() {
   // Printing results
   std::cout << "\n" << std::endl;
   std::cout << "*********************************************************"
-	      	<< std::endl;
+            << std::endl;
   std::cout << "     Convergence of Symplectic Time Stepping Method      "
-	        << std::endl;
+            << std::endl;
   std::cout << "*********************************************************"
-	        << std::endl;
+            << std::endl;
   std::cout << "--------------------- RESULTS ---------------------------"
-   	        << std::endl;
+            << std::endl;
   std::cout << "Iteration"
-   	        << "\t| Nsteps"
-	        << "\t| error"
-	        << "\t\t| rates" << std::endl;
+            << "\t| Nsteps"
+            << "\t| error"
+            << "\t\t| rates" << std::endl;
   std::cout << "---------------------------------------------------------"
-	        << std::endl;
+            << std::endl;
   for (int k = 0; k < nIter; k++) {
     std::cout << k << "\t"
-		      << "\t|" << 10 * std::pow(2, k) << "\t\t|" << errors[k];
+              << "\t|" << 10 * std::pow(2, k) << "\t\t|" << errors[k];
     if (k > 0) {
-	  std::cout << "\t|" << rates[k - 1];
+      std::cout << "\t|" << rates[k - 1];
     }
     std::cout << "\n";
   }
   std::cout << "---------------------------------------------------------"
-	        << std::endl;
+            << std::endl;
   std::cout << "Average rate of convergence: " << avg_rate << "\n" << std::endl;
 }
 

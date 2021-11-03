@@ -6,17 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
+#include "../upwindquadrature.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 
-#include "../upwindquadrature.h"
+#include <Eigen/Core>
+#include <memory>
+
+#include "../../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
 
 namespace UpwindQuadrature::test {
 
@@ -63,11 +63,10 @@ TEST(UpwindQuadrature, opposite_velocity_direction_3) {
 }
 
 TEST(UpwindQuadrature, initialize_masses) {
-
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+  lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
   builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
       .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
       .setNumXCells(2)
@@ -102,7 +101,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_1) {
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+  lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
   builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
       .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
       .setNumXCells(2)
@@ -117,7 +116,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_1) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_0 = *(mesh_p->EntityByIndex(0, 0));
@@ -140,7 +139,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_2) {
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+  lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
   builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
       .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
       .setNumXCells(2)
@@ -155,7 +154,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_2) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_1 = *(mesh_p->EntityByIndex(0, 1));
@@ -174,7 +173,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_3) {
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+  lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
   builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
       .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
       .setNumXCells(2)
@@ -189,7 +188,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_3) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_1 = *(mesh_p->EntityByIndex(0, 1));
@@ -205,4 +204,4 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_3) {
   EXPECT_NEAR(upwind_eval.row(2).norm(), 0.0, 1E-14);
 }
 
-} // namespace UpwindQuadrature::test
+}  // namespace UpwindQuadrature::test

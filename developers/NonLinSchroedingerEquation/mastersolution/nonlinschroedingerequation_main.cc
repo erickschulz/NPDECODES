@@ -6,6 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <lf/assemble/assemble.h>
+#include <lf/fe/fe.h>
+#include <lf/io/io.h>
+#include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
 #include <cmath>
 #include <complex>
 #include <cstdlib>
@@ -14,13 +21,6 @@
 #include <memory>
 #include <utility>
 
-#include <Eigen/Core>
-
-#include <lf/assemble/assemble.h>
-#include <lf/io/io.h>
-#include <lf/mesh/hybrid2d/hybrid2d.h>
-#include <lf/uscalfe/uscalfe.h>
-
 #include "nonlinschroedingerequation.h"
 #include "propagator.h"
 
@@ -28,8 +28,8 @@ int main() {
   /* SAM_LISTING_BEGIN_9 */
   // Load mesh and initalize FE space and DOF handler
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  const lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
-                                  "/../meshes/square_64.msh");
+  const lf::io::GmshReader reader(
+      std::move(mesh_factory), CURRENT_SOURCE_DIR "/../meshes/square_64.msh");
   auto mesh_p = reader.mesh();
   auto fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
@@ -61,7 +61,7 @@ int main() {
     return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1));
   };
   lf::mesh::utils::MeshFunctionGlobal mf_u0{u0};
-  Eigen::VectorXcd mu = lf::uscalfe::NodalProjection(*fe_space, mf_u0);
+  Eigen::VectorXcd mu = lf::fe::NodalProjection(*fe_space, mf_u0);
 #else
   //====================
   // Your code here
@@ -138,7 +138,7 @@ int main() {
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.vtk" << std::endl;
   lf::io::VtkWriter vtk_writer(mesh_p, "solution.vtk");
   Eigen::VectorXd mu_abs2 = mu.cwiseAbs2();
-  lf::uscalfe::MeshFunctionFE mu_abs2_mf(fe_space, mu_abs2);
+  lf::fe::MeshFunctionFE mu_abs2_mf(fe_space, mu_abs2);
   vtk_writer.WritePointData("mu_abs2", mu_abs2_mf);
 
   return 0;

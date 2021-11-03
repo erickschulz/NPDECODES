@@ -5,11 +5,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "zienkiewiczzhuestimator.h"
-
 #include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
+
+#include "zienkiewiczzhuestimator.h"
 // Eigen includes
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -30,13 +31,13 @@ int main(int /*argc*/, const char ** /*argv*/) {
   progress_bar progress{std::clog, 70u, "Computing"};
   double progress_pourcentage;
   // Tools and data
-  int N_meshes = 4;            // num. of meshes
-  Eigen::VectorXd approx_sol;  // basis ceoff expansion of scalar approx sol
-  Eigen::VectorXd approx_grad; // basis ceoff expansion of approx grad
-  Eigen::VectorXd L2errors(N_meshes);    // L2 errors of scalar approx sol
-  Eigen::VectorXd H1errors(N_meshes);    // H1 errors of scalar approx sol
-  Eigen::VectorXd errors_grad(N_meshes); // deviation of grad (delta error)
-  Eigen::VectorXd errors_diff(N_meshes); // error difference (epsilon error)
+  int N_meshes = 4;             // num. of meshes
+  Eigen::VectorXd approx_sol;   // basis ceoff expansion of scalar approx sol
+  Eigen::VectorXd approx_grad;  // basis ceoff expansion of approx grad
+  Eigen::VectorXd L2errors(N_meshes);     // L2 errors of scalar approx sol
+  Eigen::VectorXd H1errors(N_meshes);     // H1 errors of scalar approx sol
+  Eigen::VectorXd errors_grad(N_meshes);  // deviation of grad (delta error)
+  Eigen::VectorXd errors_diff(N_meshes);  // error difference (epsilon error)
   Eigen::VectorXd mesh_sizes(N_meshes);
   Eigen::VectorXd interpolated_uExact;
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p;
@@ -54,13 +55,13 @@ int main(int /*argc*/, const char ** /*argv*/) {
   };
   lf::mesh::utils::MeshFunctionGlobal mf_grad_uExact{grad_uExact};
 
-  for (int i = 0; i < N_meshes; i++) { // for each mesh
+  for (int i = 0; i < N_meshes; i++) {  // for each mesh
     std::string idx_str = std::to_string(i);
     // Load mesh into a Lehrfem++ object
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-    const lf::io::GmshReader reader(std::move(mesh_factory),
-                                    CURRENT_SOURCE_DIR "/../meshes/unitsquare" +
-                                        idx_str + ".msh");
+    const lf::io::GmshReader reader(
+        std::move(mesh_factory),
+        CURRENT_SOURCE_DIR "/../meshes/unitsquare" + idx_str + ".msh");
     mesh_p = reader.mesh();
     mesh_sizes[i] = getMeshSize(mesh_p);
     fe_space_p =
@@ -80,12 +81,12 @@ int main(int /*argc*/, const char ** /*argv*/) {
     // Solve Poisson BVP with essential BCs
     approx_sol = solveBVP(fe_space_p);
     // Compute L2 and H1 errors
-    auto mf_approx_sol = lf::uscalfe::MeshFunctionFE(fe_space_p, approx_sol);
-    L2errors[i] = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+    auto mf_approx_sol = lf::fe::MeshFunctionFE(fe_space_p, approx_sol);
+    L2errors[i] = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_uExact - mf_approx_sol), 2));
     auto mf_approx_grad_sol =
-        lf::uscalfe::MeshFunctionGradFE(fe_space_p, approx_sol);
-    H1errors[i] = std::sqrt(lf::uscalfe::IntegrateMeshFunction(
+        lf::fe::MeshFunctionGradFE(fe_space_p, approx_sol);
+    H1errors[i] = std::sqrt(lf::fe::IntegrateMeshFunction(
         *mesh_p, lf::uscalfe::squaredNorm(mf_grad_uExact - mf_approx_grad_sol),
         2));
 
@@ -266,4 +267,4 @@ int main(int /*argc*/, const char ** /*argv*/) {
             << std::endl;
   std::cout << ">> ZienkiewiczZhuEstimator_solution.vtk\n" << std::endl;
 
-} // main
+}  // main

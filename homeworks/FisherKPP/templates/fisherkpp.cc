@@ -16,7 +16,6 @@ namespace FisherKPP {
 template <typename DIFF_COEFF>
 std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh, DIFF_COEFF &&c) {
-
   std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>> A_M;
   //====================
   // Your code for matrix assembly goes here
@@ -34,7 +33,7 @@ StrangSplit::StrangSplit(
     : fe_space_(fe_space), T_(T), m_(m), lambda_(lambda) {
   const lf::assemble::DofHandler &dofh{fe_space_->LocGlobMap()};
   //====================
-  // Your code goes here: initialization of data members 
+  // Your code goes here: initialization of data members
   //====================
 }
 /* SAM_LISTING_END_2 */

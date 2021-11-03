@@ -58,20 +58,20 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
   switch (codim) {
     // TODO: task 2-14.q)
 #if SOLUTION
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-  case 2:
-    return 0;
+    case 0:
+      return 0;
+    case 1:
+      return 1;
+    case 2:
+      return 0;
 #else
 //====================
 // Your code goes here
 //====================
 #endif
-  default:
-    LF_VERIFY_MSG(false, "Codimension out of range for triangle")
-    return 0;
+    default:
+      LF_VERIFY_MSG(false, "Codimension out of range for triangle")
+      return 0;
   }
 }
 
@@ -80,25 +80,26 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
   switch (codim) {
     // TODO: task 2-14.q)
 #if SOLUTION
-  case 0:
-    LF_VERIFY_MSG((0 == subidx), "Index of cell is out of range for triangle");
-    return 0;
-  case 1:
-    LF_VERIFY_MSG((0 <= subidx && subidx < 3),
-                  "Index of edge is out of range for triangle");
-    return 1;
-  case 2:
-    LF_VERIFY_MSG((0 <= subidx && subidx < 3),
-                  "Index of vertex is out of range for triangle");
-    return 0;
+    case 0:
+      LF_VERIFY_MSG((0 == subidx),
+                    "Index of cell is out of range for triangle");
+      return 0;
+    case 1:
+      LF_VERIFY_MSG((0 <= subidx && subidx < 3),
+                    "Index of edge is out of range for triangle");
+      return 1;
+    case 2:
+      LF_VERIFY_MSG((0 <= subidx && subidx < 3),
+                    "Index of vertex is out of range for triangle");
+      return 0;
 #else
 //====================
 // Your code goes here
 //====================
 #endif
-  default:
-    LF_VERIFY_MSG(false, "Codimension out of range for triangle")
-    return 0;
+    default:
+      LF_VERIFY_MSG(false, "Codimension out of range for triangle")
+      return 0;
   }
 }
 /* SAM_LISTING_END_3 */
@@ -202,4 +203,4 @@ CRReferenceFiniteElement::NodalValuesToDofs(
 }
 /* SAM_LISTING_END_7 */
 
-} // namespace NonConformingCrouzeixRaviartFiniteElements
+}  // namespace NonConformingCrouzeixRaviartFiniteElements

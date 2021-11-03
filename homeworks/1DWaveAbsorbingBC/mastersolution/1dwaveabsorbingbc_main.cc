@@ -6,13 +6,12 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "1dwaveabsorbingbc.h"
-
+#include <Eigen/Core>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "1dwaveabsorbingbc.h"
 
 using namespace WaveAbsorbingBC1D;
 
@@ -20,7 +19,7 @@ const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                        Eigen::DontAlignCols, ", ", "\n");
 
 int main() {
-/* SAM_LISTING_BEGIN_1 */
+  /* SAM_LISTING_BEGIN_1 */
   double c = 1.0;
   double T = 7.0;
   unsigned int N = 100;
@@ -38,15 +37,16 @@ int main() {
   solution_file << tR.format(CSVFormat) << std::endl;
   solution_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/solution.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
-/* SAM_LISTING_END_1 */
+  std::system("python3 " CURRENT_SOURCE_DIR "/viswave.py " CURRENT_BINARY_DIR
+              "/solution.csv " CURRENT_BINARY_DIR "/solution.eps");
+  /* SAM_LISTING_END_1 */
 
   std::pair<Eigen::VectorXd, Eigen::VectorXd> energies =
       computeEnergies(R, c, T / m);
   Eigen::VectorXd E_pot = energies.first;
   Eigen::VectorXd E_kin = energies.second;
 
-/* SAM_LISTING_BEGIN_2 */
+  /* SAM_LISTING_BEGIN_2 */
   std::ofstream energies_file;
   energies_file.open("energies.csv");
   energies_file << t.transpose().format(CSVFormat) << std::endl
@@ -54,7 +54,9 @@ int main() {
                 << E_kin.transpose().format(CSVFormat) << std::endl;
   energies_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/energies.csv" << std::endl;
-  std::system("python3 " CURRENT_SOURCE_DIR "/visenergies.py " CURRENT_BINARY_DIR "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/visenergies.py " CURRENT_BINARY_DIR
+              "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
 /* SAM_LISTING_END_2 */
 
   return 0;

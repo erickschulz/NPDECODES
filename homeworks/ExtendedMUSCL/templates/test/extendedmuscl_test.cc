@@ -6,13 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Core>
+#include "../extendedmuscl.h"
 
 #include <gtest/gtest.h>
 
-#include "../extendedmuscl.h"
+#include <Eigen/Core>
+#include <cmath>
+
 #include "../slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL::test {
@@ -27,7 +27,7 @@ TEST(ExtendedMUSCL, logGodunovFlux) {
   w << 4.63, 3.89, 1.81, 4.80, 2.05, 1.81, 0.63, 4.08, 0.40, 0.1, 0.3, 0.5, 1.5;
 
   // my solution
-  Eigen::VectorXd F_GD = v.binaryExpr(w, &logGodunovFlux);
+  Eigen::VectorXd F_GD = v.binaryExpr(w, std::ref(logGodunovFlux));
 
   // reference
   Eigen::VectorXd F_GD_ref(13);
@@ -73,7 +73,7 @@ TEST(ExtendedMUSCL, slopelimfluxdiffper) {
   auto central_slope = [](double mu_left, double mu_center, double mu_right) {
     return 0.5 * (mu_right - mu_left);
   };
-  auto f = [](double u) { return 0.5 * u * u; }; // flux from Burger's equation
+  auto f = [](double u) { return 0.5 * u * u; };  // flux from Burger's equation
   auto central_flux = [&f](double v, double w) { return 0.5 * (f(v) + f(w)); };
   auto u = [](double x) { return std::sin(2.0 * PI * x) + 2.0; };
   double h = 1.0 / n;
@@ -111,8 +111,7 @@ TEST(ExtendedMUSCL, sspEvolop) {
 
   // my solution
   Eigen::Vector3d y = y0;
-  for (int i = 0; i < n; ++i)
-    y = sspEvolop(f, y, tau);
+  for (int i = 0; i < n; ++i) y = sspEvolop(f, y, tau);
 
   // reference
   Eigen::MatrixXd expTA(3, 3);
@@ -149,4 +148,4 @@ TEST(ExtendedMUSCL, solveClaw) {
   EXPECT_NEAR(0.0, error, tol);
 }
 
-} // namespace ExtendedMUSCL::test
+}  // namespace ExtendedMUSCL::test

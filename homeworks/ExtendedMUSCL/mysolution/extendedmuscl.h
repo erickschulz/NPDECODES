@@ -9,15 +9,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "slopelimfluxdiff.h"
-
+#include <Eigen/Core>
 #include <cassert>
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <tuple>
+#include <utility>
+#include <vector>
 
-#include <Eigen/Core>
+#include "slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL {
 
@@ -85,8 +87,8 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Approximate dual cell averages at t=0
   Eigen::VectorXd mu = x.unaryExpr(u0);
 
-  double alpha = mu.minCoeff(); // lower bound for initial data
-  double beta = mu.maxCoeff();  // upper bound for initial data
+  double alpha = mu.minCoeff();  // lower bound for initial data
+  double beta = mu.maxCoeff();   // upper bound for initial data
   assert(alpha > 0.0 && beta > 0.0);
 
   //====================
@@ -160,6 +162,6 @@ void studyCvgMUSCLSolution(U0_FUNCTOR &&u0, double T) {
 }
 /* SAM_LISTING_END_6 */
 
-} // namespace ExtendedMUSCL
+}  // namespace ExtendedMUSCL
 
-#endif // EXTENDEDMUSCL_H_
+#endif  // EXTENDEDMUSCL_H_

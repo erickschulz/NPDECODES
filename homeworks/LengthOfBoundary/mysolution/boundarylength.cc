@@ -13,7 +13,6 @@
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 
-
 namespace LengthOfBoundary {
 
 /* SAM_LISTING_BEGIN_1 */

@@ -41,8 +41,8 @@ Eigen::SparseMatrix<double> MatrixAssembler::Assemble(TriaMesh2D const &mesh) {
   return A;
 }
 
-Eigen::SparseMatrix<double>
-SlowMatrixAssembler::Assemble(TriaMesh2D const &mesh) {
+Eigen::SparseMatrix<double> SlowMatrixAssembler::Assemble(
+    TriaMesh2D const &mesh) {
   // Get dimensions of the mesh
   int num_vertices = mesh.Coordinates.rows();
   int num_cells = mesh.Elements.rows();
@@ -77,9 +77,8 @@ SlowMatrixAssembler::Assemble(TriaMesh2D const &mesh) {
 }
 
 /* Cell oriented assembly function, not using an auxiliary object */
-Eigen::SparseMatrix<double>
-assembleGalMatLFE(const TriaMesh2D &Mesh,
-                  const LocalMatrixHandle_t getElementMatrix) {
+Eigen::SparseMatrix<double> assembleGalMatLFE(
+    const TriaMesh2D &Mesh, const LocalMatrixHandle_t getElementMatrix) {
   // Fetch the number of vertices
   int N = Mesh.Coordinates.rows();
   // Fetch the number of elements/cells, see \cref{par:trimesh2Ddata}
@@ -100,7 +99,7 @@ assembleGalMatLFE(const TriaMesh2D &Mesh,
     // Add local contribution to Galerkin matrix
     for (int j = 0; j < 3; j++)
       for (int k = 0; k < 3; k++)
-        A.coeffRef(dofhk(j), dofhk(k)) += Ak(j, k); // \Label[line]{asgl:1}
+        A.coeffRef(dofhk(j), dofhk(k)) += Ak(j, k);  // \Label[line]{asgl:1}
   }
   // Convert into CRS format, see \ncseref{sec:eigensparse}.
   A.makeCompressed();

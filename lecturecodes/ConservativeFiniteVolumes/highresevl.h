@@ -30,7 +30,7 @@ namespace ConsFV {
 template <typename FunctionU0, typename FunctionF, typename FnSlopes>
 Eigen::VectorXd highresevl(double a, double b, unsigned N, FunctionU0 &&u0,
                            double T, FunctionF &&F, FnSlopes &&slopes) {
-  double h = (b - a) / N; // mesh width
+  double h = (b - a) / N;  // mesh width
   // positions of grid points
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(N, a + 0.5 * h, b - 0.5 * h);
   // vector of initial cell averages (column vector) from sampling \Blue{$u_0$}
@@ -44,7 +44,7 @@ Eigen::VectorXd highresevl(double a, double b, unsigned N, FunctionU0 &&u0,
 
   // timestepping by explicit adaptive Runge-Kutta single-step
   // method of order 5. Adaptivity control according to \ncseref{sec:ssctrl}
-  double abstol = 1E-8, reltol = 1E-6; // integration control parameters
+  double abstol = 1E-8, reltol = 1E-6;  // integration control parameters
   // std::vector<double> t;    Temporal adaptive integration mesh
   // std::vector<Eigen::VectorXd> MU; Returns states \Blue{$\vec{\mubf}^{(k)}$}
   auto [t, MU] = ode45(odefun, 0, T, mu0, abstol, reltol);
@@ -52,6 +52,6 @@ Eigen::VectorXd highresevl(double a, double b, unsigned N, FunctionU0 &&u0,
   return MU.back();
 }
 /* SAM_LISTING_END_1 */
-} // namespace ConsFV
+}  // namespace ConsFV
 
 #endif

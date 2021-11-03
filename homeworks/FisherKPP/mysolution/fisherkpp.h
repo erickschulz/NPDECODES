@@ -5,18 +5,17 @@
  *  @copyright Developed at SAM, ETH Zurich
  */
 
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/Sparse>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <memory>
+#include <utility>
 
 namespace FisherKPP {
 
@@ -28,8 +27,7 @@ std::pair<Eigen::SparseMatrix<double>, Eigen::SparseMatrix<double>>
 assembleGalerkinMatrices(const lf::assemble::DofHandler &dofh, DIFF_COEFF &&c);
 
 class StrangSplit {
-
-public:
+ public:
   // Disabled constructors
   StrangSplit() = delete;
   StrangSplit(const StrangSplit &) = delete;
@@ -79,7 +77,7 @@ public:
   /* SAM_LISTING_END_2 */
 
   /* SAM_LISTING_BEGIN_3 */
-private:
+ private:
   // Finite Element Space
   const std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space_;
   // Final Time

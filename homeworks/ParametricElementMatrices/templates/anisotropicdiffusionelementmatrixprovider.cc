@@ -31,7 +31,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
     /* TRIANGULAR CELL */
     case lf::base::RefEl::kTria(): {
       /* SAM_LISTING_BEGIN_1 */
-      
+
       // ===================
       // Your code goes here
       // ===================
@@ -51,7 +51,7 @@ Eigen::MatrixXd AnisotropicDiffusionElementMatrixProvider::Eval(
       break;
       /* SAM_LISTING_END_2 */
     }
-    
+
     /* ERROR CASE WHERE THE CELL IS NEITHER A TRIANGLE NOR A QUADRILATERAL */
     default:
       LF_VERIFY_MSG(false, "received neither triangle nor quadrilateral");

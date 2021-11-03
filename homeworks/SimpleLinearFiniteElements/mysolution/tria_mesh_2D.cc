@@ -1,14 +1,13 @@
+#include "tria_mesh_2D.h"
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
 
-#include "tria_mesh_2D.h"
+namespace SimpleLinearFiniteElements {
 
-namespace SimpleLinearFiniteElements
-{
-
-template<typename Derived>
-std::istream& operator>> (std::istream& is, Eigen::MatrixBase<Derived>& matrix) {
+template <typename Derived>
+std::istream &operator>>(std::istream &is, Eigen::MatrixBase<Derived> &matrix) {
   for (int i = 0; i < matrix.rows(); ++i) {
     for (int j = 0; j < matrix.cols(); ++j) {
       is >> matrix(i, j);
@@ -31,18 +30,20 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
     file >> n_vertices >> vertices_label;
     if (vertices_label != "Vertices") {
       file.close();
-      throw std::runtime_error("Keyword 'Vertices' not found. Wrong file format.");
+      throw std::runtime_error(
+          "Keyword 'Vertices' not found. Wrong file format.");
     }
     vertices = Eigen::MatrixXd(n_vertices, 2);
     file >> vertices;
-    
+
     // read elements
     int n_elements;
     std::string elements_label;
     file >> n_elements >> elements_label;
     if (elements_label != "Elements") {
       file.close();
-      throw std::runtime_error("Keyword 'Elements' not found. Wrong file format.");
+      throw std::runtime_error(
+          "Keyword 'Elements' not found. Wrong file format.");
     }
     elements = Eigen::MatrixXi(n_elements, 3);
     file >> elements;
@@ -53,10 +54,10 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
   }
 }
 
-Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
+Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[](int i) const {
   Eigen::Matrix<double, 2, 3> triangle;
   for (int k = 0; k < 3; ++k) {
-    triangle.col(k) = vertices.row(elements(i,k));
+    triangle.col(k) = vertices.row(elements(i, k));
   }
   return triangle;
 }
@@ -67,8 +68,8 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[] (int i) const {
  * @param filename Output file name of the new 3D mesh
  * @param z vector of z values, in correct order
  */
-void TriaMesh2D::SaveMesh3D(std::string filename, const Eigen::VectorXd &z) const {
-
+void TriaMesh2D::SaveMesh3D(std::string filename,
+                            const Eigen::VectorXd &z) const {
   int n_vertices = vertices.rows();
   int n_elements = elements.rows();
 
@@ -90,4 +91,4 @@ void TriaMesh2D::SaveMesh3D(std::string filename, const Eigen::VectorXd &z) cons
   }
 }
 
-} // namespace SimpleLinearFiniteElements
+}  // namespace SimpleLinearFiniteElements

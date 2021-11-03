@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <iostream>
+
 #include "clempiricflux.h"
 #include "solvecauchyproblem.h"
 #include "uniformcubicspline.h"
-
-#include <iostream>
 
 using namespace CLEmpiricFlux;
 

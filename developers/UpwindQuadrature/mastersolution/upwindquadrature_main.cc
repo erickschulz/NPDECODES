@@ -5,25 +5,25 @@
  * @date June 2020
  * @copyright Developed at SAM, ETH Zurich
  */
-#include <cmath>
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
+
+#include "../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
 #include "upwindquadrature.h"
 
 int main() {
-
   // PARAMETERS
   // mesh specification (number of cells in both sides of the tensor-product
   // triangular mesh)
@@ -49,7 +49,7 @@ int main() {
   // construct a triangular tensor product mesh on the unit square
   std::unique_ptr<lf::mesh::MeshFactory> mesh_factory_ptr =
       std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-  lf::mesh::hybrid2d::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
+  lf::mesh::utils::TPTriagMeshBuilder builder(std::move(mesh_factory_ptr));
   builder.setBottomLeftCorner(Eigen::Vector2d{0.0, 0.0})
       .setTopRightCorner(Eigen::Vector2d{1.0, 1.0})
       .setNumXCells(M)
@@ -64,8 +64,8 @@ int main() {
 
   // PREPARING DATA TO IMPOSE DIRICHLET CONDITIONS
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::uscalfe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p = fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+  const lf::fe::ScalarReferenceFiniteElement<double> *rsf_edge_p =
+      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   // Create a dataset of boolean flags indicating edges on the boundary of the
   // mesh
@@ -73,8 +73,8 @@ int main() {
 
   // Fetch flags and values for degrees of freedom located on Dirichlet
   // boundary.
-  auto ess_bdc_flags_values{lf::uscalfe::InitEssentialConditionFromFunction(
-      dofh, *rsf_edge_p, bd_flags, mf_g)};
+  auto ess_bdc_flags_values{
+      lf::fe::InitEssentialConditionFromFunction(*fe_space, bd_flags, mf_g)};
 
   //============================================================================
   // SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (STANDARD: UNSTABLE)
@@ -89,7 +89,7 @@ int main() {
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, laplacian_provider, A);
 
   // Next part corresponding to the convection term:
-  UpwindQuadrature::ConvectionElementMatrixProvider convection_provider(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider convection_provider(v);
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, convection_provider, A);
 
   // RIGHT-HAND SIDE VECTOR
@@ -112,10 +112,10 @@ int main() {
 
   // OUTPUT RESULTS TO VTK FILe
   // construct mesh function representing finite element solution
-  lf::uscalfe::MeshFunctionFE mf_sol(fe_space, sol_vec);
+  lf::fe::MeshFunctionFE mf_sol(fe_space, sol_vec);
   // construct vtk writer
-  lf::io::VtkWriter vtk_writer(mesh_p, CURRENT_BINARY_DIR
-                               "/upwind_quadrature_solution_unstable.vtk");
+  lf::io::VtkWriter vtk_writer(
+      mesh_p, CURRENT_BINARY_DIR "/upwind_quadrature_solution_unstable.vtk");
   // output data
   vtk_writer.WritePointData("upwind_quadrature_solution_unstable", mf_sol);
 
@@ -158,10 +158,10 @@ int main() {
 
   // OUTPUT RESULTS TO VTK FILe
   // construct mesh function representing finite element solution
-  lf::uscalfe::MeshFunctionFE mf_sol_stable(fe_space, sol_vec_stable);
+  lf::fe::MeshFunctionFE mf_sol_stable(fe_space, sol_vec_stable);
   // construct vtk writer
-  lf::io::VtkWriter vtk_writer_stable(mesh_p, CURRENT_BINARY_DIR
-                                      "/upwind_quadrature_solution_stable.vtk");
+  lf::io::VtkWriter vtk_writer_stable(
+      mesh_p, CURRENT_BINARY_DIR "/upwind_quadrature_solution_stable.vtk");
   // output data
   vtk_writer_stable.WritePointData("upwind_quadrature_solution_stable",
                                    mf_sol_stable);

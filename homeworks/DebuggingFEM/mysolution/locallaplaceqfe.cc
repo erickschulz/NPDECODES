@@ -8,12 +8,12 @@
 
 #include "locallaplaceqfe.h"
 
-#include <Eigen/Dense>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Dense>
 
 namespace DebuggingFEM {
 

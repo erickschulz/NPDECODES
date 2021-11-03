@@ -7,11 +7,11 @@
  */
 
 #include "solvecauchyproblem.h"
-#include "uniformcubicspline.h"
-
-#include <cmath>
 
 #include <Eigen/Core>
+#include <cmath>
+
+#include "uniformcubicspline.h"
 
 namespace CLEmpiricFlux {
 
@@ -19,10 +19,10 @@ namespace CLEmpiricFlux {
 Eigen::Vector2d findSupport(const UniformCubicSpline &f,
                             Eigen::Vector2d initsupp, double t) {
   Eigen::Vector2d result;
-  #if SOLUTION
+#if SOLUTION
   Eigen::Vector2d speed = {f.derivative(-1.0), f.derivative(1.0)};
   result = initsupp + t * speed;
-  #else
+#else
   //====================
   // Your code goes here
   //====================
@@ -37,7 +37,7 @@ Eigen::VectorXd semiDiscreteRhs(const Eigen::VectorXd &mu0, double h,
                                 FUNCTOR &&numFlux) {
   int m = mu0.size();
   Eigen::VectorXd mu1(m);
-  #if SOLUTION
+#if SOLUTION
   mu1(0) = -1.0 / h * (numFlux(mu0(0), mu0(1)) - numFlux(mu0(0), mu0(0)));
   for (int j = 1; j < m - 1; ++j) {
     mu1(j) =
@@ -46,7 +46,7 @@ Eigen::VectorXd semiDiscreteRhs(const Eigen::VectorXd &mu0, double h,
   mu1(m - 1) =
       -1.0 / h *
       (numFlux(mu0(m - 1), mu0(m - 1)) - numFlux(mu0(m - 2), mu0(m - 1)));
-  #else
+#else
   //====================
   // Your code goes here
   //====================
@@ -59,13 +59,13 @@ Eigen::VectorXd semiDiscreteRhs(const Eigen::VectorXd &mu0, double h,
 template <typename FUNCTOR>
 Eigen::VectorXd RalstonODESolver(FUNCTOR &&rhs, Eigen::VectorXd mu0, double tau,
                                  int n) {
-  #if SOLUTION
+#if SOLUTION
   for (int i = 0; i < n; ++i) {
     Eigen::VectorXd k1 = rhs(mu0);
     Eigen::VectorXd k2 = rhs(mu0 + tau * 2.0 / 3.0 * k1);
     mu0 = mu0 + 0.25 * tau * (k1 + 3.0 * k2);
   }
-  #else
+#else
   //====================
   // Your code goes here
   //====================
@@ -79,7 +79,7 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T) {
   Eigen::VectorXd muT(mu0.size());
-  #if SOLUTION
+#if SOLUTION
   double tau = std::min(h / std::abs(f.derivative(-1.0)),
                         h / std::abs(f.derivative(1.0)));
   double n = (int)std::floor(T / tau);
@@ -88,7 +88,7 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
     return semiDiscreteRhs(mu, h, godunovFlux);
   };
   muT = RalstonODESolver(rhs, mu0, tau, n);
-  #else
+#else
   //====================
   // Your code goes here
   //====================

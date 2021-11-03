@@ -3,15 +3,14 @@
  the unit square and solving a simple reaction diffusion system using LehrFEM++
  */
 
-#include <cmath>
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/mesh/mesh.h>
 #include <lf/refinement/refinement.h>
+
+#include <Eigen/Core>
+#include <cmath>
+#include <iostream>
+#include <memory>
 
 #include "linfereactdiff.h"
 

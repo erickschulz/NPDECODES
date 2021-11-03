@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../1dwaveabsorbingbc.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../1dwaveabsorbingbc.h"
 
 namespace WaveAbsorbingBC1D::test {
 

@@ -22,7 +22,7 @@ int main() {
   for (int i = 0; i < N + 1; i++) {
     mesh[i] = i * (1.0 / N);
   }
- 
+
   // Constant and variable parameters
   auto identity = [](double x) { return x; };
   auto const_one = [](double x) { return 1.0; };

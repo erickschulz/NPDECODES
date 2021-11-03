@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "extendedmuscl.h"
-
+#include <Eigen/Core>
 #include <cmath>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "extendedmuscl.h"
 
 using namespace ExtendedMUSCL;
 
@@ -40,8 +39,7 @@ int main() {
   for (int n = 0; n < N; ++n) {
     int steps = (int)(T / tau(n) + 0.5);
     double y = y0;
-    for (int i = 0; i < steps; ++i)
-      y = sspEvolop(f, y, tau(n));
+    for (int i = 0; i < steps; ++i) y = sspEvolop(f, y, tau(n));
     error(n) = std::abs(yT_exact - y);
   }
 
@@ -49,7 +47,7 @@ int main() {
   Eigen::MatrixXd table(3, N);
   table.row(0) = tau;
   table.row(1) = error;
-  table.row(2) = error.unaryExpr<double (*)(double)>(&std::log2);
+  table.row(2) = error.unaryExpr([](double x) { return std::log2(x); });
   Eigen::IOFormat tableFormat(2, 0, " ", "\n", " ", " ", " ", " ");
   std::cout << "tau \t error \t log_2(error)" << std::endl;
   std::cout << table.transpose().format(tableFormat) << std::endl;

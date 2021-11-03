@@ -15,8 +15,7 @@ namespace CLEmpiricFlux {
 
 class UniformCubicSpline {
  public:
-  UniformCubicSpline(double a, double b, Eigen::VectorXd f,
-                     Eigen::VectorXd M);
+  UniformCubicSpline(double a, double b, Eigen::VectorXd f, Eigen::VectorXd M);
   double operator()(double u) const;  // Point evaluation operator
   double derivative(double u) const;  // Evaluation of derivative
  private:

@@ -73,4 +73,4 @@ Eigen::SparseMatrix<double> computeGalerkinMatrixTR(int M, double c);
 
 }  // namespace MaximumPrinciple
 
-#endif // NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_
+#endif  // NPDECODES_MAXIMUMPRINCIPLE_MAXIMUMPRINCIPLE_H_

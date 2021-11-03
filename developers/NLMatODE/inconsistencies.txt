@@ -1,0 +1,7 @@
+(6-5.a) Mention that the function to be implemented is found in `nlmatode.cc`
+(6-5.a 2.) default for rtol and atol are 1e-6 and 1e-8 respectively. Not 10e-6 and 10e-8
+(6-5.c) Mention that the function must be implemented in `nlmatode.cc`
+(6-5.c) Warning sign references NumCSE -> Change to NumPDE?
+(6-5.d) Change function signature: `cvgDiscreteGradientMethod(void)` -> `cvgDiscreteGradientMethod()`
+(6-5.d) Add hint to use function `polyfit` from file `polyfit.h`
+(6-5.d solution) Typo on the right of the example table: fector -> factor

@@ -6,19 +6,16 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include "../avgvalboundary.h"
 
 #include <gtest/gtest.h>
-
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../avgvalboundary.h"
+#include <Eigen/Core>
+#include <memory>
 
 namespace AvgValBoundary::test {
 
@@ -56,6 +53,6 @@ TEST(AvgValBoundary, TestBoundaryFunctional) {
   Eigen::VectorXd mu = solveTestProblem(dofh);
   // compute boundary functional
   double boundary_functional = compBoundaryFunctional(dofh, mu, const_one);
-  ASSERT_NEAR(boundary_functional,  0.77546, 0.00001);
+  ASSERT_NEAR(boundary_functional, 0.77546, 0.00001);
 }
-} // namespace AvgValBoundary::test
+}  // namespace AvgValBoundary::test

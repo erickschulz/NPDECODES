@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../engquistoshernumericalflux.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../engquistoshernumericalflux.h"
 
 namespace EngquistOsherNumericalFlux::test {
 

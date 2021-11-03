@@ -9,12 +9,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "clempiricflux.h"
-#include "uniformcubicspline.h"
-
+#include <Eigen/Core>
 #include <utility>
 
-#include <Eigen/Core>
+#include "clempiricflux.h"
+#include "uniformcubicspline.h"
 
 namespace CLEmpiricFlux {
 
@@ -45,8 +44,8 @@ template <typename FUNCTOR>
 Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
                                double h, double T) {
   Eigen::VectorXd mu0;
-  const double A = -1.0; // left bound of support
-  const double B = 1.0;  // right bound of support
+  const double A = -1.0;  // left bound of support
+  const double B = 1.0;   // right bound of support
   // Here one could also call findSupport()
   const double AT = std::min(A, A + f.derivative(-1.0) * T);
   const double BT = std::max(B, B + f.derivative(1.0) * T);
@@ -104,6 +103,6 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T);
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux
 
 #endif

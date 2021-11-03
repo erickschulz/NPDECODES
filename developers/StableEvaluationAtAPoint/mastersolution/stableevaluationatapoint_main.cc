@@ -6,44 +6,21 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "stableevaluationatapoint.h"
-
-#include <iostream>
-#include <string>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/mesh_hierarchy.h>
 
+#include <Eigen/Core>
+#include <fstream>
+#include <iostream>
+#include <string>
+
+#include "stableevaluationatapoint.h"
+
 using namespace StableEvaluationAtAPoint;
 
 int main(int /*argc*/, const char ** /*argv*/) {
-
-  /* EXACT SOLUTION AND CHOSEN POINT x INSIDE THE DOMAIN*/
-  auto uExact = [](Eigen::Vector2d x) -> double {
-    Eigen::Vector2d one(1.0, 0.0);
-    return std::log((x + one).norm());
-  };
-  // Fixed evaluation point
-  Eigen::Vector2d x(0.3, 0.4);
-  std::cout << "Exact evaluation at (0.3,0.4) : " << uExact(x) << std::endl;
-
-  /* INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS */
-  int N_meshes = 7; // total number of meshes (coarse + refinements)
-  Eigen::VectorXd mesh_sizes(N_meshes);
-  mesh_sizes.setZero();
-  Eigen::VectorXd dofs(N_meshes);
-  dofs.setZero();
-  Eigen::VectorXd errors_Eval(N_meshes);
-  errors_Eval.setZero();
-  Eigen::VectorXd errors_stabEval(N_meshes);
-  errors_stabEval.setZero();
-  Eigen::VectorXd ux(N_meshes);
-  ux.setZero();
-
   /* LOADING COARSE MESH */
   // Load mesh into a Lehrfem++ object
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
@@ -57,6 +34,23 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Initial dofhandler
   const lf::assemble::DofHandler &dofh = fe_space->LocGlobMap();
   lf::base::size_type N_dofs = dofh.NumDofs();
+
+  // EXACT SOLUTION AND CHOSEN POINT x INSIDE THE DOMAIN
+  // u(x) = log(|x + [1 0]|): harmonic inside the unit square
+  auto u = [](Eigen::Vector2d x) -> double {
+    Eigen::Vector2d one(1.0, 0.0);
+    return std::log((x + one).norm());
+  };
+  // Fixed evaluation point
+  Eigen::Vector2d x(0.3, 0.4);
+
+  // INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS
+  int N_meshes = 8;  // total number of meshes (coarse + refinement)
+  // Array for recording mesh widths
+  Eigen::VectorXd mesh_sizes{Eigen::VectorXd::Zero(N_meshes)};
+  mesh_sizes(0) = getMeshSize(mesh_p);
+  // Dimensions of (full) finite element spaces
+  Eigen::VectorXd dofs{Eigen::VectorXd::Zero(N_meshes)};
   dofs(0) = N_dofs;
   // Printing mesh statistics
   std::cout << "square.msh: "
@@ -84,7 +78,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
 //====================
 #endif
 
-  for (int k = 1; k < N_meshes; k++) { // for each mesh refinement
+  for (int k = 1; k < N_meshes; k++) {  // for each mesh refinement
     // Load finer mesh
     std::string idx = std::to_string(k);
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
