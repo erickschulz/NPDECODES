@@ -9,6 +9,7 @@
 set(SOURCES
   ${DIR}/stableevaluationatapoint_main.cc
   ${DIR}/stableevaluationatapoint.h
+  ${DIR}/stableevaluationatapoint.cc
 )
 
 set(LIBRARIES

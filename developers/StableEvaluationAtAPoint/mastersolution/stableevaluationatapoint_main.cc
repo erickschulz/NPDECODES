@@ -49,9 +49,9 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Load mesh into a Lehrfem++ object
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
-                                 CURRENT_SOURCE_DIR "/../meshes/square.msh");
+                                 CURRENT_SOURCE_DIR "/../meshes/unitsquare4.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
-  mesh_sizes(0) = getMeshSize(mesh_p);
+  mesh_sizes(0) = MeshSize(mesh_p);
   // Finite Element Space
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space =
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
@@ -62,11 +62,11 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Printing mesh statistics
   std::cout << "square.msh: "
             << "N_dofs = " << N_dofs << std::endl;
-
+  std::cout << "square.msh: Mesh Size" << MeshSize(mesh_p) << std::endl;
 // Point evaluation using layer potentials
 // Subproblem (3-11.b)
 #if SOLUTION
-  errors_Eval(0) = pointEval(mesh_p);
+  errors_Eval(0) = PointEval(mesh_p);
 #else
 //====================
 // Your code goes here
@@ -76,8 +76,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Stable point evaluation
 // Subproblem (3-11.h)
 #if SOLUTION
-  Eigen::VectorXd uFE = solveBVP(fe_space, uExact);
-  ux(0) = stab_pointEval(fe_space, uFE, x);
+  Eigen::VectorXd uFE = SolveBVP(fe_space, uExact);
+  ux(0) = StablePointEvaluation(fe_space, uFE, x);
   errors_stabEval(0) = std::abs(uExact(x) - ux(0));
 #else
 //====================
@@ -100,16 +100,16 @@ int main(int /*argc*/, const char ** /*argv*/) {
     lf::base::size_type N_dofs = dofh.NumDofs();
     dofs(k) = N_dofs;
     // Printing mesh statistics
-    mesh_sizes(k) = getMeshSize(mesh_p);
+    mesh_sizes(k) = MeshSize(mesh_p);
     std::cout << "square" + idx + ".msh: "
               << "N_dofs = " << N_dofs << std::endl;
 
     // Point evaluation using layer potentials
-    errors_Eval(k) = pointEval(mesh_p);
+    errors_Eval(k) = PointEval(mesh_p);
 
     // Stable point evaluation
-    Eigen::VectorXd uFE = solveBVP(fe_space, uExact);
-    ux(k) = stab_pointEval(fe_space, uFE, x);
+    Eigen::VectorXd uFE = SolveBVP(fe_space, uExact);
+    ux(k) = StablePointEvaluation(fe_space, uFE, x);
     errors_stabEval(k) = std::abs(uExact(x) - ux(k));
   }
 
