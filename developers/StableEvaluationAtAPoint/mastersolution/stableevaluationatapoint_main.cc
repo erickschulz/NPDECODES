@@ -1,9 +1,9 @@
 /**
- * @ file stableevaluationatapoint_main.cc
- * @ brief NPDE homework StableEvaluationAtAPoint
- * @ author Amélie Loher & Erick Schulz
- * @ date 22.04.20
- * @ copyright Developed at SAM, ETH Zurich
+ * @file stableevaluationatapoint_main.cc
+ * @brief NPDE homework StableEvaluationAtAPoint
+ * @author Amélie Loher & Erick Schulz
+ * @date 22.04.20
+ * @copyright Developed at SAM, ETH Zurich
  */
 
 #include "stableevaluationatapoint.h"
@@ -110,11 +110,31 @@ int main(int /*argc*/, const char ** /*argv*/) {
   const static Eigen::IOFormat CSVFormat(Eigen::StreamPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");
 
+  Eigen::MatrixXd convergence_potential(N_meshes,2);
+  convergence_potential << mesh_sizes, errors_potential;
+
+  Eigen::MatrixXd convergence_stable(N_meshes,3);
+  convergence_stable << mesh_sizes, errors_direct_eval, errors_stable_eval;
+
   std::ofstream file;
-  file.open("errors_Eval.csv");
-  file << rates_potential.format(CSVFormat);
+  file.open("convergence_potential.csv");
+  file << "h, Error u(x) (Potential) \n";
+  file << convergence_potential.format(CSVFormat);
   file.close();
-  std::cout << "Generated " CURRENT_BINARY_DIR "/errors_Eval.csv" << std::endl;
+  std::cout << "Generated " CURRENT_BINARY_DIR "/convergence_potential.csv" << std::endl;
+
+
+  file.open("convergence_stable.csv");
+  file << "h, Error u(x) (Direct), Error u(x) (Stable) \n";
+  file << convergence_stable.format(CSVFormat);
+  file.close();
+  std::cout << "Generated " CURRENT_BINARY_DIR "/convergence_stable.csv" << std::endl;
+
+  // Plot
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_convergence_potential.py " CURRENT_BINARY_DIR);
+  std::system("python3 " CURRENT_SOURCE_DIR
+              "/plot_convergence_stable.py " CURRENT_BINARY_DIR);
 
   return 0;
 }
