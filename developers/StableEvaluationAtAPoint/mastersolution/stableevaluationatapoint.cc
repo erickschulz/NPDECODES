@@ -77,7 +77,7 @@ double PointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 }
 
 double Psi::operator()(Eigen::Vector2d y){
-  const double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  const double c = M_PI / (0.5 * std::sqrt(2) - 1.0);
   const double dist = (y - center_).norm();
 
   if (dist <= 0.25 * std::sqrt(2)) {
@@ -85,12 +85,12 @@ double Psi::operator()(Eigen::Vector2d y){
   } else if (dist >= 0.5) {
     return 1.0;
   } else {
-    return std::pow(std::cos(constant *(dist - 0.5)), 2);
+    return std::pow(std::cos(c *(dist - 0.5)), 2);
   }
 }
 
 Eigen::Vector2d Psi::grad(Eigen::Vector2d y){
-  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
+  double c = M_PI / (0.5 * std::sqrt(2) - 1.0);
   double dist = (y - center_).norm();
 
   if (dist <= 0.25 * std::sqrt(2)) {
@@ -99,8 +99,8 @@ Eigen::Vector2d Psi::grad(Eigen::Vector2d y){
   } else if (dist >= 0.5) {
     return Eigen::Vector2d(0.0,0.0);
   } else {
-    return-2.0 * std::cos(constant * (dist - 0.5)) *
-                 std::sin(constant * (dist - 0.5)) * (constant / dist) *
+    return-2.0 * std::cos(c * (dist - 0.5)) *
+                 std::sin(c * (dist - 0.5)) * (c / dist) *
                  (y - center_);
   }
 }
@@ -178,7 +178,6 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
       val += w * (-u_vals[l]) *
              ( 2.0*(G.grad(zeta.col(l))).dot(psi.grad(zeta.col(l))) +
               G(zeta.col(l)) * psi.lapl(zeta.col(l)));       
-      
     }
   }
 
@@ -220,6 +219,36 @@ double StablePointEvaluation(
 #endif
 
   return res;
+}
+
+double EvaluateFEFunction(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space, const Eigen::VectorXd& uFE,
+                            Eigen::Vector2d global, double tol) {
+  //Extract mesh
+  auto mesh_p = fe_space->Mesh();
+  //wrap coefficient vector into a mesh-function
+  lf::fe::MeshFunctionFE mf (fe_space,uFE);
+
+  for (const lf::mesh::Entity* entity_p : mesh_p->Entities(0)) {
+    LF_ASSERT_MSG(lf::base::RefEl::kTria() == entity_p->RefEl(),
+                  "Function only defined for triangular cells");
+
+    // compute geometric information about the cell
+    const lf::geometry::Geometry* geo_p = entity_p->Geometry();
+    Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
+
+    // transform global coordinates to local coordinates on the cell
+    Eigen::Matrix2d A;
+    A << corners.col(1) - corners.col(0), corners.col(2) - corners.col(0);
+    Eigen::Vector2d b;
+    b << global - corners.col(0);
+    Eigen::Vector2d loc = A.fullPivLu().solve(b);
+
+    // evaluate meshfunction, if local coordinates lie in the reference triangle
+    if (loc(0) >= 0 - tol && loc(1) >= 0 - tol && loc(0) + loc(1) <= 1 + tol) {
+      return mf(*entity_p, loc)[0];
+    }
+  }
+  return 0.0;
 }
 
 } //namespace StableEvaluationAtAPoint

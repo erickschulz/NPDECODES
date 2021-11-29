@@ -267,7 +267,7 @@ double StablePointEvaluation(
 template <typename FUNCTOR>
 Eigen::VectorXd SolveBVP(
     const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
-    FUNCTOR &&u) {
+    FUNCTOR &&g) {
   Eigen::VectorXd discrete_solution;
 
   // TOOLS AND DATA
@@ -276,17 +276,15 @@ Eigen::VectorXd SolveBVP(
   // Obtain local->global index mapping for current finite element space
   const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
   // Dimension of finite element space
-  const lf::uscalfe::size_type N_dofs(dofh.NumDofs());
+  auto  N_dofs = dofh.NumDofs();
   // Obtain specification for shape functions on edges
-  std::shared_ptr<const lf::fe::ScalarReferenceFiniteElement<double>>
-      rsf_edge_p (fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment()) );
+  
+  const auto* rsf_edge_p =fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
 
   // Dirichlet data
-  auto mf_g = lf::mesh::utils::MeshFunctionGlobal(
-      [u](Eigen::Vector2d x) -> double { return u(x); });
+  lf::mesh::utils::MeshFunctionGlobal mf_g {g};
   // Right-hand side source function f
-  auto mf_f = lf::mesh::utils::MeshFunctionGlobal(
-      [](Eigen::Vector2d x) -> double { return 0.0; });
+  lf::mesh::utils::MeshFunctionConstant mf_f {0.0};
 
   // I : ASSEMBLY
   // Matrix in triplet format holding Galerkin matrix, zero initially.
@@ -295,36 +293,22 @@ Eigen::VectorXd SolveBVP(
   Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
   phi.setZero();
 
-  // I.i : Computing volume matrix for negative Laplace operator
-  // Initialize object taking care of local mass (volume) computations.
+  // I.i : Computing Galerkin Matrix
   lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder{};
-  // Invoke assembly on cells (co-dimension = 0 as first argument)
-  // Information about the mesh and the local-to-global map is passed through
-  // a Dofhandler object, argument 'dofh'. This function call adds triplets to
-  // the internal COO-format representation of the sparse matrix A.
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
 
   // I.ii : Computing right-hand side vector
   lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
       elvec_builder(fe_space_p, mf_f);
-  // Invoke assembly on cells (codim == 0)
   AssembleVectorLocally(0, dofh, elvec_builder, phi);
 
-  // I.iii : Imposing essential boundary conditions
-  // Obtain an array of boolean flags for the edges of the mesh, 'true'
-  // indicates that the edge lies on the boundary (codim = 1)
+  // I.iii : Impose essential Boundary conditions
   auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
-  // Inspired by the example in the documentation of
-  // InitEssentialConditionFromFunction()
-  // https://craffael.github.io/lehrfempp/namespacelf_1_1uscalfe.html#a5afbd94919f0382cf3fb200c452797ac
-  // Determine the fixed dofs on the boundary and their values
-  // Alternative: See lecturedemoDirichlet() in
-  // https://github.com/craffael/lehrfempp/blob/master/examples/lecturedemos/lecturedemoassemble.cc
   auto edges_flag_values_Dirichlet{
       lf::fe::InitEssentialConditionFromFunction(*fe_space_p, 
                                                       bd_flags, mf_g)};
   // Eliminate Dirichlet dofs from the linear system
-  lf::assemble::FixFlaggedSolutionCompAlt<double>(
+  lf::assemble::FixFlaggedSolutionComponents<double>(
       [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {
         return edges_flag_values_Dirichlet[gdof_idx];
       },
@@ -335,16 +319,34 @@ Eigen::VectorXd SolveBVP(
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
   // II : SOLVING  THE LINEAR SYSTEM
-  // II.i : Setting up Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_sparse);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
-  // II.ii : Solving
   discrete_solution = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
 
   return discrete_solution;
 }; // solveBVP
+
+/**
+ * @brief Evaluates a Finite Element function at a point specified by its global
+ * coordinates
+ */
+double EvaluateFEFunction(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space, const Eigen::VectorXd& uFE,
+                            Eigen::Vector2d global, double tol = 10E-10);
+
+
+template <typename FUNCTOR>
+std::pair<double,double> ComparePointEval(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space, FUNCTOR &&g, Eigen::Vector2d x){
+  //Compute FE solution:
+  Eigen::VectorXd uFE = SolveBVP(fe_space,g);
+
+  //use the two evaluation methods:
+  double direct_eval = EvaluateFEFunction(fe_space,uFE,x);
+  double stable_eval = StablePointEvaluation(fe_space,uFE,x);
+
+  return {direct_eval, stable_eval};
+}
 
 } /* namespace StableEvaluationAtAPoint */
 
