@@ -14,11 +14,14 @@ set(SOURCES
 
 set(LIBRARIES
   Eigen3::Eigen
+  LF::lf.assemble
   LF::lf.base
-  LF::lf.io
+  LF::lf.fe
   LF::lf.geometry
+  LF::lf.io
+  LF::lf.mesh
   LF::lf.mesh.hybrid2d
   LF::lf.mesh.utils
-  LF::lf.refinement
+  LF::lf.quad
   LF::lf.uscalfe
 )

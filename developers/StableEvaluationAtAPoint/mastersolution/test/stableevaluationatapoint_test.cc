@@ -6,24 +6,25 @@
  * @copyright Developed at ETH Zurich
  */
 
-
 #include "../stableevaluationatapoint.h"
 
 #include <gtest/gtest.h>
+#include <lf/fe/fe.h>
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/fe/fe.h>
+#include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
 #include <cmath>
-#include <iostream>
 #include <memory>
+#include <utility>
 
 TEST(StableEvaluationAtAPoint, PSL) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
-                                 CURRENT_SOURCE_DIR "/../../meshes/square0.msh");
+                                 CURRENT_SOURCE_DIR "/../../meshes/square.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
 
   const auto u = [](Eigen::Vector2d x) -> double {
@@ -45,7 +46,7 @@ TEST(StableEvaluationAtAPoint, PSL) {
 TEST(StableEvaluationAtAPoint, PDL) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
-                                 CURRENT_SOURCE_DIR "/../../meshes/square0.msh");
+                                 CURRENT_SOURCE_DIR "/../../meshes/square.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
 
   const auto u = [](Eigen::Vector2d x) -> double {
@@ -67,7 +68,7 @@ TEST(StableEvaluationAtAPoint, PDL) {
 TEST(StableEvaluationAtAPoint, PointEval) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
-                                 CURRENT_SOURCE_DIR "/../../meshes/square0.msh");
+                                 CURRENT_SOURCE_DIR "/../../meshes/square.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
 
   double error = StableEvaluationAtAPoint::PointEval(mesh_p);
@@ -79,11 +80,11 @@ TEST(StableEvaluationAtAPoint, PointEval) {
   ASSERT_NEAR(std::abs(ref_error - error), 0.0, tol);
 }
 
-
 TEST(StableEvaluationAtAPoint, Jstar) {
   auto mesh_factory_init = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader_init(std::move(mesh_factory_init),
-                                 CURRENT_SOURCE_DIR "/../../meshes/square7.msh");
+                                 CURRENT_SOURCE_DIR
+                                 "/../../meshes/square7.msh");
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader_init.mesh();
 
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space =
@@ -95,8 +96,7 @@ TEST(StableEvaluationAtAPoint, Jstar) {
   };
 
   lf::mesh::utils::MeshFunctionGlobal mf_u{u};
-  Eigen::VectorXd uFE = NodalProjection(*fe_space,mf_u);
-
+  Eigen::VectorXd uFE = lf::fe::NodalProjection(*fe_space, mf_u);
 
   const Eigen::Vector2d x(0.3, 0.4);
 
