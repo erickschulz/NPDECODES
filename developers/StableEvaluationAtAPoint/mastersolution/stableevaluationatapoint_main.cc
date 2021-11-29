@@ -33,7 +33,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   std::cout << "Exact evaluation at (0.3,0.4) : " << uExact(x) << std::endl;
 
   //Number of meshes used in the error analysis:
-  int N_meshes = 7;
+  int N_meshes = 6;
 
   /* INITIALIZING ERROR ANALYSIS TOOLS AND OBJECTS */
   Eigen::VectorXd mesh_sizes(N_meshes);
@@ -56,7 +56,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   //iterate over meshes:
   for (int k = 0; k < N_meshes; k++) { 
     //read mesh::
-    std::string idx = std::to_string(k);
+    std::string idx = std::to_string(k+1);
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
     lf::io::GmshReader reader(std::move(mesh_factory), CURRENT_SOURCE_DIR
                                                            "/../meshes/square" +
@@ -70,7 +70,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
 
     // Printing mesh statistics
     mesh_sizes(k) = MeshSize(mesh_p);
-    std::cout << "square.msh: "
+    std::cout << "square " + idx + ".msh: "
               << "N_dofs = " << dofs(k) << ", h=" << mesh_sizes(k) << std::endl;
 
     //error anlysis part b) (Potentials)
