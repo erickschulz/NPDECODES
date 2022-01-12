@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.282.tar.gz"
-	  SHA1 "6811dd3e10eea8cd6b479a422a828115af1a35ba"
-    LOCAL # use cmake/Hunter/config.cmake
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.307.tar.gz"
+    SHA1 "093bd9aab70893cf93470f20d87844938c1546ab"
 )
 
 project(NPDECODES)
@@ -51,10 +50,6 @@ find_package(lehrfempp CONFIG REQUIRED)
 # Get Google Test
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
-
-# Get Boost Program Options
-hunter_add_package(Boost COMPONENTS program_options)
-find_package(Boost CONFIG REQUIRED program_options)
 ###############################################################################
 
 # Add switches

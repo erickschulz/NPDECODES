@@ -1,9 +1,6 @@
 # This file specifies additional data for the dependencies that are imported via hunter
 
-# hunter_config(lehrfempp VERSION 0.7.21)
 hunter_config(lehrfempp
-  URL "https://github.com/craffael/lehrfempp/archive/release-0.8.0.tar.gz"
-  SHA1 "cd5faee4c0e2c3f26730655538c4799b76cdf055"
+  URL "https://github.com/craffael/lehrfempp/archive/de186a85b1824f669f6deb5033f3c9bdafb6abed.tar.gz"
+  SHA1 "843d3c1f9d2e0051043bf373d6d757fb1cb683a4"
 )
-
-hunter_config(GTest VERSION 1.10.0)
