@@ -6,11 +6,11 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "debuggingwithlldb.h"
+#include "debuggingwithgdb.h"
 
 #include <cstdlib>
 
-namespace DebuggingWithLLDB {
+namespace DebuggingWithGDB {
 /* SAM_LISTING_BEGIN_1 */
 void ReadAndOutputMesh(const char *filename) {
   if (filename != nullptr) {
@@ -55,4 +55,4 @@ void ReadAndOutputMesh(const char *filename) {
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingWithLLDB
+}  // namespace DebuggingWithGDB

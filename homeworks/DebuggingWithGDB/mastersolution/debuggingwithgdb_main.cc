@@ -6,12 +6,13 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "debuggingwithlldb.h"
+#include "debuggingwithgdb.h"
 
 /* SAM_LISTING_BEGIN_1 */
 int main() {
   // A function using some of LehrFEM++'s facilities
-  DebuggingWithLLDB::ReadAndOutputMesh("../ljoint.msh");
+  DebuggingWithGDB::ReadAndOutputMesh("../ljoint.msh");
+
   return 0;
 }
 /* SAM_LISTING_END_1 */
