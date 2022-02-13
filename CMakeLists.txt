@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.307.tar.gz"
-    SHA1 "093bd9aab70893cf93470f20d87844938c1546ab"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.321.tar.gz"
+    SHA1 "5e53cbb0429037ea8e2592bfd92704b8ff3ab492"
+    LOCAL
 )
 
 project(NPDECODES)
@@ -36,23 +37,8 @@ if(COMPILER_SUPPORTS_WCONVERSION)
   target_compile_options(warning_flags INTERFACE -Wconversion)
 endif()
 
-# Get Dependencies
-# (don't forget to update cmake/Config.cmake.in !
-###############################################################################
-# Get Eigen
-hunter_add_package(Eigen)
-find_package(Eigen3 CONFIG REQUIRED)
-
-# Get LehrFEMpp
-hunter_add_package(lehrfempp)
-find_package(lehrfempp CONFIG REQUIRED)
-
-# Get Google Test
-hunter_add_package(GTest)
-find_package(GTest CONFIG REQUIRED)
-###############################################################################
-
 # Add switches
+###############################################################################
 option(HOMEWORKS "usage: cmake -DHOMEWORKS=ON/OFF .." ON)
 message(STATUS "HOMEWORKS ${HOMEWORKS}")
 
@@ -67,6 +53,29 @@ message(STATUS "MASTERSOLUTION ${MASTERSOLUTION}")
 
 option(MYSOLUTION "usage: cmake -DMYSOLUTION=ON/OFF .." ON)
 message(STATUS "MYSOLUTION ${MYSOLUTION}")
+
+# Get Dependencies
+# (don't forget to update cmake/Config.cmake.in !
+###############################################################################
+# Get Eigen
+hunter_add_package(Eigen)
+find_package(Eigen3 CONFIG REQUIRED)
+
+# Get LehrFEMpp
+hunter_add_package(lehrfempp)
+find_package(lehrfempp CONFIG REQUIRED)
+
+# Get Google Test
+hunter_add_package(GTest)
+find_package(GTest CONFIG REQUIRED)
+
+# Get some boost program options if LectureCodes are enabled:
+if(LECTURECODES)
+  hunter_add_package(Boost COMPONENTS program_options)
+  find_package(Boost CONFIG REQUIRED program_options)
+endif()
+
+
 
 # Add subdirectories
 if(HOMEWORKS)
