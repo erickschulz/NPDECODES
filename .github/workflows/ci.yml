@@ -70,8 +70,8 @@ jobs:
             ${{ runner.os }}-${{ env.COMPILER }}-
       - name: build_dependencies
         run: "./scripts/ci/run_cmake.sh"
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
       # - name: compile and test
         # run: |
           # cd Build
