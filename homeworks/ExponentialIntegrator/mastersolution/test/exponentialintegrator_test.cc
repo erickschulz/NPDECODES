@@ -16,13 +16,16 @@ namespace ExponentialIntegrator::test {
 
 TEST(exponentialEulerStep, scalar) {
   auto f = [](const Eigen::VectorXd &y) { return y; };
-  auto df = [](const Eigen::VectorXd &y) { return Eigen::MatrixXd::Ones(1, 1); };
+  auto df = [](const Eigen::VectorXd &y) {
+    return Eigen::MatrixXd::Ones(1, 1);
+  };
 
   Eigen::VectorXd y0(1);
   y0[0] = 1;
   const double y1 = std::exp(1);
 
-  const Eigen::VectorXd y = ExponentialIntegrator::exponentialEulerStep(y0, f, df, 1);
+  const Eigen::VectorXd y =
+      ExponentialIntegrator::exponentialEulerStep(y0, f, df, 1);
 
   EXPECT_NEAR(y[0], y1, 1e-8);
 }
@@ -43,10 +46,11 @@ TEST(exponentialEulerStep, vector) {
   y1[0] = std::exp(1) * y0[0];
   y1[1] = std::exp(2) * y0[1];
 
-  const Eigen::VectorXd y = ExponentialIntegrator::exponentialEulerStep(y0, f, df, 1);
+  const Eigen::VectorXd y =
+      ExponentialIntegrator::exponentialEulerStep(y0, f, df, 1);
 
   EXPECT_NEAR(y[0], y1[0], 1e-8);
   EXPECT_NEAR(y[1], y1[1], 1e-8);
 }
 
-} // namespace ExponentialIntegrator::test
+}  // namespace ExponentialIntegrator::test

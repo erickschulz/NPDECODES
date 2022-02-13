@@ -21,10 +21,6 @@
 #include <map>
 #include <vector>
 
-namespace dmxbc {
-
-
-
-}  // namespace dmxbc
+namespace dmxbc {}  // namespace dmxbc
 
 #endif

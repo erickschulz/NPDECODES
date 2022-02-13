@@ -2,11 +2,10 @@
  * Demonstration code for NPDE lecture & homeworks
  ********************************************************************** */
 
-#include <iostream>
-#include <vector>
-
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 

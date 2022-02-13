@@ -34,7 +34,6 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 }
 /* SAM_LISTING_END_1 */
 
-
 /* SAM_LISTING_BEGIN_2 */
 std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
@@ -45,7 +44,6 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   return nullptr;
 }
 /* SAM_LISTING_END_2 */
-
 
 /* SAM_LISTING_BEGIN_3 */
 std::shared_ptr<
@@ -74,7 +72,6 @@ Eigen::Vector2d barycenter(const Eigen::MatrixXd corners) {
   return midpoint;
 }
 /* SAM_LISTING_END_4 */
-
 
 /* SAM_LISTING_BEGIN_5 */
 double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {

@@ -30,8 +30,8 @@ int main(int argc, char **argv) {
     }
     switch (select) {
       case 1: {
-	std::cout << "Explicit adaptive RK-SSM for stiff scalar logistic IVP"
-		  << std::endl;
+        std::cout << "Explicit adaptive RK-SSM for stiff scalar logistic IVP"
+                  << std::endl;
         /* SAM_LISTING_BEGIN_0 */
         // Types to be used for a scalar ODE with state space \Blue{$\bbR$}
         using StateType = double;
@@ -63,7 +63,8 @@ int main(int argc, char **argv) {
         break;
       }
       case 2: {
-	std::cout << "Explicit adaptive RK-SSM for stiff decay IVP" << std::endl;
+        std::cout << "Explicit adaptive RK-SSM for stiff decay IVP"
+                  << std::endl;
         /* SAM_LISTING_BEGIN_1 */
         // Types to be used for a scalar ODE with state space \Blue{$\bbR$}
         using StateType = double;

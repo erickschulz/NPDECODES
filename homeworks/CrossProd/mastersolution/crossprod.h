@@ -11,11 +11,10 @@
 
 #include <Eigen/Core>
 #include <Eigen/LU>
-#include <utility>
-#include <vector>
-
 #include <iomanip>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 #include "implicitrkintegrator.h"
 
@@ -62,7 +61,7 @@ std::vector<Eigen::VectorXd> solve_lin_mid(Function &&f, Jacobian &&Jf,
   // Initialize some memory to store temporary values
   Eigen::VectorXd ytemp1 = y0;
   Eigen::VectorXd ytemp2 = y0;
-  // Pointers for efficient swapping of state vectors 
+  // Pointers for efficient swapping of state vectors
   Eigen::VectorXd *yold = &ytemp1;
   Eigen::VectorXd *ynew = &ytemp2;
   Eigen::MatrixXd eye = Eigen::MatrixXd::Identity(3, 3);
@@ -71,7 +70,7 @@ std::vector<Eigen::VectorXd> solve_lin_mid(Function &&f, Jacobian &&Jf,
     // Compute, save and swap next step
     *ynew = *yold + h * (eye - h / 2. * Jf(*yold)).lu().solve(f(*yold));
     res.push_back(*ynew);
-    std::swap(yold,ynew);
+    std::swap(yold, ynew);
   }
 
   return res;

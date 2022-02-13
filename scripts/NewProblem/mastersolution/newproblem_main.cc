@@ -6,9 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <iostream>
-
 #include <Eigen/Core>
+#include <iostream>
 
 #include "newproblem.h"
 
