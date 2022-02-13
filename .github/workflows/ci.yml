@@ -30,15 +30,15 @@ jobs:
             packages: "g++-8 "
             build_type: "Debug"
             cxxflags: "-Werror=cpp"
-          # - os: ubuntu-20.04
-            # compiler: "g++-8"
-            # packages: "g++-8"
-            # build_type: "Release"
-            # cxxflags: "-Werror=cpp"
-          # - os: macos-10.15
-            # compiler: "clang++"
-            # build_type: "Debug"
-            # cxxflags: "-Werror=#warnings"
+          - os: ubuntu-20.04
+            compiler: "g++-8"
+            packages: "g++-8"
+            build_type: "Release"
+            cxxflags: "-Werror=cpp"
+          - os: macos-10.15
+            compiler: "clang++"
+            build_type: "Debug"
+            cxxflags: "-Werror=#warnings"
     runs-on: ${{ matrix.os }}
     env:
       COMPILER: ${{ matrix.compiler }}
@@ -70,8 +70,6 @@ jobs:
             ${{ runner.os }}-${{ env.COMPILER }}-
       - name: build_dependencies
         run: "./scripts/ci/run_cmake.sh"
-      # - name: Setup tmate session
-        # uses: mxschmitt/action-tmate@v3
       - name: compile and test
         run: |
           cd Build
