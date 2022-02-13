@@ -71,7 +71,7 @@ jobs:
       - name: build_dependencies
         run: "./scripts/ci/run_cmake.sh"
       - name: Setup tmate session
-        uses: mxschmitt/action-tmate@fix-validation
+        uses: mxschmitt/action-tmate@v3.11
       # - name: compile and test
         # run: |
           # cd Build
