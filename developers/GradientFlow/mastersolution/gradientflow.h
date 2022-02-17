@@ -16,7 +16,7 @@
 
 namespace GradientFlow {
 
-//Compute the Buther scheme of the SDIRK scheme
+// Compute the Buther scheme of the SDIRK scheme
 Eigen::MatrixXd ButcherMatrix();
 
 /* SAM_LISTING_BEGIN_0 */
@@ -57,7 +57,8 @@ Eigen::VectorXd SolveGenStageEquation(Functor &&f, Jacobian &&df,
 /* SAM_LISTING_END_0 */
 
 /* SAM_LISTING_BEGIN_1 */
-// Compute the stages [g_1, ... , g_5] of the SDIRK method based on Newtons method
+// Compute the stages [g_1, ... , g_5] of the SDIRK method based on Newtons
+// method
 template <typename Func, typename Jac>
 std::array<Eigen::VectorXd, 5> ComputeStages(Func &&f, Jac &&df,
                                              const Eigen::VectorXd &y, double h,

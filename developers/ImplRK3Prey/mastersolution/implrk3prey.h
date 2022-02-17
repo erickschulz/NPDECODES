@@ -18,9 +18,9 @@
 
 namespace ImplRK3Prey {
 
- // Compute the Kronecker product $C = A \otimes B$
- // A is m x n matrix, B is l x k matrix
- // return Kronecker product of A and B: dim is m*l x n*k
+// Compute the Kronecker product $C = A \otimes B$
+// A is m x n matrix, B is l x k matrix
+// return Kronecker product of A and B: dim is m*l x n*k
 Eigen::MatrixXd kron(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B) {
   Eigen::MatrixXd C(A.rows() * B.rows(), A.cols() * B.cols());
   for (unsigned int i = 0; i < A.rows(); ++i) {
@@ -36,20 +36,19 @@ Eigen::MatrixXd kron(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B) {
 /* SAM_LISTING_BEGIN_1 */
 class implicitRKIntegrator {
  public:
-   // Constructor
-   // A is a  matrix containing coefficents of Butcher tableau
-   // b is a vector containing coefficients of lower part of Butcher tableau
+  // Constructor
+  // A is a  matrix containing coefficents of Butcher tableau
+  // b is a vector containing coefficients of lower part of Butcher tableau
   implicitRKIntegrator(const Eigen::MatrixXd &A, const Eigen::VectorXd &b)
       : A(A), b(b), s(b.size()) {
     assert(A.cols() == A.rows() && "Matrix must be square.");
     assert(A.cols() == b.size() && "Incompatible matrix/vector size.");
   }
 
-  
-   /* Performs the solution of the ODE.
+  /* Performs the solution of the ODE.
    * Solve an autonomous ODE y' = f(y), y(0) = y0, using an
    * implicit RK scheme given in the Butcher tableau provided in the
-   * constructor. Performs N equidistant steps of size h = T / N up to 
+   * constructor. Performs N equidistant steps of size h = T / N up to
    * time T with initial condition y0.
    * Returns a vector containing all steps y^n (for each n) inclu. y0 */
   template <class Function, class Jacobian>

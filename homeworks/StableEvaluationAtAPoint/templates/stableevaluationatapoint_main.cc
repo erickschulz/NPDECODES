@@ -57,10 +57,10 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Naive point evaluation
   Eigen::VectorXd errors_Eval(N_meshes);
   errors_Eval.setZero();
-// Subproblem (3-11.b)
-//====================
-// Your code goes here
-//====================
+  // Subproblem (3-11.b)
+  //====================
+  // Your code goes here
+  //====================
 
   // Stable point evaluation
   Eigen::VectorXd errors_stabEval(N_meshes);
@@ -68,11 +68,11 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::VectorXd ux(N_meshes);
   ux.setZero();
 
-/* CONVERGENCE ANALYSIS */
-// Subproblem (3-11.h)
-//====================
-// Your code goes here
-//====================
+  /* CONVERGENCE ANALYSIS */
+  // Subproblem (3-11.h)
+  //====================
+  // Your code goes here
+  //====================
 
   for (int k = 1; k < N_meshes; k++) {  // for each mesh refinement
     // Load finer mesh

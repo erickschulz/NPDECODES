@@ -30,8 +30,8 @@ inline Eigen::MatrixXd kron(const Eigen::MatrixXd &A,
   return C;
 }
 
- // Implements a Runge-Kutta implicit solver for a
- // given Butcher tableau for autonomous ODEs.
+// Implements a Runge-Kutta implicit solver for a
+// given Butcher tableau for autonomous ODEs.
 class implicitRKIntegrator {
  public:
   // Constructor for the implicit RK method.

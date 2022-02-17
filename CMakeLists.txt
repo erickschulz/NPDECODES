@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.307.tar.gz"
-    SHA1 "093bd9aab70893cf93470f20d87844938c1546ab"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.321.tar.gz"
+    SHA1 "5e53cbb0429037ea8e2592bfd92704b8ff3ab492"
+    LOCAL
 )
 
 project(NPDECODES)
@@ -36,6 +37,23 @@ if(COMPILER_SUPPORTS_WCONVERSION)
   target_compile_options(warning_flags INTERFACE -Wconversion)
 endif()
 
+# Add switches
+###############################################################################
+option(HOMEWORKS "usage: cmake -DHOMEWORKS=ON/OFF .." ON)
+message(STATUS "HOMEWORKS ${HOMEWORKS}")
+
+option(DEVELOPERS "usage: cmake -DDEVELOPERS=ON/OFF .." ON)
+message(STATUS "DEVELOPERS ${DEVELOPERS}")
+
+option(LECTURECODES "usage: cmake -DLECTURECODES=ON/OFF .." ON)
+message(STATUS "LECTURECODES ${LECTURECODES}")
+
+option(MASTERSOLUTION "usage: cmake -DMASTERSOLUTION=ON/OFF .." ON)
+message(STATUS "MASTERSOLUTION ${MASTERSOLUTION}")
+
+option(MYSOLUTION "usage: cmake -DMYSOLUTION=ON/OFF .." ON)
+message(STATUS "MYSOLUTION ${MYSOLUTION}")
+
 # Get Dependencies
 # (don't forget to update cmake/Config.cmake.in !
 ###############################################################################
@@ -51,26 +69,13 @@ find_package(lehrfempp CONFIG REQUIRED)
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
-# Get Boost::program_options
-hunter_add_package(Boost COMPONENTS program_options)
-find_package(Boost CONFIG REQUIRED COMPONENTS program_options)
-###############################################################################
+# Get some boost program options if LectureCodes are enabled:
+if(LECTURECODES)
+  hunter_add_package(Boost COMPONENTS program_options)
+  find_package(Boost CONFIG REQUIRED program_options)
+endif()
 
-# Add switches
-option(HOMEWORKS "usage: cmake -DHOMEWORKS=ON/OFF .." ON)
-message(STATUS "HOMEWORKS ${HOMEWORKS}")
 
-option(DEVELOPERS "usage: cmake -DDEVELOPERS=ON/OFF .." ON)
-message(STATUS "DEVELOPERS ${DEVELOPERS}")
-
-option(LECTURECODES "usage: cmake -DLECTURECODES=ON/OFF .." ON)
-message(STATUS "LECTURECODES ${LECTURECODES}")
-
-option(MASTERSOLUTION "usage: cmake -DMASTERSOLUTION=ON/OFF .." ON)
-message(STATUS "MASTERSOLUTION ${MASTERSOLUTION}")
-
-option(MYSOLUTION "usage: cmake -DMYSOLUTION=ON/OFF .." ON)
-message(STATUS "MYSOLUTION ${MYSOLUTION}")
 
 # Add subdirectories
 if(HOMEWORKS)

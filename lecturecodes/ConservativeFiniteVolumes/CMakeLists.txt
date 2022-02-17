@@ -9,6 +9,7 @@ set(sources
 add_executable(lecturecodes.consformevl ${sources})
 target_link_libraries(lecturecodes.consformevl
   PUBLIC Eigen3::Eigen
+  PUBLIC Boost::boost
 )
 
 set(highressrc
@@ -21,4 +22,5 @@ add_executable(lecturecodes.highresevl ${highressrc})
 
 target_link_libraries(lecturecodes.highresevl
   PUBLIC Eigen3::Eigen
+  PUBLIC Boost::boost
 )

@@ -19,7 +19,6 @@
 // https://www.boost.org/doc/libs/1_66_0/libs/numeric/odeint/doc/html/index.html
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/odeint/external/eigen/eigen.hpp>
-
 #include <tuple>
 
 namespace ConsFV {

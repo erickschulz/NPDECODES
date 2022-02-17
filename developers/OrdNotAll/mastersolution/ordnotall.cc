@@ -11,7 +11,7 @@ void testCvgRKSSM(const Function &f, double T, double y0,
   // Vector for collecting errors
   std::vector<double> error(15);
 #if SOLUTION
-  // Vector for storing rate estimates 
+  // Vector for storing rate estimates
   std::vector<double> order(14);
 
   double sum = 0;
@@ -21,13 +21,13 @@ void testCvgRKSSM(const Function &f, double T, double y0,
   std::vector<double> y_exact = rk.solve(f, T, y0, std::pow(2, 15));
 
   for (int k = 0; k < 12; k++) {
-    // Number of timesteps 
+    // Number of timesteps
     int M = std::pow(2, k + 1);
     // Solve IVP
     std::vector<double> y1 = rk.solve(f, T, y0, M);
-    // Error at final time 
+    // Error at final time
     error[k] = std::abs(y1[M] - y_exact[std::pow(2, 15)]);
-    
+
     std::cout << std::left << std::setfill(' ') << std::setw(3)
               << "M = " << std::setw(7) << M << std::setw(8)
               << "Error = " << std::setw(13) << error[k];

@@ -196,9 +196,9 @@ double stab_pointEval(
     FUNCTOR &&u, const Eigen::Vector2d x) {
   double res = 0.0;
 
-//====================
-// Your code goes here
-//====================
+  //====================
+  // Your code goes here
+  //====================
   return res;
 }
 

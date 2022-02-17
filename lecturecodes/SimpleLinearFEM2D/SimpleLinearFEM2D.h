@@ -8,7 +8,6 @@
 #include <Eigen/Core>
 #include <Eigen/LU>
 #include <Eigen/Sparse>
-
 #include <exception>
 #include <fstream>
 #include <iostream>

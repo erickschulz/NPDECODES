@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
+#include "../newproblem.h"
 
 #include <gtest/gtest.h>
 
-#include "../newproblem.h"
+#include <Eigen/Core>
 
 namespace NewProblem::test {
 

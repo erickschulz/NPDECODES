@@ -15,6 +15,4 @@
 #include <Eigen/Core>
 #include <functional>
 
-namespace GaussLobattoParabolic {
-
-}  // namespace GaussLobattoParabolic
+namespace GaussLobattoParabolic {}  // namespace GaussLobattoParabolic
