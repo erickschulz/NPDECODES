@@ -1,11 +1,11 @@
-# Dependencies of mastersolution:
+# Add your custom dependencies here:
 
 # DIR will be provided by the calling file.
 
 set(SOURCES
-  ${DIR}/debuggingwithlldb_main.cc
-  ${DIR}/debuggingwithlldb.cc
-  ${DIR}/debuggingwithlldb.h
+  ${DIR}/debuggingwithgdb_main.cc
+  ${DIR}/debuggingwithgdb.cc
+  ${DIR}/debuggingwithgdb.h
 )
 
 set(LIBRARIES
