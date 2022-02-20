@@ -6,11 +6,11 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "debuggingwithlldb.h"
+#include "debuggingwithgdb.h"
 
 #include <cstdlib>
 
-namespace DebuggingWithLLDB {
+namespace DebuggingWithGDB {
 /* SAM_LISTING_BEGIN_1 */
 void ReadAndOutputMesh(const char *filename) {
   if (filename != nullptr) {
@@ -46,7 +46,7 @@ void ReadAndOutputMesh(const char *filename) {
                 << " entities = " << c.transpose() << std::endl;
     }
     // Wite mesh data to file for visualization with Python script
-    lf::io::writeMatplotlib(mesh, "ljoint.csv");
+    lf::io::writeMatplotlib(mesh, CURRENT_BINARY_DIR "/ljoint.csv");
     std::cout << "Wrote " CURRENT_BINARY_DIR "/ljoint.csv" << std::endl;
     std::system("python3 " CURRENT_SOURCE_DIR
                 "/plot_mesh.py " CURRENT_BINARY_DIR
@@ -55,4 +55,4 @@ void ReadAndOutputMesh(const char *filename) {
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingWithLLDB
+}  // namespace DebuggingWithGDB

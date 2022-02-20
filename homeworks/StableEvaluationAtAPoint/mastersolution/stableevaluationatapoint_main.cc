@@ -57,7 +57,7 @@ int main(int /*argc*/, const char ** /*argv*/) {
   // Naive point evaluation
   Eigen::VectorXd errors_Eval(N_meshes);
   errors_Eval.setZero();
-// Subproblem (3-11.b)
+  // Subproblem (3-11.b)
   errors_Eval(0) = pointEval(mesh_p);
 
   // Stable point evaluation
@@ -66,8 +66,8 @@ int main(int /*argc*/, const char ** /*argv*/) {
   Eigen::VectorXd ux(N_meshes);
   ux.setZero();
 
-/* CONVERGENCE ANALYSIS */
-// Subproblem (3-11.h)
+  /* CONVERGENCE ANALYSIS */
+  // Subproblem (3-11.h)
   ux(0) = stab_pointEval(fe_space, u, x);
   errors_stabEval(0) = std::abs(u(x) - ux(0));
 

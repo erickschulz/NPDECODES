@@ -27,7 +27,7 @@ jobs:
         include:
           - os: ubuntu-20.04
             compiler: "g++-8"
-            packages: "g++-8"
+            packages: "g++-8 "
             build_type: "Debug"
             cxxflags: "-Werror=cpp"
           - os: ubuntu-20.04
@@ -57,7 +57,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Install packages
         if: runner.os == 'Linux'
-        run: sudo apt-get install ${{ matrix.packages }}
+        run: sudo apt-get install ${{ matrix.packages }} python3-matplotlib
+      - name: Install packages
+        if: runner.os == 'macOS'
+        run: python3 -mpip install matplotlib
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -70,6 +73,8 @@ jobs:
             ${{ runner.os }}-${{ env.COMPILER }}-
       - name: build_dependencies
         run: "./scripts/ci/run_cmake.sh"
+      # - name: Setup tmate session
+        # uses: mxschmitt/action-tmate@v3.11
       - name: compile and test
         run: |
           cd Build

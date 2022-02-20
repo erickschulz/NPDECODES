@@ -44,7 +44,7 @@ std::vector<std::pair<double, Eigen::VectorXd>> embeddedRKSSM(
   assert((s == b.size()) && "Length of weight vector b != no of stages");
   assert((s == bh.size()) && "Length of weight vector bh != no of stages");
   unsigned int N = y0.size();  // Dimension of state space
-  Eigen::MatrixXd K(N, s); // Columns hold increment vectors 
+  Eigen::MatrixXd K(N, s);     // Columns hold increment vectors
 
   double t = 0.0;  // Initial time zero for autonomous initial-value problem
   double h = h0;   // Current timestep size
@@ -84,9 +84,8 @@ std::vector<std::pair<double, Eigen::VectorXd>> embeddedRKSSM(
           << ". Unable to meet integration tolerances without reducing the step"
           << " size below the smallest value allowed (" << hmin
           << ") at time t." << std::endl;
-    }
-    else {
-      h = std::min(T-t+hmin,h);
+    } else {
+      h = std::min(T - t + hmin, h);
     }
   }
   return states;

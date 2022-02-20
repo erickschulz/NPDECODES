@@ -32,7 +32,6 @@ std::shared_ptr<
     lf::mesh::utils::CodimMeshDataSet<Eigen::Matrix<double, 2, Eigen::Dynamic>>>
 computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
-
 /**
  * @brief Find the neighbor cells to each cell in the mesh.
  *
@@ -60,7 +59,6 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
  * @return Barycenter of the element.
  */
 Eigen::Vector2d barycenter(const Eigen::MatrixXd corners);
-
 
 /**
  * @brief Setup MOLODE Matrix

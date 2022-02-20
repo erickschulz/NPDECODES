@@ -5,7 +5,6 @@
 
 #include <Eigen/Core>
 #include <Eigen/LU>
-
 #include <fstream>
 
 /**

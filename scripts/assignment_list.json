@@ -16,7 +16,7 @@
     "CoupledSecondOrderBVP/",
     "CrossProd/",
     "DebuggingFEM/",
-    "DebuggingWithLLDB/",	
+    "DebuggingWithGDB/",	
     "DiscontinuousGalerkin1D/",
     "ElectrostaticForce/",
     "ElementMatrixComputation/",

@@ -6,20 +6,19 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "debuggingwithlldb.h"
+#include "debuggingwithgdb.h"
 
 #include <cstdlib>
 
-namespace DebuggingWithLLDB {
+namespace DebuggingWithGDB {
 /* SAM_LISTING_BEGIN_1 */
 void ReadAndOutputMesh(const char *filename) {
   if (filename != nullptr) {
     // Build full path to the mesh file
-    std::filesystem::path here = __FILE__;
-    auto gmshfile_path = here.parent_path() / filename;
+    auto gmshfile_path = std::string(CURRENT_SOURCE_DIR) + "/" + filename;
     // Load the mesh from a file produced by Gmsh
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-    lf::io::GmshReader reader(std::move(mesh_factory), gmshfile_path.string());
+    lf::io::GmshReader reader(std::move(mesh_factory), gmshfile_path);
     // Obtain pointer to read mesh
     std::shared_ptr<const lf::mesh::Mesh> mesh_p = reader.mesh();
     const lf::mesh::Mesh &mesh{*mesh_p};
@@ -55,4 +54,4 @@ void ReadAndOutputMesh(const char *filename) {
 }
 /* SAM_LISTING_END_1 */
 
-}  // namespace DebuggingWithLLDB
+}  // namespace DebuggingWithGDB

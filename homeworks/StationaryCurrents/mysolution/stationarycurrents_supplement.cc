@@ -9,6 +9,4 @@
 
 #include "stationarycurrents.h"
 
-namespace dmxbc {
-
-}  // namespace dmxbc
+namespace dmxbc {}  // namespace dmxbc

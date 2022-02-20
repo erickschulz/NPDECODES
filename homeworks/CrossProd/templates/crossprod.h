@@ -11,11 +11,10 @@
 
 #include <Eigen/Core>
 #include <Eigen/LU>
-#include <utility>
-#include <vector>
-
 #include <iomanip>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 #include "implicitrkintegrator.h"
 
