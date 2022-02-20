@@ -226,4 +226,4 @@ double computeHmin(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
 }
 /* SAM_LISTING_END_5 */
 
-} // namespace AdvectionFV2D
+}  // namespace AdvectionFV2D
