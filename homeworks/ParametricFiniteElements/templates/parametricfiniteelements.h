@@ -30,9 +30,9 @@ double integrationElement(unsigned int n, unsigned int j, unsigned int l,
   double h = 1.0 / n;
   double detJ = 0.0;
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return detJ;
 }
@@ -54,9 +54,9 @@ Eigen::Matrix2d jacobianInverseTransposed(unsigned int n, unsigned int j,
   // Inverse Jacobian transposed
   Eigen::Matrix2d invJT;
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
   return invJT;
 }
 /* SAM_LISTING_END_2 */
@@ -113,9 +113,9 @@ Eigen::MatrixXd geoThermElemMat(unsigned int n, unsigned int j, unsigned int l,
   // Volume contributions to element matrix A
   Eigen::MatrixXd A = Eigen::MatrixXd::Zero(4, 4);
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return A;
 }
@@ -129,9 +129,9 @@ int geoThermLocalToGlobal(unsigned int n, unsigned int j, unsigned int l,
   // Map local indices of basis functions to global indices
   int global_dof;
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return global_dof;
 }
@@ -147,9 +147,9 @@ std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n,
   std::vector<Eigen::Triplet<double>> triplets;
   triplets.reserve(4 * 4 * n * n);
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return triplets;
 }
@@ -160,9 +160,9 @@ std::vector<Eigen::Triplet<double>> assembleGeoTherm(unsigned int n,
  */
 /* SAM_LISTING_BEGIN_6 */
 void geoThermBdElim(unsigned int n, std::vector<Eigen::Triplet<double>> &A) {
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 }
 /* SAM_LISTING_END_6 */
 
@@ -179,9 +179,9 @@ Eigen::VectorXd geoThermSolve(unsigned int n, FUNCTOR1 &&alpha,
   // Basis expansion coefficient vector mu
   Eigen::VectorXd mu = Eigen::VectorXd::Zero(N_dofs);
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return mu;
 }
@@ -201,9 +201,9 @@ double geoThermSurfInt(unsigned int n, FUNCTOR &&Psi,
   // Surface integral of geothermal problem
   double SurfInt = 0.0;
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return SurfInt;
 }

@@ -219,6 +219,7 @@ Eigen::VectorXd solvetrp(
   u0_vector = semiLagr_step(fe_space, u0_vector, v, tau * 0.5);
 
   return u0_vector;
+
 }
 
 }  // namespace TranspSemiLagr

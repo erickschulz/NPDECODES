@@ -7,6 +7,7 @@
 #include <Eigen/Dense>
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
 #include "matode.h"
 

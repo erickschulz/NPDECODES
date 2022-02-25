@@ -54,7 +54,7 @@ int main() {
   double T = 1.0;
   double tau = T / timesteps;
 
-  // Prepare inital data
+// Prepare inital data
   const double PI = 3.14159265358979323846;
   auto u0 = [PI](Eigen::Vector2d x) -> double {
     return 4.0 * std::cos(PI * x(0)) * std::cos(PI * x(1));

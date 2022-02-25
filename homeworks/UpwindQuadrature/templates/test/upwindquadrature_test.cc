@@ -16,6 +16,8 @@
 #include <Eigen/Core>
 #include <memory>
 
+#include "../../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
+
 namespace UpwindQuadrature::test {
 
 TEST(UpwindQuadrature, opposite_velocity_direction_1) {
@@ -114,7 +116,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_1) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_0 = *(mesh_p->EntityByIndex(0, 0));
@@ -152,7 +154,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_2) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_1 = *(mesh_p->EntityByIndex(0, 1));
@@ -186,7 +188,7 @@ TEST(UpwindQuadrature, upwind_convection_element_matrix_provider_3) {
 
   // initialize already implemented reference provider and
   // the upwind provider
-  ConvectionElementMatrixProvider reference(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider reference(v);
   UpwindConvectionElementMatrixProvider upwind(v, masses);
 
   const lf::mesh::Entity &element_1 = *(mesh_p->EntityByIndex(0, 1));

@@ -34,6 +34,7 @@ lf::quad::QuadRule make_TriaQR_TrapezoidalRule() {
 }
 /* SAM_LISTING_END_A */
 
+
 /* SAM_LISTING_BEGIN_2 */
 Eigen::SparseMatrix<double> computeMQ(const lf::assemble::DofHandler &dofh_Q) {
   // TOOLS AND DATA

@@ -83,10 +83,10 @@ Eigen::VectorXd solveImpedanceBVP(
   // internal conversion routines.
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
-  // II : SOLVING  THE LINEAR SYSTEM
-  //====================
-  // Your code goes here
-  //====================
+// II : SOLVING  THE LINEAR SYSTEM
+//====================
+// Your code goes here
+//====================
 
   discrete_solution.setZero();
   return discrete_solution;

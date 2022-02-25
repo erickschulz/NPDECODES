@@ -15,17 +15,17 @@ std::vector<double> sdirk2SteppingLinScalODE(unsigned int m) {
   double step_size = 2.0 / m;  // "tau" in this example
   // Initial conditions
   sol_vec.push_back(1.0);
-  // Discrete evolution operator. For the SDIRK-2 method applied to the
-  // scalar linear ODE (d/dt)y = -y, this turns out to be a scalar valued
-  // function depending on the step_size. Since we take equidistant step sizes
-  // in this example, the action of the evolution operator is simply
-  // multiplication by a constant double
+// Discrete evolution operator. For the SDIRK-2 method applied to the
+// scalar linear ODE (d/dt)y = -y, this turns out to be a scalar valued
+// function depending on the step_size. Since we take equidistant step sizes
+// in this example, the action of the evolution operator is simply
+// multiplication by a constant double
   //=============================================
   // Your task is to modify the follow loop:
   for (int i = 1; i < m + 1; i++) {
     sol_vec.push_back(0.0);
   }
-  //=============================================
+//=============================================
   return sol_vec;
 }
 /* SAM_LISTING_END_1 */

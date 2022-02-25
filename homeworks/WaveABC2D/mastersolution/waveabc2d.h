@@ -138,7 +138,7 @@ class WaveABC2DTimestepper {
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_;  // linear solver
   Eigen::VectorXd
       full_sol_;  // Vector for discrete solution and discrete velocity
-};                // class WaveABC2DTimestepper
+};  // class WaveABC2DTimestepper
 /* SAM_LISTING_END_9 */
 
 /* Implementing constructor of class WaveABC2DTimestepper */

@@ -54,7 +54,7 @@ int main() {
   double T = 1.0;
   double tau = T / timesteps;
 
-  // Prepare inital data
+// Prepare inital data
   //====================
   // Your code here
   // Initialize the vector mu with the basis expansion coefficients

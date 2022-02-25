@@ -57,7 +57,7 @@ int main() {
   std::system("python3 " CURRENT_SOURCE_DIR
               "/visenergies.py " CURRENT_BINARY_DIR
               "/energies.csv " CURRENT_BINARY_DIR "/energies.eps");
-  /* SAM_LISTING_END_2 */
+/* SAM_LISTING_END_2 */
 
   return 0;
 }

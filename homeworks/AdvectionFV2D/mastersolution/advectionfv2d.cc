@@ -89,6 +89,7 @@ computeCellNormals(std::shared_ptr<const lf::mesh::Mesh> mesh_p) {
   }
   return std::make_shared<lf::mesh::utils::CodimMeshDataSet<
       Eigen::Matrix<double, 2, Eigen::Dynamic>>>(result);
+
 }
 /* SAM_LISTING_END_2 */
 

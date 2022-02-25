@@ -30,6 +30,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
                                      const Eigen::Vector2d &a2,
                                      const Eigen::Vector2d &a3) {
+
   Eigen::Vector2d mp1 = 0.5 * (a1 + a2);
   Eigen::Vector2d mp2 = 0.5 * (a2 + a3);
 

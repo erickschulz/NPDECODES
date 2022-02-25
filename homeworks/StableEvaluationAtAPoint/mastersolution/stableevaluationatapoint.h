@@ -1,313 +1,260 @@
+#ifndef STABLE_EVALUATION_AT_A_POINT_H
+#define STABLE_EVALUATION_AT_A_POINT_H
+
 /**
  * @file stableevaluationatapoint.h
  * @brief NPDE homework StableEvaluationAtAPoint
- * @author Amélie Loher
- * @date 22/04/2020
+ * @author Amélie Loher, Erick Schulz & Philippe Peter
+ * @date 29.11.2021
  * @copyright Developed at ETH Zurich
  */
 
+#include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
+#include <lf/fe/fe.h>
 #include <lf/geometry/geometry.h>
+#include <lf/mesh/mesh.h>
 #include <lf/mesh/utils/utils.h>
-#include <lf/quad/quad.h>
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
-#include <cmath>
-#include <complex>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <memory>
+#include <utility>
 
 namespace StableEvaluationAtAPoint {
 
-/* Returns the mesh size for the given mesh. */
-double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
-  double mesh_size = 0.0;
-  // Find maximal edge length
-  double edge_length;
-  for (const lf::mesh::Entity *edge : mesh_p->Entities(1)) {
-    // Compute the length of the edge
-    auto endpoints = lf::geometry::Corners(*(edge->Geometry()));
-    edge_length = (endpoints.col(0) - endpoints.col(1)).norm();
-    if (mesh_size < edge_length) {
-      mesh_size = edge_length;
-    }
-  }
-  return mesh_size;
-}
+/** @brief Approximates the mesh size for the given mesh.*/
+double MeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p);
 
-/* Returns G(x,y). */
-double G(Eigen::Vector2d x, Eigen::Vector2d y) {
-  double res;
-  LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-  // Straightforward implementation
-  res = (-1.0 / (2.0 * M_PI)) * std::log((x - y).norm());
-  return res;
-}
+/** @brief Returns the outer normal of the unit squre at point x*/
+Eigen::Vector2d OuterNormalUnitSquare(Eigen::Vector2d x);
 
-/* Returns the gradient of G(x,y). */
-Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
-  Eigen::Vector2d res;
-  LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
-  // Straightforward implementation
-  res = (x - y) / (2.0 * M_PI * (x - y).squaredNorm());
-  return res;
-}
+class FundamentalSolution {
+ public:
+  FundamentalSolution(Eigen::Vector2d x) : x_{x} {}
 
-/* Evaluates the Integral P_SL using the local midpoint rule
+  // Computes  G_x(y)
+  double operator()(Eigen::Vector2d y);
+  // Computes the gradient of  G_x(y)
+  Eigen::Vector2d grad(Eigen::Vector2d y);
+
+ private:
+  Eigen::Vector2d x_;
+};
+
+/** @brief Evaluates the Integral P_SL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
- * The supplied meshes are unitary squares.
+ * @warning The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting
  */
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
-double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
+double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh_p, FUNCTOR &&v,
            const Eigen::Vector2d x) {
-  double PSLval = 0.0;
-  // This predicate returns true for edges on the boundary
-  auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
+  double value = 0.0;
+  FundamentalSolution G(x);
+  // Flag edges on the boundary
+  auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+
   // Loop over boundary edges
-  for (const lf::mesh::Entity *e : mesh->Entities(1)) {
+  for (const lf::mesh::Entity *e : mesh_p->Entities(1)) {
     if (bd_flags_edge(*e)) {
       const lf::geometry::Geometry *geo_ptr = e->Geometry();
       LF_ASSERT_MSG(geo_ptr != nullptr, "Missing geometry!");
+
       // Fetch coordinates of corner points
       const Eigen::Matrix2d corners = lf::geometry::Corners(*geo_ptr);
-      // Determine midpoints of edges
+      // Determine midpoint of edges
       const Eigen::Vector2d midpoint{0.5 * (corners.col(0) + corners.col(1))};
-      // Compute and add the elemental contribution
-      PSLval += v(midpoint) * G(x, midpoint) * lf::geometry::Volume(*geo_ptr);
+
+      // Compute and add the edge contribution
+      value += v(midpoint) * G(midpoint) * lf::geometry::Volume(*geo_ptr);
     }
   }
-  return PSLval;
+  return value;
 }
-
 /* SAM_LISTING_END_1 */
 
-/* Evaluates the Integral P_DL using the local midpoint rule
+/** @brief Evaluates the Integral P_DL using the local midpoint rule
  * on the partitioning of the boundary of Omega induced by the mesh.
- * The supplied meshes are unitary squares.
+ *
+ * @warning The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting
+ *
  */
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
-double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, FUNCTOR &&v,
+double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh_p, FUNCTOR &&v,
            const Eigen::Vector2d x) {
-  double PDLval = 0.0;
-  // This predicate returns true for edges on the boundary
-  auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh, 1)};
+  double value = 0.0;
+  FundamentalSolution G(x);
+  // Flag edges on the boundary
+  auto bd_flags_edge{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+
   // Loop over boundary edges
-  for (const lf::mesh::Entity *e : mesh->Entities(1)) {
+  for (const lf::mesh::Entity *e : mesh_p->Entities(1)) {
     if (bd_flags_edge(*e)) {
       const lf::geometry::Geometry *geo_ptr = e->Geometry();
       LF_ASSERT_MSG(geo_ptr != nullptr, "Missing geometry!");
+
       // Fetch coordinates of corner points
       Eigen::MatrixXd corners = lf::geometry::Corners(*geo_ptr);
       // Determine midpoints of edges
-      Eigen::Vector2d midpoint;
-      midpoint(0) = 0.5 * (corners(0, 0) + corners(0, 1));
-      midpoint(1) = 0.5 * (corners(1, 0) + corners(1, 1));
-      // Determine the normal vector n on the unit square. There are four
-      // possibilities depending on the edge of the unit square
-      Eigen::Vector2d n;
-      if ((midpoint(0) > midpoint(1)) && (midpoint(0) < 1.0 - midpoint(1))) {
-        n << 0.0, -1.0;
-      } else if ((midpoint(0) > midpoint(1)) &&
-                 (midpoint(0) > 1.0 - midpoint(1))) {
-        n << 1.0, 0.0;
-      } else if ((midpoint(0) < midpoint(1)) &&
-                 (midpoint(0) > 1.0 - midpoint(1))) {
-        n << 0.0, 1.0;
-      } else {
-        n << -1.0, 0.0;
-      }
-      // Compute and add the elemental contribution
-      PDLval += v(midpoint) * (gradG(x, midpoint)).dot(n) *
-                lf::geometry::Volume(*geo_ptr);
+      const Eigen::Vector2d midpoint{0.5 * (corners.col(0) + corners.col(1))};
+
+      // Determine the normal vector n on the unit square.
+      Eigen::Vector2d n = OuterNormalUnitSquare(midpoint);
+
+      // Compute and the elemental contribution
+      value += v(midpoint) * (G.grad(midpoint)).dot(n) *
+               lf::geometry::Volume(*geo_ptr);
     }
   }
-  return PDLval;
+  return value;
 }
-
 /* SAM_LISTING_END_2 */
 
 /* SAM_LISTING_BEGIN_3 */
-/* This function computes u(x) = P_SL(grad u * n) - P_DL(u).
+/** @brief  This function computes u(x) = P_SL(grad u * n) - P_DL(u).
  * For u(x) = log( (x + (1, 0)^T).norm() ) and x = (0.3, 0.4)^T,
  * it computes the difference between the analytical and numerical
- * evaluation of u. The mesh is supposed to cover the unit square.
+ * evaluation of u.
+ *
+ * @warning The supplied mesh object must hold a triangulation of the **unit
+ * square**. This functions only works in this particular setting.
  */
-double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
-  double error = 0.0;
-  const auto u = [](Eigen::Vector2d x) -> double {
-    Eigen::Vector2d one(1.0, 0.0);
-    return std::log((x + one).norm());
-  };
-  const auto gradu = [](Eigen::Vector2d x) -> Eigen::Vector2d {
-    Eigen::Vector2d one(1.0, 0.0);
-    return (x + one) / (x + one).squaredNorm();
-  };
-  // Define a Functor for the dot product of grad u(x) * n(x)
-  const auto dotgradu_n = [gradu](const Eigen::Vector2d x) -> double {
-    // Determine the normal vector n on the unit square
-    Eigen::Vector2d n;
-    if ((x(0) > x(1)) && (x(0) < 1.0 - x(1))) {
-      n << 0.0, -1.0;
-    } else if ((x(0) > x(1)) && (x(0) > 1.0 - x(1))) {
-      n << 1.0, 0.0;
-    } else if ((x(0) < x(1)) && (x(0) > 1.0 - x(1))) {
-      n << 0.0, 1.0;
-    } else {
-      n << -1.0, 0.0;
-    }
-    return gradu(x).dot(n);
-  };
-
-  // Compute right hand side
-  const Eigen::Vector2d x(0.3, 0.4);
-  const double rhs = PSL(mesh, dotgradu_n, x) - PDL(mesh, u, x);
-  // Compute the error
-  error = std::abs(u(x) - rhs);
-  return error;
-}
-
+double PointEval(std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 /* SAM_LISTING_END_3 */
 
-/* Computes Psi_x(y). */
-double Psi(const Eigen::Vector2d y) {
-  double Psi_xy;
-  const Eigen::Vector2d half(0.5, 0.5);
-  const double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
-  const double dist = (y - half).norm();
+class Psi {
+ public:
+  Psi(Eigen::Vector2d center) : center_(center) {}
 
-  if (dist <= 0.25 * std::sqrt(2)) {
-    Psi_xy = 0.0;
-  } else if (dist >= 0.5) {
-    Psi_xy = 1.0;
-  } else {
-    Psi_xy = std::pow(std::cos(constant * (dist - 0.5)), 2);
-  }
+  // computes Psi_x(y)
+  double operator()(Eigen::Vector2d y);
+  // computes grad(Psi_x)(y)
+  Eigen::Vector2d grad(Eigen::Vector2d y);
+  // computes the laplacian of Psi_x at y
+  double lapl(Eigen::Vector2d y);
 
-  return Psi_xy;
-}
+ private:
+  Eigen::Vector2d center_ = Eigen::Vector2d(0.5, 0.5);
+};
 
-/* Computes grad(Psi_x(y)). */
-Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
-  Eigen::Vector2d gradPsi_xy;
-
-  Eigen::Vector2d half(0.5, 0.5);
-  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
-  double dist = (y - half).norm();
-
-  if (dist <= 0.25 * std::sqrt(2)) {
-    gradPsi_xy(0) = 0.0;
-    gradPsi_xy(1) = 0.0;
-
-  } else if (dist >= 0.5) {
-    gradPsi_xy(0) = 0.0;
-    gradPsi_xy(1) = 0.0;
-
-  } else {
-    gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
-                 std::sin(constant * (dist - 0.5)) * (constant / dist) *
-                 (y - half);
-  }
-
-  return gradPsi_xy;
-}
-
-/* Computes Laplacian of Psi_x(y). */
-double laplPsi(const Eigen::Vector2d y) {
-  double laplPsi_xy;
-  Eigen::Vector2d half(0.5, 0.5);
-  double constant = M_PI / (0.5 * std::sqrt(2) - 1.0);
-  double dist = (y - half).norm();
-
-  if (dist <= 0.25 * std::sqrt(2)) {
-    laplPsi_xy = 0.0;
-  } else if (dist >= 0.5) {
-    laplPsi_xy = 0.0;
-  } else {
-    laplPsi_xy =
-        (2 * std::pow(constant, 2) / (y - half).squaredNorm()) *
-            (y - half).dot(y - half) *
-            (std::pow(std::sin(constant * (dist - 0.5)), 2) -
-             std::pow(std::cos(constant * (dist - 0.5)), 2)) -
-        (2 * constant / dist) * std::cos(constant * (dist - 0.5)) *
-            std::sin(constant * (dist - 0.5)) *
-            (1.0 - ((y - half).dot(y - half) / (y - half).squaredNorm()));
-  }
-  return laplPsi_xy;
-}
-
-/* Computes Jstar
- * fe_space: finite element space defined on a triangular mesh of the square
- * domain u: Function handle for u x: Coordinate vector for x
+/** @brief Computes Jstar
+ * @param fe_space: finite element space defined on a triangular mesh of the
+ * square
+ * @param uFE: Coefficient vector of the finite element function wrt the
+ * fe_space
+ * @param x: Evaluation point
  */
 /* SAM_LISTING_BEGIN_4 */
-template <typename FUNCTOR>
 double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-             FUNCTOR &&u, const Eigen::Vector2d x) {
-  double val = 0.0;
-  std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
-
-  // Use midpoint quadrature rule
-  const lf::quad::QuadRule qr = lf::quad::make_TriaQR_MidpointRule();
-  // Quadrature points
-  const Eigen::MatrixXd zeta_ref{qr.Points()};
-  // Quadrature weights
-  const Eigen::VectorXd w_ref{qr.Weights()};
-  // Number of quadrature points
-  const lf::base::size_type P = qr.NumPoints();
-
-  // Loop over all cells
-  for (const lf::mesh::Entity *entity : mesh->Entities(0)) {
-    LF_ASSERT_MSG(entity->RefEl() == lf::base::RefEl::kTria(),
-                  "Not on triangular mesh!");
-
-    const lf::geometry::Geometry &geo{*entity->Geometry()};
-    const Eigen::MatrixXd zeta{geo.Global(zeta_ref)};
-    const Eigen::VectorXd gram_dets{geo.IntegrationElement(zeta_ref)};
-
-    for (int l = 0; l < P; l++) {
-      val -= w_ref[l] * u(zeta.col(l)) *
-             (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
-              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
-             gram_dets[l];
-    }
-  }
-
-  /* VARIANT:
-     auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y)
-     {
-
-     return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y)
-     ));
-     }
-     );
-
-     double val_test = lf::fe::IntegrateMeshFunction(*mesh, lambda, 9);
-  */
-  return val;
-}
+             Eigen::VectorXd uFE, const Eigen::Vector2d x);
 
 /* SAM_LISTING_END_4 */
 
-/* Evaluates u(x) according to (3.11.14).
- * u: Function Handle for u
- * x: Coordinate vector for x
+/** @brief Verifies that the assumptions on Psi_x are satisfied and evaluates
+ * Jstar
+ * @param fe_space: finite element space defined on a triangular mesh of the
+ * square
+ * @param uFE: Coefficient vector of the finite element function wrt the
+ * fe_space
+ * @param x: Evaluation point
  */
-template <typename FUNCTOR>
-double stab_pointEval(
+double StablePointEvaluation(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
-    FUNCTOR &&u, const Eigen::Vector2d x) {
-  double res = 0.0;
+    Eigen::VectorXd uFE, const Eigen::Vector2d x);
 
-  Eigen::Vector2d half(0.5, 0.5);
-  if ((x - half).norm() <= 0.25) {
-    res = Jstar(fe_space, u, x);
+/** @brief Solves the Laplace equation using Dirichlet conditions g */
+template <typename FUNCTOR>
+Eigen::VectorXd SolveBVP(
+    const std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space_p,
+    FUNCTOR &&g) {
+  Eigen::VectorXd discrete_solution;
 
-  } else {
-    std::cerr << "The point does not fulfill the assumptions" << std::endl;
-  }
+  // Extract mesh and Dofhandler
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = fe_space_p->Mesh();
+  const lf::assemble::DofHandler &dofh{fe_space_p->LocGlobMap()};
+  auto N_dofs = dofh.NumDofs();
 
-  return res;
+  // Obtain specification for shape functions on edges
+  const auto *rsf_edge_p =
+      fe_space_p->ShapeFunctionLayout(lf::base::RefEl::kSegment());
+
+  // Dirichlet data
+  lf::mesh::utils::MeshFunctionGlobal mf_g{g};
+  // Right-hand side source function f
+  lf::mesh::utils::MeshFunctionConstant mf_f{0.0};
+
+  // I : ASSEMBLY
+  // Matrix in triplet format holding Galerkin matrix, zero initially.
+  lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
+  // Right hand side vector, must be initialized with 0!
+  Eigen::Matrix<double, Eigen::Dynamic, 1> phi(N_dofs);
+  phi.setZero();
+
+  // Compute Galerkin Matrix
+  lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder{};
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
+
+  // Compute right-hand side vector
+  lf::uscalfe::ScalarLoadElementVectorProvider<double, decltype(mf_f)>
+      elvec_builder(fe_space_p, mf_f);
+  AssembleVectorLocally(0, dofh, elvec_builder, phi);
+
+  // Impose essential Boundary conditions
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+  auto edges_flag_values_Dirichlet{
+      lf::fe::InitEssentialConditionFromFunction(*fe_space_p, bd_flags, mf_g)};
+  // Eliminate Dirichlet dofs from the linear system
+  lf::assemble::FixFlaggedSolutionComponents<double>(
+      [&edges_flag_values_Dirichlet](lf::assemble::glb_idx_t gdof_idx) {
+        return edges_flag_values_Dirichlet[gdof_idx];
+      },
+      A, phi);
+
+  // Assembly completed! Convert COO matrix A into CRS format using Eigen's
+  // internal conversion routines.
+  Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
+
+  // II : SOLVING  THE LINEAR SYSTEM
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+  solver.compute(A_sparse);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
+  discrete_solution = solver.solve(phi);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+
+  return discrete_solution;
+};
+/**
+ * @brief Evaluates a finite element function at a point specified by its global
+ * coordinates
+ */
+double EvaluateFEFunction(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+    const Eigen::VectorXd &uFE, Eigen::Vector2d global, double tol = 10E-10);
+
+/** @brief Returns the result of evaluating u_h(x) directly or by the stable
+ * scheme */
+template <typename FUNCTOR>
+std::pair<double, double> ComparePointEval(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+    FUNCTOR &&g, Eigen::Vector2d x) {
+  double direct_eval = 0.0;
+  double stable_eval = 0.0;
+  // Compute FE solution:
+  Eigen::VectorXd uFE = SolveBVP(fe_space, g);
+
+  // use the two evaluation methods:
+  direct_eval = EvaluateFEFunction(fe_space, uFE, x);
+  stable_eval = StablePointEvaluation(fe_space, uFE, x);
+
+  return {direct_eval, stable_eval};
 }
 
 } /* namespace StableEvaluationAtAPoint */
+
+#endif  // STABLE_EVALUATION_AT_A_POINT_H

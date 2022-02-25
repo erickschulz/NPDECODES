@@ -38,9 +38,9 @@ Eigen::VectorXd scalarImplicitTimestepping(double epsilon, unsigned int M) {
   x(0, 0) = 1.0;
   x(0, 1) = 1.0;
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
   return x.col(1);
 }  // scalarImplicitTimestepping
 /* SAM_LISTING_END_1 */

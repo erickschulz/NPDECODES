@@ -131,7 +131,7 @@ Eigen::VectorXd solveImpedanceBVP(
   // internal conversion routines.
   Eigen::SparseMatrix<double> A_sparse = A.makeSparse();
 
-  // II : SOLVING  THE LINEAR SYSTEM
+// II : SOLVING  THE LINEAR SYSTEM
   // II.i : Setting up Eigen's sparse direct elimination
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(A_sparse);
@@ -140,7 +140,7 @@ Eigen::VectorXd solveImpedanceBVP(
   discrete_solution = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
 
-  // do nothing
+// do nothing
   return discrete_solution;
 };
 /* SAM_LISTING_END_9 */

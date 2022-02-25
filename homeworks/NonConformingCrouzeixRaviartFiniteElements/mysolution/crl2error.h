@@ -23,7 +23,7 @@ double computeCRL2Error(std::shared_ptr<CRFeSpace> fe_space,
                         const Eigen::VectorXd &mu, FUNCTION &&u) {
   double l2_error = 0.;
 
-  // TODO: task 2-14.w)
+// TODO: task 2-14.w)
   //====================
   // Your code goes here
   //====================

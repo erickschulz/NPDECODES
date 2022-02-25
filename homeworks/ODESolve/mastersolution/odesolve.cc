@@ -68,6 +68,7 @@ std::pair<std::vector<double>, std::vector<double>> SolveTangentIVP() {
   auto Psi = [&f](double h, double y0) -> double { return y0 + h * f(y0); };
   // run adaptive algoritm
   return OdeIntSsCtrl(Psi, p, y0, T, h0, 10e-4, 10e-6, 10e-5);
+
 }
 /* SAM_LISTING_END_4 */
 

@@ -233,7 +233,7 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> leapfrogMixedWave(
   Eigen::VectorXd mu_init = Eigen::VectorXd::Zero(N_dofs_V);
   Eigen::VectorXd kappa_init = Eigen::VectorXd::Zero(N_dofs_Q);
 
-  // PRECOMPUTATIONS: essential for efficiency
+// PRECOMPUTATIONS: essential for efficiency
   std::cout << "Precomputing Galerkin Matrices :" << std::endl;
   // Galerkin matrix $\wt{\VM}_V$
   Eigen::SparseMatrix<double> M_V = computeMV(fe_space_V, rho);

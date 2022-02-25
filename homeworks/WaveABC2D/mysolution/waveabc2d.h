@@ -128,9 +128,9 @@ class WaveABC2DTimestepper {
   unsigned int M_;    // nb of steps
   double step_size_;  // time inverval
   std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space_p_;
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 };  // class WaveABC2DTimestepper
 /* SAM_LISTING_END_9 */
 
@@ -151,9 +151,9 @@ WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::WaveABC2DTimestepper(
   auto one_mf = lf::mesh::utils::MeshFunctionGlobal(
       [](Eigen::Vector2d) -> double { return 1.0; });
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 }
 /* SAM_LISTING_END_1 */
 
@@ -172,9 +172,9 @@ Eigen::VectorXd WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0,
   Eigen::VectorXd nu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_nu0);
   Eigen::VectorXd mu0_nodal = lf::fe::NodalProjection(*fe_space_p_, mf_mu0);
 
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 
   return sol;
 }  // solveWaveABC2D
@@ -184,9 +184,9 @@ Eigen::VectorXd WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0,
 template <typename FUNC_RHO, typename FUNC_MU0, typename FUNC_NU0>
 double WaveABC2DTimestepper<FUNC_RHO, FUNC_MU0, FUNC_NU0>::energies() {
   double energy;
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
   return energy;
 }
 /* SAM_LISTING_END_10 */

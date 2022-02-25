@@ -20,7 +20,7 @@ template <typename GAMMA_COEFF, typename F_FUNCTOR>
 Eigen::VectorXd solveCRDirichletBVP(std::shared_ptr<CRFeSpace> fe_space,
                                     GAMMA_COEFF &&gamma, F_FUNCTOR &&f) {
   Eigen::VectorXd sol;
-  // TODO: task 2-14.v)
+// TODO: task 2-14.v)
   // Obtain local to global index mapping for shape functions
   const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
   const lf::uscalfe::size_type num_dofs(dof_handler.NumDofs());

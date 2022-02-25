@@ -20,6 +20,7 @@
 #include <cmath>
 #include <memory>
 
+#include "../../../lecturecodes/ConvectionDiffusion/convection_emp.h"
 #include "upwindquadrature.h"
 
 int main() {
@@ -88,7 +89,7 @@ int main() {
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, laplacian_provider, A);
 
   // Next part corresponding to the convection term:
-  UpwindQuadrature::ConvectionElementMatrixProvider convection_provider(v);
+  ConvectionDiffusion::ConvectionElementMatrixProvider convection_provider(v);
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, convection_provider, A);
 
   // RIGHT-HAND SIDE VECTOR

@@ -182,7 +182,7 @@ Eigen::Vector2d GlobalInverseQuad(Eigen::Matrix<double, 2, 4> vert,
       break;
     }
   }
-  /* SAM_LISTING_END_3 */
+    /* SAM_LISTING_END_3 */
   return x_hat;
 }
 

@@ -11,10 +11,10 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
 /* SAM_LISTING_BEGIN_1 */
 lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
   lf::base::RefElType ref_el_type;
-  // TODO: task 2-14.q)
-  //====================
-  // Your code goes here
-  //====================
+// TODO: task 2-14.q)
+//====================
+// Your code goes here
+//====================
   return lf::base::RefEl(ref_el_type);
 }
 /* SAM_LISTING_END_1 */
@@ -23,10 +23,10 @@ lf::base::RefEl CRReferenceFiniteElement::RefEl() const {
 /* SAM_LISTING_BEGIN_2 */
 unsigned int CRReferenceFiniteElement::Degree() const {
   unsigned int degree;
-  // TODO: task 2-14.q)
-  //====================
-  // Your code goes here
-  //====================
+// TODO: task 2-14.q)
+//====================
+// Your code goes here
+//====================
   return degree;
 }
 /* SAM_LISTING_END_2 */
@@ -34,7 +34,7 @@ unsigned int CRReferenceFiniteElement::Degree() const {
 /* SAM_LISTING_BEGIN_3 */
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
   lf::assemble::size_type num_ref_shape_functions;
-  // TODO: task 2-14.q)
+// TODO: task 2-14.q)
   //====================
   // Your code goes here
   //====================
@@ -44,10 +44,10 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions() const {
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
     lf::assemble::dim_t codim) const {
   switch (codim) {
-      // TODO: task 2-14.q)
-      //====================
-      // Your code goes here
-      //====================
+    // TODO: task 2-14.q)
+//====================
+// Your code goes here
+//====================
     default:
       LF_VERIFY_MSG(false, "Codimension out of range for triangle")
       return 0;
@@ -57,10 +57,10 @@ lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
 lf::assemble::size_type CRReferenceFiniteElement::NumRefShapeFunctions(
     lf::assemble::dim_t codim, lf::base::sub_idx_t subidx) const {
   switch (codim) {
-      // TODO: task 2-14.q)
-      //====================
-      // Your code goes here
-      //====================
+    // TODO: task 2-14.q)
+//====================
+// Your code goes here
+//====================
     default:
       LF_VERIFY_MSG(false, "Codimension out of range for triangle")
       return 0;
@@ -78,7 +78,7 @@ CRReferenceFiniteElement::EvalReferenceShapeFunctions(
   // Initialize a matrix that will store the values of the reference basis
   // functions evaluated at the coordinates passed as arguments
   Eigen::MatrixXd eval_ref_shape_functions(3, num_points);
-  // TODO: task 2-14.q)
+// TODO: task 2-14.q)
   //====================
   // Your code goes here
   //====================
@@ -96,10 +96,10 @@ CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
   // Initialize a matrix that will store the gradients of the reference basis
   // functions evaluated at the coordinates passed as arguments
   Eigen::MatrixXd grad_ref_shape_functions(3, 2 * num_points);
-  // TODO: task 2-14.r)
-  //====================
-  // Your code goes here
-  //====================
+// TODO: task 2-14.r)
+//====================
+// Your code goes here
+//====================
   return grad_ref_shape_functions;
 }
 /* SAM_LISTING_END_5 */
@@ -107,10 +107,10 @@ CRReferenceFiniteElement::GradientsReferenceShapeFunctions(
 /* SAM_LISTING_BEGIN_6 */
 Eigen::MatrixXd CRReferenceFiniteElement::EvaluationNodes() const {
   Eigen::MatrixXd eval_nodes(2, 3);
-  // TODO: task 2-14.s)
-  //====================
-  // Your code goes here
-  //====================
+// TODO: task 2-14.s)
+//====================
+// Your code goes here
+//====================
   return eval_nodes;
 }
 /* SAM_LISTING_END_6 */
@@ -127,10 +127,10 @@ CRReferenceFiniteElement::NodalValuesToDofs(
                 "nodvals = " << nodvals << " <-> " << NumEvaluationNodes());
 
   Eigen::MatrixXd coeffs;
-  // TODO: task 2-14.s)
-  //====================
-  // Your code goes here
-  //====================
+// TODO: task 2-14.s)
+//====================
+// Your code goes here
+//====================
   return coeffs;
 }
 /* SAM_LISTING_END_7 */

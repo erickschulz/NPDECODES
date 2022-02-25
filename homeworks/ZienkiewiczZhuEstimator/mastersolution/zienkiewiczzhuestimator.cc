@@ -94,6 +94,7 @@ Eigen::MatrixXd VectorProjectionMatrixProvider::Eval(
                  elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3), 0.0,
                  0.0, elMat_scal(3, 0), 0.0, elMat_scal(3, 1), 0.0, elMat_scal(3, 2), 0.0, elMat_scal(3, 3);
     // clang-format on
+
   }
   return elMat_vec;  // return the local mass element matrix
 }  //
@@ -175,7 +176,7 @@ Eigen::VectorXd computeLumpedProjection(
     const Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
     // Obtain area of the triangular cell
     const double area = lf::geometry::Volume(*(cell->Geometry()));
-    // Compute the gradient of the passed coefficient vector
+// Compute the gradient of the passed coefficient vector
     const Eigen::Vector2d grad_mu =
         elgrad_Mat.col(0) * mu(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * mu(scal_dof_idx_vec[1]) +
@@ -224,7 +225,7 @@ double computeL2Deviation(const lf::assemble::DofHandler &scal_dofh,
     auto scal_dof_idx_vec = scal_dofh.GlobalDofIndices(*cell);
     // Obtain the gradients of the barycentric coordinates functions
     Eigen::Matrix<double, 2, 3> elgrad_Mat = gradbarycoordinates(*cell);
-    // Compute the gradient of the passed coefficient vector eta
+// Compute the gradient of the passed coefficient vector eta
     const Eigen::Vector2d grad_eta =
         elgrad_Mat.col(0) * eta(scal_dof_idx_vec[0]) +
         elgrad_Mat.col(1) * eta(scal_dof_idx_vec[1]) +

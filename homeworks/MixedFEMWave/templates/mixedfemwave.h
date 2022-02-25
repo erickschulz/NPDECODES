@@ -78,6 +78,8 @@ Eigen::VectorXd computeRHS(
 }
 /* SAM_LISTING_END_1 */
 
+
+
 Eigen::SparseMatrix<double> computeMQ(const lf::assemble::DofHandler &dofh_Q);
 
 /* SAM_LISTING_BEGIN_6 */
@@ -98,6 +100,7 @@ Eigen::SparseMatrix<double> computeMV(
   return M_V;
 }
 /* SAM_LISTING_END_6 */
+
 
 class BElemMatProvider {
  public:
@@ -129,10 +132,10 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> leapfrogMixedWave(
   Eigen::VectorXd mu_init = Eigen::VectorXd::Zero(N_dofs_V);
   Eigen::VectorXd kappa_init = Eigen::VectorXd::Zero(N_dofs_Q);
 
-  // PRECOMPUTATIONS: essential for efficiency
-  // ========================================
-  // Your code here
-  // ========================================
+// PRECOMPUTATIONS: essential for efficiency
+// ========================================
+// Your code here
+// ========================================
 
   // EVOLUTION
   // Vectors for returning result

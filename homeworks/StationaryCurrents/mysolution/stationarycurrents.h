@@ -22,6 +22,7 @@
 #include <map>
 #include <vector>
 
+
 namespace dmxbc {
 
 /** @brief Computation of gradients of barycentric coordinate functions
@@ -117,6 +118,7 @@ Eigen::VectorXd solveMixedBVP(
 }  // end solveMixedBVP
 
 /* SAM_LISTING_END_1 */
+
 
 /* SAM_LISTING_END_3 */
 

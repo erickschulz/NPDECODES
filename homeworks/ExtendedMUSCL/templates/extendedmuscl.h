@@ -129,9 +129,9 @@ void interpolate(const VECSOURCE &s, VECDEST &d) {
   // Mesh widths/cell sizes
   const double H = 1.0 / n;
   const double h = 1.0 / N;
-  //====================
-  // Your code goes here
-  //====================
+//====================
+// Your code goes here
+//====================
 }
 /* SAM_LISTING_END_5 */
 

@@ -21,7 +21,7 @@ template <typename GAMMA_COEFF, typename F_FUNCTOR>
 Eigen::VectorXd solveCRNeumannBVP(std::shared_ptr<CRFeSpace> fe_space,
                                   GAMMA_COEFF &&gamma, F_FUNCTOR &&f) {
   Eigen::VectorXd sol;
-  // TODO: task 2-14.u)
+// TODO: task 2-14.u)
   // Obtain local to global index mapping for shape functions
   const lf::assemble::DofHandler &dof_handler{fe_space->LocGlobMap()};
   const size_type num_dofs = dof_handler.NumDofs();
