@@ -63,25 +63,7 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
 }
 /* SAM_LISTING_END_1 */
 
-/**
- * @brief L2Error Computes the L2 error between the approximate solution and
- *                the exact solution
- * @param mesh the mesh to use
- * @param uFEM the solution approximated through FEM
- * @param exact the exact solution
- * @return the L2 difference
- */
-/* SAM_LISTING_BEGIN_2 */
-double L2Error(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
-               const std::function<double(const Eigen::Vector2d &)> exact) {
-  double l2error_squared = 0.0;
-  //====================
-  // Your code goes here
-  //====================
 
-  return std::sqrt(l2error_squared);
-}
-/* SAM_LISTING_END_2 */
 
 /**
  * @brief H1Serror Computes the H^1 error between the approximate solution and

@@ -10,10 +10,13 @@
 #define MESH "Square4"
 
 int main() {
+  std::cout << "NumPDE homework problem on triangular linear FEM for 2D "
+               "reaction-diffusion BVP "
+            << std::endl;
   std::string meshfile = CURRENT_SOURCE_DIR "/../meshes/" MESH ".txt";
 
   SimpleLinearFiniteElements::TriaMesh2D square_mesh(meshfile);
-  std::cout << "Mesh loaded " << std::endl;
+  std::cout << "Mesh loaded from " << meshfile << std::endl;
   std::cout << "Mesh info: " << square_mesh.vertices.rows() << " vertices, "
             << square_mesh.elements.rows() << " elements" << std::endl;
 
