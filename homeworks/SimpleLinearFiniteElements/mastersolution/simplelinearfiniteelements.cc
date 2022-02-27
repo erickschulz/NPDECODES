@@ -62,7 +62,6 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
 }
 /* SAM_LISTING_END_1 */
 
-
 // Old non-templated version of the function
 double L2Error_old(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
                    const std::function<double(const Eigen::Vector2d &)> exact) {

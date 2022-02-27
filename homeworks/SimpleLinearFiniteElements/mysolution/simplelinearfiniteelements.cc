@@ -64,7 +64,6 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
 /* SAM_LISTING_END_1 */
 
 
-
 /**
  * @brief H1Serror Computes the H^1 error between the approximate solution and
  *                the exact solution
