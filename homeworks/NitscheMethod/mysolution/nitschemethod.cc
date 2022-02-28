@@ -35,13 +35,10 @@ Eigen::Matrix3d LinearFENitscheElementMatrix::Eval(
   const Eigen::Matrix2d JinvT(K_geo.JacobianInverseGramian(c_hat_));
   // Transform gradients
   const Eigen::Matrix<double, 2, 3> G = JinvT * G_hat_;
-  // std::cout << "JinvT = " << std::endl << JinvT << std::endl;
-  // std::cout << "G = " << std::endl << G << std::endl;
   // ------------------------------------------------------------------
   // I: Compute element matrix induced by volume part of bilinear form
   // Element matrix for linear finite elements and the Laplacian
   Eigen::Matrix3d el_mat(lf::geometry::Volume(K_geo) * G.adjoint() * G);
-  // std::cout << "elmat = " << std::endl << el_mat << std::endl;
   // ------------------------------------------------------------------
   // II: Boundary parts of the bilinear form
   // Retrieve pointers to all edges of the triangle
@@ -64,8 +61,6 @@ Eigen::Matrix3d LinearFENitscheElementMatrix::Eval(
       const int ori = (ed_normal.dot(center - ed_pts.col(0)) > 0) ? -1 : 1;
       const Eigen::Matrix3d ed_mat =
           -L_.col(k) * ((ori * ed_normal.transpose()) * G);
-      // std::cout << "ed_normal = " << ori*ed_normal.transpose() << std::endl;
-      // std::cout << "ed_mat = " << std::endl << ed_mat << std::endl;
       el_mat += (ed_mat + ed_mat.transpose());
       // II(ii): contributions of boundary penalty term
       const double fac = c_ * dir.norm();
