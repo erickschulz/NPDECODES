@@ -11,7 +11,7 @@
 namespace SimpleLinearFiniteElements {
 
 /* SAM_LISTING_BEGIN_9 */
-double getArea(const Eigen::Matrix<double, 2, 3> &triangle) {
+double getArea(const TriGeo_t &triangle) {
   return std::abs(
       0.5 *
       ((triangle(0, 1) - triangle(0, 0)) * (triangle(1, 2) - triangle(1, 1)) -
@@ -19,46 +19,35 @@ double getArea(const Eigen::Matrix<double, 2, 3> &triangle) {
 }
 /* SAM_LISTING_END_9 */
 
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(
-    const Eigen::Matrix<double, 2, 3> &triangle) {
+/**
+ * @brief Compute the barycentric coordinate function gradients
+ * @param vertices The vertices of the triangle
+ * @returns A matrix with the gradients in its columns
+ */
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t &vertices) {
   Eigen::Matrix3d X;
+  // Argument \texttt{vertices} passes the vertex positions of the triangle
+  // as the \textbf{columns} of a $2\times 3$-matrix, see
+  // \cref{cpp:getVtCoords}. The function returns the components of the
+  // gradients as the \textbf{columns} of a $2\times 3$-matrix.
 
-  // solve for the coefficients of the barycentric coordinate functions, see
-  // \eqref{eq:lambdalse}
+  // Computation based on \eqref{eq:lambdalse}, solving for the
+  // coefficints of the barycentric oordinate functions.
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
-  X.block<3, 2>(0, 1) = triangle.transpose();
+  X.block<3, 2>(0, 1) = vertices.transpose();
   return X.inverse().block<2, 3>(1, 0);
 }
 
 /**
- *  @brief Computation of Element Matrix for the Laplacian
- */
-Eigen::Matrix3d ElementMatrix_Lapl_LFE(
-    const Eigen::Matrix<double, 2, 3> &triangle) {
-  Eigen::Matrix<double, 2, 3> X = gradbarycoordinates(triangle);
-  // compute inner products of gradients through matrix multiplication
-  return getArea(triangle) * X.transpose() * X;
-}
-
-/**
- *  @brief Computation of full Galerkin Matrix
- */
-Eigen::Matrix3d ElementMatrix_LaplMass_LFE(
-    const Eigen::Matrix<double, 2, 3> &triangle) {
-  return ElementMatrix_Lapl_LFE(triangle) + ElementMatrix_Mass_LFE(triangle);
-}
-
-/**
  *  @brief Computation of element mass matrix on planar triangle
- *  @param triangle 2x3 matrix of vertex coordinates
+ *  @param V 2x3 matrix of vertex coordinates
  */
 /* SAM_LISTING_BEGIN_1 */
-Eigen::Matrix3d ElementMatrix_Mass_LFE(
-    const Eigen::Matrix<double, 2, 3> &triangle) {
+Eigen::Matrix3d ElementMatrix_Mass_LFE(const TriGeo_t &V) {
   Eigen::Matrix3d element_matrix;
 #if SOLUTION
   element_matrix << 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0;
-  element_matrix *= getArea(triangle) / 12.0;
+  element_matrix *= getArea(V) / 12.0;
 #else
   //====================
   // Your code goes here
@@ -68,28 +57,110 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
 }
 /* SAM_LISTING_END_1 */
 
-#if SOLUTION
-// Old non-templated version of the function
-double L2Error_old(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
-                   const std::function<double(const Eigen::Vector2d &)> exact) {
-  double l2error_squared = 0.0;
-  // loop over all triangles
-  for (int i = 0; i < mesh.elements.rows(); ++i) {
-    Eigen::Matrix<double, 2, 3> triangle = mesh[i];
+/**
+ *  @brief Computation of Element Matrix for the Laplacian
+ *  @param V The vertices of the triangle
+ */
+Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t &V) {
+  // Argument \texttt{V} same as \texttt{vertices} in \cref{cpp:gradbarycords}.
+  // The function returns the $3\times 3$ element matrix as a fixed size
+  // \eigen matix.
 
-    // loop over all three vertices of the triangle
-    Eigen::Vector3d error_at_vertices;
-    for (int k = 0; k < 3; ++k) {
-      error_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh.elements(i, k));
-    }
-
-    // Add squared error per triangle
-    l2error_squared +=
-        getArea(triangle) / 3.0 * error_at_vertices.squaredNorm();
-  }
-  return std::sqrt(l2error_squared);
+  Eigen::Matrix<double, 2, 3> X = gradbarycoordinates(V);
+  // compute inner products of gradients through matrix multiplication
+  return getArea(V) * X.transpose() * X;
 }
-#endif
+
+/**
+ *  @brief Computation of full Element Matrix
+ *  @param V The vertices of the triangle
+ */
+Eigen::Matrix3d getElementMatrix(const TriGeo_t &V) {
+  return ElementMatrix_Lapl_LFE(V) + ElementMatrix_Mass_LFE(V);
+}
+
+/**
+ * @brief Compute the local Element Load Vector
+ * @param V Vertex coordinates of the triangle
+ * @param FHandle Load function f
+ * @returns The local Element Load Vector
+ */
+Eigen::Vector3d localLoadLFE(const TriGeo_t &V, const FHandle_t &FHandle) {
+  Eigen::Vector3d philoc = Eigen::Vector3d::Zero();
+  // Evaluate source function for ertex locations
+  for (int i = 0; i < 3; ++i) {
+    philoc(i) = FHandle(V.col(i));
+  }
+  philoc *= getArea(V) / 3;
+  return philoc;
+}
+
+/**
+ * @brief GalerkinAssembly Assembles the Galerkin Matrix
+ * @param mesh the mesh to use
+ * @param getElementMatrix Element Matrix
+ * @return Galerkin Matrix
+ */
+Eigen::SparseMatrix<double> assembleGalMatLFE(
+    const TriaMesh2D &Mesh, const LocalMatrixHandle_t &getElementMatrix) {
+  // obtain the number of vertices
+  int N = Mesh._nodecoords.rows();
+  // obtain the number of elements/cells
+  int M = Mesh._elements.rows();
+  std::vector<Eigen::Triplet<double>> triplets;
+  // loop over elements and add local contributions
+  for (int i = 0; i < M; i++) {
+    // get local$\to$global index mapping for current element, \emph{cf.}
+    // \lref{eq:idxdef}
+    const TriGeo_t triangle = Mesh.getVtCoords(i);
+    // compute element contributions
+    Eigen::Matrix3d Ak = getElementMatrix(triangle);
+    // build triplets from contributions
+    Eigen::Vector3i element = Mesh._elements.row(i);
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 3; k++) {
+        triplets.emplace_back(element(j), element(k), Ak(j, k));
+      }
+    }
+  }
+  // build sparse matrix from triplets
+  Eigen::SparseMatrix<double> A(N, N);
+  A.setFromTriplets(triplets.begin(), triplets.end());
+  A.makeCompressed();
+  return A;
+}
+
+/**
+ * @brief assemLoad_LFE Assembles the Load Vector
+ * @param mesh the mesh to use
+ * @param getElementVector Element Vector factory
+ * @param FHandle function handle for f
+ * @return assembled load vector
+ */
+Eigen::VectorXd assemLoad_LFE(const TriaMesh2D &Mesh,
+                              const LocalVectorHandle_t &getElementVector,
+                              const FHandle_t &FHandle) {
+  // obtain the number of triangles
+  int M = Mesh._elements.rows();
+
+  // obtain the number of vertices
+  int N = Mesh._nodecoords.rows();
+  Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);
+
+  // loop over all triangles
+  for (int i = 0; i < M; i++) {
+    const TriGeo_t Vertices = Mesh.getVtCoords(i);
+    // Compute the element right hand side vector
+    const Eigen::Vector3d philoc = getElementVector(Vertices, FHandle);
+    // Add contibutions to global load vector
+    const Eigen::Vector3i dofhk = Mesh._elements.row(i);
+    for (int j = 0; j < 3; ++j) {
+      phi(dofhk(j)) += philoc(j);
+    }
+  }
+
+  return phi;
+}
 
 /**
  * @brief H1Serror Computes the H^1 error between the approximate solution and
@@ -98,8 +169,6 @@ double L2Error_old(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
  * @param uFEM the solution approximated through FEM
  * @param exact the exact gradient of the solution
  * @return the H^1 difference
- *
- * @note This implementation seems to be flawed!
  */
 /* SAM_LISTING_BEGIN_3 */
 double H1Serror(
@@ -109,13 +178,13 @@ double H1Serror(
 #if SOLUTION
 
   // loop over all triangles
-  for (int i = 0; i < mesh.elements.rows(); ++i) {
-    Eigen::Matrix<double, 2, 3> triangle = mesh[i];
+  for (int i = 0; i < mesh._elements.rows(); ++i) {
+    const TriGeo_t triangle = mesh.getVtCoords(i);
 
     // loop over all three vertices of the triangle
     Eigen::Vector3d values_at_vertices;
     for (int k = 0; k < 3; ++k) {
-      values_at_vertices(k) = uFEM[mesh.elements(i, k)];
+      values_at_vertices(k) = uFEM[mesh._elements(i, k)];
     }
 
     // gradient of FEM approximation (same for all 3 vertices!)
@@ -143,82 +212,10 @@ double H1Serror(
 /* SAM_LISTING_END_3 */
 
 /**
- * @brief assemLoad_LFE Assembles the Load Vector
- * @param mesh the mesh to use
- * @param getElementVector
- * @param f function handle for f
- * @return assembled load vector
- */
-Eigen::VectorXd assemLoad_LFE(
-    const TriaMesh2D &mesh,
-    const std::function<double(const Eigen::Vector2d &)> &f) {
-  // obtain the number of triangles
-  int M = mesh.elements.rows();
-
-  // obtain the number of vertices
-  int N = mesh.vertices.rows();
-  Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);
-
-  // loop over all triangles
-  for (int i = 0; i < M; i++) {
-    Eigen::Matrix<double, 2, 3> triangle = mesh[i];
-
-    // loop over vertices of current triangle
-    double factor = getArea(triangle) / 3.0;
-    for (int j = 0; j < 3; ++j) {
-      // from local to global load vector
-      phi(mesh.elements(i, j)) += factor * f(triangle.col(j));
-    }
-  }
-
-  return phi;
-}
-
-/**
- * @brief GalerkinAssembly Assembles the Galerkin Matrix
- * @param mesh the mesh to use
- * @param getElementMatrix Element Matrix
- * @return Galerkin Matrix
- */
-Eigen::SparseMatrix<double> GalerkinAssembly(
-    const TriaMesh2D &mesh,
-    const std::function<Eigen::Matrix3d(const Eigen::Matrix<double, 2, 3> &)>
-        &getElementMatrix) {
-  // obtain the number of vertices
-  int N = mesh.vertices.rows();
-  // obtain the number of elements/cells
-  int M = mesh.elements.rows();
-  std::vector<Eigen::Triplet<double>> triplets;
-  // loop over elements and add local contributions
-  for (int i = 0; i < M; i++) {
-    // get local$\to$global index mapping for current element, \emph{cf.}
-    // \lref{eq:idxdef}
-    Eigen::Vector3i element = mesh.elements.row(i);
-    Eigen::Matrix<double, 2, 3> triangle;
-    // extract vertices of current element
-    for (int j = 0; j < 3; j++) {
-      triangle.col(j) = mesh.vertices.row(element(j)).transpose();
-    }
-    // compute element contributions
-    Eigen::Matrix3d Ak = getElementMatrix(triangle);
-    // build triplets from contributions
-    for (int j = 0; j < 3; j++) {
-      for (int k = 0; k < 3; k++) {
-        triplets.push_back({element(j), element(k), Ak(j, k)});
-      }
-    }
-  }
-  // build sparse matrix from triplets
-  Eigen::SparseMatrix<double> A(N, N);
-  A.setFromTriplets(triplets.begin(), triplets.end());
-  A.makeCompressed();
-  return A;
-}
-
-/**
  * @brief solves system and prints H1-semierror, L2 error, the mesh and a
  * surface plot
- * @param mesh: discretisation of the computational domain
+ * @param mesh discretisation of the computational domain
+ * @returns A tuple of the solution, the L2-Error and the H1-Error
  */
 /* SAM_LISTING_BEGIN_4 */
 std::tuple<Eigen::VectorXd, double, double> Solve(
@@ -248,10 +245,11 @@ std::tuple<Eigen::VectorXd, double, double> Solve(
     return gradient;
   };
   // Compute the galerkin matrix A and load vector L
-  Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::GalerkinAssembly(
-      mesh, SimpleLinearFiniteElements::ElementMatrix_LaplMass_LFE);
+  Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::assembleGalMatLFE(
+      mesh, SimpleLinearFiniteElements::getElementMatrix);
 
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(mesh, f);
+  Eigen::VectorXd L =
+      SimpleLinearFiniteElements::assemLoad_LFE(mesh, localLoadLFE, f);
 
   // solve the LSE using the sparse LU solver of Eigen
   Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>
@@ -267,7 +265,7 @@ std::tuple<Eigen::VectorXd, double, double> Solve(
   //====================
   // Your code goes here
   // Assigning some dummy values
-  U = Eigen::VectorXd::Zero(mesh.vertices.rows());
+  U = Eigen::VectorXd::Zero(mesh._nodecoords.rows());
   l2error = 1.0;
   h1error = 1.0;
   //====================

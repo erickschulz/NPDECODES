@@ -33,8 +33,8 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
       throw std::runtime_error(
           "Keyword 'Vertices' not found. Wrong file format.");
     }
-    vertices = Eigen::MatrixXd(n_vertices, 2);
-    file >> vertices;
+    _nodecoords = Eigen::MatrixXd(n_vertices, 2);
+    file >> _nodecoords;
 
     // read elements
     int n_elements;
@@ -45,8 +45,8 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
       throw std::runtime_error(
           "Keyword 'Elements' not found. Wrong file format.");
     }
-    elements = Eigen::MatrixXi(n_elements, 3);
-    file >> elements;
+    _elements = Eigen::MatrixXi(n_elements, 3);
+    file >> _elements;
 
     file.close();
   } else {
@@ -54,10 +54,10 @@ TriaMesh2D::TriaMesh2D(std::string filename) {
   }
 }
 
-Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[](int i) const {
-  Eigen::Matrix<double, 2, 3> triangle;
+TriGeo_t TriaMesh2D::getVtCoords(int i) const {
+  TriGeo_t triangle;
   for (int k = 0; k < 3; ++k) {
-    triangle.col(k) = vertices.row(elements(i, k));
+    triangle.col(k) = _nodecoords.row(_elements(i, k));
   }
   return triangle;
 }
@@ -70,11 +70,11 @@ Eigen::Matrix<double, 2, 3> TriaMesh2D::operator[](int i) const {
  */
 void TriaMesh2D::SaveMesh3D(std::string filename,
                             const Eigen::VectorXd &z) const {
-  int n_vertices = vertices.rows();
-  int n_elements = elements.rows();
+  int n_vertices = _nodecoords.rows();
+  int n_elements = _elements.rows();
 
   Eigen::MatrixXd new_vertices(n_vertices, 3);
-  new_vertices.leftCols<2>() = vertices;
+  new_vertices.leftCols<2>() = _nodecoords;
   new_vertices.col(2) = z;
 
   std::ofstream file(filename);
@@ -83,7 +83,7 @@ void TriaMesh2D::SaveMesh3D(std::string filename,
     file << new_vertices << std::endl;
 
     file << n_elements << " Elements" << std::endl;
-    file << elements;
+    file << _elements;
 
     file.close();
   } else {
