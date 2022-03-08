@@ -13,7 +13,7 @@
  *
  * @param filename  location of the desired mesh file on disk
  */
-TriaMesh2D::TriaMesh2D(const string &filename) {
+TriaMesh2D::TriaMesh2D(std::string filename) {
   // Open mesh file
   ifstream mesh_file(filename, ifstream::in);
   cout << "Loading mesh from file " << filename << endl;
@@ -31,10 +31,10 @@ TriaMesh2D::TriaMesh2D(const string &filename) {
     return;
   }
   // Read coordinates of nodes
-  Coordinates.resize(num_vertices, 2);
+  _nodecoords.resize(num_vertices, 2);
   for (int i = 0; i < num_vertices; i++) {
-    mesh_file >> Coordinates(i, 0);
-    mesh_file >> Coordinates(i, 1);
+    mesh_file >> _nodecoords(i, 0);
+    mesh_file >> _nodecoords(i, 1);
   }
   int num_elements;
   mesh_file >> num_elements;  // Read no. of cells
@@ -44,11 +44,11 @@ TriaMesh2D::TriaMesh2D(const string &filename) {
     return;
   }
   // Read node indices of triangles
-  Elements.resize(num_elements, 3);
+  _elements.resize(num_elements, 3);
   for (int i = 0; i < num_elements; i++) {
-    mesh_file >> Elements(i, 0);
-    mesh_file >> Elements(i, 1);
-    mesh_file >> Elements(i, 2);
+    mesh_file >> _elements(i, 0);
+    mesh_file >> _elements(i, 1);
+    mesh_file >> _elements(i, 2);
   }
   mesh_file.close();
 }
@@ -63,13 +63,13 @@ TriaMesh2D::TriaMesh2D(const string &filename) {
 /* SAM_LISTING_BEGIN_7 */
 TriGeo_t TriaMesh2D::getVtCoords(size_t cell_index) const {
   // Check whether valid cell index (starting from zero!)
-  assert(cell_index < Elements.rows());
+  assert(cell_index < _elements.rows());
   // Obtain numbers of vertices of triangle i
-  Eigen::RowVector3i idx = Elements.row(cell_index);
+  Eigen::RowVector3i idx = _elements.row(cell_index);
   // Bild matrix of vertex coordinates
   Eigen::Matrix<double, 3, 2> vtc;
-  vtc << Coordinates.row(idx[0]), Coordinates.row(idx[1]),
-      Coordinates.row(idx[2]);
+  vtc << _nodecoords.row(idx[0]), _nodecoords.row(idx[1]),
+      _nodecoords.row(idx[2]);
   return vtc.transpose();
 }
 /* SAM_LISTING_END_7 */

@@ -13,8 +13,8 @@ int main() {
   // load mesh
   TriaMesh2D square_mesh("meshes/Square5.txt");
   std::cout << "Mesh loaded " << std::endl;
-  std::cout << "Mesh info: " << square_mesh.Coordinates.rows() << " vertices,  "
-            << square_mesh.Elements.rows() << " elements" << std::endl;
+  std::cout << "Mesh info: " << square_mesh._nodecoords.rows() << " vertices,  "
+            << square_mesh._elements.rows() << " elements" << std::endl;
 
   // source function f
   auto f = [](const Eigen::Vector2d &x) {

@@ -17,8 +17,8 @@ using namespace std;
 
 /**
  * @brief The TriaMesh2D struct describes the triangulation in the form of a
- * Coordinates matrix that holds the coordinates of vertex i in its i-th row and
- * an Elements matrix that holds the three indices of the vertices forming a
+ * _nodecoords matrix that holds the coordinates of vertex i in its i-th row and
+ * an _elements matrix that holds the three indices of the vertices forming a
  * triangle in each row
  */
 /* SAM_LISTING_BEGIN_1 */
@@ -26,17 +26,17 @@ using namespace std;
 using TriGeo_t = Eigen::Matrix<double, 2, 3>;
 struct TriaMesh2D {
   // Constructor: reads mesh data from file, whose name is passed
-  TriaMesh2D(const std::string &);  // \Label[line]{tm:cs}
+  TriaMesh2D(std::string filename);  // \Label[line]{tm:cs}
   virtual ~TriaMesh2D(void) {}
   // Retrieve coordinates of vertices of a triangles as rows
   // of a fixed-size 3x2 matrix
   TriGeo_t getVtCoords(std::size_t) const;
   // Data members describing geometry and topolgy
-  Eigen::Matrix<double, Eigen::Dynamic, 2> Coordinates;
-  Eigen::Matrix<int, Eigen::Dynamic, 3> Elements;
+  Eigen::Matrix<double, Eigen::Dynamic, 2> _nodecoords;
+  Eigen::Matrix<int, Eigen::Dynamic, 3> _elements;
 };
 /* SAM_LISTING_END_1 */
-
+ 
 // Signature of a function computing the element matrix for a triangular cell
 // and piecewise linear Lagrangian finite elements
 typedef std::function<Eigen::Matrix3d(const TriGeo_t &)> LocalMatrixHandle_t;

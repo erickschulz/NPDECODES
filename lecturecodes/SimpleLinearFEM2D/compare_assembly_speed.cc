@@ -34,7 +34,7 @@ int main() {
     std::string mesh_file = "./meshes/Square" + std::to_string(i) + ".txt";
     TriaMesh2D mesh(mesh_file);
     // save the number of degrees of freedom
-    times(i, 0) = mesh.Coordinates.rows();
+    times(i, 0) = mesh._nodecoords.rows();
     // solve the problem on the mesh num_tries often taking the time for both
     // the efficient and the inefficient method
     Eigen::VectorXd mu;

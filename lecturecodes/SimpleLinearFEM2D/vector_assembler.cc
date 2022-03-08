@@ -7,19 +7,19 @@
 
 Eigen::VectorXd VectorAssembler::Assemble(TriaMesh2D const& mesh) {
   // obtain the number of vertices
-  int num_vertices = mesh.Coordinates.rows();
+  int num_vertices = mesh._nodecoords.rows();
   // obtain the number of cells
-  int num_cells = mesh.Elements.rows();
+  int num_cells = mesh._elements.rows();
 
   Eigen::VectorXd phi = Eigen::VectorXd::Zero(num_vertices);
 
   for (int i = 0; i < num_cells; i++) {
     // get local to global map
-    Eigen::Vector3i element = mesh.Elements.row(i);
+    Eigen::Vector3i element = mesh._elements.row(i);
     // get vertices of current triangle
     TriGeo_t vertices;
     for (int j = 0; j < 3; j++) {
-      vertices.col(j) = (mesh.Coordinates.row(element(j))).transpose();
+      vertices.col(j) = (mesh._nodecoords.row(element(j))).transpose();
     }
     // compute element right hand side vector
     Eigen::Vector3d phi_loc = VectorAssembler::localVectorHandle(
