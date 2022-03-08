@@ -24,14 +24,13 @@ double getArea(const TriGeo_t &triangle) {
  * @param vertices The vertices of the triangle
  * @returns A matrix with the gradients in its columns
  */
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(
-    const TriGeo_t &vertices) {
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t &vertices) {
   Eigen::Matrix3d X;
   // Argument \texttt{vertices} passes the vertex positions of the triangle
   // as the \textbf{columns} of a $2\times 3$-matrix, see
   // \cref{cpp:getVtCoords}. The function returns the components of the
   // gradients as the \textbf{columns} of a $2\times 3$-matrix.
-  
+
   // Computation based on \eqref{eq:lambdalse}, solving for the
   // coefficints of the barycentric oordinate functions.
   X.block<3, 1>(0, 0) = Eigen::Vector3d::Ones();
@@ -44,8 +43,7 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
  *  @param V 2x3 matrix of vertex coordinates
  */
 /* SAM_LISTING_BEGIN_1 */
-Eigen::Matrix3d ElementMatrix_Mass_LFE(
-    const TriGeo_t &V) {
+Eigen::Matrix3d ElementMatrix_Mass_LFE(const TriGeo_t &V) {
   Eigen::Matrix3d element_matrix;
 #if SOLUTION
   element_matrix << 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 2.0;
@@ -63,8 +61,7 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
  *  @brief Computation of Element Matrix for the Laplacian
  *  @param V The vertices of the triangle
  */
-Eigen::Matrix3d ElementMatrix_Lapl_LFE(
-    const TriGeo_t &V) {
+Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t &V) {
   // Argument \texttt{V} same as \texttt{vertices} in \cref{cpp:gradbarycords}.
   // The function returns the $3\times 3$ element matrix as a fixed size
   // \eigen matix.
@@ -78,8 +75,7 @@ Eigen::Matrix3d ElementMatrix_Lapl_LFE(
  *  @brief Computation of full Element Matrix
  *  @param V The vertices of the triangle
  */
-Eigen::Matrix3d getElementMatrix(
-    const TriGeo_t &V) {
+Eigen::Matrix3d getElementMatrix(const TriGeo_t &V) {
   return ElementMatrix_Lapl_LFE(V) + ElementMatrix_Mass_LFE(V);
 }
 
@@ -92,7 +88,7 @@ Eigen::Matrix3d getElementMatrix(
 Eigen::Vector3d localLoadLFE(const TriGeo_t &V, const FHandle_t &FHandle) {
   Eigen::Vector3d philoc = Eigen::Vector3d::Zero();
   // Evaluate source function for ertex locations
-  for (int i = 0 ; i < 3 ; ++i) {
+  for (int i = 0; i < 3; ++i) {
     philoc(i) = FHandle(V.col(i));
   }
   philoc *= getArea(V) / 3;
@@ -106,8 +102,7 @@ Eigen::Vector3d localLoadLFE(const TriGeo_t &V, const FHandle_t &FHandle) {
  * @return Galerkin Matrix
  */
 Eigen::SparseMatrix<double> assembleGalMatLFE(
-    const TriaMesh2D &Mesh,
-    const LocalMatrixHandle_t &getElementMatrix) {
+    const TriaMesh2D &Mesh, const LocalMatrixHandle_t &getElementMatrix) {
   // obtain the number of vertices
   int N = Mesh._nodecoords.rows();
   // obtain the number of elements/cells
@@ -142,10 +137,9 @@ Eigen::SparseMatrix<double> assembleGalMatLFE(
  * @param FHandle function handle for f
  * @return assembled load vector
  */
-Eigen::VectorXd assemLoad_LFE(
-    const TriaMesh2D &Mesh,
-    const LocalVectorHandle_t &getElementVector,
-    const FHandle_t &FHandle) {
+Eigen::VectorXd assemLoad_LFE(const TriaMesh2D &Mesh,
+                              const LocalVectorHandle_t &getElementVector,
+                              const FHandle_t &FHandle) {
   // obtain the number of triangles
   int M = Mesh._elements.rows();
 
@@ -160,7 +154,7 @@ Eigen::VectorXd assemLoad_LFE(
     const Eigen::Vector3d philoc = getElementVector(Vertices, FHandle);
     // Add contibutions to global load vector
     const Eigen::Vector3i dofhk = Mesh._elements.row(i);
-    for (int j = 0 ; j < 3 ; ++j) {
+    for (int j = 0; j < 3; ++j) {
       phi(dofhk(j)) += philoc(j);
     }
   }
@@ -254,7 +248,8 @@ std::tuple<Eigen::VectorXd, double, double> Solve(
   Eigen::SparseMatrix<double> A = SimpleLinearFiniteElements::assembleGalMatLFE(
       mesh, SimpleLinearFiniteElements::getElementMatrix);
 
-  Eigen::VectorXd L = SimpleLinearFiniteElements::assemLoad_LFE(mesh, localLoadLFE, f);
+  Eigen::VectorXd L =
+      SimpleLinearFiniteElements::assemLoad_LFE(mesh, localLoadLFE, f);
 
   // solve the LSE using the sparse LU solver of Eigen
   Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>>

@@ -22,21 +22,18 @@ namespace SimpleLinearFiniteElements {
 
 using LocalMatrixHandle_t = std::function<Eigen::Matrix3d(const TriGeo_t &)>;
 using FHandle_t = std::function<double(const Eigen::Vector2d &)>;
-using LocalVectorHandle_t = std::function<Eigen::Vector3d(const TriGeo_t &, FHandle_t)>;
+using LocalVectorHandle_t =
+    std::function<Eigen::Vector3d(const TriGeo_t &, FHandle_t)>;
 
 double getArea(const TriGeo_t &triangle);
 
-Eigen::Matrix<double, 2, 3> gradbarycoordinates(
-    const TriGeo_t &vertices);
+Eigen::Matrix<double, 2, 3> gradbarycoordinates(const TriGeo_t &vertices);
 
-Eigen::Matrix3d ElementMatrix_Mass_LFE(
-    const TriGeo_t &V);
+Eigen::Matrix3d ElementMatrix_Mass_LFE(const TriGeo_t &V);
 
-Eigen::Matrix3d ElementMatrix_Lapl_LFE(
-    const TriGeo_t &V);
+Eigen::Matrix3d ElementMatrix_Lapl_LFE(const TriGeo_t &V);
 
-Eigen::Matrix3d getElementMatrix(
-    const TriGeo_t &V);
+Eigen::Matrix3d getElementMatrix(const TriGeo_t &V);
 
 Eigen::Vector3d localLoadLFE(const TriGeo_t &V, const FHandle_t &FHandle);
 
@@ -44,10 +41,9 @@ Eigen::SparseMatrix<double> assembleGalMatLFE(
     const SimpleLinearFiniteElements::TriaMesh2D &Mesh,
     const LocalMatrixHandle_t &getElementMatrix);
 
-Eigen::VectorXd assemLoad_LFE(
-    const TriaMesh2D &Mesh,
-    const LocalVectorHandle_t &getElementVector,
-    const FHandle_t &FHandle);
+Eigen::VectorXd assemLoad_LFE(const TriaMesh2D &Mesh,
+                              const LocalVectorHandle_t &getElementVector,
+                              const FHandle_t &FHandle);
 
 /**
  * @brief L2Error Computes the L2 error between the approximate solution and
@@ -72,7 +68,8 @@ double L2Error(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
     // loop over all three vertices of the triangle
     Eigen::Vector3d error_at_vertices;
     for (int k = 0; k < 3; ++k) {
-      error_at_vertices(k) = exact(triangle.col(k)) - uFEM(mesh._elements(i, k));
+      error_at_vertices(k) =
+          exact(triangle.col(k)) - uFEM(mesh._elements(i, k));
     }
     // Add squared error per triangle
     l2error_squared +=
