@@ -96,7 +96,7 @@ Eigen::Vector3d localLoadLFE(const TriGeo_t &V, const FHandle_t &FHandle) {
 }
 
 /**
- * @brief GalerkinAssembly Assembles the Galerkin Matrix
+ * @brief Assembles the Galerkin Matrix
  * @param mesh the mesh to use
  * @param getElementMatrix Element Matrix
  * @return Galerkin Matrix
