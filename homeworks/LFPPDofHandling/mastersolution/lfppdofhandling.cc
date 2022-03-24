@@ -163,10 +163,10 @@ Eigen::VectorXd convertDOFsLinearQuadratic(
       // From 2-9.a we know $\lambda_l(p_l) = 1$; $l = 1,2,3$.
       // Hence we simply \textbf{copy} the coefficient of $\lambda_l$ to $b_l$
       // for $l=1,2,3$.
-      zeta(quad_dofs[l]) = mu(lin_dofs[l]);
+      zeta(quad_dofs[l]) += mu(lin_dofs[l]);
       // And $\lambda_l(p_l+3) = 0.5$, $\lambda_{(l+1) mod 3}(p_l+3) = 0.5$;
       // $l =1,2,3$. Hence we copy 0.5 of the respective coefficients!
-      zeta(quad_dofs[l + 3]) =
+      zeta(quad_dofs[l + 3]) +=
           0.5 * (mu(lin_dofs[l]) + mu(lin_dofs[(l + 1) % 3]));
     }
   }
