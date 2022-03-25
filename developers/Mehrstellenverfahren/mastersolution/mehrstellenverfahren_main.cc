@@ -1,14 +1,17 @@
 /**
  * @ file
  * @ brief NPDE homework TEMPLATE MAIN FILE
- * @ author
- * @ date
+ * @ author Tobias Rohner
+ * @ date 25-03-2022
  * @ copyright Developed at SAM, ETH Zurich
  */
 
 #include <Eigen/Core>
 #include <iostream>
 
-#include "XXX.h"
+#include "mehrstellenverfahren.h"
 
-int main(int /*argc*/, char** /*argv*/) { return 0; }
+int main(int /*argc*/, char** /*argv*/) {
+  mehrstellenverfahren::tabulateMehrstellenError();
+  return 0;
+}
