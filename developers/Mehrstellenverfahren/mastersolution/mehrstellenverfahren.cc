@@ -8,7 +8,8 @@
 
 #include "mehrstellenverfahren.h"
 
-#include <cstdio>
+#include <iomanip>
+#include <iostream>
 #include <vector>
 
 namespace mehrstellenverfahren {
@@ -17,7 +18,7 @@ Eigen::SparseMatrix<double> compMehrstellenA(unsigned int M) {
   Eigen::SparseMatrix<double> A(M * M, M * M);
 #if SOLUTION
   // We have at most 9nnz per row of A and A has M^2 rows
-  const int nnz = 9 * M * M;
+  const Eigen::Index nnz = 9 * M * M;
   A.reserve(nnz);
   // Iterate over all interior nodes of the mesh and apply the stencil
   for (int i = 0; i < M; ++i) {
@@ -26,37 +27,37 @@ Eigen::SparseMatrix<double> compMehrstellenA(unsigned int M) {
       const int k = i * M + j;
       // Interaction term with the node below to the left
       if (i > 0 && j > 0) {
-        A.insert(k, k - M - 1) = -1;
+        A.insert(k - M - 1, k) = -1;
       }
       // Interaction term with the node below
       if (i > 0) {
-        A.insert(k, k - M) = -4;
+        A.insert(k - M, k) = -4;
       }
       // Interaction term with the node below to the right
       if (i > 0 && j < M - 1) {
-        A.insert(k, k - M + 1) = -1;
+        A.insert(k - M + 1, k) = -1;
       }
       // Interaction term with the node to the left
       if (j > 0) {
-        A.insert(k, k - 1) = -4;
+        A.insert(k - 1, k) = -4;
       }
       // Interaction term with itself
       A.insert(k, k) = 20;
       // Interaction term with the node to the right
       if (j < M - 1) {
-        A.insert(k, k + 1) = -4;
+        A.insert(k + 1, k) = -4;
       }
       // Interaction term with the node above to the left
       if (i < M - 1 && j > 0) {
-        A.insert(k, k + M - 1) = -1;
+        A.insert(k + M - 1, k) = -1;
       }
       // Interaction term with the node above
       if (i < M - 1) {
-        A.insert(k, k + M) = -4;
+        A.insert(k + M, k) = -4;
       }
       // Interaction term with the node above to th right
       if (i < M - 1 && j < M - 1) {
-        A.insert(k, k + M + 1) = -1;
+        A.insert(k + M + 1, k) = -1;
       }
     }
   }
@@ -120,13 +121,15 @@ void tabulateMehrstellenError() {
   //====================
 #endif
   // Print the collected data out in a table
-  printf("| M   | h       | error        |\n");
-  printf("-------------------------------|\n");
+  std::cout << "| M   | h       | error        |\n";
+  std::cout << "-------------------------------|\n";
   for (int i = 0; i < Ms.size(); ++i) {
     const unsigned int M = Ms[i];
     const double h = 1. / (M + 1);
     const double err = errs[i];
-    printf("| %3d | %.05f | %e |\n", M, h, err);
+    std::cout << "| " << std::setw(3) << M << " | " << std::fixed
+              << std::setprecision(5) << h << " | " << std::scientific << err
+              << " |\n";
   }
 }
 
