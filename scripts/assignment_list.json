@@ -46,8 +46,8 @@
     "MaximumPrinciple/",
     "MIRK/",
     "MixedFEMWave/",
-		"NitscheMethod/",
-    "NLMatODE",
+    "NitscheMethod/",
+    "NLMatODE/",
     "NonConformingCrouzeixRaviartFiniteElements/",
     "NonLinSchroedingerEquation/",
     "NumPDESetup/",
@@ -83,6 +83,7 @@
     "UpwindFiniteVolume/",
     "UpwindQuadrature/",
     "WaveABC2D/",
-    "ZienkiewiczZhuEstimator/"
+    "ZienkiewiczZhuEstimator/",
+    "Mehrstellenverfahren/"
   ]
 }

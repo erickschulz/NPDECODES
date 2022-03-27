@@ -25,52 +25,20 @@ Eigen::Matrix3d LinearFENitscheElementMatrix::Eval(
     const lf::mesh::Entity &cell) const {
   LF_ASSERT_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
                 "Only implemented for triangles");
-  // Fetch geometry object for current cell
-  const lf::geometry::Geometry &K_geo{*(cell.Geometry())};
-  LF_ASSERT_MSG(K_geo.DimGlobal() == 2, "Mesh must be planar");
-  // Obtain physical coordinates of barycenter of triangle
-  const Eigen::Vector2d center{K_geo.Global(c_hat_).col(0)};
-  // Compute gradients of barycentric coordinate functions
-  // Transformation matrix for gradients on reference triangle
-  const Eigen::Matrix2d JinvT(K_geo.JacobianInverseGramian(c_hat_));
-  // Transform gradients
-  const Eigen::Matrix<double, 2, 3> G = JinvT * G_hat_;
+  // The element matrix returned from this function
+  Eigen::Matrix3d el_mat = Eigen::Matrix3d::Zero();
   // ------------------------------------------------------------------
   // I: Compute element matrix induced by volume part of bilinear form
-  // Element matrix for linear finite elements and the Laplacian
-  Eigen::Matrix3d el_mat(lf::geometry::Volume(K_geo) * G.adjoint() * G);
   // ------------------------------------------------------------------
+  //====================
+  // Your code goes here
+  //====================
+  // ----------------------------------------
   // II: Boundary parts of the bilinear form
-  // Retrieve pointers to all edges of the triangle
-  nonstd::span<const lf::mesh::Entity *const> edges{cell.SubEntities(1)};
-  LF_ASSERT_MSG(edges.size() == 3, "Triangle must have three edges!");
-  // Loop over edges and check whether they are located on the bondary
-  for (int k = 0; k < 3; ++k) {
-    if (bd_flags_(*edges[k])) {
-      // II(i): Contributions of consistency boundary parts of the bilinear form
-      // Edge with local index k is an edge on the boundary
-      // Fetch the coordinates of its endpoints
-      const lf::geometry::Geometry &ed_geo{*(edges[k]->Geometry())};
-      const Eigen::MatrixXd ed_pts{lf::geometry::Corners(ed_geo)};
-      // Direction vector of the edge
-      const Eigen::Vector2d dir = ed_pts.col(1) - ed_pts.col(0);
-      // Rotate counterclockwise by 90 degrees
-      const Eigen::Vector2d ed_normal = Eigen::Vector2d(dir(1), -dir(0));
-      // For adjusting direction of normal so that it points into the exterior
-      // of the domain
-      const int ori = (ed_normal.dot(center - ed_pts.col(0)) > 0) ? -1 : 1;
-      const Eigen::Matrix3d ed_mat =
-          -L_.col(k) * ((ori * ed_normal.transpose()) * G);
-      el_mat += (ed_mat + ed_mat.transpose());
-      // II(ii): contributions of boundary penalty term
-      const double fac = c_ * dir.norm();
-      const int l = (k + 1) % 3;
-      el_mat(k, k) += fac * 1.0 / 3.0;
-      el_mat(k, l) += fac * 1.0 / 6.0;
-      el_mat(l, k) += fac * 1.0 / 6.0;
-      el_mat(l, l) += fac * 1.0 / 3.0;
-    }
-  }
+  // ----------------------------------------
+  //====================
+  // Your code goes here
+  //====================
   return el_mat;
 }  // end Eval()
 /* SAM_LISTING_END_5 */

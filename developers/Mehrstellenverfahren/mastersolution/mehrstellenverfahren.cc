@@ -14,13 +14,19 @@
 
 namespace mehrstellenverfahren {
 
+/* SAM_LISTING_BEGIN_1 */
 Eigen::SparseMatrix<double> compMehrstellenA(unsigned int M) {
+  // For the sake of efficiency the use of Eigen's sparse matrix data type is
+  // essential. The matrix is stored in CCS format.
   Eigen::SparseMatrix<double> A(M * M, M * M);
 #if SOLUTION
-  // We have at most 9nnz per row of A and A has M^2 rows
-  const Eigen::Index nnz = 9 * M * M;
-  A.reserve(nnz);
-  // Iterate over all interior nodes of the mesh and apply the stencil
+  // We already know that the matrix has at most $9M$ non-zero entries per row
+  // and column. This information is passed to Eigen via the reserve() member
+  // funtion.
+  A.reserve(Eigen::VectorXi::Constant(M * M, 9));
+  // Iterate over all interior nodes of the mesh and apply the stencil and
+  // initialize the matrix in column-wise order, from top to bottom in every
+  // column, which is most efficient for the CCS storage format.
   for (int i = 0; i < M; ++i) {
     for (int j = 0; j < M; ++j) {
       // Index of the current node
@@ -106,6 +112,8 @@ double compgriderr(unsigned int M) {
 #endif
   return err;
 }
+
+/* SAM_LISTING_END_1 */
 
 void tabulateMehrstellenError() {
   std::vector<double> errs;
