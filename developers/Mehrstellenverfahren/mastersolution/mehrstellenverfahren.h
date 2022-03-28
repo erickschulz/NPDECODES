@@ -27,6 +27,7 @@ Eigen::SparseMatrix<double> compMehrstellenA(unsigned int M);
  * @param M Size of the tensor product mesh
  * @returns The load vector phi
  */
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
 Eigen::VectorXd compMehrstellenf(FUNCTOR &&f, unsigned int M) {
   Eigen::VectorXd phi = Eigen::VectorXd::Zero(M * M);
@@ -56,6 +57,7 @@ Eigen::VectorXd compMehrstellenf(FUNCTOR &&f, unsigned int M) {
 #endif
   return phi;
 }
+/* SAM_LISTING_END_1 */
 
 /**
  * @brief Solve the Poisson equation using the Mehrstellenverfahren
@@ -64,6 +66,7 @@ Eigen::VectorXd compMehrstellenf(FUNCTOR &&f, unsigned int M) {
  * @param M Size of the tensor product mesh
  * @returns The solution to the Poisson problem
  */
+/* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
 Eigen::VectorXd solveMehrstellen(FUNCTOR &&f, unsigned int M) {
   Eigen::VectorXd mu = Eigen::VectorXd::Zero(M * M);
@@ -82,6 +85,7 @@ Eigen::VectorXd solveMehrstellen(FUNCTOR &&f, unsigned int M) {
 #endif
   return mu;
 }
+/* SAM_LISTING_END_2 */
 
 /**
  * @brief Compute the error at a given mesh resolution

@@ -76,7 +76,9 @@ Eigen::SparseMatrix<double> compMehrstellenA(unsigned int M) {
 #endif
   return A;
 }
+/* SAM_LISTING_END_1 */
 
+/* SAM_LISTING_BEGIN_2 */
 double compgriderr(unsigned int M) {
   double err = 0;
 #if SOLUTION
@@ -112,9 +114,10 @@ double compgriderr(unsigned int M) {
 #endif
   return err;
 }
+/* SAM_LISTING_END_2 */
 
-/* SAM_LISTING_END_1 */
 
+/* SAM_LISTING_BEGIN_3 */
 void tabulateMehrstellenError() {
   std::vector<double> errs;
   std::vector<unsigned int> Ms = {5, 10, 20, 40, 80, 160};
@@ -140,5 +143,6 @@ void tabulateMehrstellenError() {
               << " |\n";
   }
 }
+/* SAM_LISTING_END_3 */
 
 }  // namespace mehrstellenverfahren
