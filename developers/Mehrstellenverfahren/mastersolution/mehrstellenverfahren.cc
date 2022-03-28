@@ -116,7 +116,6 @@ double compgriderr(unsigned int M) {
 }
 /* SAM_LISTING_END_2 */
 
-
 /* SAM_LISTING_BEGIN_3 */
 void tabulateMehrstellenError() {
   std::vector<double> errs;
