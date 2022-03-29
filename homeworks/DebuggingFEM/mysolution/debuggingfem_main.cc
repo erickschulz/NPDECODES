@@ -96,7 +96,7 @@ int main() {
   const static Eigen::IOFormat CSVFormat(Eigen::FullPrecision,
                                          Eigen::DontAlignCols, ", ", "\n");
   std::ofstream error_file;
-  error_file.open("error.csv");
+  error_file.open(CURRENT_BINARY_DIR "/error.csv");
   error_file << data.format(CSVFormat) << std::endl;
   error_file.close();
   std::cout << "Generated " CURRENT_BINARY_DIR "/error.csv" << std::endl;
