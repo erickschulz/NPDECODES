@@ -25,6 +25,11 @@ Eigen::Matrix3d LinearFENitscheElementMatrix::Eval(
     const lf::mesh::Entity &cell) const {
   LF_ASSERT_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
                 "Only implemented for triangles");
+  // The element matrix returned from this function
+  Eigen::Matrix3d el_mat = Eigen::Matrix3d::Zero();
+  // ------------------------------------------------------------------
+  // I: Compute element matrix induced by volume part of bilinear form
+  // ------------------------------------------------------------------
   // Fetch geometry object for current cell
   const lf::geometry::Geometry &K_geo{*(cell.Geometry())};
   LF_ASSERT_MSG(K_geo.DimGlobal() == 2, "Mesh must be planar");
@@ -35,12 +40,11 @@ Eigen::Matrix3d LinearFENitscheElementMatrix::Eval(
   const Eigen::Matrix2d JinvT(K_geo.JacobianInverseGramian(c_hat_));
   // Transform gradients
   const Eigen::Matrix<double, 2, 3> G = JinvT * G_hat_;
-  // ------------------------------------------------------------------
-  // I: Compute element matrix induced by volume part of bilinear form
   // Element matrix for linear finite elements and the Laplacian
-  Eigen::Matrix3d el_mat(lf::geometry::Volume(K_geo) * G.adjoint() * G);
-  // ------------------------------------------------------------------
+  el_mat = lf::geometry::Volume(K_geo) * G.adjoint() * G;
+  // ----------------------------------------
   // II: Boundary parts of the bilinear form
+  // ----------------------------------------
   // Retrieve pointers to all edges of the triangle
   nonstd::span<const lf::mesh::Entity *const> edges{cell.SubEntities(1)};
   LF_ASSERT_MSG(edges.size() == 3, "Triangle must have three edges!");
