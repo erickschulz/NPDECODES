@@ -78,7 +78,7 @@ int main(int /*argc*/, char ** /*argv*/) {
 
   // Write .csv file of energy vs. time
   std::ofstream file;
-  file.open(CURRENT_BINARY_DIR "energies.csv");
+  file.open(CURRENT_BINARY_DIR "/energies.csv");
   file << time.transpose().format(CSVFormat) << std::endl;
   file << energies.transpose().format(CSVFormat) << std::endl;
   file.close();
