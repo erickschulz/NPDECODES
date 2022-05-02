@@ -45,12 +45,11 @@ double Bernoulli(double tau) {
  * @return  Mesh Data set containing the quantities \beta(e)
  */
 /* SAM_LISTING_BEGIN_2 */
-// Does not match specification
+// REVISE: Does not match specification
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
     std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu) {
   // data set over all edges of the mesh.
   auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 1.0);
-
   // compute beta(e) for all edges of the mesh
   for (const lf::mesh::Entity* edge : mesh_p->Entities(1)) {
     // compute the indices of the endpoints of the edge
@@ -58,7 +57,6 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
     auto endpoints = edge->SubEntities(1);
     unsigned int i = mesh_p->Index(*(endpoints[0]));
     unsigned int j = mesh_p->Index(*(endpoints[1]));
-
     (*beta_p)(*edge) = std::exp(mu(j)) * Bernoulli(mu(j) - mu(i));
   }
 
@@ -78,10 +76,8 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
 
   // Evaluate the element matrix A_K
   Eigen::Matrix3d AK = laplace_provider_.Eval(cell).block<3, 3>(0, 0);
-
   Eigen::Matrix3d result;
-
-  // get the values of beta on the edges of the triangle.
+  // Get the values of beta on the edges of the triangle.
   // by the Lehrfem++ numbering convention
   // b = [beta(e_0), beta(e_1), beta(e_2)]' = [\beta_{1,2}, \beta_{2,3},
   // \beta_{1,3}]'
@@ -95,7 +91,6 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
 
   Eigen::Vector3d mu_exp = (-mu_loc(cell)).array().exp();
   result *= mu_exp.asDiagonal();
-
   return std::move(result);
 }
 /* SAM_LISTING_END_3 */

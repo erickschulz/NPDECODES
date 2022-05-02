@@ -123,7 +123,6 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
         break;
     }
   }
-
   return loc_mat;
 }
 /* SAM_LISTING_END_1 */
