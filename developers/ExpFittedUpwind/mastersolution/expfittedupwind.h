@@ -44,10 +44,12 @@ class ExpFittedEMP {
    * @param fe_sapce Underlying finite element space
    * @param mu vector of nodal values of a potential Psi
    */
+  /* SAM_LISTING_BEGIN_3 */
   explicit ExpFittedEMP(
       std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
       Eigen::VectorXd mu)
       : fe_space_(fe_space), beta_(CompBeta(fe_space->Mesh(), mu)), mu_(mu) {}
+  /* SAM_LISTING_END_3 */
 
   virtual ~ExpFittedEMP() = default;
 

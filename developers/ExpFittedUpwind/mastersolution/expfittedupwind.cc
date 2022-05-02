@@ -22,13 +22,18 @@ namespace ExpFittedUpwind {
 /**
  * @brief Computes the Bernoulli function B(tau)
  **/
+/* SAM_LISTING_BEGIN_1 */
 double Bernoulli(double tau) {
 #if SOLUTION
+  // In order to avoid cancellation, use Taylor polynomial approximation of
+  // the denominator for small arguments
   if (std::abs(tau) < 1e-10) {
     return 1.0;
   } else if (std::abs(tau) < 1e-3) {
     return 1.0 / (1.0 + (0.5 + 1.0 / 6.0 * tau) * tau);
   } else {
+    // No cancellation for large arguments: use formula defining the Bernoulli
+    // function
     return tau / (std::exp(tau) - 1.0);
   }
 #else
@@ -38,6 +43,7 @@ double Bernoulli(double tau) {
   return tau;
 #endif
 }
+/* SAM_LISTING_END_1 */
 
 /**
  * @brief computes the quantities \beta(e) for all the edges e of a mesh
@@ -45,11 +51,12 @@ double Bernoulli(double tau) {
  * @param mu vector of nodal values of a potential Psi
  * @return  Mesh Data set containing the quantities \beta(e)
  */
+/* SAM_LISTING_BEGIN_2 */
+// REVISE: Does not match specification
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
     std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu) {
   // data set over all edges of the mesh.
   auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 1.0);
-
 #if SOLUTION
   // compute beta(e) for all edges of the mesh
   for (const lf::mesh::Entity* edge : mesh_p->Entities(1)) {
@@ -58,7 +65,6 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
     auto endpoints = edge->SubEntities(1);
     unsigned int i = mesh_p->Index(*(endpoints[0]));
     unsigned int j = mesh_p->Index(*(endpoints[1]));
-
     (*beta_p)(*edge) = std::exp(mu(j)) * Bernoulli(mu(j) - mu(i));
   }
 #else
@@ -69,23 +75,23 @@ std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
 
   return beta_p;
 }
+/* SAM_LISTING_END_2 */
 
 /**
  * @brief actual computation of the element matrix
  * @param cell reference to the triangle for which the matrix is evaluated
  * @return 3x3 dense matrix containg the element matrix
  */
+/* SAM_LISTING_BEGIN_3 */
 Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
   LF_VERIFY_MSG(cell.RefEl() == lf::base::RefEl::kTria(),
                 "Only 2D triangles are supported.");
 
   // Evaluate the element matrix A_K
   Eigen::Matrix3d AK = laplace_provider_.Eval(cell).block<3, 3>(0, 0);
-
   Eigen::Matrix3d result;
-
 #if SOLUTION
-  // get the values of beta on the edges of the triangle.
+  // Get the values of beta on the edges of the triangle.
   // by the Lehrfem++ numbering convention
   // b = [beta(e_0), beta(e_1), beta(e_2)]' = [\beta_{1,2}, \beta_{2,3},
   // \beta_{1,3}]'
@@ -104,9 +110,9 @@ Eigen::Matrix3d ExpFittedEMP::Eval(const lf::mesh::Entity& cell) {
   // Your code goes here
   //====================
 #endif
-
   return std::move(result);
 }
+/* SAM_LISTING_END_3 */
 
 /**
  * @brief returns the quanties beta(e) for  the
