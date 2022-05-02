@@ -122,6 +122,7 @@ int main() {
   //============================================================================
   // SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (UPWIND: STABLE)
   //============================================================================
+  /* SAM_LISTING_BEGIN_7 */
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A_stable(dofh.NumDofs(), dofh.NumDofs());
 
@@ -165,6 +166,6 @@ int main() {
   // output data
   vtk_writer_stable.WritePointData("upwind_quadrature_solution_stable",
                                    mf_sol_stable);
-
+  /* SAM_LISTING_END_7 */
   return 0;
 }

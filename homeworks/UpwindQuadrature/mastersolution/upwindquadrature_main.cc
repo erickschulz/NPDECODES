@@ -122,26 +122,23 @@ int main() {
   //============================================================================
   // SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (UPWIND: STABLE)
   //============================================================================
+  /* SAM_LISTING_BEGIN_7 */
   // Matrix in triplet format holding Galerkin matrix, zero initially.
   lf::assemble::COOMatrix<double> A_stable(dofh.NumDofs(), dofh.NumDofs());
-
   // ASSEMBLE GALERKIN MATRIX
   // First the part corresponding to the laplacian, computed using standard
   // Galerkin approach
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, laplacian_provider,
                                       A_stable);
-
   // Next part corresponding to the convection term, computed using upwind
   // quadrature:
   UpwindQuadrature::UpwindConvectionElementMatrixProvider
       convection_provider_stable(v, UpwindQuadrature::initializeMasses(mesh_p));
   lf::assemble::AssembleMatrixLocally(0, dofh, dofh, convection_provider_stable,
                                       A_stable);
-
   // RIGHT-HAND SIDE VECTOR
   Eigen::VectorXd phi_stable(dofh.NumDofs());
   phi_stable.setZero();
-
   // IMPOSE DIRICHLET CONDITIONS:
   // Eliminate Dirichlet dofs from linear system
   lf::assemble::FixFlaggedSolutionComponents<double>(
@@ -166,5 +163,6 @@ int main() {
   vtk_writer_stable.WritePointData("upwind_quadrature_solution_stable",
                                    mf_sol_stable);
 
+  /* SAM_LISTING_END_7 */
   return 0;
 }

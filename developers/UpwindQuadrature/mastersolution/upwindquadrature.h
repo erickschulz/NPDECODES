@@ -73,6 +73,7 @@ class UpwindConvectionElementMatrixProvider {
       masses_;  // masses of all vertices of the mesh.
 };
 
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
 Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
     const lf::mesh::Entity &entity) {
@@ -128,9 +129,9 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   // Your code goes here
   //====================
 #endif
-
   return loc_mat;
 }
+/* SAM_LISTING_END_1 */
 
 /**
  * @brief Computes the masses m(p) of all vertices of the mesh
