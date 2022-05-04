@@ -46,7 +46,9 @@ int main() {
   // Compute the right-hand side f
   // The system of ODEs is y' = f(y) with y = [u;v],
   // and f(y) = f([u;v]) = [v;C^{-1}r(u)]
-  auto f = [n, C](Eigen::VectorXd y) {
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> Csolver;
+  Csolver.compute(C);
+  auto f = [n, &Csolver](Eigen::VectorXd y) {
     Eigen::VectorXd fy(2 * n);
     fy.head(n) = y.tail(n);
     Eigen::VectorXd r(n);
@@ -55,8 +57,6 @@ int main() {
     for (int i = 1; i < n - 1; ++i) {
       r(i) = y(i) * (y(i - 1) + y(i + 1));
     }
-    Eigen::SparseLU<Eigen::SparseMatrix<double>> Csolver;
-    Csolver.compute(C);
     fy.tail(n) = Csolver.solve(r);
     return fy;
   };
