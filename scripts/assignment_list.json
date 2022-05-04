@@ -84,6 +84,7 @@
     "UpwindQuadrature/",
     "WaveABC2D/",
     "ZienkiewiczZhuEstimator/",
-    "Mehrstellenverfahren/"
+    "Mehrstellenverfahren/",
+    "SemiLagrangian/"
   ]
 }
