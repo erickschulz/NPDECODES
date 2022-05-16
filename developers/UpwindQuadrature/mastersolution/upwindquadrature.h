@@ -87,36 +87,27 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   // Matrix with gradients of the local shape functions in its columns
   const Eigen::MatrixXd grad_basis = grad_helper.inverse().bottomRows(2);
 
-  // extract  masses of the corners.
+  // masses of the corners.
   std::vector<double> local_masses;
   for (const lf::mesh::Entity *sub_ent : entity.SubEntities(2)) {
     local_masses.push_back(masses_(*sub_ent));
   }
 
-  // compute velocities at the vertices:
+  // Compute velocities at corners
   Eigen::MatrixXd velocities(2, 3);
   velocities << v_(corners.col(0)), v_(corners.col(1)), v_(corners.col(2));
 
+  // Matrix of outer normals(not normalized)
+  Eigen::MatrixXd n = -grad_basis;
+
   // compute rows of the local matrix according to the upwind quadrature scheme.
-  // -v(a^j) points into the triangle K (K is the upwind triangle)
-  // iff y = a^j - v(a^j) fullfills the two constraints of K
-  // that are tight at a^j.
-  // In order to simplify the computations we can transform y to the unit
-  // triangle and verify that yhat fullfills the two constraints tight at the
-  // corresponding corner of the unit triangle.
-
-  // transform a^j - v(a^j) back to the unit triangle
-  Eigen::MatrixXd InvJacobian = geo_ptr->Jacobian(corners.col(0)).inverse();
-  Eigen::MatrixXd y = corners - velocities;
-  Eigen::MatrixXd yhat(2, 3);
-  for (int i = 0; i < 3; ++i) {
-    yhat.col(i) = InvJacobian * (y.col(i) - corners.col(0));
-  }
-
-  // verify the constraints at the first corner of the unit triangle.
-  Eigen::Vector2d yhat0 = yhat.col(0);
-  if (yhat0(0) >= 0 && yhat0(1) >= 0) {
-    if (yhat0(0) == 0 || yhat0(1) == 0) {
+  // -v(a^j) points into the triangle K
+  // iff the inner product of v(a^j) with the two adjecant outer normals is
+  // positive.
+  // check direction at the first corner of the triangle
+  Eigen::Vector2d v0 = velocities.col(0);
+  if (v0.dot(n.col(1)) >= 0 && v0.dot(n.col(2)) >= 0) {
+    if (v0.dot(n.col(1)) == 0 || v0.dot(n.col(2)) == 0) {
       loc_mat.row(0) =
           0.5 * local_masses[0] * velocities.transpose().row(0) * grad_basis;
     } else {
@@ -127,10 +118,10 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
     loc_mat.row(0) = Eigen::Vector3d::Zero();
   }
 
-  // verify the constraints at the second corner of the unit triangle.
-  Eigen::Vector2d yhat1 = yhat.col(1);
-  if (yhat1(1) >= 0 && yhat1(1) <= 1 - yhat1(0)) {
-    if (yhat1(1) == 0.0 || yhat1(1) == 1.0 - yhat1(0)) {
+  // check direction at the second corner of the triangle.
+  Eigen::Vector2d v1 = velocities.col(1);
+  if (v1.dot(n.col(0)) >= 0 && v1.dot(n.col(2)) >= 0) {
+    if (v1.dot(n.col(0)) == 0 || v1.dot(n.col(2)) == 0) {
       loc_mat.row(1) =
           0.5 * local_masses[1] * velocities.transpose().row(1) * grad_basis;
     } else {
@@ -141,10 +132,10 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
     loc_mat.row(1) = Eigen::Vector3d::Zero();
   }
 
-  // verify the constraints at the third corner of the unit triangle.
-  Eigen::Vector2d yhat2 = yhat.col(2);
-  if (yhat2(0) >= 0 && yhat2(1) <= 1 - yhat2(0)) {
-    if (yhat2(0) == 0 || yhat2(1) == 1 - yhat2(0)) {
+  // check direction at the third corner of the triangle.
+  Eigen::Vector2d v2 = velocities.col(2);
+  if (v2.dot(n.col(0)) >= 0 && v2.dot(n.col(1)) >= 0) {
+    if (v2.dot(n.col(0)) == 0 || v2.dot(n.col(1)) == 0) {
       loc_mat.row(2) =
           0.5 * local_masses[2] * velocities.transpose().row(2) * grad_basis;
     } else {
