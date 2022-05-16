@@ -20,21 +20,14 @@
 
 namespace UpwindQuadrature {
 
-// At any vertex a^j of a triangle, the vector field -v(a^j) may either point
-// into the triangle, along an edge of the triangle or outside the triangle.
-enum class Direction { INWARDS, OUTWARDS, ALONG_EDGE };
-
 /**
- * @brief Computes for all corners a^j of a triangle the direction of the vector
- * field -v(a^j)
- * @param geo Geometry object describing the triangle
- * @param velocities values of the vector field v, evaluated at the corners of
- * the triangle described by geo, stored in a 2x3 matrix.
- * @return A vector containing for all 3 corners the corresponding direction of
- * -v(a^j)
+ * @brief Computes the masses m(p) of all vertices of the mesh
+ * @param mesh_p pointer to the mesh.
+ * @return data structure containing the masses m(p) for all vertices p of the
+ * mesh represented by mesh_p.
  */
-std::vector<Direction> opposite_velocity_directions(
-    const lf::geometry::Geometry &geo, const Eigen::MatrixXd &velocities);
+lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 /**
  * @headerfile upwindquadrature.h
@@ -94,35 +87,72 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   // Matrix with gradients of the local shape functions in its columns
   const Eigen::MatrixXd grad_basis = grad_helper.inverse().bottomRows(2);
 
-  // compute velocities at the vertices:
-  Eigen::MatrixXd velocities(2, 3);
-  velocities << v_(corners.col(0)), v_(corners.col(1)), v_(corners.col(2));
-
-  // determine the direction of -v at the corners of the triangle
-  std::vector<Direction> directions =
-      opposite_velocity_directions(*geo_ptr, velocities);
-
   // extract  masses of the corners.
   std::vector<double> local_masses;
   for (const lf::mesh::Entity *sub_ent : entity.SubEntities(2)) {
     local_masses.push_back(masses_(*sub_ent));
   }
 
+  // compute velocities at the vertices:
+  Eigen::MatrixXd velocities(2, 3);
+  velocities << v_(corners.col(0)), v_(corners.col(1)), v_(corners.col(2));
+
   // compute rows of the local matrix according to the upwind quadrature scheme.
+  // -v(a^j) points into the triangle K (K is the upwind triangle)
+  // iff y = a^j - v(a^j) fullfills the two constraints of K
+  // that are tight at a^j.
+  // In order to simplify the computations we can transform y to the unit
+  // triangle and verify that yhat fullfills the two constraints tight at the
+  // corresponding corner of the unit triangle.
+
+  // transform a^j - v(a^j) back to the unit triangle
+  Eigen::MatrixXd InvJacobian = geo_ptr->Jacobian(corners.col(0)).inverse();
+  Eigen::MatrixXd y = corners - velocities;
+  Eigen::MatrixXd yhat(2, 3);
   for (int i = 0; i < 3; ++i) {
-    switch (directions[i]) {
-      case Direction::INWARDS:
-        loc_mat.row(i) =
-            local_masses[i] * velocities.transpose().row(i) * grad_basis;
-        break;
-      case Direction::OUTWARDS:
-        loc_mat.row(i) = Eigen::Vector3d::Zero();
-        break;
-      case Direction::ALONG_EDGE:
-        loc_mat.row(i) =
-            0.5 * local_masses[i] * velocities.transpose().row(i) * grad_basis;
-        break;
+    yhat.col(i) = InvJacobian * (y.col(i) - corners.col(0));
+  }
+
+  // verify the constraints at the first corner of the unit triangle.
+  Eigen::Vector2d yhat0 = yhat.col(0);
+  if (yhat0(0) >= 0 && yhat0(1) >= 0) {
+    if (yhat0(0) == 0 || yhat0(1) == 0) {
+      loc_mat.row(0) =
+          0.5 * local_masses[0] * velocities.transpose().row(0) * grad_basis;
+    } else {
+      loc_mat.row(0) =
+          local_masses[0] * velocities.transpose().row(0) * grad_basis;
     }
+  } else {
+    loc_mat.row(0) = Eigen::Vector3d::Zero();
+  }
+
+  // verify the constraints at the second corner of the unit triangle.
+  Eigen::Vector2d yhat1 = yhat.col(1);
+  if (yhat1(1) >= 0 && yhat1(1) <= 1 - yhat1(0)) {
+    if (yhat1(1) == 0.0 || yhat1(1) == 1.0 - yhat1(0)) {
+      loc_mat.row(1) =
+          0.5 * local_masses[1] * velocities.transpose().row(1) * grad_basis;
+    } else {
+      loc_mat.row(1) =
+          local_masses[1] * velocities.transpose().row(1) * grad_basis;
+    }
+  } else {
+    loc_mat.row(1) = Eigen::Vector3d::Zero();
+  }
+
+  // verify the constraints at the third corner of the unit triangle.
+  Eigen::Vector2d yhat2 = yhat.col(2);
+  if (yhat2(0) >= 0 && yhat2(1) <= 1 - yhat2(0)) {
+    if (yhat2(0) == 0 || yhat2(1) == 1 - yhat2(0)) {
+      loc_mat.row(2) =
+          0.5 * local_masses[2] * velocities.transpose().row(2) * grad_basis;
+    } else {
+      loc_mat.row(2) =
+          local_masses[2] * velocities.transpose().row(2) * grad_basis;
+    }
+  } else {
+    loc_mat.row(2) = Eigen::Vector3d::Zero();
   }
 #else
   //====================
@@ -132,15 +162,6 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   return loc_mat;
 }
 /* SAM_LISTING_END_1 */
-
-/**
- * @brief Computes the masses m(p) of all vertices of the mesh
- * @param mesh_p pointer to the mesh.
- * @return data structure containing the masses m(p) for all vertices p of the
- * mesh represented by mesh_p.
- */
-lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 }  // namespace UpwindQuadrature
 
