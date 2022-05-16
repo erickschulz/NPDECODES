@@ -7,7 +7,6 @@
  */
 #include "transpsemilagr.h"
 
-
 namespace TranspSemiLagr {
 
 void enforce_zero_boundary_conditions(
@@ -97,4 +96,4 @@ Eigen::VectorXd solvetrp(
 }
 /* SAM_LISTING_END_2 */
 
-}
+}  // namespace TranspSemiLagr
