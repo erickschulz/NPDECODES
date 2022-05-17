@@ -55,7 +55,7 @@ TEST(CompBeta, ConstantPSI) {
   Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
   double ref = std::exp(3.1);
 
-  auto beta = CompBeta(mesh_p, mu);
+  auto beta = CompBeta(*fe_space, mu);
 
   for (auto entity : mesh_p->Entities(1)) {
     EXPECT_DOUBLE_EQ((*beta)(*entity), ref);
@@ -72,7 +72,7 @@ TEST(CompBeta, linearPSI) {
       std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
   Eigen::VectorXd mu = lf::fe::NodalProjection(*fe_space, mf_Psi);
 
-  auto beta = CompBeta(mesh_p, mu);
+  auto beta = CompBeta(*fe_space, mu);
   auto edges = mesh_p->Entities(1);
 
   // edges of triangle 0

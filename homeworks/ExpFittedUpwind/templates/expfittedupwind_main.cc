@@ -31,7 +31,7 @@ int main() {
 
   // Output file
   std::ofstream L2output;
-  L2output.open("L2error.txt");
+  L2output.open(CURRENT_BINARY_DIR "/L2error.txt");
   L2output << "No. of dofs, L2 error" << std::endl;
 
   // generate a mesh hierarchy:
