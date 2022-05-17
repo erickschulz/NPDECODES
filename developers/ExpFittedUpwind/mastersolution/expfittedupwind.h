@@ -27,12 +27,13 @@ double Bernoulli(double tau);
 
 /**
  * @brief computes the quantities \beta(e) for all the edges e of a mesh
- * @param mesh_p underlying mesh
+ * @param fe_space underlying FE space
  * @param mu vector of nodal values of a potential Psi
  * @return  Mesh Data set containing the quantities \beta(e)
  */
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu);
+    const lf::uscalfe::FeSpaceLagrangeO1<double>& fe_space,
+    const Eigen::VectorXd& mu);
 
 /**
  * @brief computes the element matrices for the exponentially fitted upwind
@@ -46,9 +47,9 @@ class ExpFittedEMP {
    */
   /* SAM_LISTING_BEGIN_3 */
   explicit ExpFittedEMP(
-      std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
+      std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
       Eigen::VectorXd mu)
-      : fe_space_(fe_space), beta_(CompBeta(fe_space->Mesh(), mu)), mu_(mu) {}
+      : fe_space_(fe_space), beta_(CompBeta(*fe_space, mu)), mu_(mu) {}
   /* SAM_LISTING_END_3 */
 
   virtual ~ExpFittedEMP() = default;
@@ -106,9 +107,10 @@ class ExpFittedEMP {
  *
  * @return basis expansion coefficient of the approximate solution u_N
  */
+/* SAM_LISTING_BEGIN_4 */
 template <typename FUNC_F, typename FUNC_G>
-Eigen::VectorXd SolveDriftDiffusionDirBVP(
-    std::shared_ptr<lf::uscalfe::UniformScalarFESpace<double>> fe_space,
+Eigen::VectorXd solveDriftDiffusionDirBVP(
+    std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
     const Eigen::VectorXd& mu, FUNC_F&& func_f, FUNC_G&& func_g) {
   const lf::assemble::DofHandler& dofh{fe_space->LocGlobMap()};
   lf::base::size_type N_dofs = dofh.NumDofs();
@@ -171,5 +173,6 @@ Eigen::VectorXd SolveDriftDiffusionDirBVP(
 
   return sol;
 }
+/* SAM_LISTING_END_4 */
 
 }  // namespace ExpFittedUpwind

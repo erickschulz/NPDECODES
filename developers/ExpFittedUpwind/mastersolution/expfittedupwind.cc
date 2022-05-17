@@ -24,24 +24,25 @@ namespace ExpFittedUpwind {
  **/
 /* SAM_LISTING_BEGIN_1 */
 double Bernoulli(double tau) {
+  double res = 0;
 #if SOLUTION
   // In order to avoid cancellation, use Taylor polynomial approximation of
   // the denominator for small arguments
   if (std::abs(tau) < 1e-10) {
-    return 1.0;
+    res = 1.0;
   } else if (std::abs(tau) < 1e-3) {
-    return 1.0 / (1.0 + (0.5 + 1.0 / 6.0 * tau) * tau);
+    res = 1.0 / (1.0 + (0.5 + 1.0 / 6.0 * tau) * tau);
   } else {
     // No cancellation for large arguments: use formula defining the Bernoulli
     // function
-    return tau / (std::exp(tau) - 1.0);
+    res = tau / (std::exp(tau) - 1.0);
   }
 #else
   //====================
   // Your code goes here
   //====================
-  return tau;
 #endif
+  return res;
 }
 /* SAM_LISTING_END_1 */
 
@@ -54,18 +55,19 @@ double Bernoulli(double tau) {
 /* SAM_LISTING_BEGIN_2 */
 // REVISE: Does not match specification
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu) {
+    const lf::uscalfe::FeSpaceLagrangeO1<double>& fe_space,
+    const Eigen::VectorXd& mu) {
   // data set over all edges of the mesh.
-  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 1.0);
+  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(fe_space.Mesh(), 1, 1.0);
 #if SOLUTION
+  // Get the DOF handler for the FE space
+  const lf::assemble::DofHandler& dofh = fe_space.LocGlobMap();
   // compute beta(e) for all edges of the mesh
-  for (const lf::mesh::Entity* edge : mesh_p->Entities(1)) {
-    // compute the indices of the endpoints of the edge
-    // These are needed to  access the correct nodal values of mu
-    auto endpoints = edge->SubEntities(1);
-    unsigned int i = mesh_p->Index(*(endpoints[0]));
-    unsigned int j = mesh_p->Index(*(endpoints[1]));
-    (*beta_p)(*edge) = std::exp(mu(j)) * Bernoulli(mu(j) - mu(i));
+  for (const lf::mesh::Entity* edge : fe_space.Mesh()->Entities(1)) {
+    // Compute the DOF indices of the vertices of the edge
+    auto idxs = dofh.GlobalDofIndices(*edge);
+    (*beta_p)(*edge) =
+        std::exp(mu(idxs[1])) * Bernoulli(mu(idxs[1]) - mu(idxs[0]));
   }
 #else
   //====================

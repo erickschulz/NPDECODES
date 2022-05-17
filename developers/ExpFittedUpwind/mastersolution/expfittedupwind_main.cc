@@ -42,7 +42,7 @@ int main() {
 
   // Output file
   std::ofstream L2output;
-  L2output.open("L2error.txt");
+  L2output.open(CURRENT_BINARY_DIR "/L2error.txt");
   L2output << "No. of dofs, L2 error" << std::endl;
 
   // generate a mesh hierarchy:
@@ -87,7 +87,7 @@ int main() {
 
     // compute the finite element solution and wrap it into a mesh function
     Eigen::VectorXd sol_vec =
-        ExpFittedUpwind::SolveDriftDiffusionDirBVP(fe_space, mu, f, g);
+        ExpFittedUpwind::solveDriftDiffusionDirBVP(fe_space, mu, f, g);
     auto mf_sol = lf::fe::MeshFunctionFE(fe_space, sol_vec);
 
     // evaluate L2 error:
