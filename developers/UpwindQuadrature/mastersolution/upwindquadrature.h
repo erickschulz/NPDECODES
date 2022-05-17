@@ -101,8 +101,8 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   Eigen::MatrixXd n = -grad_basis;
 
   // compute rows of the local matrix according to the upwind quadrature scheme.
-  // -v(a^j) points into the triangle K
-  // iff the inner product of v(a^j) with the two adjecant outer normals is
+  // $-v(a^j)$ points into the triangle K
+  // iff the inner product of $v(a^j)$ with the two adjecant outer normals is
   // positive.
   // check direction at the first corner of the triangle
   Eigen::Vector2d v0 = velocities.col(0);

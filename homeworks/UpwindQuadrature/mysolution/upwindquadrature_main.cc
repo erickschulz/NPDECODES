@@ -119,53 +119,13 @@ int main() {
   // output data
   vtk_writer.WritePointData("upwind_quadrature_solution_unstable", mf_sol);
 
-  //============================================================================
-  // SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (UPWIND: STABLE)
-  //============================================================================
-  /* SAM_LISTING_BEGIN_7 */
-  // Matrix in triplet format holding Galerkin matrix, zero initially.
-  lf::assemble::COOMatrix<double> A_stable(dofh.NumDofs(), dofh.NumDofs());
-
-  // ASSEMBLE GALERKIN MATRIX
-  // First the part corresponding to the laplacian, computed using standard
-  // Galerkin approach
-  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, laplacian_provider,
-                                      A_stable);
-
-  // Next part corresponding to the convection term, computed using upwind
-  // quadrature:
-  UpwindQuadrature::UpwindConvectionElementMatrixProvider
-      convection_provider_stable(v, UpwindQuadrature::initializeMasses(mesh_p));
-  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, convection_provider_stable,
-                                      A_stable);
-
-  // RIGHT-HAND SIDE VECTOR
-  Eigen::VectorXd phi_stable(dofh.NumDofs());
-  phi_stable.setZero();
-
-  // IMPOSE DIRICHLET CONDITIONS:
-  // Eliminate Dirichlet dofs from linear system
-  lf::assemble::FixFlaggedSolutionComponents<double>(
-      [&ess_bdc_flags_values](lf::uscalfe::glb_idx_t gdof_idx) {
-        return ess_bdc_flags_values[gdof_idx];
-      },
-      A_stable, phi_stable);
-
-  // SOLVE LINEAR SYSTEM
-  Eigen::SparseMatrix A_stable_crs = A_stable.makeSparse();
-  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver_stable;
-  solver_stable.compute(A_stable_crs);
-  Eigen::VectorXd sol_vec_stable = solver_stable.solve(phi_stable);
-
-  // OUTPUT RESULTS TO VTK FILe
-  // construct mesh function representing finite element solution
-  lf::fe::MeshFunctionFE mf_sol_stable(fe_space, sol_vec_stable);
-  // construct vtk writer
-  lf::io::VtkWriter vtk_writer_stable(
-      mesh_p, CURRENT_BINARY_DIR "/upwind_quadrature_solution_stable.vtk");
-  // output data
-  vtk_writer_stable.WritePointData("upwind_quadrature_solution_stable",
-                                   mf_sol_stable);
+//============================================================================
+// SOLVE LAPLACIAN WITH NON-HOMOGENEOUS DIRICHLET BC (UPWIND: STABLE)
+//============================================================================
+/* SAM_LISTING_BEGIN_7 */
+  //====================
+  // Your code goes here
+  //====================
   /* SAM_LISTING_END_7 */
   return 0;
 }
