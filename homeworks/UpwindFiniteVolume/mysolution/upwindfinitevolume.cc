@@ -27,6 +27,16 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
+double computeUpwindFlux(double mui, double muk, double vhat, double dik, double epsilon) {
+  double flux = 0;
+  //====================
+  // Your code goes here
+  //====================
+  return flux;
+}
+/* SAM_LISTING_END_2 */
+
+/* SAM_LISTING_BEGIN_3 */
 Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
                                      const Eigen::Vector2d &a2,
                                      const Eigen::Vector2d &a3) {
@@ -35,6 +45,6 @@ Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
   //====================
   return Eigen::Vector2d::Zero();
 }
-/* SAM_LISTING_END_2 */
+/* SAM_LISTING_BEGIN_3 */
 
 }  // namespace UpwindFiniteVolume

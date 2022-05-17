@@ -28,6 +28,17 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
     const Eigen::Matrix<double, 2, 3> &triangle);
 
 /**
+ * @brief Compute the upwind flux $J_{ik}(\mu_i, \mu_k)$
+ * 
+ * @param mui Value of $u_N$ at $p_i$
+ * @param muk Value of $u_N$ at $p_k$
+ * @param vhat Length of projection of $v$ onto $p_k - p_i$
+ * @param dik Distance between $p_i$ and $p_k$
+ * @param epsilon Strength of the diffusion
+ */
+double computeUpwindFlux(double mui, double muk, double vhat, double dik, double epsilon);
+
+/**
  * @brief Compute the circumcenter of a triangle.
  *
  * @param a1, a2, a3 Corners of the triangle.
@@ -60,13 +71,15 @@ class ElementMatrixProvider {
 template <typename FUNCTOR>
 Eigen::Matrix3d ElementMatrixProvider<FUNCTOR>::Eval(
     const lf::mesh::Entity &entity) {
-  LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
+  Eigen::Matrix3d A = Eigen::Matrix3d::Zero();
+
+ LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
                 "Unsupported cell type!");
 
   const lf::geometry::Geometry *geo_p = entity.Geometry();
   const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
 
-  Eigen::Vector2d circumcenter =
+ Eigen::Vector2d circumcenter =
       computeCircumcenters(corners.col(0), corners.col(1), corners.col(2));
 
   Eigen::Matrix3d f = Eigen::Matrix3d::Zero();
@@ -91,23 +104,21 @@ Eigen::Matrix3d ElementMatrixProvider<FUNCTOR>::Eval(
                  .dot((corners.col(2) - corners.col(1)).normalized());
   vv.triangularView<Eigen::Lower>() = -vv.transpose();
 
-  Eigen::Matrix3d result = Eigen::Matrix3d::Zero();
-
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < 3; ++j) {
       if (i != j) {
         if (std::abs(vv(i, j)) > 1e-14) {
           double beta = 1. / (1. - std::exp(-vv(i, j) * d(i, j) / eps_));
-          result(i, j) = vv(i, j) * beta * f(i, j);
-          result(i, i) += vv(i, j) * (1. - beta) * f(i, j);
+          A(i, j) = vv(i, j) * beta * f(i, j);
+          A(i, i) += vv(i, j) * (1. - beta) * f(i, j);
         } else {
-          result(i, j) = eps_ / d(i, j) * f(i, j);
-          result(i, i) -= eps_ / d(i, j) * f(i, j);
+          A(i, j) = eps_ / d(i, j) * f(i, j);
+          A(i, i) -= eps_ / d(i, j) * f(i, j);
         }
       }
     }
   }
-  return result;
+  return A;
 }
 /* SAM_LISTING_END_1 */
 

@@ -24,8 +24,8 @@
 #include "upwindfinitevolume.h"
 
 int main() {
-  /* SAM_LISTING_BEGIN_1 */
 #if SOLUTION
+  /* SAM_LISTING_BEGIN_1 */
   // Read in mesh
   auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
   lf::io::GmshReader reader(std::move(mesh_factory),

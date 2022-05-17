@@ -27,6 +27,29 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
+double computeUpwindFlux(double mui, double muk, double vhat, double dik,
+                         double epsilon) {
+  double flux = 0;
+#if SOLUTION
+  const double delta = 1e-8;
+  const double exponent = vhat / epsilon * dik;
+  if (std::fabs(exponent) > delta) {
+    // No risk of cancellation
+    flux = vhat * (muk - mui) / (1 - std::exp(-exponent)) + vhat * mui;
+  } else {
+    // Use taylor approximation to prevent cancelation
+    flux = epsilon * (muk - mui) / (dik * (1 - 0.5 * exponent)) + vhat * mui;
+  }
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+  return flux;
+}
+/* SAM_LISTING_END_2 */
+
+/* SAM_LISTING_BEGIN_3 */
 Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
                                      const Eigen::Vector2d &a2,
                                      const Eigen::Vector2d &a3) {
@@ -66,54 +89,6 @@ Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
   } else {
     return center;
   }
-
-  // Alternative:
-  /*
-  // Calculate the midpoint of the edges
-  const Eigen::Vector2d midpoint1 = (a1 + a2) * 0.5;
-  const Eigen::Vector2d midpoint2 = (a2 + a3) * 0.5;
-  const Eigen::Vector2d midpoint3 = (a1 + a3) * 0.5;
-
-  // Calculate the slope of the line perpendicular to the edges
-  Eigen::Matrix<double, 2, 3> corners;
-  corners.col(0) = a1;
-  corners.col(1) = a2;
-  corners.col(2) = a3;
-
-  Eigen::MatrixXd barycenters = gradbarycoordinates(corners);
-
-  // Reorder the vectors corresponding to the edges
-  Eigen::Vector2d n1 = barycenters.col(2).normalized();
-  Eigen::Vector2d n2 = barycenters.col(0).normalized();
-  Eigen::Vector2d n3 = barycenters.col(1).normalized();
-
-  // Check obtuse triangle
-  double alpha1 = acos(n1.dot(-n3));
-  double alpha2 = acos(n1.dot(-n2));
-  double alpha3 = acos(n2.dot(-n3));
-
-  double rad_90deg = M_PI / 2.0;
-  if (alpha1 >= rad_90deg || alpha2 >=  rad_90deg || alpha3 >=  rad_90deg) {
-    std::cout << "Obtused triangle!" << std::endl;
-    std::cout << "alpha1 " << alpha1 * 180.0 / M_PI << "degree" << std::endl;
-    std::cout << "alpha2 " << alpha2 * 180.0 / M_PI << "degree" << std::endl;
-    std::cout << "alpha3 " << alpha3 * 180.0 / M_PI << "degree" << std::endl;
-    throw std::runtime_error("Obtused triangle!");
-  }
-
-  // Compute intersection the two vectors
-  // midpoint1 + n1 * t1 = midpoint2 + n2 * t2
-  // (midpoint1x - midpoint2x) = t2 * n2x - t1 * n1x
-  // (midpoint1y - midpoint2y) = t2 * n2y - t1 * n1y
-  // solving for t1:
-  double t1 = ((midpoint1[0] - midpoint2[0]) * n2[1] -
-               (midpoint1[1] - midpoint2[1]) * n2[0]) /
-              (n1[1] * n2[0] - n1[0] * n2[1]);
-
-  Eigen::Vector2d intersection = midpoint1 + n1 * t1;
-
-  return intersection;
-  */
 #else
   //====================
   // Your code goes here
@@ -121,6 +96,6 @@ Eigen::Vector2d computeCircumcenters(const Eigen::Vector2d &a1,
   return Eigen::Vector2d::Zero();
 #endif
 }
-/* SAM_LISTING_END_2 */
+/* SAM_LISTING_BEGIN_3 */
 
 }  // namespace UpwindFiniteVolume
