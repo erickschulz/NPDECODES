@@ -108,15 +108,14 @@ Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
   }
 
   // Lambda function giving velocity
-  auto velocity = [](double t, const Eigen::Vector2d& x) {
+  auto velocity = [](const Eigen::Vector2d& x) {
     return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
   };
 
   double tau = T / K;  // timestep
   double t = 0;        // initial time
   for (int i = 0; i < K; ++i) {
-    t += tau;
-    Eigen::VectorXd rhs = semiLagrangeSource(u, tau, t, velocity);
+    Eigen::VectorXd rhs = semiLagrangeSource(u, tau,velocity);
     u = rhs * (M * M);  // inverse of diagonal matrix
   }
 

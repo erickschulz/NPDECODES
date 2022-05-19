@@ -22,21 +22,20 @@ template <typename FUNCTOR_V, typename FUNCTOR_U0>
 double solveTransport(const Eigen::Vector2d& x, int K, double t, FUNCTOR_V&& v,
                       FUNCTOR_U0&& u0) {
   double tau = t / K;  // timestep
-  Eigen::Vector2d y = x;       // starting point
+  Eigen::Vector2d y = x;   // starting point
 
   for (int i = 0; i < K; ++i) {
     // A single step of Heun's method, expressed by RK increments
     Eigen::Vector2d k_1 = v(y);
     Eigen::Vector2d k_2 = v(y - 2. / 3. * tau * k_1);
     y -= tau / 4. * k_1 + 3. / 4. * tau * k_2;
+ 
+    //check, if current point is outside the domain
+    if( y(0) < 0. || y(0) > 1. || y(1) < 0. || y(1) > 1.){
+        return 0.0;
+    }
   }
-
-  // Test whether trajectory has hit inflow boundary
-  if (y(0) >= 0. && y(0) <= 1. && y(1) >= 0. && y(1) <= 1.) {
-    return u0(y);
-  } else {
-    return 0.;
-  }
+  return u0(y);
 }
 /* SAM_LISTING_END_1 */
 
@@ -46,7 +45,7 @@ Eigen::MatrixXd findGrid(int M);
 
 /* SAM_LISTING_BEGIN_2 */
 template <typename FUNCTOR>
-Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau, double t,
+Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau, 
                             FUNCTOR&& velocity) {
   // Note: components of coefficient vectors are associated
   // with interior nodes only
@@ -64,7 +63,7 @@ Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau, dou
     // Find grid point corresponding to a degree of freedom
     Eigen::Vector2d x = grid.col(i);
     // Determine location of advected gridpoint
-    Eigen::Vector2d y = x - tau * velocity(t, x);
+    Eigen::Vector2d y = x - tau * velocity(x);
     // Test whether it still lies inside the computational domain
     if (y(0) >= 0. && y(0) <= 1. && y(1) >= 0. && y(1) <= 1.) {
       // Evaluate finite element function from previous timestep

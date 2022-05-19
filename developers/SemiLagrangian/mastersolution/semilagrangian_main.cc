@@ -15,7 +15,7 @@ int main() {
   double T = M_PI / 2.;
 
   auto v = [](const Eigen::Vector2d& x) {
-    return (Eigen::Vector2d() << -x(1), x(0)).finished();
+    return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
   };
   auto u0 = [](const Eigen::Vector2d& x) {
     Eigen::Vector2d x0 = x;
@@ -44,7 +44,7 @@ int main() {
       Eigen::VectorXd u_ex(N);
       for (int i = 0; i < grid.cols(); ++i) {
         Eigen::Vector2d x = grid.col(i);
-        u_ex(i) = SemiLagrangian::solveTransport(x, K, T, v, u0);
+        u_ex(i) = SemiLagrangian::solveTransport(x, 640, T, v, u0);
       }
 
       double err = (u - u_ex).cwiseAbs().maxCoeff();
