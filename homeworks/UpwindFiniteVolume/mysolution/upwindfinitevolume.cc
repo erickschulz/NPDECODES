@@ -27,7 +27,8 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double computeUpwindFlux(double mui, double muk, double vhat, double dik, double epsilon) {
+double computeUpwindFlux(double mui, double muk, double vhat, double dik,
+                         double epsilon) {
   double flux = 0;
   //====================
   // Your code goes here

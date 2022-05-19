@@ -32,13 +32,13 @@ TEST(UpwindFiniteVolume, computeUpwindFlux) {
   for (double mui : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
     for (double muk : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
       for (double vhat : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
-	for (double dik : {0.1, 0.2, 0.3}) {
-	  for (double epsilon : {0.1, 0.2, 0.3}) {
-	    const double Jik = computeUpwindFlux(mui, muk, vhat, dik, epsilon);
-	    const double Jki = computeUpwindFlux(muk, mui, -vhat, dik, epsilon);
-	    ASSERT_NEAR(Jik, -Jki, tol);
-	  }
-	}
+        for (double dik : {0.1, 0.2, 0.3}) {
+          for (double epsilon : {0.1, 0.2, 0.3}) {
+            const double Jik = computeUpwindFlux(mui, muk, vhat, dik, epsilon);
+            const double Jki = computeUpwindFlux(muk, mui, -vhat, dik, epsilon);
+            ASSERT_NEAR(Jik, -Jki, tol);
+          }
+        }
       }
     }
   }

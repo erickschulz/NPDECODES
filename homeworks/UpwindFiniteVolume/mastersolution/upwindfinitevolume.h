@@ -29,14 +29,15 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 
 /**
  * @brief Compute the upwind flux $J_{ik}(\mu_i, \mu_k)$
- * 
+ *
  * @param mui Value of $u_N$ at $p_i$
  * @param muk Value of $u_N$ at $p_k$
  * @param vhat Length of projection of $v$ onto $p_k - p_i$
  * @param dik Distance between $p_i$ and $p_k$
  * @param epsilon Strength of the diffusion
  */
-double computeUpwindFlux(double mui, double muk, double vhat, double dik, double epsilon);
+double computeUpwindFlux(double mui, double muk, double vhat, double dik,
+                         double epsilon);
 
 /**
  * @brief Compute the circumcenter of a triangle.
@@ -73,13 +74,13 @@ Eigen::Matrix3d ElementMatrixProvider<FUNCTOR>::Eval(
     const lf::mesh::Entity &entity) {
   Eigen::Matrix3d A = Eigen::Matrix3d::Zero();
 
- LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
+  LF_VERIFY_MSG(entity.RefEl() == lf::base::RefEl::kTria(),
                 "Unsupported cell type!");
 
   const lf::geometry::Geometry *geo_p = entity.Geometry();
   const Eigen::MatrixXd corners = lf::geometry::Corners(*geo_p);
 
- Eigen::Vector2d circumcenter =
+  Eigen::Vector2d circumcenter =
       computeCircumcenters(corners.col(0), corners.col(1), corners.col(2));
 
   Eigen::Matrix3d f = Eigen::Matrix3d::Zero();

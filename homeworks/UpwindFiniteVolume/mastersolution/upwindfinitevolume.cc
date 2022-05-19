@@ -27,15 +27,15 @@ Eigen::Matrix<double, 2, 3> gradbarycoordinates(
 /* SAM_LISTING_END_1 */
 
 /* SAM_LISTING_BEGIN_2 */
-double computeUpwindFlux(double mui, double muk, double vhat, double dik, double epsilon) {
+double computeUpwindFlux(double mui, double muk, double vhat, double dik,
+                         double epsilon) {
   double flux = 0;
   const double delta = 1e-8;
   const double exponent = vhat / epsilon * dik;
   if (std::fabs(exponent) > delta) {
     // No risk of cancellation
     flux = vhat * (muk - mui) / (1 - std::exp(-exponent)) + vhat * mui;
-  }
-  else {
+  } else {
     // Use taylor approximation to prevent cancelation
     flux = epsilon * (muk - mui) / (dik * (1 - 0.5 * exponent)) + vhat * mui;
   }
