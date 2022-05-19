@@ -20,21 +20,14 @@
 
 namespace UpwindQuadrature {
 
-// At any vertex a^j of a triangle, the vector field -v(a^j) may either point
-// into the triangle, along an edge of the triangle or outside the triangle.
-enum class Direction { INWARDS, OUTWARDS, ALONG_EDGE };
-
 /**
- * @brief Computes for all corners a^j of a triangle the direction of the vector
- * field -v(a^j)
- * @param geo Geometry object describing the triangle
- * @param velocities values of the vector field v, evaluated at the corners of
- * the triangle described by geo, stored in a 2x3 matrix.
- * @return A vector containing for all 3 corners the corresponding direction of
- * -v(a^j)
+ * @brief Computes the masses m(p) of all vertices of the mesh
+ * @param mesh_p pointer to the mesh.
+ * @return data structure containing the masses m(p) for all vertices p of the
+ * mesh represented by mesh_p.
  */
-std::vector<Direction> opposite_velocity_directions(
-    const lf::geometry::Geometry &geo, const Eigen::MatrixXd &velocities);
+lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
+    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 /**
  * @headerfile upwindquadrature.h
@@ -91,15 +84,6 @@ Eigen::Matrix3d UpwindConvectionElementMatrixProvider<FUNCTOR>::Eval(
   return loc_mat;
 }
 /* SAM_LISTING_END_1 */
-
-/**
- * @brief Computes the masses m(p) of all vertices of the mesh
- * @param mesh_p pointer to the mesh.
- * @return data structure containing the masses m(p) for all vertices p of the
- * mesh represented by mesh_p.
- */
-lf::mesh::utils::CodimMeshDataSet<double> initializeMasses(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p);
 
 }  // namespace UpwindQuadrature
 

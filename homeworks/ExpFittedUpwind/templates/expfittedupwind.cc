@@ -24,10 +24,11 @@ namespace ExpFittedUpwind {
  **/
 /* SAM_LISTING_BEGIN_1 */
 double Bernoulli(double tau) {
+  double res = 0;
   //====================
   // Your code goes here
   //====================
-  return tau;
+  return res;
 }
 /* SAM_LISTING_END_1 */
 
@@ -40,9 +41,10 @@ double Bernoulli(double tau) {
 /* SAM_LISTING_BEGIN_2 */
 // REVISE: Does not match specification
 std::shared_ptr<lf::mesh::utils::CodimMeshDataSet<double>> CompBeta(
-    std::shared_ptr<const lf::mesh::Mesh> mesh_p, const Eigen::VectorXd& mu) {
+    const lf::uscalfe::FeSpaceLagrangeO1<double>& fe_space,
+    const Eigen::VectorXd& mu) {
   // data set over all edges of the mesh.
-  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(mesh_p, 1, 1.0);
+  auto beta_p = lf::mesh::utils::make_CodimMeshDataSet(fe_space.Mesh(), 1, 1.0);
   //====================
   // Your code goes here
   //====================
