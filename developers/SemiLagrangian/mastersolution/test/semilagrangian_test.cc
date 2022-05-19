@@ -92,4 +92,27 @@ TEST(SemiLagrangian, solveTransport_rotation){
   }
 }
 
+TEST(SemiLagrangian,evalFEfunction){
+  int M=4;
+  int N=(M-1)*(M-1); //9
+  Eigen::VectorXd u(9);
+  u << 1,1,1,1,2,1,1,1,1;
+
+  //check boundary elements:
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.25*0.7,0.6), u), 0.7, 1E-5);
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.25*0.7,0.3), u), 0.7, 1E-5);
+
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.6,0.25*0.7), u), 0.7, 1E-5);
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.3,0.25*0.7), u), 0.7, 1E-5);
+
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(1.0-0.25*0.7,0.6), u), 0.7, 1E-5);
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(1.0-0.25*0.7,0.3), u), 0.7, 1E-5);
+  
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.6,1.0-0.25*0.7), u), 0.7, 1E-5);
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.3,1.0-0.25*0.7), u), 0.7, 1E-5);
+
+  //check one of the central elements
+  EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.4375,0.3125),u), 1.1875,1E-5 );
+}
+
 }  // namespace SemiLagrangian::test
