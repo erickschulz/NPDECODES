@@ -197,7 +197,7 @@ int main() {
       return 0.;
     }
   };
-
+  std::cout << "old Mastersolution" << std::endl;
   std::cout << "M"
             << "\t"
             << "K"

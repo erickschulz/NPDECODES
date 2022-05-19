@@ -1,8 +1,8 @@
 /**
- * @file
+ * @file semilagrangian_test.cc
  * @brief NPDE homework TEMPLATE MAIN FILE
  * @author
- * @date
+ * @date May 2022
  * @copyright Developed at SAM, ETH Zurich
  */
 
@@ -11,9 +11,9 @@
 #include <Eigen/Core>
 #include <iostream>
 
-#include "../XXX.h"
+#include "../semilagrangian.h"
 
-namespace XXX::test {
+namespace SemiLagrangian::test {
 
 TEST(XXX, FirstTest) {
   /* Macros available in the Google test framework:
@@ -23,4 +23,4 @@ TEST(XXX, FirstTest) {
      message by a trailing << ....
    */
 }
-}  // namespace XXX::test
+}  // namespace SemiLagrangian::test
