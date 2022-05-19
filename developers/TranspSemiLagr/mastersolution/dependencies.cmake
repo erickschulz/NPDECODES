@@ -7,6 +7,7 @@
 set(SOURCES
   ${DIR}/local_assembly.h
   ${DIR}/transpsemilagr.h
+  ${DIR}/transpsemilagr.cc
   ${DIR}/transpsemilagr_main.cc
 )
 

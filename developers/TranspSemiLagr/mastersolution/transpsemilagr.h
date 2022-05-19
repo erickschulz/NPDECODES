@@ -28,22 +28,7 @@ namespace TranspSemiLagr {
  */
 void enforce_zero_boundary_conditions(
     std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space,
-    lf::assemble::COOMatrix<double>& A, Eigen::VectorXd& b) {
-  lf::mesh::utils::MeshFunctionGlobal mf_zero{
-      [](const Eigen::Vector2d& /*x*/) { return 0.0; }};
-  const lf::fe::ScalarReferenceFiniteElement<double>* rsf_edge_p =
-      fe_space->ShapeFunctionLayout(lf::base::RefEl::kSegment());
-
-  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fe_space->Mesh(), 1)};
-  auto flag_values{
-      lf::fe::InitEssentialConditionFromFunction(*fe_space, bd_flags, mf_zero)};
-
-  lf::assemble::FixFlaggedSolutionCompAlt<double>(
-      [&flag_values](lf::assemble::glb_idx_t dof_idx) {
-        return flag_values[dof_idx];
-      },
-      A, b);
-}
+    lf::assemble::COOMatrix<double>& A, Eigen::VectorXd& b);
 
 /**
  * @brief performs a semi lagrangian step according to the update
@@ -108,29 +93,7 @@ Eigen::VectorXd semiLagr_step(
  */
 Eigen::VectorXd solverot(
     std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space,
-    Eigen::VectorXd u0_vector, int N, double T) {
-#if SOLUTION
-  // time step size
-  double tau = T / N;
-
-  // velocity field of the model problem
-  auto v = [](Eigen::Vector2d x) {
-    return (Eigen::Vector2d() << -x(1) + 3.0 * x(0) * x(0), x(0)).finished();
-  };
-
-  // approximate solution based on N uniform time steps.
-  for (int i = 0; i < N; ++i) {
-    u0_vector = semiLagr_step(fe_space, u0_vector, v, tau);
-  }
-
-  return u0_vector;
-#else
-  //====================
-  // Your code goes here
-  //====================
-  return (T + N) * Eigen::VectorXd::Ones(u0_vector.size());
-#endif
-}
+    Eigen::VectorXd u0_vector, int N, double T);
 
 /**
  * @param solves the variational evolution problem specified in the exercise
@@ -141,21 +104,22 @@ Eigen::VectorXd solverot(
  * @param c coefficient function in the variational evolution problem
  * @param tau time step size
  */
+/* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR>
 Eigen::VectorXd reaction_step(
     std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space,
     const Eigen::VectorXd& u0_vector, FUNCTOR c, double tau) {
 #if SOLUTION
-  // The explicit midpoint rule computes the solution to y' = f(y) as
-  // y* = y_n + tau/2*f(y_n)
-  // y_{n+1} =   y_n + tau*f(y*)
+  // The explicit midpoint rule computes the solution to $y' = f(y)$ as
+  // $y* = y_n + tau/2*f(y_n)$
+  // $y_{n+1} =   y_n + tau*f(y*)$
 
   // In the evolution problem f(y) solves the discretized variational problem
-  // A_m*f(y) = A_{m,c}*y
-  // where A_m is the lumped mass matrix
-  // and A_{m,c} is the lumped mass matrix with coefficient function c.
+  // $A_m*f(y) = A_{m,c}*y$
+  // where $A_m$ is the lumped mass matrix
+  // and $A_{m,c}$ is the lumped mass matrix with coefficient function c.
 
-  // Assemble matrix A_{m,c}
+  // Assemble matrix $A_{m,c}$
   LumpedMassElementMatrixProvider mass_element_matrix_provider_c(c);
   lf::assemble::COOMatrix<double> mass_matrix_c(
       fe_space->LocGlobMap().NumDofs(), fe_space->LocGlobMap().NumDofs());
@@ -164,7 +128,7 @@ Eigen::VectorXd reaction_step(
       mass_element_matrix_provider_c, mass_matrix_c);
   Eigen::SparseMatrix<double> mass_matrix_c_sparse = mass_matrix_c.makeSparse();
 
-  // Assemble matrix A_m
+  // Assemble matrix $A_m$
   LumpedMassElementMatrixProvider mass_element_matrix_provider_1(
       [](Eigen::Vector2d /*x*/) { return 1.0; });
   lf::assemble::COOMatrix<double> mass_matrix_1(
@@ -174,18 +138,18 @@ Eigen::VectorXd reaction_step(
       mass_element_matrix_provider_1, mass_matrix_1);
   Eigen::SparseMatrix<double> mass_matrix_1_sparse = mass_matrix_1.makeSparse();
 
-  // initialize sparse solver for mass matrix A_m
+  // initialize sparse solver for mass matrix $A_m$
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
   solver.compute(mass_matrix_1_sparse);
 
-  // evaluate f(y_n)
+  // evaluate $f(y_n)$
   Eigen::VectorXd k1 = solver.solve(mass_matrix_c_sparse * u0_vector);
 
-  // evaluate f(y*)
+  // evaluate $f(y*)$
   Eigen::VectorXd k2 =
       solver.solve(mass_matrix_c_sparse * (u0_vector + 0.5 * tau * k1));
 
-  // update to y_{n+1}
+  // update to $y_{n+1}$
   return u0_vector + tau * k2;
 #else
   //====================
@@ -194,6 +158,7 @@ Eigen::VectorXd reaction_step(
   return Eigen::VectorXd::Ones(u0_vector.size());
 #endif
 }
+/* SAM_LISTING_END_1 */
 
 /**
  * @brief approximates the solution to the second model problem specified in the
@@ -207,40 +172,6 @@ Eigen::VectorXd reaction_step(
  */
 Eigen::VectorXd solvetrp(
     std::shared_ptr<const lf::uscalfe::UniformScalarFESpace<double>> fe_space,
-    Eigen::VectorXd u0_vector, int N, double T) {
-#if SOLUTION
-  // time step size
-  double tau = T / N;
-
-  // coefficient functiosn for the semiLagr and reaction step
-  auto v = [](Eigen::Vector2d x) {
-    return (Eigen::Vector2d() << -x(1) + 3.0 * x(0) * x(0), x(0)).finished();
-  };
-  auto c = [](Eigen::Vector2d x) { return -6.0 * x(0); };
-
-  // Strang splitting scheme
-  //-----------------------
-  // first SemiLagr half step:
-  u0_vector = semiLagr_step(fe_space, u0_vector, v, 0.5 * tau);
-
-  // intermediate time steps: Combine two semiLagr half steps to one step
-  for (int i = 0; i < N - 1; ++i) {
-    u0_vector = reaction_step(fe_space, u0_vector, c, tau);
-    u0_vector = semiLagr_step(fe_space, u0_vector, v, tau);
-  }
-
-  // final reaction step and semiLagr half step
-  u0_vector = reaction_step(fe_space, u0_vector, c, tau);
-  u0_vector = semiLagr_step(fe_space, u0_vector, v, tau * 0.5);
-
-  return u0_vector;
-
-#else
-  //====================
-  // Your code goes here
-  //====================
-  return (T + N) * Eigen::VectorXd::Ones(u0_vector.size());
-#endif
-}
+    Eigen::VectorXd u0_vector, int N, double T);
 
 }  // namespace TranspSemiLagr
