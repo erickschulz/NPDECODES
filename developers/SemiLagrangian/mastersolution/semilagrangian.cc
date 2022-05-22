@@ -10,54 +10,17 @@
 
 namespace SemiLagrangian {
 
-
-// Auxiliary function of 'semiLagrangeSource'
-double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
-  int N = u.size();  // assume dofs on boundary already removed
-  int root = std::round(std::sqrt(N));
-  int M = root + 1;
-  double h = 1. / M;
-
-  // Restore 0-dofs on boundary:
-  Eigen::VectorXd u_all = Eigen::VectorXd::Zero((M + 1) * (M + 1));
-  unsigned cnt = 0;
-  for (int i = 0; i < u_all.size(); ++i) {
-    if ((i > M) && ((i + 1) % (M + 1) != 0) && (i < M * (M + 1)) &&
-        (i % (M + 1) != 0)) {
-      u_all(i) = u(cnt);
-      ++cnt;
-    }
-  }
-
-  Eigen::Vector2i x_idx;
-  x_idx << std::floor(x(0) / h), std::floor(x(1) / h);
-  // Index of bottom-left corner of grid square:
-  int ii = x_idx(1) * (M + 1) + x_idx(0);
-  if (ii < 0 || ii >= (M + 1) * (M + 1)) {
-    std::cerr << "ii can only be in [0,M*M+2*M]" << std::endl;
-  }
-
-  // Indices of corners of grid square:
-  Eigen::Vector4i indices;
-  indices << ii, ii + 1, ii + M + 2, ii + M + 1;
-
-  // Coefficients of corners of grid square:
-  Eigen::VectorXd coeffs(4);
-  for (int i = 0; i < 4; ++i) {
-    coeffs(i) = u_all(indices(i));
-  }
-
-  // Local coordinates in grid square:
-  Eigen::Vector2d x_loc;
-  x_loc << std::fmod(x(0), h), std::fmod(x(1), h);
-
-  // Interpolation:
-  return coeffs(0) * (1. - x_loc(0) / h) * (1. - x_loc(1) / h) +
-         coeffs(1) * (1. - x_loc(1) / h) * x_loc(0) / h +
-         coeffs(2) * x_loc(0) / h * x_loc(1) / h +
-         coeffs(3) * (1. - x_loc(0) / h) * x_loc(1) / h;
+void testfloor_and_division(){
+    int M = 80;
+    double h = 1.0/80;
+    Eigen::Vector2d x (0.504,0.1625);
+    std::cout << "j: " << std::floor(x(1)/h) << "(exact: " << x(1)/h << ")" << std::endl;
+    std::cout << "j*h: " <<std::floor(x(1)/h)*h  << std::endl;
+    std::cout << "x_loc formula from the exercise (direct computation): " << (x(1)-std::floor(x(1)/h)*h)/h << std::endl;
+    std::cout << "x_loc fmod: " << std::fmod(x(1),h)/h << std::endl;
+    std::cout << "Backward transformation (exercise): "  << std::floor(x(1)/h)*h + ((x(1)-std::floor(x(1)/h)*h)/h)*h << std::endl;
+    std::cout << "Backward transformation (fmod): " << std::floor(x(1)/h)*h +  (std::fmod(x(1),h)/h)*h << std::endl;
 }
-
 
 // Auxiliary function of 'semiLagrangeSource'
 Eigen::MatrixXd findGrid(int M) {
@@ -80,6 +43,45 @@ Eigen::MatrixXd findGrid(int M) {
   return grid;
 }
 
+// Auxiliary function of 'semiLagrangeSource'
+double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
+  int N = u.size();  // assume dofs on boundary already removed
+  int root = std::round(std::sqrt(N));
+  int M = root + 1;
+  double h = 1. / M;
+
+  //compute the location of the square containing x
+  int i = std::floor(x(0)/h);
+  int j = std::floor(x(1)/h);
+
+  //Check, that x lies in the unit square
+  if(i < 0 || i > M-1 || j < 0 || j > M-1){
+      std::cerr << "i,j can only be in [0,M-1]" << std::endl;
+  }
+
+  //compute local coordinates:
+  Eigen::Vector2d x_loc;
+  x_loc(0) = (x(0)-i*h)/h;
+  x_loc(1) = (x(1)-j*h)/h;
+
+  //Vector of local coefficients:
+  Eigen::Vector4d u_loc;
+
+  //Check for boundary dofs and extract correct components of u:
+  //Recall clockwise ordering of local dofs, starting in bottom left corner.
+  u_loc(0) = (i==0 ||j==0 ) ? 0.0: u((M-1)*(j-1) + (i-1));
+  u_loc(1) = (i==(M-1) ||j ==0) ? 0.0: u((M-1)*(j-1) + i);
+  u_loc(2) = (i==(M-1) || j ==(M-1)) ? 0.0: u((M-1)*j + i);
+  u_loc(3)=  (i==0 || j ==(M-1) )? 0.0: u((M-1)*j  + i-1);
+
+
+  //evaluate using reference shape functions:
+  return u_loc(0) * (1. - x_loc(0)) * (1. - x_loc(1)) +
+         u_loc(1) * (1. - x_loc(1) ) * x_loc(0)  +
+         u_loc(2) * x_loc(0)  * x_loc(1)  +
+         u_loc(3) * (1. - x_loc(0) ) * x_loc(1);
+
+}
 
 /* SAM_LISTING_BEGIN_3 */
 Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
@@ -108,8 +110,11 @@ Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
   }
 
   // Lambda function giving velocity
-  auto velocity = [](const Eigen::Vector2d& x) {
-    return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
+  //auto velocity = [](const Eigen::Vector2d& x) {
+  //  return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
+  //};
+  auto velocity = [](const Eigen::Vector2d& x){
+    return Eigen::Vector2d(-x(1),x(0));
   };
 
   double tau = T / K;  // timestep

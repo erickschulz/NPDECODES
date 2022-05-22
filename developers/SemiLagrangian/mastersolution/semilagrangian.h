@@ -13,9 +13,12 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
-
+#include <chrono>
+using namespace std::chrono;
 
 namespace SemiLagrangian {
+
+void testfloor_and_division();
 
 /* SAM_LISTING_BEGIN_1 */
 template <typename FUNCTOR_V, typename FUNCTOR_U0>
@@ -38,7 +41,6 @@ double solveTransport(const Eigen::Vector2d& x, int K, double t, FUNCTOR_V&& v,
   return u0(y);
 }
 /* SAM_LISTING_END_1 */
-
 double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u);
 
 Eigen::MatrixXd findGrid(int M);

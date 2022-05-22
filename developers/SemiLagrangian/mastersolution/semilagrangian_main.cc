@@ -12,11 +12,17 @@
 #include "semilagrangian.h"
 
 int main() {
-  double T = M_PI / 2.;
 
-  auto v = [](const Eigen::Vector2d& x) {
-    return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
+  SemiLagrangian::testfloor_and_division();
+  //double T = M_PI / 2.;
+  double T = 0.5;
+  //auto v = [](const Eigen::Vector2d& x) {
+  //  return (Eigen::Vector2d() << -(x(1) - 0.5), x(0) - 0.5).finished();
+  //};
+   auto v = [](const Eigen::Vector2d& x){
+    return Eigen::Vector2d(-x(1),x(0));
   };
+  
   auto u0 = [](const Eigen::Vector2d& x) {
     Eigen::Vector2d x0 = x;
     x0(0) -= 0.25;
