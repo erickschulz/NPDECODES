@@ -30,6 +30,7 @@ Eigen::MatrixXd findGrid(int M) {
 }
 
 double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
+#if SOLUTION
   int N = u.size();  // assume dofs on boundary already removed
   int root = std::round(std::sqrt(N));
   int M = root + 1;
@@ -63,6 +64,12 @@ double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
   return u_loc(0) * (1. - x_loc(0)) * (1. - x_loc(1)) +
          u_loc(1) * (1. - x_loc(1)) * x_loc(0) +
          u_loc(2) * x_loc(0) * x_loc(1) + u_loc(3) * (1. - x_loc(0)) * x_loc(1);
+#else
+  //====================
+  // Your code goes here
+  //====================
+  return 0.0;
+#endif
 }
 
 /* SAM_LISTING_BEGIN_3 */
@@ -73,6 +80,7 @@ Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
   Eigen::MatrixXd grid = findGrid(M);
   Eigen::VectorXd u(N);
 
+#if SOLUTION
   // initial condition
   auto u0 = [](const Eigen::Vector2d& x) {
     Eigen::Vector2d x0 = x - Eigen::Vector2d(0.25, 0.5);
@@ -95,7 +103,11 @@ Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
     Eigen::VectorXd rhs = semiLagrangeSource(u, tau, velocity);
     u = rhs * (M * M);  // inverse of diagonal matrix
   }
-
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return u;
 }
 /* SAM_LISTING_END_3 */

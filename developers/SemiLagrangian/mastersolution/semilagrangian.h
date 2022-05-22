@@ -28,6 +28,7 @@ namespace SemiLagrangian {
 template <typename FUNCTOR_V, typename FUNCTOR_U0>
 double solveTransport(const Eigen::Vector2d& x, int K, double t, FUNCTOR_V&& v,
                       FUNCTOR_U0&& u0) {
+#if SOLUTION
   double tau = t / K;     // timestep
   Eigen::Vector2d y = x;  // starting point
 
@@ -43,6 +44,12 @@ double solveTransport(const Eigen::Vector2d& x, int K, double t, FUNCTOR_V&& v,
     }
   }
   return u0(y);
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  return 0.0;
+  #endif
 }
 /* SAM_LISTING_END_1 */
 /**
@@ -80,9 +87,10 @@ Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau,
     std::cerr << "The number of dofs should be a perfect square!" << std::endl;
   }
   int M = root + 1;
-
   Eigen::MatrixXd grid = findGrid(M);
   Eigen::VectorXd f(N);
+
+#if SOLUTION
   for (int i = 0; i < grid.cols(); ++i) {
     // Find grid point corresponding to a degree of freedom
     Eigen::Vector2d x = grid.col(i);
@@ -101,6 +109,12 @@ Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau,
   // Finally scale with $h^{2}$
   return f / (M * M);  // * 1 (from $[0,1]^2$) * 4 (from no. of adjacent
                        // squares) / 4 (from no. of vertices of square)
+ #else
+  //====================
+  // Your code goes here
+  //====================
+  return f;
+#endif                      
 }
 /* SAM_LISTING_END_2 */
 
