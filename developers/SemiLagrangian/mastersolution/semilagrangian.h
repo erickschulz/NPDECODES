@@ -44,12 +44,12 @@ double solveTransport(const Eigen::Vector2d& x, int K, double t, FUNCTOR_V&& v,
     }
   }
   return u0(y);
-  #else
+#else
   //====================
   // Your code goes here
   //====================
   return 0.0;
-  #endif
+#endif
 }
 /* SAM_LISTING_END_1 */
 /**
@@ -109,12 +109,12 @@ Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau,
   // Finally scale with $h^{2}$
   return f / (M * M);  // * 1 (from $[0,1]^2$) * 4 (from no. of adjacent
                        // squares) / 4 (from no. of vertices of square)
- #else
+#else
   //====================
   // Your code goes here
   //====================
   return f;
-#endif                      
+#endif
 }
 /* SAM_LISTING_END_2 */
 
