@@ -115,4 +115,27 @@ TEST(SemiLagrangian,evalFEfunction){
   EXPECT_NEAR(evalFEfunction(Eigen::Vector2d(0.4375,0.3125),u), 1.1875,1E-5 );
 }
 
+TEST(SemiLagrangian,semiLagrangeSource){
+  int M=4;
+  int N=(M-1)*(M-1); //9
+  double h = 0.25;
+  Eigen::VectorXd u(9);
+  u << 1,1,1,1,2,1,1,1,1;
+
+  auto v = [](Eigen::Vector2d x){ return Eigen::Vector2d(-1,-2);};
+  double tau=0.15;
+  Eigen::MatrixXd grid = findGrid(4);
+
+  //reference source
+  Eigen::VectorXd f_ref(9);
+  f_ref << 1.48,1.32,0.4,0.8,0.8,0.32,0.0,0.0,0.0;
+  f_ref = f_ref * 0.0625;
+  
+  //computed source
+  Eigen::VectorXd f_comp = semiLagrangeSource(u,tau,v);
+
+  EXPECT_NEAR((f_ref-f_comp).norm(),0.0,1E-6);
+}
+
+
 }  // namespace SemiLagrangian::test

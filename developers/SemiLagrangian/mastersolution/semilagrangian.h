@@ -51,7 +51,7 @@ Eigen::VectorXd semiLagrangeSource(const Eigen::VectorXd& u_old, double tau,
                             FUNCTOR&& velocity) {
   // Note: components of coefficient vectors are associated
   // with interior nodes only
-  int N = u_old.size();  // assume dofs on boundary already removed
+  int N = u_old.size();  
   // Extract number of cells in one direction
   int root = std::round(std::sqrt(N));
   if (N != root * root) {
