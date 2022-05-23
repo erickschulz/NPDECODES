@@ -1,0 +1,9 @@
+- **General**: There were some inconcistencies wheter v is time-dependent. Since most of the problem consideres v=v(x) time-independent, I point out the places, where v is described as time-dependent. The complete code currently is implemented for v being time IN-dependent.
+- **Part c**: Function is in the file semilagrangian.h
+- **Solution c**: No solution code; solution currently doesn't mention, that the scheme has to be applied backward.
+- **Soution e**: Remove t_j from the update formula
+- **Solution g**: No solution code; Replace b_K -> b_{\hat{K}}, since the transformation in 2. gives local coordinates in the unit square and not in [0,h]^2.
+- **Part h**: Function in the file semilagrangian.h; Remove t from the function signature of semiLagrangeSource, description of the velocity and the description of t.
+- **Solution h**: Solution code is missing; Factor h^2 is missing in the formula for f(...)_k
+- **Hint i**: Hint 1 seems strange, since a pure transport problem is considered.
+- **Solution i**: No solution code; M is an h^2-scaled identity matrix 
