@@ -32,6 +32,10 @@ int main() {
 
   std::shared_ptr<lf::mesh::Mesh> mesh_p = reader.mesh();
 
+  auto mesh_seq_p{
+      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
+  int num_meshes = mesh_seq_p->NumLevels();
+
   double eps = 1e-6;
 
   auto v = [](Eigen::Vector2d x) -> Eigen::Vector2d {
@@ -49,10 +53,6 @@ int main() {
   };
 
   // Convergence study
-  auto mesh_seq_p{
-      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
-  int num_meshes = mesh_seq_p->NumLevels();
-
   std::vector<double> vec_l2error;
   std::vector<double> vec_Ndofs;
   for (int level = 0; level < num_meshes; ++level) {
@@ -130,7 +130,7 @@ int main() {
                 << "; L2 Error: " << vec_l2error.at(i) << std::endl;
     }
   }
-  /* SAM_LISTING_END_1 */
 
+  /* SAM_LISTING_END_1 */
   return 0;
 }

@@ -22,6 +22,28 @@
 
 namespace UpwindFiniteVolume::test {
 
+TEST(UpwindFiniteVolume, computeUpwindFlux) {
+  const double tol = 1e-6;
+  const double Jik_no_canc = computeUpwindFlux(1, 2, 0.1, 0.2, 0.3);
+  ASSERT_NEAR(Jik_no_canc, 1.6505555, tol);
+  const double Jik_canc = computeUpwindFlux(1, 2, 0, 0.2, 0.3);
+  ASSERT_NEAR(Jik_canc, 1.5, tol);
+
+  for (double mui : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
+    for (double muk : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
+      for (double vhat : {-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3}) {
+        for (double dik : {0.1, 0.2, 0.3}) {
+          for (double epsilon : {0.1, 0.2, 0.3}) {
+            const double Jik = computeUpwindFlux(mui, muk, vhat, dik, epsilon);
+            const double Jki = computeUpwindFlux(muk, mui, -vhat, dik, epsilon);
+            ASSERT_NEAR(Jik, -Jki, tol);
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST(UpwindFiniteVolume, computeCircumcenters) {
   Eigen::Vector2d a1 = Eigen::Vector2d(0, 0);
   Eigen::Vector2d a2 = Eigen::Vector2d(1, 0);

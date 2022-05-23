@@ -25,8 +25,20 @@
 
 int main() {
   /* SAM_LISTING_BEGIN_1 */
+  // Read in mesh
+  auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
+  lf::io::GmshReader reader(std::move(mesh_factory),
+                            CURRENT_SOURCE_DIR "/mesh.msh");
+
+  std::shared_ptr<lf::mesh::Mesh> mesh_p = reader.mesh();
+
+  auto mesh_seq_p{
+      lf::refinement::GenerateMeshHierarchyByUniformRefinemnt(mesh_p, 6)};
+  int num_meshes = mesh_seq_p->NumLevels();
+
   //====================
   // Your code goes here
   //====================
+  /* SAM_LISTING_END_1 */
   return 0;
 }
