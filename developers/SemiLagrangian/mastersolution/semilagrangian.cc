@@ -29,6 +29,7 @@ Eigen::MatrixXd findGrid(int M) {
   return grid;
 }
 
+/* SAM_LISTING_BEGIN_1 */
 double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
 #if SOLUTION
   int N = u.size();  // assume dofs on boundary already removed
@@ -71,8 +72,9 @@ double evalFEfunction(const Eigen::Vector2d& x, const Eigen::VectorXd& u) {
   return 0.0;
 #endif
 }
+/* SAM_LISTING_END_1 */
 
-/* SAM_LISTING_BEGIN_3 */
+/* SAM_LISTING_BEGIN_2 */
 Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
   int N = (M - 1) * (M - 1);  // internal dofs
 
@@ -110,7 +112,7 @@ Eigen::VectorXd semiLagrangePureTransport(int M, int K, double T) {
 #endif
   return u;
 }
-/* SAM_LISTING_END_3 */
+/* SAM_LISTING_END_2 */
 
 void testFloorAndDivision() {
   int M = 80;
