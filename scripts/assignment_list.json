@@ -85,6 +85,9 @@
     "WaveABC2D/",
     "ZienkiewiczZhuEstimator/",
     "Mehrstellenverfahren/",
-    "SemiLagrangian/"
+    "SemiLagrangian/",
+    "AdvectionSUPG/",
+    "PML1D/",
+    "PotentialFlow/"
   ]
 }

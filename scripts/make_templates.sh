@@ -30,6 +30,6 @@ for dir in $@; do
     echo "     Warning: Found no unit tests for $ProblemName"
   fi
 
-  # templates it just plain copy of processed mysolution
+  # templates is just plain copy of processed mysolution
   cp -r $output_dir/mysolution/. $output_dir/templates
 done

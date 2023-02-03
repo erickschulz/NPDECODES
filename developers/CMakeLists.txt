@@ -87,3 +87,6 @@ add_subdirectory(UpwindFiniteVolume) # Under construction
 add_subdirectory(UpwindQuadrature)
 add_subdirectory(WaveABC2D)
 add_subdirectory(ZienkiewiczZhuEstimator)
+add_subdirectory(AdvectionSUPG)
+add_subdirectory(PML1D)
+add_subdirectory(PotentialFlow)
