@@ -20,6 +20,9 @@ endif()
 #setup compiler
 set(CMAKE_CXX_STANDARD 17)
 
+# provide cmake project info to clangd (language server)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 #enable warnings
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG(-Wall COMPILER_SUPPORTS_WALL)
