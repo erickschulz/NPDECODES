@@ -10,6 +10,7 @@
 
 #include <lf/base/lf_assert.h>
 #include <lf/fe/fe_tools.h>
+#include <lf/fe/mesh_function_fe.h>
 
 #include <Eigen/Core>
 
@@ -129,7 +130,8 @@ std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
 }
 /* SAM_LISTING_END_4 */
 
-Eigen::VectorXd computerNewtonCorrection(
+/* SAM_LISTING_BEGIN_6 */
+Eigen::VectorXd computeNewtonCorrection(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
     const Eigen::VectorXd& mu_vec) {
   // Obtain reference to the underlying finite element mesh
@@ -139,9 +141,9 @@ Eigen::VectorXd computerNewtonCorrection(
   // Get the number of degrees of freedom = dimension of FE space
   const lf::base::size_type N_dofs(dofh.NumDofs());
   LF_ASSERT_MSG(mu_vec.size() == N_dofs, "Vector length mismatch!");
-  // Solution vector = return value 
+  // Solution vector = return value
   Eigen::VectorXd sol_vec(N_dofs);
-  #if SOLUTION
+#if SOLUTION
   // Set up an empty sparse matrix to hold the Galerkin matrix
   lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
   // Initialize ELEMENT_MATRIX_PROVIDER object
@@ -190,14 +192,69 @@ Eigen::VectorXd computerNewtonCorrection(
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
   sol_vec = solver.solve(phi);
   LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
-  #else
+#else
   //====================
   // Your code goes here
   //====================
-  #endif
+#endif
   return sol_vec;
 }
+/* SAM_LISTING_END_6 */
 
-void graphMinSurfVis(std::string meshfile, std::string vtkfile) {}
+/* SAM_LISTING_BEGIN_7 */
+void graphMinSurfVis(std::string meshfile, std::string vtkfile) {
+  // Read mesh for unit square from file
+  auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
+  const lf::io::GmshReader reader(std::move(mesh_factory), meshfile.c_str());
+  std::shared_ptr<const lf::mesh::Mesh> mesh_p = reader.mesh();
+  // Finite element space
+  auto fe_space_p =
+      std::make_shared<lf::uscalfe::FeSpaceLagrangeO1<double>>(mesh_p);
+  // Solve non-linear BVP by means of Newton's method
+  std::vector<Eigen::VectorXd> iterates{};
+  int itcnt = 0;
+  Eigen::VectorXd mu = graphMinimalSurface(
+#if SOLUTION
+      fe_space_p,
+      [](Eigen::Vector2d x) -> double { return std::abs(x[0] + x[1] - 1.0); },
+      1.0E-4, 1.0E-6, 20,
+      [&iterates, &itcnt](const Eigen::VectorXd& mu) -> void {
+        iterates.push_back(mu);
+        itcnt++;
+      }
+#else
+      //====================
+      // Replace this line with meaningful function argument
+      //====================
+      fe_space_p, [](Eigen::Vector2d x) { return 0.0; }, 0.0, 0.0, 0
+#endif
+  );
+  // Tabulate progress of iteration
+  unsigned int N = mu.size();
+  for (int i = 0; i < itcnt; ++i) {
+    double mu_norm = iterates[i].norm() / std::sqrt(N);
+    std::cout << "k = " << i << ": |mu(" << i << ")| = " << mu_norm;
+    if (i > 0) {
+      std::cout << ", |correction| = "
+                << (iterates[i] - iterates[i - 1]).norm() / std::sqrt(N);
+    }
+    std::cout << std::endl;
+  }
+  // Output solution for visualization
+#if SOLUTION
+  lf::io::VtkWriter vtk_writer(mesh_p, vtkfile);
+  // Create a MeshFunction encoding the FE solution
+  lf::fe::MeshFunctionFE<double, double> mf_uh(fe_space_p, mu);
+  // Write nodal data to file
+  vtk_writer.WritePointData("mPoint", mf_uh);
+  std::cout << "\n The finite element solution was written to:" << std::endl;
+  std::cout << ">> " << vtkfile << std::endl;
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
+}
+/* SAM_LISTING_END_7 */
 
 }  // namespace MinimalGraphSurface

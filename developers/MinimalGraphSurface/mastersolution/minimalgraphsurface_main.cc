@@ -11,7 +11,13 @@
 
 #include "minimalgraphsurface.h"
 
-int main(int /*argc*/, char** /*argv*/) { return 0; }
+int main(int argc, char** argv) {
+  std::string meshfile = "/../meshes/square.msh";
+  if (argc > 1) meshfile = argv[1];
+  std::string vtkfile = "graphminsurf.vtk";
+  MinimalGraphSurface::graphMinSurfVis(meshfile,vtkfile);
+  return 0;
+}
 
 /*
 $ git push --set-upstream origin MinimalGraphSurface

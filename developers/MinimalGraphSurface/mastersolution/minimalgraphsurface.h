@@ -80,7 +80,7 @@ class CoeffScalarc {
  *
  * Sub-problem 5-3h)
  */
-Eigen::VectorXd computerNewtonCorrection(
+Eigen::VectorXd computeNewtonCorrection(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
     const Eigen::VectorXd& mu_vec);
 
@@ -103,8 +103,8 @@ Eigen::VectorXd graphMinimalSurface(
   // Get the number of degrees of freedom = dimension of FE space
   const lf::base::size_type N_dofs(dofh.NumDofs());
 
-  // I. Solve Dirichlet problem for $-\Delta$ in order to obtain a good initial
-  // guess
+  // I. Solve Dirichlet problem for $-\Delta u=0$ in order to obtain a good
+  // initial guess
   Eigen::VectorXd uh(N_dofs);
   {
     // Set up an empty sparse matrix to hold the Galerkin matrix
@@ -128,13 +128,13 @@ Eigen::VectorXd graphMinimalSurface(
           if (bd_flags(node)) {
             // Get location of the node on the boundary
             const lf::geometry::Geometry* geo = node.Geometry();
-	    // Query node coordinates
+            // Query node coordinates
             Eigen::Vector2d pos = geo->Global(v_zero);
-	    // Fecth boundary value in current node 
+            // Fecth boundary value in current node
             const double val = boundary_data(pos);
             return std::make_pair(true, val);
-          } 
-	  return std::make_pair(false, 0.0);
+          }
+          return std::make_pair(false, 0.0);
         },
         A, phi);
     // Solve Galerkin LSE
@@ -145,7 +145,21 @@ Eigen::VectorXd graphMinimalSurface(
     uh = solver.solve(phi);
     LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
   }
-  
+  // II. Newton iteration with correction based termination
+  double update_norm;       // Norm of Newton correction
+  unsigned int it_cnt = 0;  // Iteration counter
+  rec(uh);
+  do {
+    it_cnt++;
+    // Compute Newton correction
+    const Eigen::VectorXd corr = computeNewtonCorrection(fes_p, uh);
+    update_norm = corr.norm() / std::sqrt(N_dofs);
+    uh += corr;  // Update approximate solution
+    rec(uh);     // Register updated solution
+    // Correction-based termination
+  } while ((update_norm < rtol * uh.norm() / std::sqrt(N_dofs)) &&
+           (update_norm > atol) && (it_cnt < itmax));
+  return uh;
 }
 
 /** @brief VTK Output of graph with minimal area
