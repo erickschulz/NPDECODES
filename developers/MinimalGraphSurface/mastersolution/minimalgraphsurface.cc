@@ -63,7 +63,7 @@ CoeffTensorA::CoeffTensorA(
 // Implementation of evaluation operator for class CoeffTensorA
 /* SAM_LISTING_BEGIN_3 */
 std::vector<Eigen::Matrix2d> CoeffTensorA::operator()(
-    const lf::mesh::Entity& e, const Eigen::MatrixXd& refc) {
+    const lf::mesh::Entity& e, const Eigen::MatrixXd& refc) const {
   // Number of points for which evaluation is requested
   const int nvals = refc.cols();
   // For returning values
@@ -107,7 +107,7 @@ CoeffScalarc::CoeffScalarc(
 // Implementation of evaluation operator for class CoeffScalarc
 /* SAM_LISTING_BEGIN_4 */
 std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
-                                             const Eigen::MatrixXd& refc) {
+                                             const Eigen::MatrixXd& refc) const {
   // Number of points for which evaluation is requested
   const int nvals = refc.cols();
   // For returning values

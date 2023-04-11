@@ -49,7 +49,7 @@ class CoeffTensorA {
   CoeffTensorA(CoeffTensorA&&) = default;
   CoeffTensorA& operator=(const CoeffTensorA&) = delete;
   std::vector<Eigen::Matrix2d> operator()(const lf::mesh::Entity& e,
-                                          const Eigen::MatrixXd& refc);
+                                          const Eigen::MatrixXd& refc) const;
 
  private:
   lf::fe::MeshFunctionGradFE<double, double> graduh_;
@@ -70,7 +70,7 @@ class CoeffScalarc {
   CoeffScalarc(CoeffScalarc&&) = default;
   CoeffScalarc& operator=(const CoeffScalarc&) = delete;
   std::vector<double> operator()(const lf::mesh::Entity& e,
-                                 const Eigen::MatrixXd& refc);
+                                 const Eigen::MatrixXd& refc) const;
 
  private:
   lf::fe::MeshFunctionGradFE<double, double> graduh_;
