@@ -15,6 +15,7 @@
 #include <lf/uscalfe/uscalfe.h>
 
 #include <Eigen/Core>
+#include <string>
 
 namespace MinimalGraphSurface {
 /** @brief HW 5-3f) Computes the area of a graph
@@ -74,4 +75,83 @@ class CoeffScalarc {
  private:
   lf::fe::MeshFunctionGradFE<double, double> graduh_;
 };
+
+/** @brief Solves discrete variational equation for Newton correction
+ *
+ * Sub-problem 5-3h)
+ */
+Eigen::VectorXd computerNewtonCorrection(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu_vec);
+
+/** @brief Computation of function whose graph has minimal area over
+ * \f$\Omega\f$
+ *
+ * Sub-problem 5-3i)
+ */
+
+template <typename D_FUNCTOR,
+          typename RECORDER = std ::function<void(const Eigen::VectorXd&)>>
+Eigen::VectorXd graphMinimalSurface(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    D_FUNCTOR&& boundary_data, double rtol, double atol, unsigned int itmax,
+    RECORDER&& rec = [](const Eigen::VectorXd&) -> void {}) {
+  // Obtain reference to the underlying finite element mesh
+  const lf::mesh::Mesh& mesh{*fes_p->Mesh()};
+  // The local-to-global index mapping
+  const lf::assemble::DofHandler& dofh{fes_p->LocGlobMap()};
+  // Get the number of degrees of freedom = dimension of FE space
+  const lf::base::size_type N_dofs(dofh.NumDofs());
+
+  // I. Solve Dirichlet problem for $-\Delta$ in order to obtain a good initial
+  // guess
+  Eigen::VectorXd uh(N_dofs);
+  {
+    // Set up an empty sparse matrix to hold the Galerkin matrix
+    lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
+    lf::mesh::utils::MeshFunctionConstant<double> mf_one(1.0);
+    lf::mesh::utils::MeshFunctionConstant<double> mf_zero(0.0);
+    lf::uscalfe::ReactionDiffusionElementMatrixProvider elmat_builder(
+        fes_p, mf_one, mf_zero);
+    lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
+    Eigen::VectorXd phi(N_dofs);
+    phi.setZero();
+    // Impose Dirichlet boundary conditions
+    auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fes_p->Mesh(), 2)};
+    // Set fixed values for d.o.f. on the boundary
+    const Eigen::MatrixXd v_zero =
+        (Eigen::MatrixXd(2, 1) << 0.0, 0.0).finished();
+    lf::assemble::FixFlaggedSolutionComponents<double>(
+        [&bd_flags, &v_zero, &boundary_data,
+         &dofh](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
+          const lf::mesh::Entity& node{dofh.Entity(gdof_idx)};
+          if (bd_flags(node)) {
+            // Get location of the node on the boundary
+            const lf::geometry::Geometry* geo = node.Geometry();
+	    // Query node coordinates
+            Eigen::Vector2d pos = geo->Global(v_zero);
+	    // Fecth boundary value in current node 
+            const double val = boundary_data(pos);
+            return std::make_pair(true, val);
+          } 
+	  return std::make_pair(false, 0.0);
+        },
+        A, phi);
+    // Solve Galerkin LSE
+    Eigen::SparseMatrix<double> A_crs = A.makeSparse();
+    Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+    solver.compute(A_crs);
+    LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
+    uh = solver.solve(phi);
+    LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+  }
+  
+}
+
+/** @brief VTK Output of graph with minimal area
+ *
+ * Sub-problem 5-3j)
+ */
+void graphMinSurfVis(std::string meshfile, std::string vtkfile);
+
 }  // namespace MinimalGraphSurface

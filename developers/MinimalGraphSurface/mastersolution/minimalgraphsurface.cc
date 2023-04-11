@@ -129,4 +129,75 @@ std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
 }
 /* SAM_LISTING_END_4 */
 
+Eigen::VectorXd computerNewtonCorrection(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu_vec) {
+  // Obtain reference to the underlying finite element mesh
+  const lf::mesh::Mesh& mesh{*fes_p->Mesh()};
+  // The local-to-global index mapping
+  const lf::assemble::DofHandler& dofh{fes_p->LocGlobMap()};
+  // Get the number of degrees of freedom = dimension of FE space
+  const lf::base::size_type N_dofs(dofh.NumDofs());
+  LF_ASSERT_MSG(mu_vec.size() == N_dofs, "Vector length mismatch!");
+  // Solution vector = return value 
+  Eigen::VectorXd sol_vec(N_dofs);
+  #if SOLUTION
+  // Set up an empty sparse matrix to hold the Galerkin matrix
+  lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
+  // Initialize ELEMENT_MATRIX_PROVIDER object
+  // Tensor coefficient provided by auxiliary MeshFunction object
+  CoeffTensorA mf_alpha(fes_p, mu_vec);
+  // No zero-order term
+  lf::mesh::utils::MeshFunctionConstant<double> mf_zero(0.0);
+  lf::uscalfe::ReactionDiffusionElementMatrixProvider elmat_builder(
+      fes_p, std::move(mf_alpha), mf_zero);
+  // Cell-oriented assembly over the whole computational domain
+  lf::assemble::AssembleMatrixLocally(0, dofh, dofh, elmat_builder, A);
+  // Assembly of right-hand-side vector
+  Eigen::VectorXd phi(N_dofs);
+  {
+    // Auxliary sparse matrix
+    lf::assemble::COOMatrix<double> T(N_dofs, N_dofs);
+    // Scalar coefficient $c(\Bx)$ provided by auxiliary MeshFunction object
+    CoeffScalarc mf_c(fes_p, mu_vec);
+    lf::uscalfe::ReactionDiffusionElementMatrixProvider Tmat_builder(
+        fes_p, std::move(mf_c), mf_zero);
+    // Cell-oriented assembly over the whole computational domain
+    lf::assemble::AssembleMatrixLocally(0, dofh, dofh, Tmat_builder, T);
+    phi = T.MatVecMult(1.0, mu_vec);
+  }
+  // Enforce zero Dirichlet boundary conditions
+  // Obtain an array of boolean flags for the edges of the mesh, 'true'
+  // indicates that the edge lies on the boundary
+  auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fes_p->Mesh(), 2)};
+  // Elimination of degrees of freedom on the boundary
+  lf::assemble::FixFlaggedSolutionComponents<double>(
+      [&bd_flags,
+       &dofh](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
+        const lf::mesh::Entity& node{dofh.Entity(gdof_idx)};
+        return (bd_flags(node) ? std::make_pair(true, 0.0)
+                               : std::make_pair(false, 0.0));
+      },
+      A, phi);
+  // Assembly completed: Convert COO matrix A into CRS format using Eigen's
+  // internal conversion routines.
+  Eigen::SparseMatrix<double> A_crs = A.makeSparse();
+
+  // Solve linear system using Eigen's sparse direct elimination
+  // Examine return status of solver in case the matrix is singular
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+  solver.compute(A_crs);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "LU decomposition failed");
+  sol_vec = solver.solve(phi);
+  LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
+  #else
+  //====================
+  // Your code goes here
+  //====================
+  #endif
+  return sol_vec;
+}
+
+void graphMinSurfVis(std::string meshfile, std::string vtkfile) {}
+
 }  // namespace MinimalGraphSurface
