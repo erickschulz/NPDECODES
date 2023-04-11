@@ -1,17 +1,17 @@
 /**
- * @file XXX_test.cc
- * @brief NPDE homework XXX code
+ * @file MinimalGraphSurface_test.cc
+ * @brief NPDE homework MinimalGraphSurface code
  * @author 
  * @date 
  * @copyright Developed at SAM, ETH Zurich
  */
 
-#include "../XXX.h"
+#include "../minimalgraphsurface.h"
 
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
 
-namespace XXX::test {
+namespace MinimalGraphSurface::test {
 
-}  // namespace XXX::test
+}  // namespace MinimalGraphSurface::test
