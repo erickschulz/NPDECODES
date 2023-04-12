@@ -88,6 +88,7 @@
     "SemiLagrangian/",
     "AdvectionSUPG/",
     "PML1D/",
-    "PotentialFlow/"
+    "PotentialFlow/",
+    "MinimalGraphSurface/"
   ]
 }

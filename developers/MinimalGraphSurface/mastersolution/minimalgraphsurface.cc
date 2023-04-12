@@ -24,8 +24,7 @@ double computeGraphArea(
 #if SOLUTION
   // Create a MeshFunction representing the gradient
   lf::fe::MeshFunctionGradFE<double, double> graduh(fes_p, mu_vec);
-  // A lambda function realizing a MeshFunction
-  // $\sqrt{1+\N{\grad u_h}^2}$
+  // A lambda function realizing a MeshFunction $\sqrt{1+\N{\grad u_h}^2}$
   auto integrand = [&graduh](
                        const lf::mesh::Entity& e,
                        const Eigen::MatrixXd& refc) -> std::vector<double> {
@@ -36,7 +35,8 @@ double computeGraphArea(
     }
     return ret;
   };
-  area = lf::fe::IntegrateMeshFunction(*fes_p->Mesh(), integrand, 2);
+  const unsigned int quad_ord = 2;
+  area = lf::fe::IntegrateMeshFunction(*fes_p->Mesh(), integrand, quad_ord);
 #else
   //====================
   // Your code goes here
@@ -71,15 +71,14 @@ std::vector<Eigen::Matrix2d> CoeffTensorA::operator()(
 #if SOLUTION
   // Gradients of FE function in those points
   const std::vector<Eigen::VectorXd> gradvals{graduh_(e, refc)};
-  LF_ASSERT_MSG_CONSTEXPR(gradvals.size() == nvals,
-                          "Wrong number of gradients");
+  LF_ASSERT_MSG(gradvals.size() == nvals, "Wrong number of gradients");
   // Compute tensor A at all input locations
   for (int i = 0; i < nvals; ++i) {
     const Eigen::Vector2d g{gradvals[i]};
     const double norms_g = g.squaredNorm();
-    Avals[i] =
-        1.0 / std::sqrt(1.0 + norms_g) *
-        (Eigen::Matrix2d::Identity() - 1./2. * g * g.transpose() / (1.0 + norms_g));
+    Avals[i] = 1.0 / std::sqrt(1.0 + norms_g) *
+               (Eigen::Matrix2d::Identity() -
+                1. / 2. * g * g.transpose() / (1.0 + norms_g));
   }
 #else
   //====================
@@ -106,8 +105,8 @@ CoeffScalarc::CoeffScalarc(
 
 // Implementation of evaluation operator for class CoeffScalarc
 /* SAM_LISTING_BEGIN_4 */
-std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
-                                             const Eigen::MatrixXd& refc) const {
+std::vector<double> CoeffScalarc::operator()(
+    const lf::mesh::Entity& e, const Eigen::MatrixXd& refc) const {
   // Number of points for which evaluation is requested
   const int nvals = refc.cols();
   // For returning values
@@ -115,8 +114,7 @@ std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
 #if SOLUTION
   // Gradients of FE function in those points
   const std::vector<Eigen::VectorXd> gradvals{graduh_(e, refc)};
-  LF_ASSERT_MSG_CONSTEXPR(gradvals.size() == nvals,
-                          "Wrong number of gradients");
+  LF_ASSERT_MSG(gradvals.size() == nvals, "Wrong number of gradients");
   // Compute coefficient c for all input points
   for (int i = 0; i < nvals; ++i) {
     cvals[i] = -1.0 / std::sqrt(1.0 + gradvals[i].squaredNorm());

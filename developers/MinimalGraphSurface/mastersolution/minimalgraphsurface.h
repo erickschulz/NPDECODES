@@ -89,7 +89,7 @@ Eigen::VectorXd computeNewtonCorrection(
  *
  * Sub-problem 5-3i)
  */
-
+/* SAM_LISTING_BEGIN_9 */
 template <typename D_FUNCTOR,
           typename RECORDER = std ::function<void(const Eigen::VectorXd&)>>
 Eigen::VectorXd graphMinimalSurface(
@@ -106,6 +106,7 @@ Eigen::VectorXd graphMinimalSurface(
   // I. Solve Dirichlet problem for $-\Delta u=0$ in order to obtain a good
   // initial guess
   Eigen::VectorXd uh(N_dofs);
+#if SOLUTION
   {
     // Set up an empty sparse matrix to hold the Galerkin matrix
     lf::assemble::COOMatrix<double> A(N_dofs, N_dofs);
@@ -119,7 +120,7 @@ Eigen::VectorXd graphMinimalSurface(
     // Impose Dirichlet boundary conditions
     auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fes_p->Mesh(), 2)};
     // Set fixed values for d.o.f. on the boundary
-    const Eigen::Matrix<double,0,1> v_zero;
+    const Eigen::Matrix<double, 0, 1> v_zero;
     lf::assemble::FixFlaggedSolutionComponents<double>(
         [&bd_flags, &v_zero, &boundary_data,
          &dofh](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
@@ -144,7 +145,13 @@ Eigen::VectorXd graphMinimalSurface(
     uh = solver.solve(phi);
     LF_VERIFY_MSG(solver.info() == Eigen::Success, "Solving LSE failed");
   }
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   // II. Newton iteration with correction based termination
+#if SOLUTION
   double update_norm;       // Norm of Newton correction
   unsigned int it_cnt = 0;  // Iteration counter
   rec(uh);
@@ -158,8 +165,14 @@ Eigen::VectorXd graphMinimalSurface(
     // Correction-based termination
   } while ((update_norm > rtol * uh.norm() / std::sqrt(N_dofs)) &&
            (update_norm > atol) && (it_cnt < itmax));
+#else
+  //====================
+  // Your code goes here
+  //====================
+#endif
   return uh;
 }
+/* SAM_LISTING_END_9 */
 
 /** @brief VTK Output of graph with minimal area
  *
