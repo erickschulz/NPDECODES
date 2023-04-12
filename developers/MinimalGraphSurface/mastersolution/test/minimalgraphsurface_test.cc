@@ -96,10 +96,10 @@ namespace MinimalGraphSurface::test {
         // The exact solution is 1/(6*sqrt(6))*[5.5, 5; 5, 4]
         
         double tol = 1e-8;
-        EXPECT_NEAR(A_mat[0](0,0), 1./sqrt(6.)*(1.-1./2.*1./6.*1.), tol);
-        EXPECT_NEAR(A_mat[0](1,0), 1./sqrt(6.)*(-1./2.*1./6.*2.), tol);
-        EXPECT_NEAR(A_mat[0](0,1), 1./sqrt(6.)*(-1./2.*1./6.*2.), tol);
-        EXPECT_NEAR(A_mat[0](1,1), 1./sqrt(6.)*(1.-1./2.*1./6.*4.), tol);
+        EXPECT_NEAR(A_mat[0](0,0), 1./sqrt(6.)*(1.-1./6.*1.), tol);
+        EXPECT_NEAR(A_mat[0](1,0), 1./sqrt(6.)*(-1./6.*2.), tol);
+        EXPECT_NEAR(A_mat[0](0,1), 1./sqrt(6.)*(-1./6.*2.), tol);
+        EXPECT_NEAR(A_mat[0](1,1), 1./sqrt(6.)*(1.-1./6.*4.), tol);
 
         // Test if CoeffTensorA satisfies the conditions for being a MeshFunction.
         EXPECT_TRUE(lf::mesh::utils::isMeshFunction<MinimalGraphSurface::CoeffTensorA>);

@@ -77,8 +77,7 @@ std::vector<Eigen::Matrix2d> CoeffTensorA::operator()(
     const Eigen::Vector2d g{gradvals[i]};
     const double norms_g = g.squaredNorm();
     Avals[i] = 1.0 / std::sqrt(1.0 + norms_g) *
-               (Eigen::Matrix2d::Identity() -
-                1. / 2. * g * g.transpose() / (1.0 + norms_g));
+               (Eigen::Matrix2d::Identity() - g * g.transpose() / (1.0 + norms_g));
   }
 #else
   //====================
