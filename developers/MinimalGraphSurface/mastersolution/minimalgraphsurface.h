@@ -119,8 +119,7 @@ Eigen::VectorXd graphMinimalSurface(
     // Impose Dirichlet boundary conditions
     auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(fes_p->Mesh(), 2)};
     // Set fixed values for d.o.f. on the boundary
-    const Eigen::MatrixXd v_zero =
-        (Eigen::MatrixXd(2, 1) << 0.0, 0.0).finished();
+    const Eigen::Matrix<double,0,1> v_zero;
     lf::assemble::FixFlaggedSolutionComponents<double>(
         [&bd_flags, &v_zero, &boundary_data,
          &dofh](lf::assemble::glb_idx_t gdof_idx) -> std::pair<bool, double> {
@@ -129,9 +128,9 @@ Eigen::VectorXd graphMinimalSurface(
             // Get location of the node on the boundary
             const lf::geometry::Geometry* geo = node.Geometry();
             // Query node coordinates
-            Eigen::Vector2d pos = geo->Global(v_zero);
+            Eigen::MatrixXd pos = geo->Global(v_zero);
             // Fecth boundary value in current node
-            const double val = boundary_data(pos);
+            const double val = boundary_data(pos.col(0));
             return std::make_pair(true, val);
           }
           return std::make_pair(false, 0.0);
@@ -157,7 +156,7 @@ Eigen::VectorXd graphMinimalSurface(
     uh += corr;  // Update approximate solution
     rec(uh);     // Register updated solution
     // Correction-based termination
-  } while ((update_norm < rtol * uh.norm() / std::sqrt(N_dofs)) &&
+  } while ((update_norm > rtol * uh.norm() / std::sqrt(N_dofs)) &&
            (update_norm > atol) && (it_cnt < itmax));
   return uh;
 }

@@ -78,8 +78,8 @@ std::vector<Eigen::Matrix2d> CoeffTensorA::operator()(
     const Eigen::Vector2d g{gradvals[i]};
     const double norms_g = g.squaredNorm();
     Avals[i] =
-        1.0 / (1.0 + norms_g) *
-        (Eigen::Matrix2d::Identity() - 2 * g * g.transpose() / (1.0 + norms_g));
+        1.0 / std::sqrt(1.0 + norms_g) *
+        (Eigen::Matrix2d::Identity() - 1./2. * g * g.transpose() / (1.0 + norms_g));
   }
 #else
   //====================
@@ -119,7 +119,7 @@ std::vector<double> CoeffScalarc::operator()(const lf::mesh::Entity& e,
                           "Wrong number of gradients");
   // Compute coefficient c for all input points
   for (int i = 0; i < nvals; ++i) {
-    cvals[i] = -1.0 / (1.0 + gradvals[i].squaredNorm());
+    cvals[i] = -1.0 / std::sqrt(1.0 + gradvals[i].squaredNorm());
   }
 #else
   //====================
