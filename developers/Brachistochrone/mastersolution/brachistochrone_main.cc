@@ -9,6 +9,6 @@
 #include <Eigen/Core>
 #include <iostream>
 
-#include "XXX.h"
+#include "brachistochrone.h"
 
 int main(int /*argc*/, char** /*argv*/) { return 0; }
