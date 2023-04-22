@@ -103,7 +103,7 @@ TEST(Brachistochrone, compute_rhs) {
   }
 
   // Compute rhs
-  Eigen::VectorXd rhs = Brachistochrone::compute_rhs(knots, b);
+  Eigen::VectorXd rhs = Brachistochrone::compute_rhs(knots, Eigen::Vector2d(0.0,0.0), b);
 
   // Test the computed values for rhs
   double tol = 1e-4;
