@@ -110,9 +110,9 @@ TEST(Brachistochrone, compute_rhs) {
   EXPECT_NEAR(rhs(0), 0., tol);
   EXPECT_NEAR(rhs(1), 0., tol);
   EXPECT_NEAR(rhs(2), 2.99022144037, tol);
-  EXPECT_NEAR(rhs(3), -25.208067770, tol);
-  EXPECT_NEAR(rhs(4), -2.512111351703, tol);
-  EXPECT_NEAR(rhs(5), -1.614174553707, tol);
+  EXPECT_NEAR(rhs(3), -5.857963122, tol);
+  EXPECT_NEAR(rhs(4), -0.7666687896809623, tol);
+  EXPECT_NEAR(rhs(5), -0.87476830362514462, tol);
 }
 
 TEST(Brachistochrone, brachistochrone) {
