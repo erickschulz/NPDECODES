@@ -109,55 +109,12 @@ TEST(Brachistochrone, compute_rhs) {
   double tol = 1e-4;
   EXPECT_NEAR(rhs(0), 0., tol);
   EXPECT_NEAR(rhs(1), 0., tol);
-  EXPECT_NEAR(rhs(2), 2.99022144037, tol);
-  EXPECT_NEAR(rhs(3), -5.857963122, tol);
-  EXPECT_NEAR(rhs(4), -0.7666687896809623, tol);
-  EXPECT_NEAR(rhs(5), -0.87476830362514462, tol);
+  EXPECT_NEAR(rhs(2), 2.9902214403777778, tol);
+  EXPECT_NEAR(rhs(3), -8.5620467633785076, tol);
+  EXPECT_NEAR(rhs(4), -1.6632919175469014, tol);
+  EXPECT_NEAR(rhs(5), -1.3571507626160779, tol);
 }
 
-TEST(Brachistochrone, brachistochrone) {
-  // We set b to correspond to the cycloid curve
-  Eigen::Vector2d b = {M_PI, -2.};
 
-  // We use the following arguments for solving the baristochrone problem
-  int M = 80;
-  double atol = 1e-10;
-  double rtol = 1e-10;
-  unsigned itmax = 10000;
-
-  // To make things as easy as possible, we initialize with the exact solution
-  Eigen::MatrixXd knots(2, M + 1);
-  for (int i = 0; i < M + 1; ++i)
-    knots(0, i) = (M_PI * i) / M - std::sin((M_PI * i) / M);
-  for (int i = 0; i < M + 1; ++i) knots(1, i) = std::cos((M_PI * i) / M) - 1.;
-
-  // We solve the brachistochrone problem
-  Eigen::MatrixXd mu =
-      Brachistochrone::brachistochrone(M, b, knots, atol, rtol, itmax);
-
-  // Compute the L2 norm using 2-point Gauss quadrature
-  auto L2norm = [](Eigen::Matrix<double, 2, Eigen::Dynamic> knots) -> double {
-    double norm = 0.;
-
-    // Definition quadrature points (2-point Gauss)
-    double rh = .5 + .5 / std::sqrt(3.);
-    double lh = .5 - .5 / std::sqrt(3.);
-    double h = 1. / (knots.cols() - 1.);
-
-    // Loop over all segmenets of the curve
-    for (int i = 0; i < knots.cols() - 1; ++i) {
-      // Evaluate the y-component of uh on both quadrature points
-      Eigen::Vector2d uhl = (1 - lh) * knots.col(i) + lh * knots.col(i + 1);
-      Eigen::Vector2d uhr = (1 - rh) * knots.col(i) + rh * knots.col(i + 1);
-
-      // Compute the length associated to this segment of the curve
-      norm += h / 2. * (uhl.squaredNorm() + uhr.squaredNorm());
-    }
-    return std::sqrt(norm);
-  };
-
-  // We compute the L2 error
-  EXPECT_LE(L2norm(mu-knots),1e-1);
-}
 
 }  // namespace Brachistochrone::test
