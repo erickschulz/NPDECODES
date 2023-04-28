@@ -119,6 +119,28 @@ Eigen::VectorXd solveMixedBVP(
 
 /* SAM_LISTING_END_1 */
 
+/** @see \ref contactFlux
+ *
+ * Alternative implementation making use of @ref MeshFunction
+ */
+/* SAM_LISTING_BEGIN_3 */
+template <typename SIGMAFUNCTION>
+double contactFluxMF(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fe_space,
+    const Eigen::VectorXd &sol_vec, SIGMAFUNCTION &&sigma,
+    const lf::mesh::utils::CodimMeshDataSet<int> &edgeids, int contact_id = 0) {
+  // The underlying finite element mesh
+  const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
+  // Variable for summing boundary flux
+  double s = 0.0;
+  // Counter for edges on selected contact
+  unsigned int ed_cnt = 0;
+//====================
+// Your code goes here
+//====================
+  std::cout << "Summed flux for " << ed_cnt << " edges." << std::endl;
+  return s;
+}  // end contactFluxMF
 
 /* SAM_LISTING_END_3 */
 

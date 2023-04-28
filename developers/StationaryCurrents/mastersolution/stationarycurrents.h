@@ -143,7 +143,6 @@ Eigen::VectorXd solveMixedBVP(
 
 /* SAM_LISTING_END_1 */
 
-#if SOLUTION
 /** @see \ref contactFlux
  *
  * Alternative implementation making use of @ref MeshFunction
@@ -156,6 +155,11 @@ double contactFluxMF(
     const lf::mesh::utils::CodimMeshDataSet<int> &edgeids, int contact_id = 0) {
   // The underlying finite element mesh
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
+  // Variable for summing boundary flux
+  double s = 0.0;
+  // Counter for edges on selected contact
+  unsigned int ed_cnt = 0;
+#if SOLUTION
   // Compute exterior edge-weighted normals
   lf::mesh::utils::CodimMeshDataSet<Eigen::Vector2d> normals{
       exteriorEdgeWeightedNormals(fe_space->Mesh())};
@@ -166,10 +170,6 @@ double contactFluxMF(
   const Eigen::MatrixXd mp_refc{
       (Eigen::Matrix<double, 2, 3>() << 0.5, 0.5, 0.0, 0.0, 0.5, 0.5)
           .finished()};
-  // Variable for summing boundary flux
-  double s = 0.0;
-  // Counter for edges on selected contact
-  unsigned int ed_cnt = 0;
   // Loop over all cells
   for (const lf::mesh::Entity *cell : mesh.Entities(0)) {
     const lf::base::RefEl ref_el_type{cell->RefEl()};
@@ -199,10 +199,14 @@ double contactFluxMF(
       }
     }  // end loop over edges
   }    // end loop over cells
+#else
+//====================
+// Your code goes here
+//====================
+#endif
   std::cout << "Summed flux for " << ed_cnt << " edges." << std::endl;
   return s;
 }  // end contactFluxMF
-#endif
 
 /* SAM_LISTING_END_3 */
 
