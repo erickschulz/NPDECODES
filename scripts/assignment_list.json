@@ -89,6 +89,7 @@
     "AdvectionSUPG/",
     "PML1D/",
     "PotentialFlow/",
-    "MinimalGraphSurface/"
+    "MinimalGraphSurface/",
+    "Brachistochrone/"
   ]
 }

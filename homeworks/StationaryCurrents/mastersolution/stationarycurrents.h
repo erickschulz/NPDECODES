@@ -147,6 +147,10 @@ double contactFluxMF(
     const lf::mesh::utils::CodimMeshDataSet<int> &edgeids, int contact_id = 0) {
   // The underlying finite element mesh
   const lf::mesh::Mesh &mesh{*(fe_space->Mesh())};
+  // Variable for summing boundary flux
+  double s = 0.0;
+  // Counter for edges on selected contact
+  unsigned int ed_cnt = 0;
   // Compute exterior edge-weighted normals
   lf::mesh::utils::CodimMeshDataSet<Eigen::Vector2d> normals{
       exteriorEdgeWeightedNormals(fe_space->Mesh())};
@@ -157,10 +161,6 @@ double contactFluxMF(
   const Eigen::MatrixXd mp_refc{
       (Eigen::Matrix<double, 2, 3>() << 0.5, 0.5, 0.0, 0.0, 0.5, 0.5)
           .finished()};
-  // Variable for summing boundary flux
-  double s = 0.0;
-  // Counter for edges on selected contact
-  unsigned int ed_cnt = 0;
   // Loop over all cells
   for (const lf::mesh::Entity *cell : mesh.Entities(0)) {
     const lf::base::RefEl ref_el_type{cell->RefEl()};
