@@ -58,9 +58,14 @@ CoeffTensorA::CoeffTensorA(
     const Eigen::VectorXd& mu)
     : graduh_(fes_p, mu) {}
 #else
-//====================
-// Your code goes here
-//====================
+CoeffTensorA::CoeffTensorA(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu) {
+  //====================
+  // Your code goes here
+  // or even elsewhere
+  //====================
+}
 #endif
 /* SAM_LISTING_END_2 */
 
@@ -101,9 +106,14 @@ CoeffScalarc::CoeffScalarc(
     const Eigen::VectorXd& mu)
     : graduh_(fes_p, mu) {}
 #else
-//====================
-// Your code goes here
-//====================
+CoeffScalarc::CoeffScalarc(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu) {
+  //====================
+  // Your code goes here
+  // or somewhere else
+  //====================
+}
 #endif
 /* SAM_LISTING_END_5 */
 
