@@ -31,9 +31,15 @@ double computeGraphArea(
 
 // Implementation of the constructor
 /* SAM_LISTING_BEGIN_2 */
-//====================
-// Your code goes here
-//====================
+CoeffTensorA::CoeffTensorA(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu)
+    : graduh_(fes_p, mu) {
+  //====================
+  // Your code goes here
+  // or even elsewhere or nowhere
+  //====================
+}
 /* SAM_LISTING_END_2 */
 
 // Implementation of evaluation operator for class CoeffTensorA
@@ -53,9 +59,15 @@ std::vector<Eigen::Matrix2d> CoeffTensorA::operator()(
 
 // Implementation of constructor for CoeffScalarc
 /* SAM_LISTING_BEGIN_5 */
-//====================
-// Your code goes here
-//====================
+CoeffScalarc::CoeffScalarc(
+    std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_p,
+    const Eigen::VectorXd& mu)
+    : graduh_(fes_p, mu) {
+  //====================
+  // Your code goes here
+  // or somewhere else or nowhere
+  //====================
+}
 /* SAM_LISTING_END_5 */
 
 // Implementation of evaluation operator for class CoeffScalarc
